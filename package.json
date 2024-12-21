@@ -14,7 +14,9 @@
   },
   "dependencies": {
     "ant-design-vue": "4.x",
+    "axios": "^1.7.9",
     "pinia": "^2.2.6",
+    "qs": "^6.13.1",
     "sass": "^1.83.0",
     "sass-loader": "^16.0.4",
     "vue": "^3.5.13",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
     "@types/node": "^22.9.3",
+    "@types/qs": "^6.9.17",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "@vue/eslint-config-prettier": "^10.1.0",

@@ -15,11 +15,22 @@
         <QuestionCircleOutlined />
       </template>
     </a-float-button>
+    <a-button @click="handleclick">aaa</a-button>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+const handleclick = () => {
+  message.success({
+    content: () => 'This is a prompt message with custom className and style',
+    class: 'custom-class',
+    style: {
+      marginTop: '20vh',
+    },
+  });
+}
 
 </script>
 
