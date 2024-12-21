@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import TopLayoutBar from '../layout/TopBar/TopBar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,14 +7,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/HomeView.vue'),
-    },
-  ],
+      component: TopLayoutBar,
+      meta: {
+        title: '首页'
+      }
+    }
+  ]
 })
 
 export default router
