@@ -6,11 +6,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      redirect: '/home',
       component: TopLayoutBar,
-      meta: {
-        title: '首页'
-      }
+      children: [
+        {
+          path: 'home',
+          name: 'home',
+          component: () => import('@/views/HomeView.vue'),
+          meta: {
+            title: '首页'
+          }
+        }
+      ]
     }
   ]
 })
