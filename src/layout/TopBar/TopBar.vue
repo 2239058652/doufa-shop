@@ -63,7 +63,6 @@ const router = useRouter();
 // 获取当前路由
 const route = useRoute();
 
-console.log(router);
 
 // 计算属性判断是否需要左侧菜单
 const showSidebar = computed(() => {

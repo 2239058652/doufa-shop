@@ -18,7 +18,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-console.log(router);
+console.log(router.options.routes);
 
 const selectedKeys = ref<string[]>(['1']);
 const openKeys = ref<string[]>(['sub1']);
