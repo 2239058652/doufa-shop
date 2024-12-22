@@ -18,9 +18,9 @@
               <template #content>
                 <div class="con" style="display: flex; justify-content: space-around; font-size: 14px; color: #333">
                   <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 30px">
-                    <span class="active" style="margin-top: 16px" @click="$router.push('/userManage')"> 用户中心 </span>
-                    <span class="active" style="margin-top: 22px"> 订单管理 </span>
-                    <span class="active" style="margin-top: 22px"> 下单管理 </span>
+                    <span class="active" style="margin-top: 16px" @click="router.push('/usermanage')"> 用户中心 </span>
+                    <span class="active" style="margin-top: 22px" @click="$router.push('/ordermanage')"> 订单管理 </span>
+                    <span class="active" style="margin-top: 22px" @click="$router.push('/shopsmanage')"> 下单管理 </span>
                   </div>
                 </div>
               </template>
@@ -49,33 +49,33 @@
       </template>
     </a-modal>
   </div>
-  <router-view v-if="showSidebar"></router-view>
+  <router-view v-if="showSidebar" />
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useRouter, useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router"
 
 const open = ref<boolean>(false)
-const loading = ref<boolean>(false);
+const loading = ref<boolean>(false)
 
-const router = useRouter();
+const router = useRouter()
 // 获取当前路由
-const route = useRoute();
+const route = useRoute()
 
 
 // 计算属性判断是否需要左侧菜单
 const showSidebar = computed(() => {
-  return route.meta.requireSidebar == false;
+  return route.meta.requireSidebar == false
 })
 
 // 退出登录
 const loginOut = () => {
-  loading.value = true;
-  localStorage.clear();
-  router.push("/home");
-  loading.value = false;
-  open.value = false;
+  loading.value = true
+  localStorage.clear()
+  router.push("/home")
+  loading.value = false
+  open.value = false
 }
 </script>
 

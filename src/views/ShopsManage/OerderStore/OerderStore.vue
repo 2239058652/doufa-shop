@@ -1,6 +1,6 @@
 <template>
   <div>
-    我是收藏商品页面
+    下单店铺管理
   </div>
 </template>
 

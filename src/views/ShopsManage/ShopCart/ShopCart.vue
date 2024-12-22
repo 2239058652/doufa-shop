@@ -1,6 +1,6 @@
 <template>
   <div>
-    我是收藏商品页面
+    购物车
   </div>
 </template>
 

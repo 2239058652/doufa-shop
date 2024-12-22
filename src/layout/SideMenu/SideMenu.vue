@@ -65,7 +65,7 @@ const handleClick: MenuProps['onClick'] = e => {
 }
 
 watch(openKeys, val => {
-  console.log('openKeys', val)
+  // console.log('openKeys', val)
 })
 // 监听路由变化来更新菜单状态
 watch(

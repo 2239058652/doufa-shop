@@ -1,6 +1,6 @@
 <template>
   <div>
-    我是收藏商品页面
+    我是登录记录页面
   </div>
 </template>
 
