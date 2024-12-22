@@ -73,9 +73,11 @@ watch(
   () => {
     const currentPath = currentRoute.value.fullPath
     selectedKeys.value = [currentPath]
+    // 不再覆盖 openKeys，而是添加新的展开项
     const parentPaths = getParentPaths()
     if (parentPaths.length) {
-      openKeys.value = parentPaths
+      openKeys.value = [...new Set([...openKeys.value, ...parentPaths])]
+      // openKeys.value = parentPaths  // 覆盖 openKeys
     }
   },
   { immediate: true }
