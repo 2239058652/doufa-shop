@@ -9,6 +9,10 @@ const router = createRouter({
       path: '/',
       redirect: '/home',
       component: TopLayoutBar,
+      meta: {
+        title: '首页',
+        hidden: true
+      },
       children: [
         {
           path: 'home',
@@ -16,7 +20,8 @@ const router = createRouter({
           component: () => import('@/views/HomeView.vue'),
           meta: {
             title: '首页',
-            requireSidebar: false
+            requireSidebar: false,
+            hidden: true
           }
         }
       ]
@@ -25,6 +30,10 @@ const router = createRouter({
       path: '/userManage',
       name: 'UserManage',
       redirect: '/userManage/userInfo',
+      meta: {
+        title: '用户中心',
+        hidden: false
+      },
       component: SiderMenuBar,
       children: [
         {

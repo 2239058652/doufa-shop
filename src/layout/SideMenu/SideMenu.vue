@@ -1,75 +1,85 @@
 <template>
   <TopMenu />
   <div class="side-menu">
-    <a-menu class="layout" id="dddddd" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys"
-      style="width: 256px" mode="inline" :items="items" @click="handleClick"></a-menu>
-    <router-view></router-view>
+    <a-menu class="layout" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 256px"
+      mode="inline" :items="items" @click="handleClick" />
+    <router-view />
   </div>
 
 </template>
 
 <script lang="ts" setup>
-import TopMenu from '../TopBar/TopBar.vue';
-import { reactive, ref, watch, VueElement, h } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue';
-import type { MenuProps, ItemType } from 'ant-design-vue';
-import { useRouter } from "vue-router";
+import TopMenu from '../TopBar/TopBar.vue'
+import { reactive, ref, watch } from 'vue'
+import type { MenuProps, ItemType } from 'ant-design-vue'
+import { useRouter } from "vue-router"
 
 
-const router = useRouter();
+const router = useRouter()
+const routes = router.options.routes
+const currentRoute = router.currentRoute
 
-console.log(router.options.routes);
+// 根据当前路由路径初始化选中的菜单项
+const selectedKeys = ref<string[]>([currentRoute.value.fullPath])
 
-const selectedKeys = ref<string[]>(['1']);
-const openKeys = ref<string[]>(['sub1']);
-
-function getItem(
-  label: VueElement | string,
-  key: string,
-  icon?: any,
-  children?: ItemType[],
-  type?: 'group',
-): ItemType {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  } as ItemType;
+// 获取父级路径用于展开菜单
+const getCurrentParentPath = () => {
+  const matched = currentRoute.value.matched
+  return matched.length > 1 ? `/${matched[0].path}` : ''
+}
+const openKeys = ref<string[]>([getCurrentParentPath()])
+// 初始化展开的菜单项
+// 获取所有需要默认展开的一级菜单路径
+const getParentPaths = () => {
+  const paths: string[] = []
+  currentRoute.value.matched.forEach(route => {
+    if (route.path && !route.meta?.hidden) {
+      paths.push(route.path)
+    }
+  })
+  return paths
 }
 
-const items: ItemType[] = reactive([
-  getItem('Navigation One', 'sub1', () => h(MailOutlined), [
-    getItem('Item 1', 'g1', null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
-    getItem('Item 2', 'g2', null, [getItem('Option 3', '3'), getItem('Option 4', '4')], 'group'),
-  ]),
+// 修改 getItem 函数来处理路由
+function getItem(route: any, parentPath: string = ''): ItemType {
+  const fullPath = parentPath + '/' + route.path
+  return {
+    key: fullPath.replace('//', '/'),
+    icon: null,
+    children: route.children?.map((child: any) => getItem(child, fullPath)),
+    label: route.meta?.title || route.name,
+  } as unknown as ItemType
+}
 
-  getItem('Navigation Two', 'sub2', () => h(AppstoreOutlined), [
-    getItem('Option 5', '5'),
-    getItem('Option 6', '6'),
-    getItem('Submenu', 'sub3', null, [getItem('Option 7', '7'), getItem('Option 8', '8')]),
-  ]),
+// 根据路由生成菜单项
+const items: ItemType[] = reactive(
+  routes
+    .filter((route: any) => !route.meta?.hidden && route.path !== '/')
+    .map((route: any) => getItem(route))
+)
 
-  { type: 'divider' },
-
-  getItem('Navigation Three', 'sub4', () => h(SettingOutlined), [
-    getItem('Option 9', '9'),
-    getItem('Option 10', '10'),
-    getItem('Option 11', '11'),
-    getItem('Option 12', '12'),
-  ]),
-
-  getItem('Group', 'grp', null, [getItem('Option 13', '13'), getItem('Option 14', '14')], 'group'),
-]);
-
+// 修改点击处理函数以支持路由跳转
 const handleClick: MenuProps['onClick'] = e => {
-  console.log('click', e);
-};
+  selectedKeys.value = [e.key.toString()]
+  router.push(e.key.toString())
+}
 
 watch(openKeys, val => {
-  console.log('openKeys', val);
-});
+  console.log('openKeys', val)
+})
+// 监听路由变化来更新菜单状态
+watch(
+  () => currentRoute.value.fullPath,
+  () => {
+    const currentPath = currentRoute.value.fullPath
+    selectedKeys.value = [currentPath]
+    const parentPaths = getParentPaths()
+    if (parentPaths.length) {
+      openKeys.value = parentPaths
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped>
