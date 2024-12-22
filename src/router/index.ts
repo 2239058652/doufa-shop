@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TopLayoutBar from '../layout/TopBar/TopBar.vue'
 import SiderMenuBar from '../layout/SideMenu/SideMenu.vue'
+import { message } from 'ant-design-vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,15 @@ const router = createRouter({
       meta: {
         title: '用户中心',
         hidden: false
+      },
+      beforeEnter: (to, from, next) => {
+        const token = localStorage.getItem('token')
+        if (token) {
+          next()
+        } else {
+          message.warning('请登录后再访问！')
+          next(from.fullPath)
+        }
       },
       component: SiderMenuBar,
       children: [
@@ -86,7 +96,7 @@ const router = createRouter({
           name: 'LoginRecord',
           component: () => import('@/views/UserManage/LoginRecord/LoginRecord.vue'),
           meta: {
-            title: '优惠券',
+            title: '登录记录',
             requireSidebar: true
           }
         }
@@ -99,6 +109,15 @@ const router = createRouter({
       meta: {
         title: '订单管理',
         hidden: false
+      },
+      beforeEnter: (to, from, next) => {
+        const token = localStorage.getItem('token')
+        if (token) {
+          next()
+        } else {
+          message.warning('请登录后再访问！')
+          next(from.fullPath)
+        }
       },
       component: SiderMenuBar,
       children: [
@@ -147,6 +166,17 @@ const router = createRouter({
       meta: {
         title: '下单管理',
         hidden: false
+      },
+      beforeEnter: (to, from, next) => {
+        console.log(from)
+
+        const token = localStorage.getItem('token')
+        if (token) {
+          next()
+        } else {
+          message.warning('请登录后再访问！')
+          next(from.fullPath)
+        }
       },
       component: SiderMenuBar,
       children: [

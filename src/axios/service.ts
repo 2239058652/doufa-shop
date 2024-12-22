@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
@@ -23,10 +22,15 @@ const service: AxiosInstance = axios.create({
 // request拦截器
 service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // 如果开启 token 认证
+    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token') // 请求头携带 token
+    if (config.method === 'post' && (config.headers as AxiosRequestHeaders)['Content-Type'] === 'application/x-www-form-urlencoded') {
+      config.data = qs.stringify(config.data)
+    }
     if (
       config.method === 'post' &&
       (config.headers as AxiosRequestHeaders)['Content-Type'] ===
-        'application/x-www-form-urlencoded'
+      'application/x-www-form-urlencoded'
     ) {
       config.data = qs.stringify(config.data)
     }
@@ -57,10 +61,6 @@ service.interceptors.response.use(
     if (response.config.responseType === 'blob') {
       // 如果是文件流，直接过
       return response
-    } else if (response.data.code === 1002) {
-      setTimeout(() => {
-        location.reload()
-      }, 2000)
     } else return response.data
   },
   (error: AxiosError) => {

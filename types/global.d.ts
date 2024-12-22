@@ -36,3 +36,5 @@ declare global {
     data: T extends any ? T : T & any
   }
 }
+
+export {}

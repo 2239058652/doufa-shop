@@ -2,7 +2,6 @@
   <div class="top-bar">
     <a-affix :offset-top="0">
       <div class="menu-bar">
-        <!-- 登录后 -->
         <div class="menu-content">
           <div class="menu-title">
             <span>{{ 'hi 你好！' }}</span>
@@ -18,9 +17,9 @@
               <template #content>
                 <div class="con" style="display: flex; justify-content: space-around; font-size: 14px; color: #333">
                   <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 30px">
-                    <span class="active" style="margin-top: 16px" @click="router.push('/usermanage')"> 用户中心 </span>
-                    <span class="active" style="margin-top: 22px" @click="$router.push('/ordermanage')"> 订单管理 </span>
-                    <span class="active" style="margin-top: 22px" @click="$router.push('/shopsmanage')"> 下单管理 </span>
+                    <span class="active" style="margin-top: 16px" @click="handleClick('/usermanage')"> 用户中心 </span>
+                    <span class="active" style="margin-top: 22px" @click="handleClick('/ordermanage')"> 订单管理 </span>
+                    <span class="active" style="margin-top: 22px" @click="handleClick('/shopsmanage')"> 下单管理 </span>
                   </div>
                 </div>
               </template>
@@ -28,13 +27,18 @@
             <span class="hr">|</span>
             <span class="menu-item" @click="$router.push(`/`)">消息通知</span>
             <span class="hr">|</span>
-            <span class="menu-item" @click="$router.push(`/`)">退货地址</span>
+            <span class="menu-item" @click="getAddressList">退货地址</span>
             <span class="hr">|</span>
-            <span class="menu-item" @click="open = true">退出</span>
+            <span class="menu-item" @click="open = true" v-if="token">退出</span>
+            <span class="menu-item" @click="handleLogin" v-if="!token">登录</span>
+            <span class="hr" v-if="!token">|</span>
+            <span class="menu-item" @click="handleRegister" v-if="!token">注册</span>
           </div>
         </div>
       </div>
     </a-affix>
+
+    <!-- 退出系统 -->
     <a-modal v-model:open="open">
       <template #title>
         <div class="title">
@@ -48,16 +52,41 @@
         <a-button key="submit" type="primary" :loading="loading" @click="loginOut">退出</a-button>
       </template>
     </a-modal>
+
+    <!-- 退货地址 -->
+    <a-modal v-model:open="addressOpen" title="退货地址">
+      <div class="return_address">
+        <div v-for="(item, index) in addressList" :key="index" class="dialog_wrap">
+          <div class="dialog_title_wrap">{{ item.address_name }}仓-{{ item.real_name }}</div>
+          <div class="dialog_span_wrap">
+            <div>姓名：{{ item.real_name }}</div>
+            <div>手机号：{{ item.phone }}</div>
+            <div>地址：{{ item.province }}{{ item.city }}{{ item.district }}{{ item.detail }}</div>
+          </div>
+        </div>
+      </div>
+      <template #footer>
+        <a-button type="primary" @click="addressOpen = false">确认</a-button>
+      </template>
+    </a-modal>
+    <LoginModal ref="loginModalRef" />
   </div>
   <router-view v-if="showSidebar" />
 </template>
 
 <script lang="ts" setup>
+import { message } from 'ant-design-vue'
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from "vue-router"
+import { returnAddressList } from '@/api/store'
+import LoginModal from './components/LoginDialog.vue'
 
 const open = ref<boolean>(false)
 const loading = ref<boolean>(false)
+const addressOpen = ref<boolean>(false)
+const addressList = ref<any>([])
+const token = localStorage.getItem('token')
+const loginModalRef = ref()
 
 const router = useRouter()
 // 获取当前路由
@@ -69,6 +98,20 @@ const showSidebar = computed(() => {
   return route.meta.requireSidebar == false
 })
 
+const handleClick = (path: string) => {
+  // 只有在用户登录时才允许访问(个人中心)
+  if (token) {
+    router.push(path)
+  } else {
+    message.error('您还未登录，请先登录再访问个人中心！')
+  }
+}
+// 登录
+const handleLogin = () => {
+  loginModalRef.value.setModal1Visible(true)
+}
+// 注册
+const handleRegister = () => { }
 // 退出登录
 const loginOut = () => {
   loading.value = true
@@ -76,6 +119,20 @@ const loginOut = () => {
   router.push("/home")
   loading.value = false
   open.value = false
+}
+// 退货地址
+const getAddressList = async () => {
+  const res = await returnAddressList({
+    page: 0,
+    limit: 10
+  })
+  console.log(res)
+  if (res.status == 200) {
+    addressList.value = res.data.data
+    addressOpen.value = true
+  } else {
+    message.error(res.msg)
+  }
 }
 </script>
 
@@ -101,5 +158,29 @@ const loginOut = () => {
   margin-left: 61px;
   color: #333;
   font-size: 18px;
+}
+
+.return_address {
+  width: 1636px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+
+  .dialog_wrap {
+    width: 100%;
+
+    .dialog_title_wrap {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .dialog_span_wrap {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+  }
 }
 </style>

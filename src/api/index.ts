@@ -13,9 +13,7 @@ export default {
     return request.post({
       url: '/pmspbe/gensetquote/uploadMediumAndLongTerm',
       data,
-      headersType: {
-        'Content-Type': 'multipart/form-data'
-      }
+      headersType: 'multipart/form-data',
     })
   },
   // 下载机组报价

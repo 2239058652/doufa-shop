@@ -9,18 +9,19 @@ export default defineConfig({
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   server: {
     port: 5468,
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://localhost:5468',
+        target: 'https://ceshi.doufapt.com/api',
+        // target: 'http://test.doufapt.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  },
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  }
 })
