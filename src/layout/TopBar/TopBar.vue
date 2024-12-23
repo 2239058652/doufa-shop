@@ -1,4 +1,5 @@
 <template>
+  <context-holder />
   <div class="layout">
     <div class="top-bar">
       <a-affix :offset-top="0">
@@ -84,7 +85,7 @@
       </a-modal>
 
       <!-- 退货地址 -->
-      <a-modal v-model:open="addressOpen" title="退货地址">
+      <a-modal v-model:open="addressOpen" title="退货地址" width="1000px">
         <div class="return_address">
           <div v-for="(item, index) in addressList" :key="index" class="dialog_wrap">
             <div class="dialog_title_wrap">{{ item.address_name }}仓-{{ item.real_name }}</div>
@@ -128,6 +129,8 @@ const token = localStorage.getItem('token')
 const loginModalRef = ref()
 const registerModalRef = ref()
 
+const [messageApi, contextHolder] = message.useMessage()
+
 const router = useRouter()
 // 获取当前路由
 const route = useRoute()
@@ -142,7 +145,7 @@ const handleClick = (path: string) => {
   if (token) {
     router.push(path)
   } else {
-    message.error('您还未登录，请先登录再访问个人中心！')
+    messageApi.error('您还未登录，请先登录再访问个人中心！')
   }
 }
 // 登录
@@ -172,10 +175,10 @@ const getAddressList = async () => {
   })
   console.log(res)
   if (res.status == 200) {
-    addressList.value = res.data.data
+    addressList.value = res.data
     addressOpen.value = true
   } else {
-    message.error(res.msg)
+    messageApi.error(res.msg)
   }
 }
 </script>
@@ -205,7 +208,7 @@ const getAddressList = async () => {
 }
 
 .return_address {
-  width: 1636px;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
