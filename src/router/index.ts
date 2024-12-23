@@ -18,11 +18,11 @@ const router = createRouter({
         {
           path: 'home',
           name: 'Home',
-          component: () => import('@/views/HomeView.vue'),
+          component: () => import('@/views/index.vue'),
           meta: {
-            title: '首页',
-            requireSidebar: false,
-            hidden: true
+            title: '首页',  // 标题必须设置
+            requireSidebar: false,  // 是否需要侧边栏菜单
+            hidden: true  // 不需要侧边栏设置为true
           }
         }
       ]
