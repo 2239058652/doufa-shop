@@ -63,7 +63,7 @@
               <span class="menu-item" @click="open = true" v-if="token">退出</span>
               <span class="menu-item" @click="handleLogin" v-if="!token">登录</span>
               <span class="hr" v-if="!token">|</span>
-              <span class="menu-item" @click="handleRegister" v-if="!token">注册</span>
+              <span class="menu-item" @click="handleRegister('zhuce')" v-if="!token">注册</span>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
         </template>
       </a-modal>
       <!-- 登录modal -->
-      <LoginModal ref="loginModalRef" />
+      <LoginModal ref="loginModalRef" @hanldeToRegis="handleRegister" />
       <!-- 注册modal -->
       <RegisterModal ref="registerModalRef" />
     </div>
@@ -153,8 +153,8 @@ const handleLogin = () => {
   loginModalRef.value.setModalInit(true)
 }
 // 注册
-const handleRegister = () => {
-  registerModalRef.value.setRegisModalInit(true)
+const handleRegister = (type: string) => {
+  registerModalRef.value.setRegisModalInit(true, type)
 }
 // 退出登录
 const loginOut = () => {

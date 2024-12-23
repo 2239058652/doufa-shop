@@ -11,7 +11,7 @@
       <div class="login-modal">
         <!-- 顶部登录和验证码登录切换部分 -->
         <div class="login-tabs">
-          <div class="tab-tane-active"> 注册 </div>
+          <div class="tab-tane-active"> {{ modalTitle }} </div>
         </div>
         <!-- 输入框部分 -->
         <div class="login-content">
@@ -27,6 +27,7 @@
               placeholder="验证码"
               v-model:value="inputData.captcha"
             >
+              <!-- 获取验证码 -->
               <template #suffix>
                 <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{
                   yanzhengma
@@ -55,7 +56,7 @@
           @click="handleRegister"
           class="login-btn"
         >
-          注册
+          {{ modalTitle }}
         </a-button>
         <!-- 下面协议说明部分 -->
         <div class="login-xieyi">
@@ -82,7 +83,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue'
-import { sendVerify, agreeMents, doRegister } from '@/api/user'
+import { sendVerify, agreeMents, doRegister, resetRegister } from '@/api/user'
 import { message } from 'ant-design-vue'
 
 const modalRegisterVisible = ref<boolean>(false)
@@ -95,6 +96,7 @@ const viewAgreeMent = ref<any>({})
 const yanzhengma = ref<string>('获取验证码')
 const timer = ref<any>(null)
 const canClick = ref(true)
+const modalTitle = ref<string>('注册')
 
 const inputData = reactive<any>({
   account: '',
@@ -103,7 +105,10 @@ const inputData = reactive<any>({
   captcha: ''
 })
 
-const setRegisModalInit = (open: boolean) => {
+// 初始化
+const setRegisModalInit = (open: boolean, type: string) => {
+  modalTitle.value = type === 'zhuce' ? '注册' : '重置密码'
+
   // 获取协议list
   Promise.all([agreeMents({ type: 1 }), agreeMents({ type: 2 }), agreeMents({ type: 3 })]).then(
     (res) => {
@@ -112,32 +117,55 @@ const setRegisModalInit = (open: boolean) => {
   )
   modalRegisterVisible.value = open
 }
-// 注册
+// 注册 或者 修改密码
 const handleRegister = () => {
+  console.log(modalTitle.value, 'typeeeeeeeeeeeee')
   if (inputData.account && inputData.password && inputData.captcha && inputData.repassword) {
     if (inputData.password !== inputData.repassword) {
       message.error('两次密码不一致')
       return
     }
     loginLoading.value = true
-    doRegister({
-      account: inputData.account,
-      password: inputData.password,
-      captcha: inputData.captcha
-    })
-      .then((res: any) => {
-        if (res.status === 200) {
-          message.success('注册成功')
-          loginLoading.value = false
-          modalRegisterVisible.value = false
-        } else {
-          message.error(res.msg) //'请检查信息填写是否正确'
-          loginLoading.value = false
-        }
+    if (modalTitle.value == '注册') {
+      doRegister({
+        account: inputData.account,
+        password: inputData.password,
+        captcha: inputData.captcha
       })
-      .catch(() => {
-        loginLoading.value = false
+        .then((res: any) => {
+          if (res.status === 200) {
+            message.success('注册成功')
+            loginLoading.value = false
+            modalRegisterVisible.value = false
+          } else {
+            message.error(res.msg) //'请检查信息填写是否正确'
+            loginLoading.value = false
+          }
+        })
+        .catch(() => {
+          loginLoading.value = false
+        })
+    } else {
+      // 修改密码
+      resetRegister({
+        account: inputData.account,
+        password: inputData.password,
+        captcha: inputData.captcha
       })
+        .then((res: any) => {
+          if (res.status === 200) {
+            message.success('修改密码成功')
+            loginLoading.value = false
+            modalRegisterVisible.value = false
+          } else {
+            message.error(res.msg) //'请检查信息填写是否正确'
+            loginLoading.value = false
+          }
+        })
+        .catch(() => {
+          loginLoading.value = false
+        })
+    }
   } else {
     message.error('请填写完整信息')
   }
@@ -168,13 +196,24 @@ const getYanzhengma = () => {
         }
       }, 1000)
       // 发送验证码
-      sendVerify({ phone: inputData.account, type: 'register' }).then((res: any) => {
-        if (res.status === 200) {
-          message.success('验证码发送成功,请查看手机')
-        } else {
-          message.error(res.msg)
-        }
-      })
+      if (modalTitle.value == '注册') {
+        sendVerify({ phone: inputData.account, type: 'register' }).then((res: any) => {
+          if (res.status === 200) {
+            message.success('验证码发送成功,请查看手机')
+          } else {
+            message.error(res.msg)
+          }
+        })
+      } else {
+        // 修改密码发送验证码
+        sendVerify({ phone: inputData.account, type: 'reset' }).then((res: any) => {
+          if (res.status === 200) {
+            message.success('验证码发送成功,请查看手机')
+          } else {
+            message.error(res.msg)
+          }
+        })
+      }
     } else {
       phoneInputRef.value.focus()
       message.error('请输入正确的手机号')
@@ -227,7 +266,7 @@ defineExpose({ setRegisModalInit })
   height: auto;
 }
 .tab-tane-active {
-  width: 40px;
+  width: 80px;
   height: 28px;
   font-weight: 600;
   font-size: 20px;

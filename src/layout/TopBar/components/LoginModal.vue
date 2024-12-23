@@ -60,8 +60,8 @@
             </template>
           </a-form>
           <div class="login-text">
-            <span>重置密码</span>
-            <span>注册</span>
+            <span @click="handleToEditRegister">重置密码</span>
+            <span @click="handleToRegister">注册</span>
           </div>
         </div>
         <!-- 登录按钮 -->
@@ -124,6 +124,8 @@ const inputData = reactive<any>({
   phone: '',
   captcha: ''
 })
+
+const emits = defineEmits(['hanldeToRegis'])
 
 const setModalInit = (open: boolean) => {
   // 获取协议list
@@ -232,6 +234,15 @@ const getYanzhengma = () => {
     message.error('请先输入手机号')
     return
   }
+}
+
+// 注册
+const handleToRegister = () => {
+  emits('hanldeToRegis', 'zhuce')
+}
+// 重置密码
+const handleToEditRegister = () => {
+  emits('hanldeToRegis', 'chongzhi')
 }
 // 打开协议modal
 const viewXieYiModal = (view: any) => {
