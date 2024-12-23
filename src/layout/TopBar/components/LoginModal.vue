@@ -90,7 +90,13 @@
         </div>
       </div>
     </a-modal>
-    <a-modal :closable="false" v-model:open="modalXieYiVisible" :footer="null" width="1000px">
+    <a-modal
+      destroyOnClose
+      :closable="false"
+      v-model:open="modalXieYiVisible"
+      :footer="null"
+      width="1000px"
+    >
       <div class="xieyi-content" v-html="viewAgreeMent"></div>
     </a-modal>
   </div>

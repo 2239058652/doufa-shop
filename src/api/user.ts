@@ -26,7 +26,7 @@ export const sendVerify = (data: { phone: string; type: VerifyType }) => {
 }
 
 // 注册
-export const doRegister = (data: { account: number; password: string, captcha: number }) => {
+export const doRegister = (data: { account: string | number; password: string, captcha: string }) => {
   return request.post({
     url: '/api/register',
     data,

@@ -101,7 +101,10 @@
           <a-button type="primary" @click="addressOpen = false">确认</a-button>
         </template>
       </a-modal>
+      <!-- 登录modal -->
       <LoginModal ref="loginModalRef" />
+      <!-- 注册modal -->
+      <RegisterModal ref="registerModalRef" />
     </div>
     <div class="router-view">
       <router-view v-if="showSidebar" />
@@ -114,7 +117,8 @@ import { message } from 'ant-design-vue'
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { returnAddressList } from '@/api/store'
-import LoginModal from './components/LoginDialog.vue'
+import LoginModal from './components/LoginModal.vue'
+import RegisterModal from './components/RegisterModal.vue'
 
 const open = ref<boolean>(false)
 const loading = ref<boolean>(false)
@@ -122,6 +126,7 @@ const addressOpen = ref<boolean>(false)
 const addressList = ref<any>([])
 const token = localStorage.getItem('token')
 const loginModalRef = ref()
+const registerModalRef = ref()
 
 const router = useRouter()
 // 获取当前路由
@@ -145,7 +150,9 @@ const handleLogin = () => {
   loginModalRef.value.setModalInit(true)
 }
 // 注册
-const handleRegister = () => {}
+const handleRegister = () => {
+  registerModalRef.value.setRegisModalInit(true)
+}
 // 退出登录
 const loginOut = () => {
   loading.value = true
