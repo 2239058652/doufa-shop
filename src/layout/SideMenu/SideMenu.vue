@@ -1,19 +1,24 @@
 <template>
   <TopMenu />
   <div class="side-menu">
-    <a-menu class="layout" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 256px"
-      mode="inline" :items="items" @click="handleClick" />
+    <a-menu
+      class="layout"
+      v-model:openKeys="openKeys"
+      v-model:selectedKeys="selectedKeys"
+      style="width: 206px"
+      mode="inline"
+      :items="items"
+      @click="handleClick"
+    />
     <router-view />
   </div>
-
 </template>
 
 <script lang="ts" setup>
 import TopMenu from '../TopBar/TopBar.vue'
 import { reactive, ref, watch } from 'vue'
 import type { MenuProps, ItemType } from 'ant-design-vue'
-import { useRouter } from "vue-router"
-
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const routes = router.options.routes
@@ -32,7 +37,7 @@ const openKeys = ref<string[]>([getCurrentParentPath()])
 // 获取所有需要默认展开的一级菜单路径
 const getParentPaths = () => {
   const paths: string[] = []
-  currentRoute.value.matched.forEach(route => {
+  currentRoute.value.matched.forEach((route) => {
     if (route.path && !route.meta?.hidden) {
       paths.push(route.path)
     }
@@ -47,7 +52,7 @@ function getItem(route: any, parentPath: string = ''): ItemType {
     key: fullPath.replace('//', '/'),
     icon: null,
     children: route.children?.map((child: any) => getItem(child, fullPath)),
-    label: route.meta?.title || route.name,
+    label: route.meta?.title || route.name
   } as unknown as ItemType
 }
 
@@ -59,12 +64,12 @@ const items: ItemType[] = reactive(
 )
 
 // 修改点击处理函数以支持路由跳转
-const handleClick: MenuProps['onClick'] = e => {
+const handleClick: MenuProps['onClick'] = (e) => {
   selectedKeys.value = [e.key.toString()]
   router.push(e.key.toString())
 }
 
-watch(openKeys, val => {
+watch(openKeys, (val) => {
   // console.log('openKeys', val)
 })
 // 监听路由变化来更新菜单状态

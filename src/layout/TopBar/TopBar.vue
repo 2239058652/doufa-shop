@@ -107,8 +107,8 @@
       <!-- 注册modal -->
       <RegisterModal ref="registerModalRef" />
     </div>
-    <div class="router-view">
-      <router-view v-if="showSidebar" />
+    <div class="router-view" v-if="showSidebar">
+      <router-view />
     </div>
   </div>
 </template>
