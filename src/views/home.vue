@@ -1,5 +1,6 @@
 <template>
   <div style="font-size: 30px; font-weight: 900; color: brown; line-height: 30px">
+    <div> 顶部 </div>
     <!-- 底部开发者信息 -->
     <Footer />
   </div>
