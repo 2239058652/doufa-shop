@@ -3,11 +3,53 @@
     cursor: pointer;
 }
 
+.layout {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.router-view {
+    flex-grow: 1;
+    margin-top: 40px; // 与top-bar高度相同
+    overflow-y: auto;
+
+    // 美化滚动条样式
+    // &::-webkit-scrollbar {
+    //     width: 6px;
+    // }
+
+    // &::-webkit-scrollbar-thumb {
+    //     background: #ccc;
+    //     border-radius: 3px;
+    // }
+
+    // &::-webkit-scrollbar-track {
+    //     background: #f1f1f1;
+    // }
+
+    // 隐藏滚动条
+    // &::-webkit-scrollbar {
+    //     width: 0;
+    //     display: none;
+    // }
+
+    // // 兼容Firefox
+    // scrollbar-width: none;
+
+    // // 兼容IE
+    // -ms-overflow-style: none;
+}
+
 .top-bar {
     width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+    height: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 
     .menu-bar {
         width: 100%;
@@ -17,7 +59,6 @@
         align-items: center;
         justify-content: center;
 
-        // 登录后
         .menu-content {
             width: 70%;
             display: flex;
