@@ -158,6 +158,7 @@ const handleRegister = () => {
 }
 // 退出登录
 const loginOut = () => {
+  messageApi.loading('正在退出登录...')
   loading.value = true
   localStorage.clear()
   setTimeout(() => {

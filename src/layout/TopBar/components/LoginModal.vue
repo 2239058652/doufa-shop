@@ -144,10 +144,12 @@ const handleLogin = (key: string) => {
           .then((res: any) => {
             if (res.status === 200) {
               message.success('登录成功')
-              localStorage.setItem('token', res.data.token)
-              loginLoading.value = false
-              modalLoginVisible.value = false
-              location.reload()
+              setTimeout(() => {
+                localStorage.setItem('token', res.data.token)
+                loginLoading.value = false
+                modalLoginVisible.value = false
+                location.reload()
+              }, 200)
             } else {
               message.error('请检查账号密码是否正确')
               loginLoading.value = false
