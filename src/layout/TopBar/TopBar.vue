@@ -170,12 +170,14 @@ const loginOut = () => {
 }
 // 退货地址
 const getAddressList = async () => {
+  const hide = messageApi.loading('正在获取退货地址...', 0)
   const res = await returnAddressList({
     page: 0,
     limit: 10
   })
-  console.log(res)
   if (res.status == 200) {
+    setTimeout(hide, 0)
+    messageApi.success('退货地址获取成功！')
     addressList.value = res.data
     addressOpen.value = true
   } else {
