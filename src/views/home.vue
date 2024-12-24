@@ -74,36 +74,36 @@ const cartCount = ref(3)
 @use '@/utils/helpers.sass' as helpers;
 
 .home {
-  margin: helpers.px(0);
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: helpers.px(20);
+  gap: 20px;
 }
 
 .top-func {
-  width: helpers.px(1560);
-  height: helpers.px(124);
+  width: helpers.pw(1560);
+  height: 124px;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
   .func-img img {
-    width: helpers.px(193);
-    height: helpers.px(82);
+    width: helpers.pw(193);
+    height: 82px;
     cursor: pointer;
   }
 
   .func-address {
-    width: helpers.px(80);
-    height: helpers.px(80);
+    width: helpers.pw(80);
+    height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: helpers.px(5);
+    gap: 5px;
 
     .address-name {
       width: 80px;
@@ -137,17 +137,17 @@ const cartCount = ref(3)
   }
 
   .func-sou {
-    width: helpers.px(782);
-    height: helpers.px(80);
+    width: helpers.pw(782);
+    height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: helpers.px(5);
+    gap: 5px;
 
     .func-sou-input {
-      width: helpers.px(782);
-      height: helpers.px(50);
+      width: helpers.pw(782);
+      height: 50px;
       border: 2px solid #f83126;
       border-radius: 8px;
 
@@ -155,19 +155,19 @@ const cartCount = ref(3)
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: helpers.px(19);
+        gap: 19px;
 
         img {
-          width: helpers.px(22);
-          height: helpers.px(20);
+          width: helpers.pw(22);
+          height: 20px;
           cursor: pointer;
         }
       }
     }
 
     .func-sou-type {
-      width: helpers.px(782);
-      height: helpers.px(20);
+      width: helpers.pw(782);
+      height: 20px;
       background-color: #ffffff;
 
       .hot-type {
@@ -176,7 +176,7 @@ const cartCount = ref(3)
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: helpers.px(20);
+        gap: 20px;
 
         span {
           font-size: 14px;
@@ -197,8 +197,8 @@ const cartCount = ref(3)
   }
 
   .func-car {
-    width: helpers.px(140);
-    height: helpers.px(50);
+    width: helpers.pw(140);
+    height: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -206,15 +206,15 @@ const cartCount = ref(3)
     cursor: pointer;
 
     .car-top {
-      width: helpers.px(23);
-      height: helpers.px(16);
-      border-radius: helpers.px(8);
+      width: helpers.pw(23);
+      height: 16px;
+      border-radius: 8px;
       position: relative;
 
       .cart-count {
         position: absolute;
-        top: helpers.px(5);
-        right: helpers.px(15);
+        top: 5px;
+        right: 15px;
         background: #f83126;
         color: white;
         font-size: 12px;
@@ -232,11 +232,11 @@ const cartCount = ref(3)
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: helpers.px(5);
+      gap: 5px;
 
       img {
-        width: helpers.px(21);
-        height: helpers.px(19);
+        width: helpers.pw(21);
+        height: 19px;
       }
 
       .shop-car {
@@ -253,26 +253,26 @@ const cartCount = ref(3)
 }
 
 .shop-sort {
-  width: helpers.px(1560);
-  height: helpers.px(700);
+  width: helpers.pw(1560);
+  height: 700px;
   background-color: #bbc2ca;
 }
 
 .hot-rank {
-  width: helpers.px(1560);
-  height: helpers.px(500);
+  width: helpers.pw(1560);
+  height: 500px;
   background-color: #a1a4a7;
 }
 
 .hot-merchants {
-  width: helpers.px(1560);
-  height: helpers.px(600);
+  width: helpers.pw(1560);
+  height: 600px;
   background-color: #bec9d3;
 }
 
 .quality-source {
-  width: helpers.px(1560);
-  height: helpers.px(1300);
+  width: helpers.pw(1560);
+  height: 1300px;
   background-color: #92bfec;
 }
 </style>

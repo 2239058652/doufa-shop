@@ -109,6 +109,7 @@
     </div>
     <div class="router-view" v-if="showSidebar">
       <router-view />
+      <RightMenu />
     </div>
   </div>
 </template>
@@ -120,6 +121,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { returnAddressList } from '@/api/store'
 import LoginModal from './components/LoginModal.vue'
 import RegisterModal from './components/RegisterModal.vue'
+import RightMenu from '../../components/right/index.vue'
 
 const open = ref<boolean>(false)
 const loading = ref<boolean>(false)

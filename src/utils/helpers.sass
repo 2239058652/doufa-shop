@@ -1,4 +1,6 @@
 @use "sass:math"
 
-@function px($n)
-    @return math.div($n, 1920) * 100rem
+@function pw($n)
+    @return math.div($n, 1560) * 100rem
+@function ph($n)
+    @return math.div($n, 1080) * 100rem
