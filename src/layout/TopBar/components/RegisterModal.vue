@@ -276,7 +276,7 @@ defineExpose({ setRegisModalInit })
   font-style: normal;
 }
 .create-creative {
-  ::v-deep .ant-modal-content {
+  :deep(.ant-modal-content) {
     border-radius: 24px;
   }
 }

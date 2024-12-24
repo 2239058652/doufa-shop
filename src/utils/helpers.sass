@@ -1,2 +1,4 @@
+@use "sass:math"
+
 @function px($n)
-    @return $n / 1920 * 100rem
+    @return math.div($n, 1920) * 100rem

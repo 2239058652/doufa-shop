@@ -334,7 +334,7 @@ defineExpose({ setModalInit })
   border-bottom: 2px solid #333333;
 }
 .create-creative {
-  ::v-deep .ant-modal-content {
+  :deep(.ant-modal-content) {
     border-radius: 24px;
   }
 }
