@@ -266,11 +266,23 @@
         <div class="r-b"></div>
       </div>
     </div>
+    <!-- 精选货源 精选货源 好评榜 礼品专区 -->
     <div class="hot-rank">
-      <div class="hot-rank-item">精选货源</div>
-      <div class="hot-rank-item">热销榜</div>
-      <div class="hot-rank-item">好评榜</div>
-      <div class="hot-rank-item">礼品专区</div>
+      <!-- 精选货源区域  精选货源-->
+      <div class="hot-rank-item-jxhy">
+        <div class="hot-jingxuan">
+          <div class="jx-img">
+            <img src="../assets/image/vipicon.png" alt="" />
+            <span>精选货源</span>
+          </div>
+          <div class="jx-xjhpicon">
+            <img src="../assets/image/xjhpicon.png" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="hot-rank-item-rx">热销榜</div>
+      <div class="hot-rank-item-hp">好评榜</div>
+      <div class="hot-rank-item-gift">礼品专区</div>
     </div>
     <div class="hot-merchants">
       <div class="hot-merch-item">热销商家</div>
@@ -1024,10 +1036,80 @@ getCategoryList()
   align-items: center;
   gap: 20px;
 
-  .hot-rank-item {
+  .hot-rank-item-jxhy {
     width: 375px;
     height: 496px;
-    background-color: #a1a4a7;
+    background-image: url('../assets/image/jxhybg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+
+    .hot-jingxuan {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 72px;
+      margin: 14px 28px 18px 0;
+
+      .jx-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 140px;
+
+        img {
+          width: 50px;
+          height: 35px;
+          object-fit: cover;
+        }
+
+        span {
+          width: 88px;
+          height: 30px;
+          font-weight: 500;
+          font-size: 22px;
+          color: #333333;
+          line-height: 30px;
+          text-align: left;
+        }
+      }
+
+      .jx-xjhpicon {
+        width: 120px;
+
+        img {
+          width: 118px;
+          height: 24px;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+
+  .hot-rank-item-rx {
+    width: 375px;
+    height: 496px;
+    background-image: url('../assets/image/rxbbg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .hot-rank-item-hp {
+    width: 375px;
+    height: 496px;
+    background-image: url('../assets/image/hpbbg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .hot-rank-item-gift {
+    width: 375px;
+    height: 496px;
+    background-image: url('../assets/image/lpzqbg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
 }
 
