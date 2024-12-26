@@ -1,8 +1,9 @@
-.fixed {
-    left: 1784px;
-    top: 358px;
+.right-menu {
     position: fixed;
-    width: 60px;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 72px;
     height: 457px;
     background: #fff;
     border-radius: 5px;
@@ -12,7 +13,7 @@
     align-items: center;
     border: 1px solid #f0f0f6;
 
-    .fixed_item {
+    .r-menu-item {
         cursor: pointer;
         height: 37px;
         margin-left: 6px;
