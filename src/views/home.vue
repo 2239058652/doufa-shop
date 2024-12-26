@@ -50,10 +50,27 @@
         </div>
       </div>
     </div>
-    <div class="shop-sort"> 商品分类 广告等 </div>
-    <div class="hot-rank"> 精选 热销 </div>
-    <div class="hot-merchants"> 热销商家 </div>
-    <div class="quality-source"> 精选 热销 </div>
+    <div class="shop-sort">
+      <div class="s-s-left">商品分类</div>
+      <div class="s-s-middle">中间</div>
+      <div class="s-s-right">右侧</div>
+    </div>
+    <div class="hot-rank">
+      <div class="hot-rank-item">精选货源</div>
+      <div class="hot-rank-item">热销榜</div>
+      <div class="hot-rank-item">好评榜</div>
+      <div class="hot-rank-item">礼品专区</div>
+    </div>
+    <div class="hot-merchants">
+      <div class="hot-merch-item">热销商家</div>
+      <div class="hot-merch-item">优质商家</div>
+      <div class="hot-merch-item">信誉商家</div>
+    </div>
+    <div class="quality-source">
+      <div class="q-s-item" v-for="(item, index) in 18" :key="index">
+        <div> {{ item }}{{ '优质货源' }}</div>
+      </div>
+    </div>
     <!-- 底部开发者信息 -->
     <Footer />
   </div>
@@ -71,11 +88,7 @@ const cartCount = ref(3)
 </script>
 
 <style scoped lang="scss">
-@use '@/utils/helpers.sass' as helpers;
-
 .home {
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,20 +97,20 @@ const cartCount = ref(3)
 }
 
 .top-func {
-  width: helpers.pw(1560);
+  width: 1560px;
   height: 124px;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
   .func-img img {
-    width: helpers.pw(193);
+    width: 193px;
     height: 82px;
     cursor: pointer;
   }
 
   .func-address {
-    width: helpers.pw(80);
+    width: 80px;
     height: 80px;
     display: flex;
     flex-direction: column;
@@ -137,7 +150,7 @@ const cartCount = ref(3)
   }
 
   .func-sou {
-    width: helpers.pw(782);
+    width: 782px;
     height: 70px;
     display: flex;
     flex-direction: column;
@@ -146,7 +159,7 @@ const cartCount = ref(3)
     gap: 5px;
 
     .func-sou-input {
-      width: helpers.pw(782);
+      width: 782px;
       height: 50px;
       border: 2px solid #f83126;
       border-radius: 8px;
@@ -158,7 +171,7 @@ const cartCount = ref(3)
         gap: 19px;
 
         img {
-          width: helpers.pw(22);
+          width: 22px;
           height: 20px;
           cursor: pointer;
         }
@@ -166,7 +179,7 @@ const cartCount = ref(3)
     }
 
     .func-sou-type {
-      width: helpers.pw(782);
+      width: 782px;
       height: 20px;
       background-color: #ffffff;
 
@@ -197,7 +210,7 @@ const cartCount = ref(3)
   }
 
   .func-car {
-    width: helpers.pw(140);
+    width: 140px;
     height: 50px;
     display: flex;
     flex-direction: column;
@@ -206,7 +219,7 @@ const cartCount = ref(3)
     cursor: pointer;
 
     .car-top {
-      width: helpers.pw(23);
+      width: 23px;
       height: 16px;
       border-radius: 8px;
       position: relative;
@@ -235,7 +248,7 @@ const cartCount = ref(3)
       gap: 5px;
 
       img {
-        width: helpers.pw(21);
+        width: 21px;
         height: 19px;
       }
 
@@ -253,26 +266,69 @@ const cartCount = ref(3)
 }
 
 .shop-sort {
-  width: helpers.pw(1560);
+  width: 1560px;
   height: 700px;
-  background-color: #bbc2ca;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  .s-s-left {
+    width: 252px;
+    height: 646px;
+    background-color: #bbc2ca;
+  }
+  .s-s-middle {
+    width: 712px;
+    height: 646px;
+    background-color: #bbc2ca;
+  }
+  .s-s-right {
+    width: 516px;
+    height: 646px;
+    background-color: #bbc2ca;
+  }
 }
 
 .hot-rank {
-  width: helpers.pw(1560);
+  width: 1560px;
   height: 500px;
-  background-color: #a1a4a7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  .hot-rank-item {
+    width: 375px;
+    height: 496px;
+    background-color: #a1a4a7;
+  }
 }
 
 .hot-merchants {
-  width: helpers.pw(1560);
-  height: 600px;
-  background-color: #bec9d3;
+  width: 1560px;
+  height: 610px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  .hot-merch-item {
+    width: 506px;
+    height: 608px;
+    background-color: #a1a4a7;
+  }
 }
 
 .quality-source {
-  width: helpers.pw(1560);
-  height: 1300px;
-  background-color: #92bfec;
+  width: 1560px;
+  height: 1282px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  .q-s-item {
+    width: 255px;
+    height: 372px;
+    background-color: #a1a4a7;
+  }
 }
 </style>

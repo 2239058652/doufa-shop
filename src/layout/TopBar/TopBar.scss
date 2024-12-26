@@ -14,8 +14,8 @@
 .router-view {
     flex-grow: 1;
     overflow-y: auto;
-    height: calc(100vh - 40px);
     width: 100%;
+    // height: calc(100vh - 40px);
 
 
     // 美化滚动条样式
