@@ -1,18 +1,23 @@
 <template>
   <context-holder />
   <div class="home">
+    <!-- 顶部功能区 -->
     <div class="top-func">
+      <!-- LOGO区域 -->
       <div class="func-img">
         <a href="/">
           <img src="../assets/image/logo.png" alt="" />
         </a>
       </div>
+      <!-- 地址选择区 -->
       <div class="func-address">
         <div class="address-name">【济南】</div>
         <div class="address-tab">切换地址</div>
       </div>
+      <!-- 搜索区域 -->
       <div class="func-sou">
         <div class="func-sou-input">
+          <!-- 搜索输入框 -->
           <a-input v-model:value="inputVal" :bordered="false" placeholder="请搜索产品名称、货号">
             <template #prefix>
               <a-select :bordered="false" v-model:value="selectVal" style="width: 110px">
@@ -28,6 +33,7 @@
             </template>
           </a-input>
         </div>
+        <!-- 热门搜索标签 -->
         <div class="func-sou-type">
           <div class="hot-type">
             <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
@@ -37,6 +43,7 @@
           </div>
         </div>
       </div>
+      <!-- 购物车 -->
       <div class="func-car">
         <div class="car-top">
           <span class="cart-count">{{ cartCount }}</span>
@@ -47,13 +54,16 @@
         </div>
       </div>
     </div>
+    <!-- 主要内容区 -->
     <div class="shop-sort">
+      <!-- 左侧分类导航 -->
       <div class="s-s-left">
+        <!-- 分类标题 -->
         <div class="shops-title">
           <span>商品分类</span>
           <img src="../assets/image/weitu.png" alt="" />
         </div>
-        <!-- 商品分类 -->
+        <!-- 商品分类 --> <!-- 分类列表 -->
         <div class="shop-cate">
           <div class="cate-item" v-for="item in categoryList" :key="item.id">
             <div class="item-left">
@@ -88,7 +98,9 @@
           </div>
         </div>
       </div>
+      <!-- 中间内容区 -->
       <div class="s-s-middle">
+        <!-- 顶部导航 -->
         <div class="m-t">
           <div class="active">
             <span>抖发首页</span>
@@ -108,6 +120,7 @@
             <span>搜图搜款</span>
           </div>
         </div>
+        <!-- 轮播图 -->
         <div class="m-m">
           <a-carousel arrows autoplay>
             <template #prevArrow>
@@ -127,6 +140,7 @@
             </div>
           </a-carousel>
         </div>
+        <!-- 底部banner -->
         <div class="m-b">
           <div v-for="(x, index) in bannerActiveList" :key="index">
             <a>
@@ -135,6 +149,7 @@
           </div>
         </div>
       </div>
+      <!-- 右侧内容区 -->
       <div class="s-s-right">
         <div class="r-t">
           <div class="r-t-l">
