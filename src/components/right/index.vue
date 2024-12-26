@@ -35,18 +35,18 @@
 <script lang="ts" setup>
 // 固定栏返回顶部按钮
 const goTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth' // 平滑滚动
-  })
+  // window.scrollTo({
+  //   top: 0,
+  //   behavior: 'smooth' // 平滑滚动
+  // })
   // 因为设置了高度，所以回到顶部会失效，要获取到router-view的dom元素，然后调用scrollTo方法
-  // const appElement = document.querySelector('.router-view')
-  // if (appElement) {
-  //   appElement.scrollTo({
-  //     top: 0,
-  //     behavior: 'smooth' // 平滑滚动
-  //   })
-  // }
+  const appElement = document.querySelector('.router-view')
+  if (appElement) {
+    appElement.scrollTo({
+      top: 0,
+      behavior: 'smooth' // 平滑滚动
+    })
+  }
 }
 </script>
 

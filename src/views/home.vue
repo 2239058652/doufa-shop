@@ -1,4 +1,5 @@
 <template>
+  <context-holder />
   <div class="home">
     <div class="top-func">
       <div class="func-img">
@@ -29,12 +30,8 @@
         </div>
         <div class="func-sou-type">
           <div class="hot-type">
-            <span
-              :class="{ active: activeIndex === index }"
-              v-for="(item, index) in hotSouTypeList"
-              :key="index"
-              @click="activeIndex = index"
-            >
+            <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
+              @click="activeIndex = index">
               {{ item }}
             </span>
           </div>
@@ -51,9 +48,136 @@
       </div>
     </div>
     <div class="shop-sort">
-      <div class="s-s-left">商品分类</div>
-      <div class="s-s-middle">中间</div>
-      <div class="s-s-right">右侧</div>
+      <div class="s-s-left">
+        <div class="shops-title">
+          <span>商品分类</span>
+          <img src="../assets/image/weitu.png" alt="" />
+        </div>
+        <!-- 商品分类 -->
+        <div class="shop-cate">
+          <div class="cate-item" v-for="item in categoryList" :key="item.id">
+            <div class="item-left">
+              <img src="../assets/image/fenlei.png" alt="" />
+            </div>
+            <a-popover :title="item.cate_name" placement="right"
+              :overlayInnerStyle="{ width: '612px', height: '446px' }">
+              <div class="item-right">
+                <div class="text-line">
+                  <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id">
+                    {{ v.cate_name }}
+                    {{ index !== 2 ? ' ' : '' }}
+                  </span>
+                </div>
+                <div class="text-line">
+                  <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id">
+                    {{ v.cate_name }}
+                    {{ index !== 2 ? ' ' : '' }}
+                  </span>
+                </div>
+              </div>
+              <template #content>
+                <div class="popover-content">
+                  <div class="content-row">
+                    <div v-for="i in item.children" :key="i.id" class="content-item">
+                      {{ i.cate_name }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </a-popover>
+          </div>
+        </div>
+      </div>
+      <div class="s-s-middle">
+        <div class="m-t">
+          <div class="active">
+            <span>抖发首页</span>
+          </div>
+          <div>
+            <span class="">爆款专区</span>
+            <img src="../assets/image/mail.png" class="badge" />
+          </div>
+          <div>
+            <span>礼品代发</span>
+            <img src="../assets/image/gift.png" class="badge" />
+          </div>
+          <div>
+            <span>热门排行</span>
+          </div>
+          <div>
+            <span>搜图搜款</span>
+          </div>
+        </div>
+        <div class="m-m">
+          <a-carousel arrows autoplay>
+            <template #prevArrow>
+              <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
+                <left-circle-outlined />
+              </div>
+            </template>
+            <template #nextArrow>
+              <div class="custom-slick-arrow" style="right: 10px">
+                <right-circle-outlined />
+              </div>
+            </template>
+            <div v-for="(item, index) in bannerList" :key="index">
+              <a>
+                <img :src="item.image_input" />
+              </a>
+            </div>
+          </a-carousel>
+        </div>
+        <div class="m-b">
+          <div v-for="(x, index) in bannerActiveList" :key="index">
+            <a>
+              <img :src="x.image_input" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="s-s-right">
+        <div class="r-t">
+          <div class="r-t-l">
+            <div class="r-t-l-t">
+              <div style=" display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 8px;margin-top: 20px;margin-left: 13px;">
+                <div class="dfjp">抖发竞拍</div>
+                <div class="yyqp">1元起拍</div>
+              </div>
+              <div style=" display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 29px;margin-top: 22px;">
+                <div class="chuizi"></div>
+                <div class="ljcy">
+                  <span>立即参与</span>
+                </div>
+              </div>
+            </div>
+            <div class="r-t-l-b">
+              <div class="r-t-l-b-top">
+                <div class="zngg">
+                  <span>站内公告</span>
+                  <img src="../assets/image/weitu.png" alt="" />
+                </div>
+                <div class="rightarrimg">
+                  <img src="../assets/image/rightarr.png" alt="" />
+                </div>
+              </div>
+              <div class="r-t-l-b-bottoms">
+                <div>互动赢免费礼盒！双旦送礼指南来…</div>
+                <div>必看！抖发年度10大商品榜单</div>
+                <div>江西寻乌:以“橙”为媒 点亮乡村…</div>
+                <div>乡村振兴第五期—河北张北县</div>
+              </div>
+            </div>
+          </div>
+          <div class="r-t-r"></div>
+        </div>
+        <div class="r-b"></div>
+      </div>
     </div>
     <div class="hot-rank">
       <div class="hot-rank-item">精选货源</div>
@@ -68,10 +192,9 @@
     </div>
     <div class="quality-source">
       <div class="q-s-item" v-for="(item, index) in 18" :key="index">
-        <div> {{ item }}{{ '优质货源' }}</div>
+        <div>{{ item }}{{ '优质货源' }}</div>
       </div>
     </div>
-    <!-- 底部开发者信息 -->
     <Footer />
   </div>
 </template>
@@ -79,12 +202,41 @@
 <script setup lang="ts">
 import Footer from '@/components/footer/index.vue'
 import { ref } from 'vue'
+import { getCategory, getBanner } from '@/api/store'
+import { message } from 'ant-design-vue'
+import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
+
+const [messageApi, contextHolder] = message.useMessage()
 
 const inputVal = ref('')
 const selectVal = ref('jack')
 const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])
 const activeIndex = ref(0)
 const cartCount = ref(3)
+
+const categoryList = ref<any>([])
+const bannerList = ref<any>([])
+const bannerActiveList = ref<any>([])
+
+// 获取分类列表
+const getCategoryList = () => {
+  getCategory().then((res: any) => {
+    if (res.status == 200) {
+      categoryList.value = res.data
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+// 获取轮播数据
+const getBannerList = async () => {
+  const res = await getBanner(1)
+  const response = await getBanner(0)
+  bannerList.value = res.data
+  bannerActiveList.value = response.data
+}
+getBannerList()
+getCategoryList()
 </script>
 
 <style scoped lang="scss">
@@ -267,25 +419,381 @@ const cartCount = ref(3)
 
 .shop-sort {
   width: 1560px;
-  height: 700px;
+  height: 697px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
+
   .s-s-left {
     width: 252px;
     height: 646px;
-    background-color: #bbc2ca;
+    background-color: #f7f8fc;
+
+    .shops-title {
+      margin-left: 10px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      span {
+        width: 64px;
+        height: 21px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #333333;
+        line-height: 21px;
+        text-align: left;
+        font-style: normal;
+      }
+
+      img {
+        width: 31px;
+        height: 16px;
+      }
+    }
+
+    .shop-cate {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px;
+
+      .cate-item {
+        width: 230px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        .item-left {
+          width: 30px;
+          height: 30px;
+          flex-shrink: 0;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+
+        .item-right {
+          flex: 1;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .text-line {
+            height: 20px;
+            line-height: 20px;
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:first-child {
+              color: #333;
+              font-weight: 500;
+            }
+
+            span {
+              color: #999;
+
+              &:hover {
+                color: #f83126;
+              }
+
+              &:not(:last-child) {
+                margin-right: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
+
   .s-s-middle {
     width: 712px;
     height: 646px;
-    background-color: #bbc2ca;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    .m-t {
+      width: 712px;
+      height: 48px;
+      background: #f7f8fc;
+      display: flex;
+
+      div {
+        width: 100%;
+        height: 100%;
+        font-size: 16px;
+        color: #333;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+
+        &.active {
+          color: #f83126;
+        }
+
+        :hover {
+          color: #f83126;
+        }
+
+        .badge {
+          position: absolute;
+          top: 15px;
+          right: 31px;
+          width: 24px;
+          height: 24px;
+          margin-top: -25px;
+          animation: bounce 1s infinite;
+        }
+      }
+    }
+
+    .m-m {
+      width: 712px;
+      height: 324px;
+
+      img {
+        width: 712px;
+        height: 324px;
+        object-fit: cover;
+      }
+    }
+
+    .m-b {
+      width: 712px;
+      height: 242px;
+
+      img {
+        width: 712px;
+        height: 242px;
+        object-fit: cover;
+      }
+    }
   }
+
   .s-s-right {
     width: 516px;
     height: 646px;
-    background-color: #bbc2ca;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    .r-t {
+      width: 100%;
+      height: 384px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+
+      .r-t-l {
+        width: 248px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+
+        .r-t-l-t {
+          width: 100%;
+          height: 184px;
+          background-image: url('../assets/image/dfjpbg.png');
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+
+          .dfjp {
+            width: 64px;
+            height: 22px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #333333;
+            line-height: 22px;
+            text-align: right;
+          }
+
+          .yyqp {
+            width: 64px;
+            height: 19px;
+            font-size: 14px;
+            color: #FFFFFF;
+            line-height: 19px;
+            text-align: center;
+            background-image: url('../assets/image/yyqpbg.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+          }
+
+          .chuizi {
+            width: 91px;
+            height: 105px;
+            background-image: url('../assets/image/chuizi.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+          }
+
+          .ljcy {
+            width: 86px;
+            height: 86px;
+            background-image: url('../assets/image/ljcybg.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+
+            span {
+              width: 44px;
+              height: 58px;
+              font-weight: bold;
+              font-size: 22px;
+              color: #FFFFFF;
+              line-height: 29px;
+              text-align: left;
+              font-style: normal;
+            }
+          }
+        }
+
+        .r-t-l-b {
+          width: 100%;
+          height: 184px;
+          background-image: url('../assets/image/znggbg.png');
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+
+          .r-t-l-b-top {
+            width: 100%;
+            height: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 13px;
+            margin-top: 20px;
+
+            .zngg {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 100px;
+              height: 25px;
+
+              span {
+                width: 64px;
+                height: 22px;
+                font-weight: 600;
+                font-size: 16px;
+                color: #333333;
+                line-height: 22px;
+                text-align: right;
+              }
+
+              img {
+                width: 30px;
+                height: 15px;
+                object-fit: cover;
+              }
+
+            }
+
+            .rightarrimg {
+              width: 12px;
+              height: 12px;
+              object-fit: cover;
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+          }
+
+          .r-t-l-b-bottoms {
+            width: 100%;
+            height: 184px;
+            padding: 0 13px;
+
+            div {
+              width: 222px;
+              height: 19px;
+              font-family: MicrosoftYaHei;
+              font-size: 14px;
+              color: #505259;
+              line-height: 19px;
+              text-align: left;
+              font-style: normal;
+              margin: 12px 0;
+
+              &:nth-child(1) {
+                color: #f83126; // 第一个div的颜色
+              }
+            }
+          }
+        }
+      }
+
+      .r-t-r {
+        width: 252px;
+        height: 100%;
+        background-image: url('../assets/image/usebg.png');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
+    }
+
+    .r-b {
+      width: 100%;
+      height: 242px;
+      background-image: url('../assets/image/rtrbg.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+.popover-content {
+  width: 100%;
+
+  .content-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .content-item {
+    font-size: 14px;
+    color: #666;
+    padding: 8px 12px;
+    cursor: pointer;
+
+    &:hover {
+      color: #f83126;
+    }
   }
 }
 
@@ -296,6 +804,7 @@ const cartCount = ref(3)
   justify-content: center;
   align-items: center;
   gap: 20px;
+
   .hot-rank-item {
     width: 375px;
     height: 496px;
@@ -310,6 +819,7 @@ const cartCount = ref(3)
   justify-content: center;
   align-items: center;
   gap: 20px;
+
   .hot-merch-item {
     width: 506px;
     height: 608px;
@@ -325,10 +835,45 @@ const cartCount = ref(3)
   justify-content: center;
   align-items: center;
   gap: 2px;
+
   .q-s-item {
     width: 255px;
     height: 372px;
     background-color: #a1a4a7;
   }
+}
+</style>
+<style scoped>
+/* For demo */
+:deep(.slick-slide) {
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  line-height: 324px;
+  overflow: auto;
+}
+
+:deep(.slick-arrow.custom-slick-arrow) {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31, 45, 61, 0.11);
+  transition: ease all 0.3s;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+:deep(.slick-arrow.custom-slick-arrow:before) {
+  display: none;
+}
+
+:deep(.slick-arrow.custom-slick-arrow:hover) {
+  color: #fff;
+  opacity: 0.5;
+}
+
+:deep(.slick-slide h3) {
+  color: #fff;
 }
 </style>
