@@ -139,17 +139,24 @@
         <div class="r-t">
           <div class="r-t-l">
             <div class="r-t-l-t">
-              <div style=" display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    gap: 8px;margin-top: 20px;margin-left: 13px;">
+              <div style="
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  gap: 8px;
+                  margin-top: 20px;
+                  margin-left: 13px;
+                ">
                 <div class="dfjp">抖发竞拍</div>
                 <div class="yyqp">1元起拍</div>
               </div>
-              <div style=" display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 29px;margin-top: 22px;">
+              <div style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  gap: 29px;
+                  margin-top: 22px;
+                ">
                 <div class="chuizi"></div>
                 <div class="ljcy">
                   <span>立即参与</span>
@@ -174,7 +181,72 @@
               </div>
             </div>
           </div>
-          <div class="r-t-r"></div>
+          <div class="r-t-r">
+            <div class="r-t-r-user">
+              <div class="user-img">
+                <img src="../assets/image/user.png" alt="" />
+              </div>
+              <div class="user-info">
+                <div style="
+                    width: 80px;
+                    height: 21px;
+                    font-size: 16px;
+                    color: #333333;
+                    line-height: 21px;
+                    text-align: left;
+                  ">慢慢家男装</div>
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    color: #505259;
+                    line-height: 16px;
+                    text-align: left;
+                    gap: 12px;
+                  ">
+                  <div style="cursor: pointer">切换账号</div>
+                  <div style="cursor: pointer">退出</div>
+                </div>
+              </div>
+            </div>
+            <div class="mid-icon">
+              <div class="icon-text">
+                <img src="../assets/image/tbddicon.png" alt="" />
+                <span>同步订单</span>
+              </div>
+              <div class="icon-text">
+                <img src="../assets/image/plshicon.png" alt="" />
+                <span>批量上货</span>
+              </div>
+              <div class="icon-text">
+                <img src="../assets/image/idficon.png" alt="" />
+                <span>I 抖发</span>
+              </div>
+            </div>
+            <div class="mid-status">
+              <div class="status-text">
+                <span>12</span>
+                <span>待付款</span>
+              </div>
+              <div class="status-text">
+                <span>12</span>
+                <span>未发出</span>
+              </div>
+              <div class="status-text">
+                <span>12</span>
+                <span>待收货</span>
+              </div>
+              <div class="status-text">
+                <span>12</span>
+                <span>售后订单</span>
+              </div>
+            </div>
+            <div class="r-t-r-qb">
+              <div class="my-ballet">我的钱包</div>
+              <div class="vie-mybalet">查看我的钱包</div>
+            </div>
+          </div>
         </div>
         <div class="r-b"></div>
       </div>
@@ -641,7 +713,7 @@ getCategoryList()
             width: 64px;
             height: 19px;
             font-size: 14px;
-            color: #FFFFFF;
+            color: #ffffff;
             line-height: 19px;
             text-align: center;
             background-image: url('../assets/image/yyqpbg.png');
@@ -673,7 +745,7 @@ getCategoryList()
               height: 58px;
               font-weight: bold;
               font-size: 22px;
-              color: #FFFFFF;
+              color: #ffffff;
               line-height: 29px;
               text-align: left;
               font-style: normal;
@@ -719,7 +791,6 @@ getCategoryList()
                 height: 15px;
                 object-fit: cover;
               }
-
             }
 
             .rightarrimg {
@@ -763,6 +834,139 @@ getCategoryList()
         background-image: url('../assets/image/usebg.png');
         background-size: 100% 100%;
         background-repeat: no-repeat;
+        position: relative;
+
+        .r-t-r-user {
+          display: flex;
+          justify-content: flex-start;
+          align-self: start;
+          gap: 7px;
+          margin-top: 30px;
+          margin-left: 10px;
+
+          .user-img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+          }
+
+          .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+          }
+        }
+
+        .mid-icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 32px;
+          padding: 0 30px;
+          margin-top: 31px;
+
+          .icon-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 50px;
+            height: 56px;
+            cursor: pointer;
+
+            img {
+              width: 36px;
+              height: 36px;
+              object-fit: cover;
+            }
+
+            span {
+              width: 48px;
+              height: 16px;
+              font-size: 12px;
+              color: #505259;
+              line-height: 16px;
+              text-align: center;
+            }
+          }
+        }
+
+        .mid-status {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 22px;
+          margin: 0 14px;
+          margin-top: 27px;
+
+          .status-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+
+            span {
+              width: 36px;
+              height: 16px;
+              font-size: 12px;
+              color: #505259;
+              line-height: 16px;
+              text-align: center;
+            }
+
+            &:nth-child(4) {
+              span:nth-child(2) {
+                width: 48px;
+              }
+            }
+          }
+        }
+
+        .r-t-r-qb {
+          width: 221px;
+          height: 96px;
+          background-image: url('../assets/image/ballet.png');
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          position: absolute;
+          top: 262px;
+          left: 16px;
+
+          .my-ballet {
+            width: 64px;
+            height: 21px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #664102;
+            line-height: 21px;
+            text-align: left;
+            margin: 28px 139px 4px 18px;
+            cursor: pointer;
+
+            &:hover {
+              color: #f83126;
+            }
+          }
+
+          .vie-mybalet {
+            width: 72px;
+            height: 16px;
+            font-size: 12px;
+            color: #a88100;
+            line-height: 16px;
+            text-align: left;
+            margin: 0 131px 27px 18px;
+            cursor: pointer;
+
+            &:hover {
+              color: #f83126;
+            }
+          }
+        }
       }
     }
 
