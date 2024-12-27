@@ -335,7 +335,7 @@
         <div class="hot-rexiao">
           <div class="rxb-img">
             <span>热销榜</span>
-            <img src="../assets/image/vipicon.png" alt="" />
+            <img src="../assets/image/ph.gif" alt="" />
           </div>
           <div class="rxb-icon">
             <img src="../assets/image/redarrow.png" alt="" />

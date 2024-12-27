@@ -1879,12 +1879,12 @@
 
 .quality-source {
     width: 1560px;
-    height: 1282px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
+    // height: 1282px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 2px;
+    grid-row-gap: 20px;
 
     .q-s-item {
         width: 255px;
