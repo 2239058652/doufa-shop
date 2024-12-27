@@ -270,6 +270,7 @@
     <div class="hot-rank">
       <!-- 精选货源区域  精选货源-->
       <div class="hot-rank-item-jxhy">
+        <!-- 精选货源 星级好物标题 -->
         <div class="hot-jingxuan">
           <div class="jx-img">
             <img src="../assets/image/vipicon.png" alt="" />
@@ -278,6 +279,26 @@
           <div class="jx-xjhpicon">
             <img src="../assets/image/xjhpicon.png" alt="" />
           </div>
+        </div>
+        <!-- 商品轮播图 -->
+        <div class="swiper-container">
+          <div class="swiper-item">
+            <!-- 热销左上角热销图标 -->
+            <div class="rexiao-icon"></div>
+            <!-- 商品图片 -->
+            <div class="shangpin-img">
+              <img src="../assets/static/shopimg.png" alt="" />
+            </div>
+            <!-- 价格货号等 -->
+            <div class="shangpin-name">M-8XL美式潮牌工装裤男秋</div>
+            <div class="shangpin-huohao">货号：32589</div>
+            <div class="shangpin-jiage"><span>¥</span>23.20</div>
+          </div>
+        </div>
+        <!-- 按钮 -->
+        <div class="djck">
+          <span>点击查看</span>
+          <img src="../assets/image/whitearrow.png" alt="" />
         </div>
       </div>
       <div class="hot-rank-item-rx">热销榜</div>
@@ -1084,6 +1105,129 @@ getCategoryList()
           height: 24px;
           object-fit: cover;
         }
+      }
+    }
+
+    .swiper-container {
+      width: 320px;
+      height: 290px;
+      top: 104px;
+      left: 31px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .swiper-item {
+        width: 264px;
+        height: 288px;
+        background-image: url('../assets/image/rximgbg.png');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        position: relative;
+
+        .rexiao-icon {
+          width: 46px;
+          height: 22px;
+          background-image: url('../assets/image/rexiaobg.png');
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+
+        .shangpin-img {
+          width: 124px;
+          height: 124px;
+          position: absolute;
+          top: 29px;
+          left: 70px;
+
+          img {
+            width: 124px;
+            height: 124px;
+            object-fit: cover;
+          }
+        }
+
+        .shangpin-name {
+          width: 173px;
+          height: 20px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #333333;
+          line-height: 20px;
+          text-align: center;
+          position: absolute;
+          top: 164px;
+          left: 46px;
+        }
+
+        .shangpin-huohao {
+          width: 84px;
+          height: 19px;
+          font-size: 14px;
+          color: #FF5C02;
+          line-height: 19px;
+          text-align: center;
+          position: absolute;
+          top: 191px;
+          left: 91px;
+        }
+
+        .shangpin-jiage {
+          span {
+            width: 9px;
+            height: 19px;
+            font-size: 14px;
+            color: #F83126;
+            line-height: 19px;
+            text-align: center;
+          }
+
+          width: 56px;
+          height: 26px;
+          font-weight: bold;
+          font-size: 20px;
+          color: #F83126;
+          line-height: 26px;
+          text-align: center;
+          position: absolute;
+          top: 230px;
+          left: 98px;
+        }
+      }
+    }
+
+    .djck {
+      width: 174px;
+      height: 51px;
+      border-radius: 30.5px;
+      background: #2F7AFF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      position: absolute;
+      top: 417px;
+      left: 100px;
+      cursor: pointer;
+
+      span {
+        width: 72px;
+        height: 25px;
+        font-weight: 400;
+        font-size: 18px;
+        color: #FFFFFF;
+        line-height: 25px;
+        text-align: center;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+        object-fit: cover;
       }
     }
   }
