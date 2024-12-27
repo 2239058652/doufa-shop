@@ -329,14 +329,191 @@
           <img src="../assets/image/whitearrow.png" alt="" />
         </div>
       </div>
-      <div class="hot-rank-item-rx">热销榜</div>
-      <div class="hot-rank-item-hp">好评榜</div>
-      <div class="hot-rank-item-gift">礼品专区</div>
+      <!-- 热销榜 -->
+      <div class="hot-rank-item-rx">
+        <!-- 标题部分 -->
+        <div class="hot-rexiao">
+          <div class="rxb-img">
+            <span>热销榜</span>
+            <img src="../assets/image/vipicon.png" alt="" />
+          </div>
+          <div class="rxb-icon">
+            <img src="../assets/image/redarrow.png" alt="" />
+          </div>
+        </div>
+        <!-- 商品总区域部份 要滚动 -->
+        <div class="hot-swiper">
+          <!-- 单个商品区域 -->
+          <div class="hot-swiper-item" v-for="(item, index) in 5" :key="index">
+            <div class="h-s-i-left">
+              <img src="../assets/static/rexiaoimg2.png" alt="" />
+            </div>
+            <div class="h-s-i-right">
+              <div>M-8XL美式潮牌工装裤男秋</div>
+              <div>货号：32589</div>
+              <div>3211人已购买</div>
+              <div><span>¥</span>23.20</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hot-rank-item-hp">
+        <!-- 标题部分 -->
+        <div class="hot-hp">
+          <div class="hp-title">
+            <div>好评榜</div>
+            <div>精品荟萃 口碑俱佳</div>
+          </div>
+          <div class="hp-icon">
+            <img src="../assets/image/redarrow.png" alt="" />
+          </div>
+        </div>
+        <!-- 好评商品 -->
+        <div class="hp-content">
+          <div class="hot-item" v-for="(item, index) in hplist" :key="index">
+            <div class="hot-item-left">
+              <img :src="item.url" alt="" />
+            </div>
+            <div class="hot-item-right">
+              <div>M-8XL美式潮牌工装裤男秋</div>
+              <div>货号：32589</div>
+              <div>3211人已购买</div>
+              <div><span>¥</span>23.20</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 礼品专区 -->
+      <div class="hot-rank-item-gift">
+        <!-- 标题部分 -->
+        <div class="gift-title">
+          <div class="gift-title">
+            <div>礼品专区</div>
+            <div>起店专用</div>
+          </div>
+          <div class="gift-icon">
+            <img src="../assets/image/pinkarrow.png" alt="" />
+          </div>
+        </div>
+        <!-- 礼品商品 -->
+        <div class="gift-content">
+          <div class="gift-item" v-for="(item, index) in 4" :key="index">
+            <div>
+              <img src="../assets/static/paper.png" alt="" />
+            </div>
+            <div>330抽纸巾一包</div>
+            <div>
+              <span>¥</span>
+              <span>23.20</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- 热销商家 优质商家 信誉商家  -->
     <div class="hot-merchants">
-      <div class="hot-merch-item">热销商家</div>
-      <div class="hot-merch-item">优质商家</div>
-      <div class="hot-merch-item">信誉商家</div>
+      <!-- 热销商家 -->
+      <div class="hot-merch-rxsj">
+        <!-- 顶部logo -->
+        <div class="rx-top">
+          <div class="rx-title">
+            <div class="rxsj">热销商家</div>
+            <div class="rx-title-three">
+              <div>高销量</div>
+              <div>高评分</div>
+              <div>热门商家</div>
+            </div>
+          </div>
+          <img src="../assets/image/rxsjicon.png" alt="" />
+        </div>
+        <!-- 商家列表 -->
+        <div class="rx-user">
+          <div v-for="(item, index) in rxsjList" @click="rxsjActiveIndex = index" :key="index"
+            :class="{ active: rxsjActiveIndex === index }">
+            {{ item }}
+          </div>
+        </div>
+        <!-- 商品列表 -->
+        <div class="rx-goods" v-for="(item, index) in 3" :key="index">
+          <div class="goods-item">
+            <!-- 商品图 -->
+            <div class="rx-goods-img">
+              <img src="../assets/static/goods.png" alt="" />
+            </div>
+            <!-- 商品名称价格等信息 -->
+            <div class="rx-goods-info">
+              <div>M-8XL美式潮牌工装裤男秋冬款加绒加厚宽松潮…</div>
+              <div>货号：32589</div>
+              <div>
+                <span>¥</span>
+                <span>23.20</span>
+                <span>3211人已购买</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 优质商家 -->
+      <div class="hot-merch-yzsj">
+        <!-- 标题 -->
+        <div class="title">
+          <span>优质商家</span>
+          <span>高品质货源</span>
+        </div>
+        <div class="content">
+          <div class="table-label">
+            <div>档口信息</div>
+            <div>商品量</div>
+            <div>操作</div>
+          </div>
+          <div class="table-content">
+            <div v-for="(item, index) in 5" :key="index" class="table-c-item">
+              <!-- 档口信息 -->
+              <div class="column-1">
+                <img src="../assets/static/yzsjimg.png" alt="" />
+                <div class="info">
+                  <div>沃德男装</div>
+                  <div>站点：常熟</div>
+                </div>
+              </div>
+              <!-- 商品量 -->
+              <div class="column-2">2980</div>
+              <div class="column-3">
+                <span>进入店铺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 信誉商家 -->
+      <div class="hot-merch-xysj">
+        <!-- 标题 -->
+        <div class="title">
+          <span>信誉商家</span>
+          <span>极速售后</span>
+        </div>
+        <div class="xy-content">
+          <div v-for="(item, index) in 3" :key="index" class="table-xy-item">
+            <div class="title">沃德男装</div>
+            <!-- 商品信息 -->
+            <div class="xysj-info">
+              <div class="info-left">
+                <div v-for="(i, index) in 4" :key="index" class="left-item">
+                  <img src="../assets/static/wode.png" alt="" />
+                  <div class="xy-price">
+                    <span>¥</span>
+                    <span>23.20</span>
+                  </div>
+                </div>
+              </div>
+              <div class="info-right">
+                <img src="../assets/image/rightarr.png" alt="" />
+                <div>99+</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="quality-source">
       <div class="q-s-item" v-for="(item, index) in 18" :key="index">
@@ -359,8 +536,24 @@ const [messageApi, contextHolder] = message.useMessage()
 const inputVal = ref('')
 const selectVal = ref('jack')
 const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])
+const rxsjList = ref(['薰衣草小熊猫', '橘子男装', '橘子男装'])
 const activeIndex = ref(0)
+const rxsjActiveIndex = ref(0)
 const cartCount = ref(3)
+
+import photo1 from '../assets/static/photo.png'
+import photo2 from '../assets/static/photo1.png'
+
+const hplist = ref([
+  {
+    url: photo1,
+    id: 1
+  },
+  {
+    url: photo2,
+    id: 2
+  }
+])
 
 const categoryList = ref<any>([])
 const bannerList = ref<any>([])
@@ -395,987 +588,7 @@ getBannerList()
 getCategoryList()
 </script>
 
-<style scoped lang="scss">
-.home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.top-func {
-  width: 1560px;
-  height: 124px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  .func-img img {
-    width: 193px;
-    height: 82px;
-    cursor: pointer;
-  }
-
-  .func-address {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-
-    .address-name {
-      width: 80px;
-      height: 26px;
-      font-size: 20px;
-      color: #333333;
-      line-height: 26px;
-      text-align: center;
-      font-style: normal;
-      cursor: pointer;
-
-      &:hover {
-        color: #131010;
-      }
-    }
-
-    .address-tab {
-      width: 56px;
-      height: 19px;
-      font-size: 14px;
-      color: #999999;
-      line-height: 19px;
-      text-align: center;
-      font-style: normal;
-      cursor: pointer;
-
-      &:hover {
-        color: #c2b4b4;
-      }
-    }
-  }
-
-  .func-sou {
-    width: 782px;
-    height: 70px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-
-    .func-sou-input {
-      width: 782px;
-      height: 50px;
-      border: 2px solid #f83126;
-      border-radius: 8px;
-
-      .photo-sou {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 19px;
-
-        img {
-          width: 22px;
-          height: 20px;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .func-sou-type {
-      width: 782px;
-      height: 20px;
-      background-color: #ffffff;
-
-      .hot-type {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 20px;
-
-        span {
-          font-size: 14px;
-          line-height: 19px;
-          color: #999999;
-          cursor: pointer;
-
-          &:hover {
-            color: #f83126;
-          }
-
-          &.active {
-            color: #f83126;
-          }
-        }
-      }
-    }
-  }
-
-  .func-car {
-    width: 140px;
-    height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-
-    .car-top {
-      width: 23px;
-      height: 16px;
-      border-radius: 8px;
-      position: relative;
-
-      .cart-count {
-        position: absolute;
-        top: 5px;
-        right: 15px;
-        background: #f83126;
-        color: white;
-        font-size: 12px;
-        min-width: 16px;
-        height: 16px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 4px;
-      }
-    }
-
-    .car-bottom {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-
-      img {
-        width: 21px;
-        height: 19px;
-      }
-
-      .shop-car {
-        width: 48px;
-        height: 21px;
-        font-size: 16px;
-        color: #f83126;
-        line-height: 21px;
-        text-align: left;
-        font-style: normal;
-      }
-    }
-  }
-}
-
-.shop-sort {
-  width: 1560px;
-  height: 697px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-
-  .s-s-left {
-    width: 252px;
-    height: 646px;
-    background-color: #f7f8fc;
-
-    .shops-title {
-      margin-left: 10px;
-      margin-top: 16px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      span {
-        width: 64px;
-        height: 21px;
-        font-weight: bold;
-        font-size: 16px;
-        color: #333333;
-        line-height: 21px;
-        text-align: left;
-        font-style: normal;
-      }
-
-      img {
-        width: 31px;
-        height: 16px;
-      }
-    }
-
-    .shop-cate {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 15px;
-
-      .cate-item {
-        width: 230px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 5px;
-        cursor: pointer;
-        margin-top: 20px;
-
-        &:hover {
-          background-color: #f5f5f5;
-        }
-
-        .item-left {
-          width: 30px;
-          height: 30px;
-          flex-shrink: 0;
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-          }
-        }
-
-        .item-right {
-          flex: 1;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-
-          .text-line {
-            height: 20px;
-            line-height: 20px;
-            font-size: 14px;
-            color: #666;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            &:first-child {
-              color: #333;
-              font-weight: 500;
-            }
-
-            span {
-              color: #999;
-
-              &:hover {
-                color: #f83126;
-              }
-
-              &:not(:last-child) {
-                margin-right: 5px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .s-s-middle {
-    width: 712px;
-    height: 646px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-
-    .m-t {
-      width: 712px;
-      height: 48px;
-      background: #f7f8fc;
-      display: flex;
-
-      div {
-        width: 100%;
-        height: 100%;
-        font-size: 16px;
-        color: #333;
-        font-weight: 900;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        position: relative;
-
-        &.active {
-          color: #f83126;
-        }
-
-        :hover {
-          color: #f83126;
-        }
-
-        .badge {
-          position: absolute;
-          top: 15px;
-          right: 31px;
-          width: 24px;
-          height: 24px;
-          margin-top: -25px;
-          animation: bounce 1s infinite;
-        }
-      }
-    }
-
-    .m-m {
-      width: 712px;
-      height: 324px;
-
-      img {
-        width: 712px;
-        height: 324px;
-        object-fit: cover;
-      }
-    }
-
-    .m-b {
-      width: 712px;
-      height: 242px;
-
-      img {
-        width: 712px;
-        height: 242px;
-        object-fit: cover;
-      }
-    }
-  }
-
-  .s-s-right {
-    width: 516px;
-    height: 646px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-
-    .r-t {
-      width: 100%;
-      height: 384px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      justify-content: center;
-
-      .r-t-l {
-        width: 248px;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 16px;
-
-        .r-t-l-t {
-          width: 100%;
-          height: 184px;
-          background-image: url('../assets/image/dfjpbg.png');
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-
-          .dfjp {
-            width: 64px;
-            height: 22px;
-            font-weight: 600;
-            font-size: 16px;
-            color: #333333;
-            line-height: 22px;
-            text-align: right;
-          }
-
-          .yyqp {
-            width: 64px;
-            height: 19px;
-            font-size: 14px;
-            color: #ffffff;
-            line-height: 19px;
-            text-align: center;
-            background-image: url('../assets/image/yyqpbg.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-          }
-
-          .chuizi {
-            width: 91px;
-            height: 105px;
-            background-image: url('../assets/image/chuizi.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-          }
-
-          .ljcy {
-            width: 86px;
-            height: 86px;
-            background-image: url('../assets/image/ljcybg.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-
-            span {
-              width: 44px;
-              height: 58px;
-              font-weight: bold;
-              font-size: 22px;
-              color: #ffffff;
-              line-height: 29px;
-              text-align: left;
-              font-style: normal;
-            }
-          }
-        }
-
-        .r-t-l-b {
-          width: 100%;
-          height: 184px;
-          background-image: url('../assets/image/znggbg.png');
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-
-          .r-t-l-b-top {
-            width: 100%;
-            height: 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 13px;
-            margin-top: 20px;
-
-            .zngg {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 100px;
-              height: 25px;
-
-              span {
-                width: 64px;
-                height: 22px;
-                font-weight: 600;
-                font-size: 16px;
-                color: #333333;
-                line-height: 22px;
-                text-align: right;
-              }
-
-              img {
-                width: 30px;
-                height: 15px;
-                object-fit: cover;
-              }
-            }
-
-            .rightarrimg {
-              width: 12px;
-              height: 12px;
-              object-fit: cover;
-
-              &:hover {
-                cursor: pointer;
-              }
-            }
-          }
-
-          .r-t-l-b-bottoms {
-            width: 100%;
-            height: 184px;
-            padding: 0 13px;
-
-            div {
-              width: 222px;
-              height: 19px;
-              font-family: MicrosoftYaHei;
-              font-size: 14px;
-              color: #505259;
-              line-height: 19px;
-              text-align: left;
-              font-style: normal;
-              margin: 12px 0;
-
-              &:nth-child(1) {
-                color: #f83126; // 第一个div的颜色
-              }
-            }
-          }
-        }
-      }
-
-      .r-t-r {
-        width: 252px;
-        height: 100%;
-        background-image: url('../assets/image/usebg.png');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        position: relative;
-
-        .r-t-r-user {
-          display: flex;
-          justify-content: flex-start;
-          align-self: start;
-          gap: 7px;
-          margin-top: 30px;
-          margin-left: 10px;
-
-          .user-img {
-            width: 48px;
-            height: 48px;
-            object-fit: cover;
-          }
-
-          .user-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-          }
-        }
-
-        .mid-icon {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 32px;
-          padding: 0 30px;
-          margin-top: 31px;
-
-          .icon-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            width: 50px;
-            height: 56px;
-            cursor: pointer;
-
-            img {
-              width: 36px;
-              height: 36px;
-              object-fit: cover;
-            }
-
-            span {
-              width: 48px;
-              height: 16px;
-              font-size: 12px;
-              color: #505259;
-              line-height: 16px;
-              text-align: center;
-            }
-          }
-        }
-
-        .mid-status {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 22px;
-          margin: 0 14px;
-          margin-top: 27px;
-
-          .status-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-
-            span {
-              width: 36px;
-              height: 16px;
-              font-size: 12px;
-              color: #505259;
-              line-height: 16px;
-              text-align: center;
-            }
-
-            &:nth-child(4) {
-              span:nth-child(2) {
-                width: 48px;
-              }
-            }
-          }
-        }
-
-        .r-t-r-qb {
-          width: 221px;
-          height: 96px;
-          background-image: url('../assets/image/ballet.png');
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-          position: absolute;
-          top: 262px;
-          left: 16px;
-
-          .my-ballet {
-            width: 64px;
-            height: 21px;
-            font-weight: bold;
-            font-size: 16px;
-            color: #664102;
-            line-height: 21px;
-            text-align: left;
-            margin: 28px 139px 4px 18px;
-            cursor: pointer;
-
-            &:hover {
-              color: #f83126;
-            }
-          }
-
-          .vie-mybalet {
-            width: 72px;
-            height: 16px;
-            font-size: 12px;
-            color: #a88100;
-            line-height: 16px;
-            text-align: left;
-            margin: 0 131px 27px 18px;
-            cursor: pointer;
-
-            &:hover {
-              color: #f83126;
-            }
-          }
-        }
-      }
-    }
-
-    .r-b {
-      width: 100%;
-      height: 242px;
-      background-image: url('../assets/image/rtrbg.png');
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-    }
-  }
-}
-
-.popover-content {
-  width: 100%;
-
-  .content-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .content-item {
-    font-size: 14px;
-    color: #666;
-    padding: 8px 12px;
-    cursor: pointer;
-
-    &:hover {
-      color: #f83126;
-    }
-  }
-}
-
-.hot-rank {
-  width: 1560px;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-
-  .hot-rank-item-jxhy {
-    width: 375px;
-    height: 496px;
-    background-image: url('../assets/image/jxhybg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    position: relative;
-
-    .hot-jingxuan {
-      width: 100%;
-      height: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 72px;
-      margin: 14px 28px 18px 0;
-
-      .jx-img {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 140px;
-
-        img {
-          width: 50px;
-          height: 35px;
-          object-fit: cover;
-        }
-
-        span {
-          width: 88px;
-          height: 30px;
-          font-weight: 500;
-          font-size: 22px;
-          color: #333333;
-          line-height: 30px;
-          text-align: left;
-        }
-      }
-
-      .jx-xjhpicon {
-        width: 120px;
-
-        img {
-          width: 118px;
-          height: 24px;
-          object-fit: cover;
-        }
-      }
-    }
-
-    .swiper-container {
-      width: 264px;
-      height: 288px;
-      top: 104px;
-      left: 55px;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-      animation: slideHorizontal 3s ease-in-out infinite;
-    }
-
-    .swiper-container-l {
-      width: 244px;
-      height: 266px;
-      top: 126px;
-      left: 31px;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-      opacity: 0.5;
-    }
-
-    .swiper-container-r {
-      width: 244px;
-      height: 266px;
-      top: 126px;
-      left: 99px;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-      opacity: 0.5;
-    }
-
-    .swiper-item {
-      width: 264px;
-      height: 288px;
-      background-image: url('../assets/image/rximgbg.png');
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      position: relative;
-
-      .rexiao-icon {
-        width: 46px;
-        height: 22px;
-        background-image: url('../assets/image/rexiaobg.png');
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-
-      .shangpin-img {
-        width: 124px;
-        height: 124px;
-        position: absolute;
-        top: 29px;
-        left: 70px;
-
-        img {
-          width: 124px;
-          height: 124px;
-          object-fit: cover;
-        }
-      }
-
-      .shangpin-name {
-        width: 173px;
-        height: 20px;
-        font-weight: 400;
-        font-size: 14px;
-        color: #333333;
-        line-height: 20px;
-        text-align: center;
-        position: absolute;
-        top: 164px;
-        left: 46px;
-      }
-
-      .shangpin-huohao {
-        width: 84px;
-        height: 19px;
-        font-size: 14px;
-        color: #FF5C02;
-        line-height: 19px;
-        text-align: center;
-        position: absolute;
-        top: 191px;
-        left: 91px;
-      }
-
-      .shangpin-jiage {
-        span {
-          width: 9px;
-          height: 19px;
-          font-size: 14px;
-          color: #F83126;
-          line-height: 19px;
-          text-align: center;
-        }
-
-        width: 56px;
-        height: 26px;
-        font-weight: bold;
-        font-size: 20px;
-        color: #F83126;
-        line-height: 26px;
-        text-align: center;
-        position: absolute;
-        top: 230px;
-        left: 98px;
-      }
-    }
-
-
-    /* 鼠标悬停时增强阴影效果 */
-    .swiper-item:hover {
-      filter: drop-shadow(4px 8px 24px rgba(0, 0, 0, 0.35));
-    }
-
-    .djck {
-      width: 174px;
-      height: 51px;
-      border-radius: 30.5px;
-      background: #2F7AFF;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 4px;
-      position: absolute;
-      top: 417px;
-      left: 100px;
-      cursor: pointer;
-
-      &:hover {
-        filter: drop-shadow(4px 8px 24px rgba(0, 0, 0, 0.35));
-      }
-
-      span {
-        width: 72px;
-        height: 25px;
-        font-weight: 400;
-        font-size: 18px;
-        color: #FFFFFF;
-        line-height: 25px;
-        text-align: center;
-      }
-
-      img {
-        width: 20px;
-        height: 20px;
-        object-fit: cover;
-      }
-    }
-  }
-
-  .hot-rank-item-rx {
-    width: 375px;
-    height: 496px;
-    background-image: url('../assets/image/rxbbg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
-
-  .hot-rank-item-hp {
-    width: 375px;
-    height: 496px;
-    background-image: url('../assets/image/hpbbg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
-
-  .hot-rank-item-gift {
-    width: 375px;
-    height: 496px;
-    background-image: url('../assets/image/lpzqbg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
-}
-
-.hot-merchants {
-  width: 1560px;
-  height: 610px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-
-  .hot-merch-item {
-    width: 506px;
-    height: 608px;
-    background-color: #a1a4a7;
-  }
-}
-
-.quality-source {
-  width: 1560px;
-  height: 1282px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-
-  .q-s-item {
-    width: 255px;
-    height: 372px;
-    background-color: #a1a4a7;
-  }
-}
-
-@keyframes slideHorizontal {
-  0% {
-    transform: translateX(0);
-  }
-
-  50% {
-    transform: translateX(10px);
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-</style>
+<style src="./home.scss" scoped></style>
 <style scoped>
 /* For demo */
 :deep(.slick-slide) {
