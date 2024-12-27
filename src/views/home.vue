@@ -1154,6 +1154,7 @@ getCategoryList()
       justify-content: center;
       align-items: center;
       z-index: 2;
+      animation: slideHorizontal 3s ease-in-out infinite;
     }
 
     .swiper-container-l {
@@ -1283,6 +1284,10 @@ getCategoryList()
       left: 100px;
       cursor: pointer;
 
+      &:hover {
+        filter: drop-shadow(4px 8px 24px rgba(0, 0, 0, 0.35));
+      }
+
       span {
         width: 72px;
         height: 25px;
@@ -1354,6 +1359,20 @@ getCategoryList()
     width: 255px;
     height: 372px;
     background-color: #a1a4a7;
+  }
+}
+
+@keyframes slideHorizontal {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(0);
   }
 }
 </style>
