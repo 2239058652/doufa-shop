@@ -295,6 +295,34 @@
             <div class="shangpin-jiage"><span>¥</span>23.20</div>
           </div>
         </div>
+        <div class="swiper-container-l">
+          <div class="swiper-item">
+            <!-- 热销左上角热销图标 -->
+            <div class="rexiao-icon"></div>
+            <!-- 商品图片 -->
+            <div class="shangpin-img">
+              <img src="../assets/static/shopimg.png" alt="" />
+            </div>
+            <!-- 价格货号等 -->
+            <div class="shangpin-name">M-8XL美式潮牌工装裤男秋</div>
+            <div class="shangpin-huohao">货号：32589</div>
+            <div class="shangpin-jiage"><span>¥</span>23.20</div>
+          </div>
+        </div>
+        <div class="swiper-container-r">
+          <div class="swiper-item">
+            <!-- 热销左上角热销图标 -->
+            <div class="rexiao-icon"></div>
+            <!-- 商品图片 -->
+            <div class="shangpin-img">
+              <img src="../assets/static/shopimg.png" alt="" />
+            </div>
+            <!-- 价格货号等 -->
+            <div class="shangpin-name">M-8XL美式潮牌工装裤男秋</div>
+            <div class="shangpin-huohao">货号：32589</div>
+            <div class="shangpin-jiage"><span>¥</span>23.20</div>
+          </div>
+        </div>
         <!-- 按钮 -->
         <div class="djck">
           <span>点击查看</span>
@@ -337,6 +365,14 @@ const cartCount = ref(3)
 const categoryList = ref<any>([])
 const bannerList = ref<any>([])
 const bannerActiveList = ref<any>([])
+const currentIndex = ref(1)
+setInterval(() => {
+  if (currentIndex.value > 5) {
+    currentIndex.value = 1
+    return
+  }
+  currentIndex.value++
+}, 1000)
 
 // 获取分类列表
 const getCategoryList = () => {
@@ -1109,95 +1145,128 @@ getCategoryList()
     }
 
     .swiper-container {
-      width: 320px;
-      height: 290px;
+      width: 264px;
+      height: 288px;
       top: 104px;
+      left: 55px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .swiper-container-l {
+      width: 244px;
+      height: 266px;
+      top: 126px;
       left: 31px;
       position: absolute;
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 1;
+      opacity: 0.5;
+    }
 
-      .swiper-item {
-        width: 264px;
-        height: 288px;
-        background-image: url('../assets/image/rximgbg.png');
+    .swiper-container-r {
+      width: 244px;
+      height: 266px;
+      top: 126px;
+      left: 99px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      opacity: 0.5;
+    }
+
+    .swiper-item {
+      width: 264px;
+      height: 288px;
+      background-image: url('../assets/image/rximgbg.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      position: relative;
+
+      .rexiao-icon {
+        width: 46px;
+        height: 22px;
+        background-image: url('../assets/image/rexiaobg.png');
         background-size: 100% 100%;
         background-repeat: no-repeat;
-        position: relative;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
 
-        .rexiao-icon {
-          width: 46px;
-          height: 22px;
-          background-image: url('../assets/image/rexiaobg.png');
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
+      .shangpin-img {
+        width: 124px;
+        height: 124px;
+        position: absolute;
+        top: 29px;
+        left: 70px;
 
-        .shangpin-img {
+        img {
           width: 124px;
           height: 124px;
-          position: absolute;
-          top: 29px;
-          left: 70px;
-
-          img {
-            width: 124px;
-            height: 124px;
-            object-fit: cover;
-          }
-        }
-
-        .shangpin-name {
-          width: 173px;
-          height: 20px;
-          font-weight: 400;
-          font-size: 14px;
-          color: #333333;
-          line-height: 20px;
-          text-align: center;
-          position: absolute;
-          top: 164px;
-          left: 46px;
-        }
-
-        .shangpin-huohao {
-          width: 84px;
-          height: 19px;
-          font-size: 14px;
-          color: #FF5C02;
-          line-height: 19px;
-          text-align: center;
-          position: absolute;
-          top: 191px;
-          left: 91px;
-        }
-
-        .shangpin-jiage {
-          span {
-            width: 9px;
-            height: 19px;
-            font-size: 14px;
-            color: #F83126;
-            line-height: 19px;
-            text-align: center;
-          }
-
-          width: 56px;
-          height: 26px;
-          font-weight: bold;
-          font-size: 20px;
-          color: #F83126;
-          line-height: 26px;
-          text-align: center;
-          position: absolute;
-          top: 230px;
-          left: 98px;
+          object-fit: cover;
         }
       }
+
+      .shangpin-name {
+        width: 173px;
+        height: 20px;
+        font-weight: 400;
+        font-size: 14px;
+        color: #333333;
+        line-height: 20px;
+        text-align: center;
+        position: absolute;
+        top: 164px;
+        left: 46px;
+      }
+
+      .shangpin-huohao {
+        width: 84px;
+        height: 19px;
+        font-size: 14px;
+        color: #FF5C02;
+        line-height: 19px;
+        text-align: center;
+        position: absolute;
+        top: 191px;
+        left: 91px;
+      }
+
+      .shangpin-jiage {
+        span {
+          width: 9px;
+          height: 19px;
+          font-size: 14px;
+          color: #F83126;
+          line-height: 19px;
+          text-align: center;
+        }
+
+        width: 56px;
+        height: 26px;
+        font-weight: bold;
+        font-size: 20px;
+        color: #F83126;
+        line-height: 26px;
+        text-align: center;
+        position: absolute;
+        top: 230px;
+        left: 98px;
+      }
+    }
+
+
+    /* 鼠标悬停时增强阴影效果 */
+    .swiper-item:hover {
+      filter: drop-shadow(4px 8px 24px rgba(0, 0, 0, 0.35));
     }
 
     .djck {
