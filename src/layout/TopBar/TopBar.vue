@@ -98,7 +98,7 @@
 
 <script lang="ts" setup>
 import { message } from 'ant-design-vue'
-import { computed, ref } from 'vue'
+import { computed, ref, provide } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { returnAddressList } from '@/api/store'
 import LoginModal from './components/LoginModal.vue'
@@ -168,6 +168,9 @@ const getAddressList = async () => {
     messageApi.error(res.msg)
   }
 }
+provide('loginOut', open)
+provide('loginModalRef', loginModalRef)
+provide('registerModalRef', registerModalRef)
 </script>
 
 <style src="./TopBar.scss" scoped></style>

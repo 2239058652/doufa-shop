@@ -674,6 +674,98 @@
           }
         }
       }
+
+      // 登录前首页个人信息展示
+      .userinfo-unlogin {
+        width: 252px;
+        height: 100%;
+        background-image: url('../assets/image/usebg.png');
+        background-size: 100%;
+        background-repeat: no-repeat;
+
+        .userinfo-unlogin-box {
+          width: 185px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          margin-top: 30px;
+          margin-left: 10px;
+
+          img {
+            width: 48px;
+            height: 48px;
+          }
+
+          .unlogin-info {
+            margin-left: 7px;
+
+            .unlogin-info-top {
+              font-size: 16px;
+              color: #333;
+            }
+
+            .unlogin-info-bot {
+              color: #505259;
+              font-size: 12px;
+              margin-top: 5px;
+            }
+          }
+        }
+
+        .unlogin-box {
+          width: 210px;
+          height: 49px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin-top: 52px;
+          margin-left: 21px;
+
+          .unlogin-box-top {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+          }
+
+          .unlogin-box-bot {
+            font-size: 14px;
+            color: #505259;
+            margin-top: 9px;
+          }
+        }
+
+        .unlogin-btn {
+          width: 221px;
+          height: 93px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 61px;
+          margin-left: 16px;
+
+          button {
+            width: 221px;
+            height: 42px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+          }
+
+          .btn-login {
+            background: #f83126;
+            color: #fff;
+            border: none;
+          }
+
+          .btn-register {
+            background: #fff;
+            border: 0.1px solid #DCDCDC;
+            color: #505259;
+          }
+        }
+      }
     }
 
     .r-b {

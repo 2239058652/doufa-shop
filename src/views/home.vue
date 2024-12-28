@@ -156,6 +156,8 @@
       </div>
       <!-- 右侧内容区 -->
       <div class="s-s-right">
+
+        <!-- 登录之后展示的个人信息部分 -->
         <div class="r-t">
           <div class="r-t-l">
             <div class="r-t-l-t">
@@ -201,7 +203,7 @@
               </div>
             </div>
           </div>
-          <div class="r-t-r">
+          <div class="r-t-r" v-if="token">
             <div class="r-t-r-user">
               <div class="user-img">
                 <img src="../assets/image/user.png" alt="" />
@@ -225,8 +227,8 @@
                     text-align: left;
                     gap: 12px;
                   ">
-                  <div style="cursor: pointer">切换账号</div>
-                  <div style="cursor: pointer">退出</div>
+                  <div style="cursor: pointer;">切换账号</div>
+                  <div class="longin-out" @click="handleOutLogin">退出</div>
                 </div>
               </div>
             </div>
@@ -267,7 +269,28 @@
               <div class="vie-mybalet">查看我的钱包</div>
             </div>
           </div>
+          <!-- 登录前首页个人信息展示 -->
+          <div class="userinfo-unlogin" v-else>
+            <div class="userinfo-unlogin-box">
+              <img src="../assets/image/user.png" alt="" />
+              <div class="unlogin-info">
+                <div class="unlogin-info-top">HI~欢迎来到抖发</div>
+                <div class="unlogin-info-bot">找货源上抖发</div>
+              </div>
+            </div>
+            <div class="unlogin-box">
+              <div class="unlogin-box-top">登录抖发一键代发/上架</div>
+              <div class="unlogin-box-bot">登录可享，专属优惠，贴心服务！</div>
+            </div>
+            <div class="unlogin-btn">
+              <button class="btn-login" @click="handleLogin">登录</button>
+              <button class="btn-register" @click="handleRegister">
+                注册
+              </button>
+            </div>
+          </div>
         </div>
+
         <div class="r-b"></div>
       </div>
     </div>
@@ -559,7 +582,7 @@
 <script setup lang="ts">
 import Footer from '@/components/footer/index.vue'
 import { debounce } from '@/utils/util'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, inject } from 'vue'
 import { getCategory, getBanner, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
@@ -567,6 +590,10 @@ import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
 
 const [messageApi, contextHolder] = message.useMessage()
+
+const loginOut = inject('loginOut') as any  // 获取退出登录弹窗
+const loginModalRef = inject('loginModalRef') as any  // 获取退出登录弹窗
+const registerModalRef = inject('registerModalRef') as any  // 获取退出登录弹窗
 
 const inputVal = ref('')
 const selectVal = ref('jack')
@@ -576,9 +603,9 @@ const activeIndex = ref(0)
 const rxsjActiveIndex = ref(0)
 const cartCount = ref(3)
 const loading = ref(false)
-const allLoaded = ref(false)
 const productsList = ref<any>([])
 const page = ref(1)
+const token = localStorage.getItem('token')
 
 // 使用防抖包装滚动处理函数
 const handleScroll = debounce((e: Event) => {
@@ -662,6 +689,22 @@ const getProductsList = () => {
   })
 }
 
+
+// 登录
+const handleLogin = () => {
+  loginModalRef.value.setModalInit(true)
+}
+
+// 注册
+const handleRegister = () => {
+  registerModalRef.value.setRegisModalInit(true, 'zhuce')
+}
+
+// 退出登录
+const handleOutLogin = () => {
+  loginOut.value = true
+}
+
 getBannerList()
 getCategoryList()
 getProductsList()
@@ -703,5 +746,13 @@ getProductsList()
 
 :deep(.slick-slide h3) {
   color: #fff;
+}
+
+.longin-out {
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
 }
 </style>
