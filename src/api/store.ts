@@ -23,3 +23,18 @@ export const getBanner = (id: string | number) => {
     url: `/api/article/list/${id}`,
   })
 }
+
+// 商品列表接口
+interface IProductParams {
+  page: number
+  limit: number
+  goods_address?: string
+  mer_id?: string
+}
+export const getProducts = (params: IProductParams) => {
+  return request.get({
+    url: `/api/products`,
+    method: "get",
+    params,
+  })
+}

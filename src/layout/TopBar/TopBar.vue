@@ -17,38 +17,20 @@
                   <img src="../../assets/image/head-bot.png" />
                 </span>
                 <template #content>
-                  <div
-                    class="con"
-                    style="
+                  <div class="con" style="
                       display: flex;
                       justify-content: space-around;
                       font-size: 14px;
                       color: #333;
-                    "
-                  >
-                    <div
-                      class="order_ctrl"
-                      style="display: flex; flex-direction: column; margin: 0 30px"
-                    >
-                      <span
-                        class="active"
-                        style="margin-top: 16px"
-                        @click="handleClick('/usermanage')"
-                      >
+                    ">
+                    <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 30px">
+                      <span class="active" style="margin-top: 16px" @click="handleClick('/usermanage')">
                         用户中心
                       </span>
-                      <span
-                        class="active"
-                        style="margin-top: 22px"
-                        @click="handleClick('/ordermanage')"
-                      >
+                      <span class="active" style="margin-top: 22px" @click="handleClick('/ordermanage')">
                         订单管理
                       </span>
-                      <span
-                        class="active"
-                        style="margin-top: 22px"
-                        @click="handleClick('/shopsmanage')"
-                      >
+                      <span class="active" style="margin-top: 22px" @click="handleClick('/shopsmanage')">
                         下单管理
                       </span>
                     </div>
@@ -92,9 +74,7 @@
             <div class="dialog_span_wrap">
               <div>姓名：{{ item.real_name }}</div>
               <div>手机号：{{ item.phone }}</div>
-              <div
-                >地址：{{ item.province }}{{ item.city }}{{ item.district }}{{ item.detail }}</div
-              >
+              <div>地址：{{ item.province }}{{ item.city }}{{ item.district }}{{ item.detail }}</div>
             </div>
           </div>
         </div>
@@ -109,6 +89,8 @@
     </div>
     <div class="router-view" v-if="showSidebar">
       <router-view />
+
+      <!-- 右侧悬浮功能区 -->
       <RightMenu />
     </div>
   </div>

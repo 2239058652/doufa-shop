@@ -1,7 +1,7 @@
 <template>
   <context-holder />
   <div class="home">
-    <!-- 顶部功能区 -->
+    <!-- 顶部搜索 框 功能区 -->
     <div class="top-func">
       <!-- LOGO区域 -->
       <div class="func-img">
@@ -65,37 +65,40 @@
         </div>
         <!-- 商品分类 --> <!-- 分类列表 -->
         <div class="shop-cate">
-          <div class="cate-item" v-for="item in categoryList" :key="item.id">
-            <div class="item-left">
-              <img src="../assets/image/fenlei.png" alt="" />
-            </div>
-            <a-popover :title="item.cate_name" placement="right"
-              :overlayInnerStyle="{ width: '612px', height: '446px' }">
-              <div class="item-right">
-                <div class="text-line">
-                  <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id">
-                    {{ v.cate_name }}
-                    {{ index !== 2 ? ' ' : '' }}
-                  </span>
-                </div>
-                <div class="text-line">
-                  <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id">
-                    {{ v.cate_name }}
-                    {{ index !== 2 ? ' ' : '' }}
-                  </span>
-                </div>
+          <a-skeleton :loading="categoryList.length == 0" active>
+            <div class="cate-item" v-for="item in categoryList" :key="item.id">
+              <div class="item-left">
+                <img src="../assets/image/fenlei.png" alt="" />
               </div>
-              <template #content>
-                <div class="popover-content">
-                  <div class="content-row">
-                    <div v-for="i in item.children" :key="i.id" class="content-item">
-                      {{ i.cate_name }}
-                    </div>
+              <a-popover :title="item.cate_name" placement="right"
+                :overlayInnerStyle="{ width: '612px', height: '446px' }">
+                <div class="item-right">
+                  <div class="text-line">
+                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id">
+                      {{ v.cate_name }}
+                      {{ index !== 2 ? ' ' : '' }}
+                    </span>
+                  </div>
+                  <div class="text-line">
+                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id">
+                      {{ v.cate_name }}
+                      {{ index !== 2 ? ' ' : '' }}
+                    </span>
                   </div>
                 </div>
-              </template>
-            </a-popover>
-          </div>
+                <template #content>
+                  <div class="popover-content">
+                    <div class="content-row">
+                      <div v-for="i in item.children" :key="i.id" class="content-item">
+                        {{ i.cate_name }}
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </a-popover>
+            </div>
+          </a-skeleton>
+
         </div>
       </div>
       <!-- 中间内容区 -->
@@ -122,6 +125,7 @@
         </div>
         <!-- 轮播图 -->
         <div class="m-m">
+          <a-skeleton v-if="bannerList.length == 0" active />
           <a-carousel arrows autoplay>
             <template #prevArrow>
               <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
@@ -142,6 +146,7 @@
         </div>
         <!-- 底部banner -->
         <div class="m-b">
+          <a-skeleton v-if="bannerActiveList.length == 0" active />
           <div v-for="(x, index) in bannerActiveList" :key="index">
             <a>
               <img :src="x.image_input" />
@@ -515,10 +520,37 @@
         </div>
       </div>
     </div>
+
+    <!-- 优质货源 -->
     <div class="quality-source">
-      <div class="q-s-item" v-for="(item, index) in 18" :key="index">
-        <div>{{ item }}{{ '优质货源' }}</div>
+      <div class="q-s-title">
+        <div>
+          <span>优质货源</span>
+          <img src="../assets/image/qsicon.png" alt="" />
+        </div>
+        <div>Quality source</div>
       </div>
+      <a-skeleton :loading="productsList.length === 0" active>
+        <!-- 商品列表 -->
+        <div class="q-s-content">
+          <div class="q-s-item" v-for="item in productsList" :key="item.id">
+            <div class="img-content">
+              <img :src="item.image" alt="" />
+            </div>
+            <div class="store_name">{{ item.store_name }}</div>
+            <div class="keyword">货号: &nbsp;{{ item.keyword }}</div>
+            <div class="price">
+              <span>¥</span>
+              <span>{{ item.price }}</span>
+              <span>{{ item.sales }}人已购买</span>
+            </div>
+          </div>
+        </div>
+      </a-skeleton>
+    </div>
+
+    <div v-if="loading" class="spin-loading">
+      <a-spin tip="加载中..." delay="200" />
     </div>
     <Footer />
   </div>
@@ -526,10 +558,13 @@
 
 <script setup lang="ts">
 import Footer from '@/components/footer/index.vue'
-import { ref } from 'vue'
-import { getCategory, getBanner } from '@/api/store'
+import { debounce } from '@/utils/util'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { getCategory, getBanner, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
+import photo1 from '../assets/static/photo.png'
+import photo2 from '../assets/static/photo1.png'
 
 const [messageApi, contextHolder] = message.useMessage()
 
@@ -540,10 +575,33 @@ const rxsjList = ref(['薰衣草小熊猫', '橘子男装', '橘子男装'])
 const activeIndex = ref(0)
 const rxsjActiveIndex = ref(0)
 const cartCount = ref(3)
+const loading = ref(false)
+const allLoaded = ref(false)
+const productsList = ref<any>([])
+const page = ref(1)
 
-import photo1 from '../assets/static/photo.png'
-import photo2 from '../assets/static/photo1.png'
+// 使用防抖包装滚动处理函数
+const handleScroll = debounce((e: Event) => {
+  const target = e.target as HTMLElement
+  if (target.scrollHeight - target.scrollTop <= target.clientHeight + 50) {
+    getProductsList()
+  }
+}, 200) // 200ms的防抖延迟
 
+onMounted(() => {
+  const routerView = document.querySelector('.router-view')
+  if (routerView) {
+    routerView.addEventListener('scroll', handleScroll)
+  }
+})
+
+onUnmounted(() => {
+  const routerView = document.querySelector('.router-view')
+  if (routerView) {
+    routerView.removeEventListener('scroll', handleScroll)
+  }
+})
+// 好评商品列表
 const hplist = ref([
   {
     url: photo1,
@@ -584,8 +642,29 @@ const getBannerList = async () => {
   bannerList.value = res.data
   bannerActiveList.value = response.data
 }
+
+// 获取商品列表
+const getProductsList = () => {
+  loading.value = true
+  if (page.value > 6) {
+    loading.value = false
+    return
+  }
+  getProducts({ page: page.value, limit: 18 }).then((res: any) => {
+    if (res.status == 200) {
+      productsList.value = [...productsList.value, ...res.data.list]
+      loading.value = false
+      page.value++
+    } else {
+      messageApi.error(res.msg)
+    }
+
+  })
+}
+
 getBannerList()
 getCategoryList()
+getProductsList()
 </script>
 
 <style src="./home.scss" scoped></style>
