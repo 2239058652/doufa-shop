@@ -493,13 +493,13 @@
       <!-- 信誉商家 -->
       <div class="hot-merch-xysj">
         <!-- 标题 -->
-        <div class="title">
+        <div class="xy-title">
           <span>信誉商家</span>
           <span>极速售后</span>
         </div>
         <div class="xy-content">
           <div v-for="(item, index) in 3" :key="index" class="table-xy-item">
-            <div class="title">沃德男装</div>
+            <div class="xy-c-title">沃德男装</div>
             <!-- 商品信息 -->
             <div class="xysj-info">
               <div class="info-left">
@@ -550,7 +550,7 @@
     </div>
 
     <div v-if="loading" class="spin-loading">
-      <a-spin tip="加载中..." delay="200" />
+      <a-spin tip="加载中..." :delay="200" />
     </div>
     <Footer />
   </div>
@@ -669,7 +669,10 @@ getProductsList()
 
 <style src="./home.scss" scoped></style>
 <style scoped>
-/* For demo */
+:deep(.slick-list) {
+  border-radius: 10px;
+}
+
 :deep(.slick-slide) {
   text-align: center;
   height: 100%;

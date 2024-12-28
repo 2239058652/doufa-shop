@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
+  background: #fbfbfc;
 }
 
 .top-func {
@@ -182,11 +183,14 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  background: #FFFFFF;
+  border-radius: 12px;
 
   .s-s-left {
     width: 252px;
     height: 646px;
     background-color: #f7f8fc;
+    border-radius: 10px;
 
     .shops-title {
       margin-left: 10px;
@@ -203,7 +207,6 @@
         color: #333333;
         line-height: 21px;
         text-align: left;
-        font-style: normal;
       }
 
       img {
@@ -255,18 +258,16 @@
             height: 20px;
             line-height: 20px;
             font-size: 14px;
-            color: #666;
+            color: #666666;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-
-            &:first-child {
-              color: #333;
-              font-weight: 500;
-            }
+            font-weight: 500;
+            font-family: PingFangSC, PingFang SC;
+            font-style: normal;
 
             span {
-              color: #999;
+              color: #666666;
 
               &:hover {
                 color: #f83126;
@@ -295,6 +296,7 @@
       width: 712px;
       height: 48px;
       background: #f7f8fc;
+      border-radius: 10px;
       display: flex;
 
       div {
@@ -332,22 +334,26 @@
     .m-m {
       width: 712px;
       height: 324px;
+      border-radius: 10px;
 
       img {
         width: 712px;
         height: 324px;
         object-fit: cover;
+        border-radius: 10px;
       }
     }
 
     .m-b {
       width: 712px;
       height: 242px;
+      border-radius: 10px;
 
       img {
         width: 712px;
         height: 242px;
         object-fit: cover;
+        border-radius: 10px;
       }
     }
   }
@@ -505,6 +511,9 @@
               text-align: left;
               font-style: normal;
               margin: 12px 0;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
 
               &:nth-child(1) {
                 color: #f83126; // 第一个div的颜色
@@ -590,18 +599,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 4px;
             width: 50px;
             height: 50px;
             cursor: pointer;
+            text-align: center;
 
-            span {
+            span:nth-child(1) {
+              width: 40px;
+              height: 19px;
+              font-weight: bold;
+              font-size: 14px;
+              color: #333333;
+              line-height: 19px;
+            }
+
+            span:nth-child(2) {
               width: 36px;
               height: 16px;
               font-size: 12px;
               color: #505259;
               line-height: 16px;
-              text-align: center;
             }
 
             &:nth-child(4) {
@@ -1719,7 +1738,7 @@
     background-repeat: no-repeat;
     position: relative;
 
-    .title {
+    .xy-title {
       position: absolute;
       top: 20px;
       left: 20px;
@@ -1767,7 +1786,7 @@
         position: relative;
         padding-top: 20px;
 
-        .title {
+        .xy-c-title {
           width: auto;
           height: 22px;
           font-weight: 600;
@@ -1882,6 +1901,8 @@
   height: auto;
   // border: 1px dashed #a1a4a7;
   padding: 0 11px;
+  background: #FFFFFF;
+  border-radius: 12px;
 
   .q-s-title {
     width: 150px;
@@ -1943,17 +1964,24 @@
     height: 372px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     cursor: pointer;
+    border-radius: 10px;
+    padding: 1px;
+
+    &:hover {
+      border: 1px solid #ff5c02;
+    }
 
     .img-content {
-      width: 245px;
+      width: 244px;
       height: 244px;
       overflow: hidden;
+      border-radius: 8px;
 
       img {
-        width: 245px;
+        width: 244px;
         height: 244px;
         object-fit: cover;
 
@@ -1979,6 +2007,7 @@
       -webkit-box-orient: vertical;
       text-overflow: ellipsis;
       white-space: normal;
+      padding-left: 5px;
     }
 
     .keyword {
@@ -1991,10 +2020,12 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      text-indent: 5px;
     }
 
     .price {
       width: 250px;
+      text-indent: 5px;
 
       span:nth-child(1) {
         width: 9px;
