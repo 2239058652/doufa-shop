@@ -74,17 +74,51 @@
       height: 50px;
       border: 2px solid #f83126;
       border-radius: 8px;
+      color: #FFFFFF;
+      position: relative;
 
-      .photo-sou {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 19px;
+      .func-sou-suffix {
+        position: relative;
+        width: 128px;
+        height: 42px;
 
-        img {
-          width: 22px;
-          height: 20px;
+        .photo-sou {
+          position: absolute;
+          top: 8px;
+          right: 109px;
           cursor: pointer;
+
+          img {
+            width: 22px;
+            height: 20px;
+            object-fit: cover;
+          }
+        }
+
+        .sousuo-btn {
+          width: 86px;
+          height: 42px;
+          background-color: #f83126;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          position: absolute;
+          right: -10px;
+          top: -2px;
+
+          span {
+            width: 32px;
+            height: 21px;
+            font-family: MicrosoftYaHei, MicrosoftYaHei;
+            font-weight: bold;
+            font-size: 16px;
+            color: #FFFFFF;
+            line-height: 21px;
+            text-align: left;
+            font-style: normal;
+          }
         }
       }
     }
@@ -92,7 +126,6 @@
     .func-sou-type {
       width: 782px;
       height: 20px;
-      background-color: #ffffff;
 
       .hot-type {
         width: 100%;
@@ -123,23 +156,24 @@
   .func-car {
     width: 140px;
     height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
+    border: 1px solid #DCDCDC;
+    border-radius: 6px;
+    position: relative;
+    display: flex; // 添加flex布局
+    justify-content: center; // 水平居中
+    align-items: center; // 垂直居中
 
     .car-top {
-      width: 23px;
+      min-width: 23px;
       height: 16px;
       border-radius: 8px;
-      position: relative;
+      position: absolute;
+      background: #E1251B;
+      top: -8px; // 向上偏移
+      right: -12px; // 向右偏移
 
       .cart-count {
-        position: absolute;
-        top: 5px;
-        right: 15px;
-        background: #f83126;
         color: white;
         font-size: 12px;
         min-width: 16px;
@@ -156,7 +190,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
 
       img {
         width: 21px;
@@ -174,6 +208,7 @@
       }
     }
   }
+
 }
 
 .shop-sort {
@@ -731,6 +766,7 @@
           .unlogin-box-bot {
             font-size: 14px;
             color: #505259;
+            line-height: 19px;
             margin-top: 9px;
           }
         }

@@ -20,15 +20,19 @@
           <!-- 搜索输入框 -->
           <a-input v-model:value="inputVal" :bordered="false" placeholder="请搜索产品名称、货号">
             <template #prefix>
-              <a-select :bordered="false" v-model:value="selectVal" style="width: 110px">
+              <a-select :bordered="false" v-model:value="selectVal">
                 <a-select-option value="jack">宝贝货号</a-select-option>
                 <a-select-option value="lucy">档口搜索</a-select-option>
               </a-select>
             </template>
             <template #suffix>
-              <div class="photo-sou">
-                <img src="../assets/image/photo.png" alt="识图" />
-                <a-button type="primary" danger>搜索</a-button>
+              <div class="func-sou-suffix">
+                <div class="photo-sou">
+                  <img src="../assets/image/photo.png" alt="识图" />
+                </div>
+                <div class="sousuo-btn">
+                  <span>搜索</span>
+                </div>
               </div>
             </template>
           </a-input>
@@ -46,7 +50,7 @@
       <!-- 购物车 -->
       <div class="func-car">
         <div class="car-top">
-          <span class="cart-count">{{ cartCount }}</span>
+          <span class="cart-count">{{ Number(cartCount) > 99 ? '99+' : cartCount }}</span>
         </div>
         <div class="car-bottom">
           <img src="../assets/image/shopcar.png" alt="" />
@@ -601,7 +605,7 @@ const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])
 const rxsjList = ref(['薰衣草小熊猫', '橘子男装', '橘子男装'])
 const activeIndex = ref(0)
 const rxsjActiveIndex = ref(0)
-const cartCount = ref(3)
+const cartCount = ref(113)
 const loading = ref(false)
 const productsList = ref<any>([])
 const page = ref(1)
@@ -712,6 +716,7 @@ getProductsList()
 
 <style src="./home.scss" scoped></style>
 <style scoped>
+/* 轮播图修改圆角 */
 :deep(.slick-list) {
   border-radius: 10px;
 }
@@ -747,6 +752,7 @@ getProductsList()
 :deep(.slick-slide h3) {
   color: #fff;
 }
+
 
 .longin-out {
   cursor: pointer;
