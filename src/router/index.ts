@@ -24,6 +24,16 @@ const router = createRouter({
             requireSidebar: false,  // 是否需要侧边栏菜单
             hidden: true  // 不需要侧边栏设置为true
           }
+        },
+        {
+          path: 'detail/:id',
+          name: 'Detail',
+          component: () => import('@/views/Merchandis/Merchandis.vue'),
+          meta: {
+            title: '商品详情页',  // 标题必须设置
+            requireSidebar: false,  // 是否需要侧边栏菜单
+            hidden: true  // 不需要侧边栏设置为true
+          }
         }
       ]
     },
