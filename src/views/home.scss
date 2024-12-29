@@ -550,9 +550,10 @@
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
+              cursor: pointer;
 
-              &:nth-child(1) {
-                color: #f83126; // 第一个div的颜色
+              &:hover {
+                color: #f83126;
               }
             }
           }

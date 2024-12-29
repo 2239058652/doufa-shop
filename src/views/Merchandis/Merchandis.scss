@@ -1,0 +1,34 @@
+.merchandis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.logo-search {
+    width: 100%;
+    height: 72px;
+    background: #D8D8D8;
+}
+
+.user-store {
+    width: 1560px;
+    height: 64px;
+    background: #B9C1CB;
+    border-radius: 12px;
+}
+
+.goods-order {
+    width: 1560px;
+    height: 724px;
+    background: #B9C1CB;
+    border-radius: 12px;
+}
+
+.goods-detail {
+    width: 1560px;
+    height: 2772px;
+    background: #B9C1CB;
+    border-radius: 12px;
+}

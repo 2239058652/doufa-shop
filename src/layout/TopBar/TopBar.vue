@@ -87,8 +87,9 @@
       <!-- 注册modal -->
       <RegisterModal ref="registerModalRef" />
     </div>
-    <div class="router-view" v-if="showSidebar">
+    <div class="router-view" id="router-view" v-if="showSidebar">
       <router-view />
+      <Footer />
 
       <!-- 右侧悬浮功能区 -->
       <RightMenu />
@@ -104,6 +105,7 @@ import { returnAddressList } from '@/api/store'
 import LoginModal from './components/LoginModal.vue'
 import RegisterModal from './components/RegisterModal.vue'
 import RightMenu from '../../components/right/index.vue'
+import Footer from '@/components/footer/index.vue'
 
 const open = ref<boolean>(false)
 const loading = ref<boolean>(false)

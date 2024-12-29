@@ -218,8 +218,30 @@ const router = createRouter({
           }
         }
       ]
+    },
+    {
+      path: '/404',
+      name: '404page',
+      component: () => import('@/views/Errors/404.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/404',
+      meta: {
+        title: '404页面',
+        hidden: true
+      },
     }
-  ]
+  ],
+  scrollBehavior() {
+    // 回到顶部
+    const appElement = document.getElementById('router-view')
+    if (appElement) {
+      appElement.scrollTo({
+        top: 0,
+      })
+    }
+  }
 })
 
 export default router

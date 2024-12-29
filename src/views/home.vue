@@ -560,7 +560,7 @@
       <a-skeleton :loading="productsList.length === 0" active>
         <!-- 商品列表 -->
         <div class="q-s-content">
-          <div class="q-s-item" v-for="item in productsList" :key="item.id">
+          <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
             <div class="img-content">
               <img :src="item.image" alt="" />
             </div>
@@ -579,20 +579,20 @@
     <div v-if="loading" class="spin-loading">
       <a-spin tip="加载中..." :delay="200" />
     </div>
-    <Footer />
   </div>
 </template>
 
 <script setup lang="ts">
-import Footer from '@/components/footer/index.vue'
 import { debounce } from '@/utils/util'
 import { onMounted, onUnmounted, ref, inject } from 'vue'
+import { useRouter } from 'vue-router'
 import { getCategory, getBanner, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
 
+const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
 
 const loginOut = inject('loginOut') as any  // 获取退出登录弹窗
@@ -655,6 +655,15 @@ setInterval(() => {
   }
   currentIndex.value++
 }, 1000)
+
+// 跳转商品详情
+const routerToDetail = (item: any) => {
+  console.log(item)
+  router.push({
+    path: `/detail/${item.id}`,
+    query: item
+  })
+}
 
 // 获取分类列表
 const getCategoryList = () => {

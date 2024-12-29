@@ -33,6 +33,9 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue'
+onMounted(() => { })
+
 // 固定栏返回顶部按钮
 const goTop = () => {
   // window.scrollTo({
@@ -48,6 +51,7 @@ const goTop = () => {
     })
   }
 }
+goTop()
 </script>
 
 <style src="./index.scss" scoped></style>
