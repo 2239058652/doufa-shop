@@ -52,7 +52,22 @@
     </div>
 
     <!-- 商品图片下单区域 -->
-    <div class="goods-order"></div>
+    <div class="goods-order">
+      <!-- 左侧商品图片 -->
+      <div class="goods-img">
+        <div class="img-slide">
+          <img @mouseover="handleImgMoveOver(index)" :class="imgIndex == index ? 'active' : ''"
+            src="../../assets/static/img-slide.png" alt="" v-for="(item, index) in 14" :key="index" />
+        </div>
+
+        <!-- 右侧主大图 -->
+        <div class="main-img">
+          <img src="../../assets/static/main-img.png" alt="" />
+        </div>
+      </div>
+      <!-- 右侧下单区域 -->
+      <div class="goods-func"></div>
+    </div>
     <div class="goods-detail"></div>
   </div>
 </template>
@@ -65,10 +80,17 @@ const route = useRoute()
 
 const inputVal = ref('')
 const rateVal = ref(4.6)
+const imgIndex = ref(0)
 
 // 接受商品详情的ID+
 const { id: detailId } = route.params
 console.log(detailId)
+
+// 商品图鼠标移入
+const handleImgMoveOver = (index: number) => {
+  imgIndex.value = index
+}
+
 
 </script>
 
