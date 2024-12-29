@@ -7,8 +7,8 @@ export const px = (n: number) => (n / 1920) * (window as any).pageWidth
 export const mock = true
 
 // 防抖函数
-export const debounce = (fn: Function, delay: number) => {
-  let timer: any | null = null
+export const debounce = (fn: (...args: any[]) => void, delay: number) => {
+  let timer: ReturnType<typeof setTimeout> | null = null
   return function (this: any, ...args: any[]) {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {

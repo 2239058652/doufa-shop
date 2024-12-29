@@ -36,6 +36,7 @@
         border: 1px solid #E2E4E6;
         padding: 1px;
         position: relative;
+        background: #ffffff;
 
         .s-suffix {
             display: flex;
@@ -280,7 +281,7 @@
             height: 624px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             gap: 10px;
             cursor: pointer;
@@ -295,14 +296,15 @@
                 width: 94px;
                 height: 94px;
                 object-fit: cover;
+                border-radius: 12px;
 
                 &:hover {
-                    border: 1px solid #F83126;
+                    border: 2px solid #F83126;
                     border-radius: 12px;
                 }
 
                 &.active {
-                    border: 1px solid #F83126;
+                    border: 2px solid #F83126;
                     border-radius: 12px;
                 }
             }
@@ -312,14 +314,16 @@
             width: 624px;
             height: 624px;
             position: relative;
+            border-radius: 12px;
 
             img {
                 width: 624px;
                 height: 624px;
                 object-fit: cover;
+                border-radius: 12px;
             }
 
-            .layer {
+            .img-layer {
                 width: 197px;
                 height: 197px;
                 background: rgba(0, 0, 0, 0.2);
@@ -329,10 +333,10 @@
                 position: absolute;
             }
 
-            .large {
+            .img-large {
                 position: absolute;
                 top: 0;
-                left: 654px;
+                left: 634px;
                 width: 400px;
                 height: 400px;
                 z-index: 1;
@@ -341,6 +345,7 @@
                 background-size: 800px 800px; // 保持2倍大小
                 background-color: #f8f8f8;
                 border: 1px solid #ddd;
+                border-radius: 12px;
             }
         }
     }
@@ -348,7 +353,197 @@
     .goods-func {
         width: 708px;
         height: 624px;
-        background: #979797;
+        position: relative;
+
+        .store_name {
+            height: 30px;
+            font-weight: 500;
+            font-size: 22px;
+            color: #333333;
+            line-height: 30px;
+            text-align: left;
+            font-style: normal;
+            white-space: wrap;
+        }
+
+        .goods-price {
+            margin-top: 16px;
+
+            span:nth-child(1) {
+                width: 86px;
+                height: 25px;
+                font-weight: 600;
+                font-size: 18px;
+                color: #F83126;
+                line-height: 18px;
+                text-align: left;
+                font-style: normal;
+            }
+
+            span:nth-child(2) {
+                height: 40px;
+                font-weight: 600;
+                font-size: 28px;
+                color: #F83126;
+                line-height: 28px;
+                text-align: left;
+                font-style: normal;
+            }
+
+            span:nth-child(3) {
+                height: 19px;
+                font-size: 14px;
+                color: #999999;
+                line-height: 14px;
+                text-align: left;
+                font-style: normal;
+                margin-left: 10px;
+            }
+        }
+
+        .goods-keyword {
+            margin-top: 26px;
+
+            span {
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 20px;
+                text-align: left;
+                font-style: normal;
+            }
+
+            span:nth-child(1) {
+                color: #999999;
+            }
+
+            span:nth-child(2) {
+                color: #505259;
+            }
+        }
+
+        .goods-cate_name {
+            margin-top: 14px;
+
+            span {
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 20px;
+                text-align: left;
+                font-style: normal;
+            }
+
+            span:nth-child(1) {
+                color: #999999;
+            }
+
+            span:nth-child(2) {
+                color: #505259;
+            }
+        }
+
+        .goods-add_time {
+            margin-top: 14px;
+
+            span {
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 20px;
+                text-align: left;
+                font-style: normal;
+            }
+
+            span:nth-child(1) {
+                color: #999999;
+            }
+
+            span:nth-child(2) {
+                color: #505259;
+            }
+        }
+
+        .colors {
+            width: 780px;
+            height: auto;
+            display: flex;
+            margin-top: 30px;
+
+            .colors_title {
+                font-weight: 400;
+                font-size: 14px;
+                color: #999999;
+                line-height: 20px;
+                text-align: left;
+                font-style: normal;
+                margin-top: 20px;
+                width: 70px;
+                height: 20px;
+            }
+
+            .colors_box {
+                width: 740px;
+                height: auto;
+                display: flex;
+                flex-wrap: wrap;
+
+                #colors_item {
+                    // width: 84px;
+                    // height: 42px;
+                    border: 0.1px solid #c4c4c6;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: center;
+                    color: #333;
+                    font-size: 14px;
+                    margin: 10px 10px;
+                    cursor: pointer;
+                    border-radius: 3px;
+                    padding: 11px 18px;
+                    // white-space: nowrap; // 强制一行显示
+                    // overflow: hidden; // 超出隐藏
+                    // text-overflow: ellipsis; // 省略号
+
+                    &.active {
+                        border: 0.1px solid #f83126;
+                        color: #f83126;
+                    }
+                }
+
+                #colors_item:hover {
+                    border: 0.1px solid #f83126;
+                    color: #f83126;
+                }
+            }
+        }
+
+        .goods-num {
+            margin-top: 37px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            span {
+                width: 70px;
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                color: #999999;
+                line-height: 20px;
+                text-align: left;
+                font-style: normal;
+            }
+
+            .jian {
+                cursor: pointer;
+            }
+
+            .jia {
+                cursor: pointer;
+            }
+        }
     }
 }
 

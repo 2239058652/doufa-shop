@@ -42,6 +42,6 @@ export const getProducts = (params: IProductParams) => {
 // 商品详情
 export const getProductDetail = (id: string | number) => {
   return request.get({
-    url: `/api/products/detail/${id}`,
+    url: `/api/product/detail/${id}`,
   })
 }
