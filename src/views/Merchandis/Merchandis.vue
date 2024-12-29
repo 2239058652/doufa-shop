@@ -61,8 +61,26 @@
         </div>
 
         <!-- 右侧主大图 -->
-        <div class="main-img">
+        <div class="main-img" ref="target">
           <img src="../../assets/static/main-img.png" alt="" />
+          <!-- 蒙层小滑块 -->
+          <div class="layer" v-show="!isOutside" :style="{ left: `${left}px`, top: `${top}px`, borderRadius: '12px' }">
+          </div>
+          <!-- 放大镜大图 -->
+          <!-- <div class="large" :style="[
+            {
+              backgroundImage: `url('../../assets/static/main-img.png')`,
+              // backgroundImage: `url(${imageList[activeIndex]})`,
+              backgroundPositionX: `${positionX}px`,
+              backgroundPositionY: `${positionY}px`,
+            },
+          ]" v-show="!isOutside"></div> -->
+          <div class="large" :style="[{
+            backgroundImage: `url(${url})`,
+            backgroundPositionX: `${positionX}px`,
+            backgroundPositionY: `${positionY}px`,
+          }]" v-show="!isOutside"></div>
+
         </div>
       </div>
       <!-- 右侧下单区域 -->
@@ -73,8 +91,39 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useMouseInElement } from '@vueuse/core'
+import url from '../../assets/static/main-img.png'
+
+
+const target = ref(null)
+
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+const left = ref(0)
+const top = ref(0)
+const positionX = ref(0)
+const positionY = ref(0)
+watch([elementX, elementY, isOutside], () => {
+  if (isOutside.value) return
+
+  const containerWidth = 624
+  const containerHeight = 624
+  const layerSize = 197
+  const scale = 2 // 放大倍数
+
+  // 计算鼠标位置，考虑蒙层的一半尺寸
+  const halfLayer = layerSize / 2
+  left.value = Math.max(halfLayer, Math.min(elementX.value, containerWidth - halfLayer)) - halfLayer
+  top.value = Math.max(halfLayer, Math.min(elementY.value, containerHeight - halfLayer)) - halfLayer
+
+  // 计算放大图位置，使用比例计算
+  positionX.value = -(left.value / containerWidth) * (800 - 400)
+  positionY.value = -(top.value / containerHeight) * (800 - 400)
+})
+
+
+
 
 const route = useRoute()
 
@@ -95,4 +144,4 @@ const handleImgMoveOver = (index: number) => {
 </script>
 
 <style scoped src="./Merchandis.scss"></style>
-<style scoped></style>
+<style scoped lang="scss"></style>

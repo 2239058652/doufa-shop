@@ -311,11 +311,36 @@
         .main-img {
             width: 624px;
             height: 624px;
+            position: relative;
 
             img {
                 width: 624px;
                 height: 624px;
                 object-fit: cover;
+            }
+
+            .layer {
+                width: 197px;
+                height: 197px;
+                background: rgba(0, 0, 0, 0.2);
+                // 绝对定位 然后跟随咱们鼠标控制left和top属性就可以让滑块移动起来
+                left: 0;
+                top: 0;
+                position: absolute;
+            }
+
+            .large {
+                position: absolute;
+                top: 0;
+                left: 654px;
+                width: 400px;
+                height: 400px;
+                z-index: 1;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                background-repeat: no-repeat;
+                background-size: 800px 800px; // 保持2倍大小
+                background-color: #f8f8f8;
+                border: 1px solid #ddd;
             }
         }
     }
