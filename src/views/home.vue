@@ -658,10 +658,8 @@ setInterval(() => {
 
 // 跳转商品详情
 const routerToDetail = (item: any) => {
-  console.log(item)
   router.push({
     path: `/detail/${item.id}`,
-    query: item
   })
 }
 
