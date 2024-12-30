@@ -53,15 +53,33 @@
         position: relative;
         cursor: pointer;
 
+        &:hover {
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         span {
           height: 22px;
           font-weight: 500;
           font-size: 16px;
           line-height: 22px;
         }
+
+
       }
 
       div:nth-child(1) {
+        width: 22px;
+        height: 20px;
+        margin-right: 7px;
+
+        img {
+          width: 22px;
+          height: 20px;
+          object-fit: cover;
+        }
+      }
+
+      div:nth-child(2) {
         background: #F83126;
 
         span {
@@ -73,7 +91,7 @@
         }
       }
 
-      div:nth-child(2) {
+      div:nth-child(3) {
         background: #FED2CF;
 
         span {

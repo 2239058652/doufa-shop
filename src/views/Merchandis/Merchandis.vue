@@ -4,12 +4,17 @@
     <!-- 顶部logo搜索框 -->
     <div class="logo-search">
       <div class="logo">
-        <img src="../../assets/image/fxdfpure.png" alt="" />
+        <a href="/">
+          <img src="../../assets/image/fxdfpure.png" alt="" />
+        </a>
       </div>
       <div class="search">
         <a-input :bordered="false" style="width: 100%;height: 100%;" v-model:value="inputVal" placeholder="宝贝搜索">
           <template #suffix>
             <div class="s-suffix">
+              <div>
+                <img src="../../assets/image/photo.png" alt="" />
+              </div>
               <div><span>搜索</span></div>
               <div><span>搜本店</span></div>
             </div>
@@ -64,7 +69,7 @@
 
           <!-- 右侧主大图 -->
           <div class="main-img" ref="target">
-            <img :src="imageBaseUrl" alt="" />
+            <img :src="imageBaseUrl" alt="加载中。。。" />
             <!-- 蒙层小滑块 -->
             <div class="img-layer" v-show="!isOutside"
               :style="{ left: `${left}px`, top: `${top}px`, borderRadius: '12px' }">
