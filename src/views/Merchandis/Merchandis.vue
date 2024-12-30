@@ -125,10 +125,10 @@
               <span>数 量：</span>
               <a-input-number v-model:value="goodsDetailNum" :min="0" :max="1000000">
                 <template #addonBefore>
-                  <div class="jian" @click="goodsDetailNum--">-</div>
+                  <div class="jian" @click="caculateGoodsNum('reduce')">-</div>
                 </template>
                 <template #addonAfter>
-                  <div class="jia" @click="goodsDetailNum++">+</div>
+                  <div class="jia" @click="caculateGoodsNum('add')">+</div>
                 </template>
               </a-input-number>
             </div>
@@ -219,8 +219,58 @@
           <div class="spdf" v-else></div>
         </a-skeleton>
 
-        <!-- 夫东下单框 -->
-        <div class="float_order"></div>
+        <!-- 浮动下单框 -->
+        <div class="float_order">
+          <a-skeleton :loading="!goodsDetail.storeInfo" active>
+            <!-- 图片和售价 -->
+            <div class="float_top_img_price">
+              <img src="../../assets/static/shangpinbg.png" alt="" />
+              <div>
+                <span>售价：</span>
+                <span>¥{{ goodsDetail?.storeInfo?.price }}</span>
+              </div>
+            </div>
+            <div class="colors">
+              <div class="colors_title">颜 色：</div>
+              <div class="colors_box">
+                <div v-for="(item, index) in goodsDetail?.productAttr[0]?.attr_values" :key="index">
+                  <div id="colors_item" @click="colorIndex = index" :class="colorIndex == index ? 'active' : ''">
+                    <div>{{ item }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="colors">
+              <div class="colors_title">尺 码： </div>
+              <div class="colors_box">
+                <div v-for="(item, index) in goodsDetail?.productAttr[1]?.attr_values" :key="index">
+                  <div id="colors_item" @click="sizeIndex = index" :class="sizeIndex == index ? 'active' : ''">
+                    <div>{{ item }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="goods-num">
+              <span>数 量：</span>
+              <a-input-number v-model:value="goodsDetailNum" :min="0" :max="1000000">
+                <template #addonBefore>
+                  <div class="jian" @click="caculateGoodsNum('reduce')">-</div>
+                </template>
+                <template #addonAfter>
+                  <div class="jia" @click="caculateGoodsNum('add')">+</div>
+                </template>
+              </a-input-number>
+            </div>
+            <div class="goods_func">
+              <div>
+                <span>立即下单</span>
+              </div>
+              <div>
+                <span>加入购物车</span>
+              </div>
+            </div>
+          </a-skeleton>
+        </div>
       </div>
     </div>
   </div>
@@ -322,6 +372,20 @@ const handleImgMoveOver = (item: any, index: number) => {
 // 转换时间戳
 const formatTime = (time: number) => {
   return moment(time * 1000).format("YYYY-MM-DD HH:mm")
+}
+
+// 购物数量jian
+const caculateGoodsNum = (type: string) => {
+  switch (type) {
+    case 'add':
+      goodsDetailNum.value++
+      break
+    case 'reduce':
+      if (goodsDetailNum.value > 0) {
+        goodsDetailNum.value--
+      }
+      break
+  }
 }
 
 fetchGoodsDetail()

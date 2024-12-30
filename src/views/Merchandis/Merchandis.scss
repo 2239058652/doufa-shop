@@ -553,9 +553,9 @@
           cursor: pointer;
           border-radius: 3px;
           padding: 11px 18px;
-          // white-space: nowrap; // 强制一行显示
-          // overflow: hidden; // 超出隐藏
-          // text-overflow: ellipsis; // 省略号
+          white-space: nowrap; // 强制一行显示
+          overflow: hidden; // 超出隐藏
+          text-overflow: ellipsis; // 省略号
 
           &.active {
             border: 0.1px solid #f83126;
@@ -895,6 +895,185 @@
         opacity: 1;
         transform: translateY(0);
         visibility: visible;
+      }
+
+      .float_top_img_price {
+        width: 566px;
+        height: 138px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 30px;
+        margin-top: 39px;
+        margin-left: 39px;
+
+        img {
+          width: 138px;
+          height: 138px;
+          object-fit: cover;
+        }
+
+        div {
+          width: 200px;
+          height: 138px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+          color: #F83126;
+
+          span:nth-child(1) {
+            width: 72px;
+            height: 33px;
+            font-size: 24px;
+            line-height: 33px;
+          }
+
+          span:nth-child(2) {
+            width: 125px;
+            height: 53px;
+            font-size: 38px;
+            line-height: 53px;
+          }
+        }
+      }
+
+      .colors {
+        width: 566px;
+        height: auto;
+        display: flex;
+        margin-top: 30px;
+        margin-left: 39px;
+
+        .colors_title {
+          font-weight: 400;
+          font-size: 14px;
+          color: #999999;
+          line-height: 20px;
+          text-align: left;
+          font-style: normal;
+          margin-top: 20px;
+          width: 70px;
+          height: 20px;
+        }
+
+        .colors_box {
+          width: 566px;
+          height: auto;
+          display: flex;
+          flex-wrap: wrap;
+
+          #colors_item {
+            border: 0.1px solid #c4c4c6;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-size: 14px;
+            margin: 10px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            padding: 11px 18px;
+            white-space: nowrap; // 强制一行显示
+            overflow: hidden; // 超出隐藏
+            text-overflow: ellipsis; // 省略号
+
+            &.active {
+              border: 0.1px solid #f83126;
+              color: #f83126;
+            }
+          }
+
+          #colors_item:hover {
+            border: 0.1px solid #f83126;
+            color: #f83126;
+          }
+        }
+      }
+
+      .goods-num {
+        margin-top: 30px;
+        margin-left: 39px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        span {
+          width: 70px;
+          height: 20px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #999999;
+          line-height: 20px;
+          text-align: left;
+          font-style: normal;
+          margin-right: 10px;
+        }
+
+        .jian {
+          cursor: pointer;
+        }
+
+        .jia {
+          cursor: pointer;
+        }
+      }
+
+      .goods_func {
+        width: 566px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        margin-top: 40px;
+        margin-left: 39px;
+        margin-bottom: 50px;
+
+        div {
+          width: 226px;
+          height: 56px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #F83126;
+          border-radius: 6px;
+          border: 1px solid #F83126;
+          cursor: pointer;
+
+          &:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          }
+
+          span {
+            width: 56px;
+            height: 20px;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            font-size: 14px;
+            color: #FFFFFF;
+            line-height: 20px;
+            text-align: left;
+            font-style: normal;
+          }
+        }
+
+        div:nth-child(2) {
+          background: #FFFFFF;
+
+          span {
+            width: 70px;
+            height: 20px;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            font-size: 14px;
+            color: #F83126;
+            line-height: 20px;
+            text-align: center;
+            font-style: normal;
+          }
+        }
       }
     }
   }
