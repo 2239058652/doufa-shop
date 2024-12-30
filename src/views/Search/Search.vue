@@ -113,15 +113,9 @@
             </div>
           </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center;margin-top: 20px;width: 1560px;">
-          <a-locale-provider :locale="locale">
-            <a-pagination v-model:current="current" :pageSizeOptions="[24, 48, 72, 96, 120]" :defaultPageSize="24"
-              :total="500" show-quick-jumper show-size-changer />
-          </a-locale-provider>
-
-        </div>
       </a-skeleton>
     </div>
+    <Pagination v-model:current="currentPage" v-model:pageSize="pageSize" :total="total" @change="getProductsList" />
   </div>
 </template>
 
@@ -131,12 +125,14 @@ import { onMounted, onUnmounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { getCategory, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
-import zhCN from 'ant-design-vue'
+import Pagination from '@/components/pagination/index.vue'
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
 
-const locale = zhCN
+const currentPage = ref(1)
+const pageSize = ref(24)
+const total = ref(0)
 
 
 const inputVal = ref('')
@@ -177,14 +173,13 @@ const getCategoryList = () => {
 
 // 获取商品列表
 const getProductsList = () => {
-  getProducts({ page: page.value, limit: 18 }).then((res: any) => {
+  getProducts({ page: currentPage.value, limit: pageSize.value }).then((res: any) => {
     if (res.status == 200) {
-      productsList.value = [...productsList.value, ...res.data.list]
-      page.value++
+      productsList.value = res.data.list
+      total.value = res.data.count
     } else {
       messageApi.error(res.msg)
     }
-
   })
 }
 
@@ -197,3 +192,4 @@ getProductsList()
 </script>
 
 <style src="./Search.scss" scoped></style>
+<style scoped lang="scss"></style>
