@@ -210,12 +210,30 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useMouseInElement } from '@vueuse/core'
+import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail } from '@/api/store'
 import { message } from 'ant-design-vue'
 import moment from "moment"
+
+
+// 商品详情框检测滚动浮现出来
+const el = ref<HTMLElement | null>(null)
+const { y: scrollYval } = useScroll(el, { behavior: 'auto' })
+watch([scrollYval], () => {
+  const floatOrder = document.querySelector('.float_order')
+  floatOrder?.classList.add('show')
+  if (scrollYval.value >= 600) {
+    floatOrder?.classList.add('show')
+  } else {
+    floatOrder?.classList.remove('show')
+  }
+})
+onMounted(() => {
+  el.value = document.querySelector('.router-view')
+})
+
 
 const [messageApi, contextHolder] = message.useMessage()
 
