@@ -6,7 +6,6 @@ const locale = zhCN
 </script>
 
 <template>
-
   <a-config-provider :locale="locale">
     <RouterView />
   </a-config-provider>

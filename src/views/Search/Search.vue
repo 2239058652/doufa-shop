@@ -142,9 +142,7 @@ const activeIndex = ref(0)
 const tabsIndex = ref(0)
 const cartCount = ref(113)
 const productsList = ref<any>([])
-const page = ref(1)
 const token = localStorage.getItem('token')
-const current = ref(6)
 
 
 const categoryList = ref<any>([])
