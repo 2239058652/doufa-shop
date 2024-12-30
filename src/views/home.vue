@@ -33,7 +33,7 @@
                 <div class="photo-sou">
                   <img src="../assets/image/photo.png" alt="识图" />
                 </div>
-                <div class="sousuo-btn">
+                <div class="sousuo-btn" @click="$router.push('/search')">
                   <span>搜索</span>
                 </div>
               </div>

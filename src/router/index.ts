@@ -26,6 +26,16 @@ const router = createRouter({
           }
         },
         {
+          path: 'search',
+          name: 'Search',
+          component: () => import('@/views/Search/Search.vue'),
+          meta: {
+            title: '商品搜索页',  // 标题必须设置
+            requireSidebar: false,  // 是否需要侧边栏菜单
+            hidden: true  // 不需要侧边栏设置为true
+          }
+        },
+        {
           path: 'detail/:id',
           name: 'Detail',
           component: () => import('@/views/Merchandis/Merchandis.vue'),
@@ -223,12 +233,16 @@ const router = createRouter({
       path: '/404',
       name: '404page',
       component: () => import('@/views/Errors/404.vue'),
+      meta: {
+        title: '404页面',
+        hidden: true
+      },
     },
     {
       path: '/:pathMatch(.*)',
       redirect: '/404',
       meta: {
-        title: '404页面',
+        title: '错误处理页面',
         hidden: true
       },
     }
