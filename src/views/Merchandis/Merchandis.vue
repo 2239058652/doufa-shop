@@ -149,19 +149,26 @@
               </div>
             </div>
             <div class="oders-btn">
-              <div class="oders-fc_left">
-                <div class="fc_text">共2件</div>
-                <div>
-                  <span class="fc_text">合计金额：</span>
-                  <span class="fc_price">698.01</span>
-                  <span class="fc_text">元</span>
-                </div>
+              <div>
+                <span>立即下单</span>
               </div>
-              <div class="oders-fc_right">
-                <div class="fc_r_text">已选清单</div>
-                <div>
-                  <img src="../../assets/image/fixed_toTop.png" alt="" />
-                </div>
+              <div>
+                <span>加入购物车</span>
+              </div>
+              <div>
+                <span>加入货架</span>
+              </div>
+              <div>
+                <span>一件上传</span>
+              </div>
+              <div>
+                <span>站内同款</span>
+              </div>
+              <div>
+                <span>
+                  <img src="../../assets/image/fixed_live.png" alt="" />
+                </span>
+                <span>收藏</span>
               </div>
             </div>
           </div>
@@ -182,7 +189,23 @@
         </div>
       </div>
     </div>
-    <div class="goods-detail"></div>
+
+    <!-- 商品详情区 -->
+    <div class="goods-detail">
+      <!-- 商品详情和代发说明切换 -->
+      <div class="goods-tabs">
+        <div :class="tabsIndex == 0 ? 'tabs_active' : 'tabs_unactive'" @click="tabsIndex = 0">商品详情</div>
+        <div :class="tabsIndex == 1 ? 'tabs_active' : 'tabs_unactive'" @click="tabsIndex = 1">代发说明</div>
+      </div>
+      <!-- 我是一条线 -->
+      <div class="woshiyitiaoxian"></div>
+      <!-- 商品详情 -->
+      <div class="goods_detail_box">
+        <div class="spxq" v-if="tabsIndex == 0"></div>
+        <div class="spdf" v-else></div>
+        <div class="float_order"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -231,6 +254,7 @@ const inputVal = ref('')
 const rateVal = ref(4.6)
 const imgIndex = ref(0)
 const colorIndex = ref(0)
+const tabsIndex = ref(0)
 const sizeIndex = ref(0)
 const goodsDetailNum = ref(0)
 
