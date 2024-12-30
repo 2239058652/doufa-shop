@@ -810,6 +810,7 @@
         align-items: flex-start;
         gap: 66px;
         margin-top: 46px;
+        position: relative;
 
         .spxq {
             width: 820px;
@@ -831,6 +832,9 @@
             box-shadow: 0px 0px 11px 0px #E8E8E8;
             border-radius: 20px;
             border: 1px solid #E8E8E8;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
         }
     }
 }
