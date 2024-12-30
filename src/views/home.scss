@@ -73,20 +73,27 @@
       width: 782px;
       height: 50px;
       border: 2px solid #f83126;
+      padding: 2px;
       border-radius: 8px;
       color: #FFFFFF;
       position: relative;
 
+      // 下拉选择框
+      .func-sou-prefix {}
+
       .func-sou-suffix {
-        position: relative;
-        width: 128px;
-        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 19px;
+        position: absolute;
+        right: 0px;
 
         .photo-sou {
-          position: absolute;
-          top: 8px;
-          right: 109px;
           cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
           img {
             width: 22px;
@@ -104,20 +111,19 @@
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          position: absolute;
-          right: -10px;
-          top: -2px;
+
+          &:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
 
           span {
             width: 32px;
             height: 21px;
-            font-family: MicrosoftYaHei, MicrosoftYaHei;
             font-weight: bold;
             font-size: 16px;
             color: #FFFFFF;
             line-height: 21px;
             text-align: left;
-            font-style: normal;
           }
         }
       }

@@ -18,12 +18,15 @@
       <div class="func-sou">
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
-          <a-input v-model:value="inputVal" :bordered="false" placeholder="请搜索产品名称、货号">
+          <a-input v-model:value="inputVal" :bordered="false" placeholder="请搜索产品名称、货号"
+            style="width: 100%;height: 100%;">
             <template #prefix>
-              <a-select :bordered="false" v-model:value="selectVal">
-                <a-select-option value="jack">宝贝货号</a-select-option>
-                <a-select-option value="lucy">档口搜索</a-select-option>
-              </a-select>
+              <div class="func-sou-prefix">
+                <a-select :bordered="false" v-model:value="selectVal">
+                  <a-select-option value="jack">宝贝货号</a-select-option>
+                  <a-select-option value="lucy">档口搜索</a-select-option>
+                </a-select>
+              </div>
             </template>
             <template #suffix>
               <div class="func-sou-suffix">
