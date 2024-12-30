@@ -201,8 +201,25 @@
       <div class="woshiyitiaoxian"></div>
       <!-- 商品详情 -->
       <div class="goods_detail_box">
-        <div class="spxq" v-if="tabsIndex == 0"></div>
-        <div class="spdf" v-else></div>
+        <!-- 商品详情 -->
+        <a-skeleton :loading="!goodsDetail.storeInfo" active>
+          <div class="spxq" v-if="tabsIndex == 0">
+            <div class="norms">
+              <div class="norms_item" v-for="(item, index) in goodsDetail?.attribute" :key="index">
+                <a-tooltip placement="top">
+                  <template #title>{{ item }}</template>
+                  <span>{{ item }}</span>
+                </a-tooltip>
+              </div>
+            </div>
+            <!-- 商品详情描述富文本 -->
+            <div v-html="goodsDetail?.storeInfo.description" class="goods_description"></div>
+          </div>
+          <!-- 代发说明 -->
+          <div class="spdf" v-else></div>
+        </a-skeleton>
+
+        <!-- 夫东下单框 -->
         <div class="float_order"></div>
       </div>
     </div>
