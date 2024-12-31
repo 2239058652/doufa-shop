@@ -19,7 +19,7 @@
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
           <a-input v-model:value="inputVal" :bordered="false" placeholder="请搜索产品名称、货号"
-            style="width: 100%;height: 100%;">
+            style="width: 100%; height: 100%">
             <template #prefix>
               <div class="func-sou-prefix">
                 <a-select :bordered="false" v-model:value="selectVal">
@@ -30,8 +30,10 @@
             </template>
             <template #suffix>
               <div class="func-sou-suffix">
+                <!-- 以图搜索图标功能 -->
                 <div class="photo-sou">
-                  <img src="../assets/image/photo.png" alt="识图" />
+                  <!-- 以图搜索封装组件 -->
+                  <Popover />
                 </div>
                 <div class="sousuo-btn" @click="$router.push('/search')">
                   <span>搜索</span>
@@ -70,7 +72,8 @@
           <span>商品分类</span>
           <img src="../assets/image/weitu.png" alt="" />
         </div>
-        <!-- 商品分类 --> <!-- 分类列表 -->
+        <!-- 商品分类 -->
+        <!-- 分类列表 -->
         <div class="shop-cate">
           <a-skeleton :loading="categoryList.length == 0" active>
             <div class="cate-item" v-for="item in categoryList" :key="item.id">
@@ -105,7 +108,6 @@
               </a-popover>
             </div>
           </a-skeleton>
-
         </div>
       </div>
       <!-- 中间内容区 -->
@@ -163,7 +165,6 @@
       </div>
       <!-- 右侧内容区 -->
       <div class="s-s-right">
-
         <!-- 登录之后展示的个人信息部分 -->
         <div class="r-t">
           <div class="r-t-l">
@@ -234,7 +235,7 @@
                     text-align: left;
                     gap: 12px;
                   ">
-                  <div style="cursor: pointer;">切换账号</div>
+                  <div style="cursor: pointer">切换账号</div>
                   <div class="longin-out" @click="handleOutLogin">退出</div>
                 </div>
               </div>
@@ -291,9 +292,7 @@
             </div>
             <div class="unlogin-btn">
               <button class="btn-login" @click="handleLogin">登录</button>
-              <button class="btn-register" @click="handleRegister">
-                注册
-              </button>
+              <button class="btn-register" @click="handleRegister"> 注册 </button>
             </div>
           </div>
         </div>
@@ -594,13 +593,14 @@ import { message } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
+import Popover from '@/components/photopop/index.vue'  // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
 
-const loginOut = inject('loginOut') as any  // 获取退出登录弹窗
-const loginModalRef = inject('loginModalRef') as any  // 获取退出登录弹窗
-const registerModalRef = inject('registerModalRef') as any  // 获取退出登录弹窗
+const loginOut = inject('loginOut') as any // 获取退出登录弹窗
+const loginModalRef = inject('loginModalRef') as any // 获取退出登录弹窗
+const registerModalRef = inject('registerModalRef') as any // 获取退出登录弹窗
 
 const inputVal = ref('')
 const selectVal = ref('jack')
@@ -614,6 +614,7 @@ const productsList = ref<any>([])
 const page = ref(1)
 const token = localStorage.getItem('token')
 
+// 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用防抖包装滚动处理函数
 const handleScroll = debounce((e: Event) => {
   const target = e.target as HTMLElement
@@ -621,20 +622,19 @@ const handleScroll = debounce((e: Event) => {
     getProductsList()
   }
 }, 200) // 200ms的防抖延迟
-
 onMounted(() => {
   const routerView = document.querySelector('.router-view')
   if (routerView) {
     routerView.addEventListener('scroll', handleScroll)
   }
 })
-
 onUnmounted(() => {
   const routerView = document.querySelector('.router-view')
   if (routerView) {
     routerView.removeEventListener('scroll', handleScroll)
   }
 })
+
 // 好评商品列表
 const hplist = ref([
   {
@@ -647,22 +647,14 @@ const hplist = ref([
   }
 ])
 
-const categoryList = ref<any>([])
-const bannerList = ref<any>([])
-const bannerActiveList = ref<any>([])
-const currentIndex = ref(1)
-setInterval(() => {
-  if (currentIndex.value > 5) {
-    currentIndex.value = 1
-    return
-  }
-  currentIndex.value++
-}, 1000)
+const categoryList = ref<any>([]) //分类列表
+const bannerList = ref<any>([]) //轮播图列表
+const bannerActiveList = ref<any>([]) //底部banner
 
 // 跳转商品详情
 const routerToDetail = (item: any) => {
   router.push({
-    path: `/detail/${item.id}`,
+    path: `/detail/${item.id}`
   })
 }
 
@@ -699,10 +691,8 @@ const getProductsList = () => {
     } else {
       messageApi.error(res.msg)
     }
-
   })
 }
-
 
 // 登录
 const handleLogin = () => {
@@ -762,7 +752,6 @@ getProductsList()
 :deep(.slick-slide h3) {
   color: #fff;
 }
-
 
 .longin-out {
   cursor: pointer;

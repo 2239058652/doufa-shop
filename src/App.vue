@@ -6,6 +6,7 @@ const locale = zhCN
 </script>
 
 <template>
+  <!-- 全局中文 -->
   <a-config-provider :locale="locale">
     <RouterView />
   </a-config-provider>
