@@ -31,7 +31,8 @@
             <template #suffix>
               <div class="func-sou-suffix">
                 <div class="photo-sou">
-                  <img src="../../assets/image/photo.png" alt="识图" />
+                  <!-- 以图搜索封装组件 -->
+                  <Popover @beforeUpload="beforeUpload" />
                 </div>
                 <div class="sousuo-btn">
                   <span>搜索</span>
@@ -126,6 +127,7 @@ import { useRouter } from 'vue-router'
 import { getCategory, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
+import Popover from '@/components/phopopver/index.vue'  // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
@@ -147,6 +149,10 @@ const token = localStorage.getItem('token')
 
 const categoryList = ref<any>([])
 
+// 以图搜索
+const beforeUpload = (file: any) => {
+  console.log(file, 'aaaaaaaaaa')
+}
 
 // 跳转商品详情
 const routerToDetail = (item: any) => {

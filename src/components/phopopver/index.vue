@@ -43,7 +43,7 @@ const props = defineProps({
     default: () => []
   }
 })
-const fileList = ref(props.fileList)
+const fileList = ref(props?.fileList)
 
 const photoPopoverVisible = ref<boolean>(false)
 
