@@ -32,7 +32,7 @@ const handleChange = (page: number, size: number) => {
   pageSize.value = size
   emit('update:current', page)
   emit('update:pageSize', size)
-  emit('change', { page, size })
+  emit('change')
 }
 
 const handleSizeChange = (current: number, size: number) => {

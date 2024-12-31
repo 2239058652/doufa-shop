@@ -33,7 +33,7 @@
                 <!-- 以图搜索图标功能 -->
                 <div class="photo-sou">
                   <!-- 以图搜索封装组件 -->
-                  <Popover />
+                  <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
                 </div>
                 <div class="sousuo-btn" @click="$router.push('/search')">
                   <span>搜索</span>
@@ -593,7 +593,7 @@ import { message } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
-import Popover from '@/components/photopop/index.vue'  // 以图搜索
+import Popover from '@/components/phopopver/index.vue'  // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
@@ -613,6 +613,8 @@ const loading = ref(false)
 const productsList = ref<any>([])
 const page = ref(1)
 const token = localStorage.getItem('token')
+
+const fileList = ref([])  // 以图搜索list
 
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用防抖包装滚动处理函数
@@ -707,6 +709,11 @@ const handleRegister = () => {
 // 退出登录
 const handleOutLogin = () => {
   loginOut.value = true
+}
+
+// 以图搜索
+const beforeUpload = (file: any) => {
+  console.log(file, 'aaaaaaaaaa')
 }
 
 getBannerList()

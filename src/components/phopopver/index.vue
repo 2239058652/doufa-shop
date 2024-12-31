@@ -4,14 +4,15 @@
     <template #title>
       <div class="title">
         <div>以图搜款</div>
-        <img src="../../assets/image/close.png" alt="" @click="photoPopoverVisible = false" />
+        <img src="../../assets/image/close.png" alt="" @click="handleClose" />
       </div>
     </template>
+
     <template #content>
       <div class="content">
         <div class="upload">
           <a-upload-dragger v-model:fileList="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
-            @change="handleChange" @drop="handleDrop">
+            :beforeUpload="beforeUpload">
             <div class="drag">
               <img src="../../assets/image/uploadBg.png" alt="" />
               <div>拖拽所需图片至选框内</div>
@@ -20,41 +21,40 @@
           </a-upload-dragger>
         </div>
         <div class="btn">
-          <a-upload v-model:file-list="fileList" @change="handleChange">
+          <a-upload v-model:file-list="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
+            :beforeUpload="beforeUpload">
             <span>选择文件</span>
           </a-upload>
         </div>
       </div>
     </template>
+
     <img src="../../assets/image/photo.png" alt="识图" />
   </a-popover>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { InboxOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
-import type { UploadChangeParam } from 'ant-design-vue'
-const fileList = ref([])
-const handleChange = (info: UploadChangeParam) => {
-  const status = info.file.status
-  if (status !== 'uploading') {
-    console.log(info.file, info.fileList)
+
+const emit = defineEmits(['beforeUpload'])
+const props = defineProps({
+  fileList: {
+    type: Array,
+    default: () => []
   }
-  if (status === 'done') {
-    message.success(`${info.file.name} file uploaded successfully.`)
-  } else if (status === 'error') {
-    message.error(`${info.file.name} file upload failed.`)
-  }
+})
+const fileList = ref(props.fileList)
+
+const photoPopoverVisible = ref<boolean>(false)
+
+const handleClose = () => {
+  photoPopoverVisible.value = false
 }
 
-function handleDrop(e: DragEvent) {
-  console.log(e, 'DragEvent')
+const beforeUpload = (file: any) => {
+  emit('beforeUpload', file)
+  return false  // 阻止默认行为，不然会上传文件
 }
-
-
-const photoPopoverVisible = ref<boolean>(false)   // 以图搜索的popover控制
-
 </script>
 
 <style scoped lang="scss">
@@ -160,16 +160,12 @@ const photoPopoverVisible = ref<boolean>(false)   // 以图搜索的popover控�
   }
 }
 
-
-// 上传边框消除
 :deep(.css-dev-only-do-not-override-1p3hq3p) {
   border: none;
   background: inherit;
 
-  // 消除上传失败报错
   .ant-upload-list-item-error {
     display: none;
   }
 }
 </style>
-<!-- :where(.css-dev-only-do-not-override-1p3hq3p).ant-upload-wrapper .ant-upload-list .ant-upload-list-item-error -->
