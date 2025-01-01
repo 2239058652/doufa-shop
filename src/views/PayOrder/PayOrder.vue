@@ -31,27 +31,26 @@
               <a-row :gutter="16">
                 <a-col :span="8">
                   <a-form-item label="收货人" name="name" :label-col="{ span: 6 }"
-                    :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.name" />
+                    :rules="[{ required: true, message: '请输入收货人名称' }]">
+                    <a-input v-model:value="formState.name" placeholder="请输入收货人名称" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="8">
                   <a-form-item label="联系方式" name="phone" :label-col="{ span: 6 }"
-                    :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.phone" />
+                    :rules="[{ required: true, message: '请输入收货人联系方式' }]">
+                    <a-input v-model:value="formState.phone" placeholder="请输入收货人联系方式" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="8">
                   <a-form-item label="收货地区" name="selectedOptions" :label-col="{ span: 6 }"
-                    :rules="[{ required: true, message: 'Please input your username!' }]">
+                    :rules="[{ required: true, message: '请选择收货地区' }]">
                     <a-cascader v-model:value="formState.selectedOptions" :options="options" expand-trigger="hover"
-                      placeholder="请选择" />
+                      placeholder="请选择收货地区" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
-                  <a-form-item label="详细地址" name="textarea"
-                    :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.textarea" />
+                  <a-form-item label="详细地址" name="textarea" :rules="[{ required: true, message: '请输入详细地址' }]">
+                    <a-input v-model:value="formState.textarea" placeholder="请输入详细地址" />
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -64,15 +63,9 @@
             <div class="table_info">
               <a-table :dataSource="tableData" :columns="tableColumns" bordered :pagination="false">
                 <template #bodyCell="{ column, record }">
-                  <template v-if="column.key === 'num'">
-                    <a-input-number v-model:value="record.num" :min="0" :max="1000000">
-                      <template #addonBefore>
-                        <div style="cursor: pointer" @click="caculateGoodsNum('reduce', record.num)">-</div>
-                      </template>
-                      <template #addonAfter>
-                        <div style="cursor: pointer" @click="caculateGoodsNum('add', record.num)">+</div>
-                      </template>
-                    </a-input-number>
+                  <template v-if="column.key === 'xint'">
+                    <a-select style="width: 100%;" :options="[{ label: '是', value: '1' }, { label: '否', value: '2' }]"
+                      v-model:value="record.xint" />
                   </template>
                 </template>
               </a-table>
@@ -285,13 +278,13 @@ const tableColumns = ref([
     title: '商品详情',
     dataIndex: 'name',
     key: 'name',
-    align: 'center'
+    align: 'center',
   },
   {
     title: '规格',
     dataIndex: 'age',
     key: 'age',
-    align: 'center'
+    align: 'center',
   },
   {
     title: '数量',
@@ -301,9 +294,10 @@ const tableColumns = ref([
   },
   {
     title: '新塘售后',
-    dataIndex: 'num',
-    key: 'num',
-    align: 'center'
+    dataIndex: 'xint',
+    key: 'xint',
+    align: 'center',
+    width: 200
   },
   {
     title: '优惠',
@@ -333,19 +327,6 @@ const tableData = ref([
   }
 ])
 
-// 购物数量jian
-const caculateGoodsNum = (type: string, num: number) => {
-  switch (type) {
-    case 'add':
-      num++
-      break
-    case 'reduce':
-      if (num > 0) {
-        num--
-      }
-      break
-  }
-}
 
 const formAddressRef = ref<FormInstance>()
 const formState = reactive<any>({
