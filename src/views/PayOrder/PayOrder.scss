@@ -49,12 +49,63 @@
             .address_title {
                 width: 108px;
                 height: 25px;
-                font-weight: 500;
+                font-weight: bold;
                 font-size: 18px;
                 color: #333333;
                 line-height: 25px;
                 margin-top: 20px;
                 margin-left: 25px;
+            }
+
+            .input_textarea {
+                width: 978px;
+                height: 64px;
+                margin-left: 25px;
+                margin-top: 20px;
+                border: 1px solid #F8F8F8;
+                border-radius: 4px;
+                background: #F8F8F8;
+                padding: 1px;
+
+                .suffix {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 90px;
+                    height: 34px;
+                    border-radius: 4px;
+                    background: #F83126;
+                    margin-top: 9px;
+                    cursor: pointer;
+
+                    &:hover {
+                        opacity: 0.9;
+                    }
+
+                    span {
+                        width: 57px;
+                        height: 20px;
+                        font-weight: 400;
+                        font-size: 14px;
+                        color: #FFFFFF;
+                        line-height: 20px;
+                    }
+                }
+            }
+
+            .adress_tishi {
+                width: 544px;
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                color: #999999;
+                line-height: 20px;
+                margin-top: 10px;
+                margin-left: 25px;
+            }
+
+            .form_row {
+                padding: 20px;
             }
         }
 
