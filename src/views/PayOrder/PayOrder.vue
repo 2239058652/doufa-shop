@@ -10,7 +10,7 @@
     <!-- 订单信息, 左右布局，左侧为收货和订单信息，右侧为付款详情 -->
     <div class="oder_info">
       <div class="address_sales_info">
-        <a-form ref="formAddressRef" :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }" labelAlign="left"
+        <a-form ref="formAddressRef" :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }" labelAlign="left"
           :model="formState" name="address" autocomplete="off">
           <div class="address_info">
             <div class="address_title">确认收货信息</div>
@@ -108,7 +108,36 @@
                     </a-form-item>
                   </a-col>
                   <a-col :span="24">
-                    <a-form-item label="处理方式" name="username">
+                    <a-form-item name="username" :colon="false">
+                      <template #label>
+                        <div class="shouhou">
+                          <span>售后处理</span>
+                          <a-popover>
+                            <template #content>
+                              <div class="shouhou_content">新塘售后(仅新塘货品)：
+                                若选择需要售后服务，需向代发团队支付2元售后
+                                费用（平台不收取任何费用）。若不需要售后服
+                                务，则无需支付该费用；但如果商品出现售后问
+                                题，平台与代发团队概不负责。</div>
+                            </template>
+                            <img src="../../assets/image/question.png" alt="" />
+                          </a-popover>
+                        </div>
+                      </template>
+                      <Radio v-model="radioVal" :options="[
+                        { label: '需要售后', value: '1' },
+                        { label: '无需售后', value: '2' }
+                      ]" round />
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="24">
+                    <a-form-item name="username" :colon="false">
+                      <template #label>
+                        <div class="shouhou">
+                          <span>货物处理</span>
+                          <img src="../../assets/image/question.png" alt="" />
+                        </div>
+                      </template>
                       <Checkbox v-model="checkedVal" label="有货先发，无货退款" round />
                     </a-form-item>
                   </a-col>

@@ -158,6 +158,26 @@
           line-height: 25px;
           margin-left: -5px;
         }
+
+        .shouhou {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 4px;
+
+          .shouhou_content {
+            width: 290px;
+            height: 120px;
+            background: #FFFFFF;
+          }
+
+          img {
+            width: 18px;
+            height: 18px;
+            object-fit: cover;
+            cursor: pointer;
+          }
+        }
       }
 
       .xieyi {
