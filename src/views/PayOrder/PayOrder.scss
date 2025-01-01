@@ -5,6 +5,15 @@
     justify-content: center;
     background: #f9f9f9;
     overflow-x: hidden;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    //     /* Chrome, Safari, Opera */
+    // }
+
+    // -ms-overflow-style: none;
+    // /* IE and Edge */
+    // scrollbar-width: none;
 }
 
 .logo {

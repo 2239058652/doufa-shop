@@ -43,7 +43,8 @@
                 <a-col :span="8">
                   <a-form-item label="收货地区" name="username"
                     :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.username" />
+                    <a-cascader :dropdownStyle="{}" v-model:value="value" :options="options" expand-trigger="hover"
+                      placeholder="请选择" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
@@ -68,6 +69,7 @@ import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
+import { regionData, codeToText } from "element-china-area-data"
 
 
 const [messageApi, contextHolder] = message.useMessage()
@@ -75,6 +77,8 @@ const route = useRoute()
 console.log(route.query, 'route')
 
 const textareaVal = ref('')  // 智能识别信息
+
+const options = ref(regionData) //// 省市区选择数据
 
 const formAddressRef = ref<FormInstance>()
 const formState = reactive<any>({
@@ -86,4 +90,8 @@ const formState = reactive<any>({
 </script>
 
 <style src="./PayOrder.scss" scoped></style>
-<style scoped></style>
+<style scoped lang="scss">
+// class="ant-select-dropdown ant-cascader-dropdown css-dev-only-do-not-override-1p3hq3p ant-select-dropdown-placement-bottomLeft"
+// :deep(div.ant-cascader-menus) {
+//   display: none;
+// }</style>
