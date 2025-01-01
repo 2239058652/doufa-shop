@@ -129,3 +129,24 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+
+// 修改级联选择的展开项的滚动条样式
+.ant-cascader-dropdown {
+    .ant-cascader-menus {
+        .ant-cascader-menu {
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #ddd;
+                border-radius: 2px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+        }
+    }
+}
