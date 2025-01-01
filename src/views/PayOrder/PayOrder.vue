@@ -135,37 +135,32 @@
         </a-form>
       </div>
       <div class="pay_info">
-        <div>
-          <span>付款详情</span>
-          <span>共计1件商品</span>
+        <!-- 付款详情头部 -->
+        <div class="payment-header">
+          <span class="title">付款详情</span>
+          <span class="subtitle">共计1件商品</span>
         </div>
-        <div>
-          <span>货品总金额：</span>
-          <span>65.00
-            <span>元</span>
-          </span>
+
+        <!-- 金额明细 -->
+        <div class="amount-item">
+          <span class="label">货品总金额：</span>
+          <span class="value">65.00<span>元</span></span>
         </div>
-        <div>
-          <span>质检金额：</span>
-          <span>1.3
-            <span>元</span>
-          </span>
+        <div class="amount-item">
+          <span class="label">质检金额：</span>
+          <span class="value">1.3<span>元</span></span>
         </div>
-        <div>
-          <span>运费总计：</span>
-          <span>2.99
-            <span>元</span>
-          </span>
+        <div class="amount-item">
+          <span class="label">运费总计：</span>
+          <span class="value">2.99<span>元</span></span>
         </div>
-        <div>
-          <span>服务：</span>
-          <span>1
-            <span>元</span>
-          </span>
+        <div class="amount-item">
+          <span class="label">服务：</span>
+          <span class="value">1<span>元</span></span>
         </div>
 
         <!-- 支付方式 -->
-        <div>
+        <div class="payment-methods">
           <div class="payment-wrapper">
             <div class="payment-row" @click="selectPayment('1')">
               <img v-if="selectedValue === '1'" class="checkmark" src="../../assets/image/checked.png" alt="" />
@@ -173,16 +168,13 @@
                 alt="" />
               <img class="payment-icon" src="../../assets/image/qianbao.png" alt="" />
               <span class="payment-text">钱包支付
-                <span style="
-                    width: 186px;
-                    height: 20px;
-                    font-weight: 400;
-                    font-size: 14px;
-                    color: #ff5c02;
-                    line-height: 20px;
-                  ">（钱包可用余额：¥3209.16）</span>
+                <span
+                  style="width: 186px;height: 20px;font-weight: 400;font-size: 14px;color: #ff5c02;line-height: 20px;">
+                  （钱包可用余额：¥3209.16）
+                </span>
               </span>
             </div>
+
             <div class="payment-row" @click="selectPayment('2')">
               <img v-if="selectedValue === '2'" class="checkmark" src="../../assets/image/checked.png" alt="" />
               <img v-else :class="{ 'is-checked': selectedValue === '2' }" src="../../assets/image/nochecked.png"
@@ -209,18 +201,21 @@
           </div>
         </div>
 
+        <div class="woshiyitiaoxian"></div>
 
-        <!-- 实付金额： 立即付款 -->
+        <!-- 底部按钮 -->
         <div class="bottom_btn">
           <div class="pay_jine">
             <div>实付金额：</div>
             <div>¥22.00</div>
           </div>
-          <div>
+          <div class="btn">
             <span>立即付款</span>
           </div>
         </div>
       </div>
+
+
     </div>
   </div>
 </template>
