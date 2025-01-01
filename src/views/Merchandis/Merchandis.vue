@@ -9,7 +9,7 @@
         </a>
       </div>
       <div class="search">
-        <a-input :bordered="false" style="width: 100%;height: 100%;" v-model:value="inputVal" placeholder="宝贝搜索">
+        <a-input :bordered="false" style="width: 100%; height: 100%" v-model:value="inputVal" placeholder="宝贝搜索">
           <template #suffix>
             <div class="s-suffix">
               <div>
@@ -79,10 +79,9 @@
               {
                 backgroundImage: `url(${imageBaseUrl})`,
                 backgroundPositionX: `${positionX}px`,
-                backgroundPositionY: `${positionY}px`,
-              },
+                backgroundPositionY: `${positionY}px`
+              }
             ]" v-show="!isOutside"></div>
-
           </div>
         </div>
         <!-- 右侧下单区域 -->
@@ -154,7 +153,7 @@
               </div>
             </div>
             <div class="oders-btn">
-              <div>
+              <div @click="payOrderNow">
                 <span>立即下单</span>
               </div>
               <div>
@@ -267,7 +266,7 @@
               </a-input-number>
             </div>
             <div class="goods_func">
-              <div>
+              <div @click="payOrderNow">
                 <span>立即下单</span>
               </div>
               <div>
@@ -283,12 +282,11 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail } from '@/api/store'
 import { message } from 'ant-design-vue'
-import moment from "moment"
-
+import moment from 'moment'
 
 // 商品详情框检测滚动浮现出来
 const el = ref<HTMLElement | null>(null)
@@ -306,9 +304,7 @@ onMounted(() => {
   el.value = document.querySelector('.router-view')
 })
 
-
 const [messageApi, contextHolder] = message.useMessage()
-
 
 const target = ref(null)
 // 放大镜相关代码
@@ -335,10 +331,8 @@ watch([elementX, elementY, isOutside], () => {
   positionY.value = -(top.value / containerHeight) * (800 - 400)
 })
 
-
-
-
 const route = useRoute()
+const router = useRouter()
 
 const inputVal = ref('')
 const rateVal = ref(4.6)
@@ -349,7 +343,7 @@ const sizeIndex = ref(0)
 const goodsDetailNum = ref(0)
 
 const goodsDetail = ref<any>({}) // 商品详情
-const imageBaseUrl = ref('')  // 商品大图
+const imageBaseUrl = ref('') // 商品大图
 
 // 接受商品详情的ID+
 const { id: detailId }: any = route.params
@@ -367,7 +361,6 @@ const fetchGoodsDetail = () => {
   })
 }
 
-
 // 商品图鼠标移入
 const handleImgMoveOver = (item: any, index: number) => {
   imgIndex.value = index
@@ -376,7 +369,7 @@ const handleImgMoveOver = (item: any, index: number) => {
 
 // 转换时间戳
 const formatTime = (time: number) => {
-  return moment(time * 1000).format("YYYY-MM-DD HH:mm")
+  return moment(time * 1000).format('YYYY-MM-DD HH:mm')
 }
 
 // 购物数量jian
@@ -390,6 +383,22 @@ const caculateGoodsNum = (type: string) => {
         goodsDetailNum.value--
       }
       break
+  }
+}
+
+// 立即下单
+const payOrderNow = () => {
+  if (goodsDetailNum.value <= 0) {
+    messageApi.error('请选择商品数量！')
+    return
+  } else {
+    router.push({
+      path: '/payorder',
+      query: {
+        id: detailId,
+        num: goodsDetailNum.value
+      }
+    })
   }
 }
 

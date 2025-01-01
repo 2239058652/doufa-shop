@@ -21,7 +21,7 @@
           </a-upload-dragger>
         </div>
         <div class="btn">
-          <a-upload v-model:file-list="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
+          <a-upload v-model:fileList="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
             :beforeUpload="beforeUpload">
             <span>选择文件</span>
           </a-upload>

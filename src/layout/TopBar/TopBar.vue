@@ -89,7 +89,7 @@
     </div>
     <div class="router-view" id="router-view" v-if="showSidebar">
       <router-view />
-      <Footer />
+      <Footer v-if="showFooter" />
 
       <!-- 右侧悬浮功能区 -->
       <RightMenu />
@@ -124,6 +124,11 @@ const route = useRoute()
 // 计算属性判断是否需要左侧菜单
 const showSidebar = computed(() => {
   return route.meta.requireSidebar == false
+})
+
+// 计算属性判断是否需要底部footer
+const showFooter = computed(() => {
+  return route.meta.requireFooter == false ? false : true
 })
 
 const handleClick = (path: string) => {

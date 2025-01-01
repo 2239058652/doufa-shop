@@ -44,7 +44,27 @@ const router = createRouter({
             requireSidebar: false,  // 是否需要侧边栏菜单
             hidden: true  // 不需要侧边栏设置为true
           }
-        }
+        },
+        {
+          path: 'payorder',
+          name: 'PayOrder',
+          component: () => import('@/views/PayOrder/PayOrder.vue'),
+          meta: {
+            title: '支付订单',  // 标题必须设置
+            requireSidebar: false,  // 是否需要侧边栏菜单
+            hidden: true,  // 不需要侧边栏设置为true
+            requireFooter: false  // 不需要底部设置为 false,默认为true
+          },
+          beforeEnter: (to, from, next) => {
+            const token = localStorage.getItem('token')
+            if (token) {
+              next()
+            } else {
+              message.warning('请登录后再访问！')
+              next(from.fullPath)
+            }
+          },
+        },
       ]
     },
     {
