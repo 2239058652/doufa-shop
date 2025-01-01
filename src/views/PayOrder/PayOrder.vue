@@ -18,7 +18,7 @@
               <a-input type="textarea" :auto-size="{ minRows: 1, maxRows: 3 }" v-model:value="textareaVal"
                 :bordered="false" placeholder="粘贴文本，智能识别收货信息">
                 <template #suffix>
-                  <div class="suffix">
+                  <div class="suffix" @click="getResolutionContent">
                     <span>快速识别</span>
                   </div>
                 </template>
@@ -30,28 +30,28 @@
             <div class="form_row">
               <a-row :gutter="16">
                 <a-col :span="8">
-                  <a-form-item label="收货人" name="username" :label-col="{ span: 6 }"
+                  <a-form-item label="收货人" name="name" :label-col="{ span: 6 }"
                     :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.username" />
+                    <a-input v-model:value="formState.name" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="8">
-                  <a-form-item label="联系方式" name="username" :label-col="{ span: 6 }"
+                  <a-form-item label="联系方式" name="phone" :label-col="{ span: 6 }"
                     :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.username" />
+                    <a-input v-model:value="formState.phone" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="8">
-                  <a-form-item label="收货地区" name="username" :label-col="{ span: 6 }"
+                  <a-form-item label="收货地区" name="selectedOptions" :label-col="{ span: 6 }"
                     :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-cascader v-model:value="formState.value" :options="options" expand-trigger="hover"
+                    <a-cascader v-model:value="formState.selectedOptions" :options="options" expand-trigger="hover"
                       placeholder="请选择" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
-                  <a-form-item label="详细地址" name="username"
+                  <a-form-item label="详细地址" name="textarea"
                     :rules="[{ required: true, message: 'Please input your username!' }]">
-                    <a-input v-model:value="formState.username" />
+                    <a-input v-model:value="formState.textarea" />
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -228,6 +228,41 @@ import type { FormInstance } from 'ant-design-vue'
 import { regionData, codeToText } from 'element-china-area-data'
 import Checkbox from '@/components/checkbox/index.vue'
 import Radio from '@/components/radio/index.vue'
+import AddressParse, { Utils } from 'address-parse'
+
+
+const adressValue = ref<any>([])
+
+const getResolutionContent = () => {
+  const [result] = AddressParse.parse(textareaVal.value, true)
+  console.log(result, 'aaaaaaaaa')
+
+  const {
+    province = "", // 省
+    city = "", // 城市
+    area = "", // 区
+    details = "",//详细地址
+    mobile = "",//手机号码
+    name = "",//姓名
+  } = result
+  const resultes = Utils.getAreaByAddress({ province, city, area })
+  const [a, b, c] = Utils.getTargetAreaListByCode(
+    "province",
+    resultes.code,
+    true
+  )
+  adressValue.value = [
+    a?.code.slice(0, 2) || "",
+    b?.code.slice(0, 4) || "",
+    c?.code.slice(0, 6) || "",
+  ]
+  formState.name = name
+  formState.phone = mobile
+  formState.textarea = details
+  formState.selectedOptions = adressValue.value
+
+
+}
 
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
@@ -314,9 +349,10 @@ const caculateGoodsNum = (type: string, num: number) => {
 
 const formAddressRef = ref<FormInstance>()
 const formState = reactive<any>({
-  username: '',
-  password: '',
-  remember: true
+  name: '',
+  phone: '',
+  selectedOptions: [],
+  textarea: '',
 })
 </script>
 
