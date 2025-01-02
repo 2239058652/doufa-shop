@@ -978,8 +978,10 @@
           height: auto;
           display: flex;
           flex-wrap: wrap;
+          overflow: hidden;
 
           #colors_item {
+            max-width: calc(100% - 20px);
             border: 0.1px solid #c4c4c6;
             display: flex;
             flex-wrap: wrap;
@@ -990,7 +992,7 @@
             margin: 10px 10px;
             cursor: pointer;
             border-radius: 3px;
-            padding: 11px 18px;
+            padding: 8px 12px;
             white-space: nowrap; // 强制一行显示
             overflow: hidden; // 超出隐藏
             text-overflow: ellipsis; // 省略号
