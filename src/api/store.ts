@@ -45,3 +45,21 @@ export const getProductDetail = (id: string | number) => {
     url: `/api/product/detail/${id}`,
   })
 }
+
+// 购物车
+interface ICartsParams {
+  status?: string;
+  page: number;
+  limit: number
+}
+export const getShoppingCart = (params: ICartsParams = {
+  status: '1',
+  page: 0,
+  limit: 10
+}) => {
+  return request.get({
+    url: `/api/cart/list`,
+    method: "get",
+    params
+  })
+}

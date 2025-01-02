@@ -17,7 +17,7 @@
                 <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
               </div>
               <div @click="$router.push('/search')"><span>搜索</span></div>
-              <div><span>搜本店</span></div>
+              <div @click="$router.push('/merhome')"><span>搜本店</span></div>
             </div>
           </template>
         </a-input>

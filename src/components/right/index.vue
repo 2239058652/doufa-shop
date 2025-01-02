@@ -1,6 +1,6 @@
 <template>
   <div class="right-menu">
-    <div class="r-menu-item">
+    <div class="r-menu-item" @click="$router.push('/usermanage/saveshop')">
       <img src="../../assets/image/fixed_live.png" />
       <span>我的收藏</span>
     </div>

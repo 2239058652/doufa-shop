@@ -1,0 +1,170 @@
+.shoppingcart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: #ffffff;
+    padding-bottom: 50px;
+}
+
+// 顶部logo搜索框
+.logo-search {
+    width: 100%;
+    height: 72px;
+    background: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1000px;
+
+    .logo {
+        width: 131px;
+        height: 24px;
+
+        img {
+            width: 131px;
+            height: 24px;
+            object-fit: cover;
+        }
+    }
+
+
+    .search {
+        width: 368px;
+        height: 42px;
+        border-radius: 8px;
+        border: 1px solid #E2E4E6;
+        padding: 1px;
+        position: relative;
+        background: #ffffff;
+
+        .s-suffix {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            right: 2px;
+
+            div {
+                width: 65px;
+                height: 32px;
+                border-radius: 4px;
+                position: relative;
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+
+                span {
+                    height: 22px;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 22px;
+                }
+
+
+            }
+
+            div:nth-child(1) {
+                width: 22px;
+                height: 20px;
+                margin-right: 7px;
+
+                img {
+                    width: 22px;
+                    height: 20px;
+                    object-fit: cover;
+                }
+            }
+
+            div:nth-child(2) {
+                background: #F83126;
+
+                span {
+                    width: 32px;
+                    position: absolute;
+                    top: 5px;
+                    left: 17px;
+                    color: #FFFFFF;
+                }
+            }
+
+            div:nth-child(3) {
+                background: #FED2CF;
+
+                span {
+                    width: 48px;
+                    position: absolute;
+                    top: 5px;
+                    left: 9px;
+                    color: #F83126;
+                }
+            }
+        }
+    }
+}
+
+.pay_cart {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.pay_table {
+    width: 1122px;
+    min-height: 700px;
+    height: auto;
+    background: #FFFFFF;
+    border-radius: 8px;
+}
+
+.pay_cash {
+    width: 408px;
+    height: 370px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    border: 1px solid #E8E8E8;
+}
+
+.top_btn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 34px;
+    margin-left: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    .car_title {
+        width: 54px;
+        height: 25px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #333333;
+        line-height: 25px;
+    }
+
+    .pl_btn {
+        width: 90px;
+        height: 34px;
+        border-radius: 4px;
+        border: 1px solid #CECECE;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        span {
+            width: 57px;
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #333333;
+            line-height: 20px;
+        }
+    }
+}

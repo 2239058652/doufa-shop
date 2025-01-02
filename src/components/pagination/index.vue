@@ -18,12 +18,16 @@ const props = defineProps({
   defaultPageSize: {
     type: Number,
     default: 24
+  },
+  pageSizeOptions: {
+    type: Array,
+    default: () => [24, 48, 72, 96, 120]
   }
 })
 
 const emit = defineEmits(['update:current', 'update:pageSize', 'change'])
 
-const pageSizeOptions = [24, 48, 72, 96, 120]
+const pageSizeOptions = computed(() => props.pageSizeOptions)
 
 // 使用computed替代ref
 const currentPage = computed({
