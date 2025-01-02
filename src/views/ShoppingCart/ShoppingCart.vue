@@ -8,4 +8,4 @@
 
 </script>
 
-<style scoped></style>
+<style scoped src="./ShoppingCart.scss"></style>

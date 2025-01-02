@@ -57,7 +57,7 @@
         <div class="car-top">
           <span class="cart-count">{{ Number(cartCount) > 99 ? '99+' : cartCount }}</span>
         </div>
-        <div class="car-bottom">
+        <div class="car-bottom" @click="$router.push('/shoppingcart')">
           <img src="../assets/image/shopcar.png" alt="" />
           <div class="shop-car">购物车</div>
         </div>

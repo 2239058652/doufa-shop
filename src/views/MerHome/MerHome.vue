@@ -16,7 +16,7 @@
                 <!-- 以图搜索封装组件 -->
                 <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
               </div>
-              <div><span>搜索</span></div>
+              <div @click="$router.push('/search')"><span>搜索</span></div>
               <div><span>搜本店</span></div>
             </div>
           </template>

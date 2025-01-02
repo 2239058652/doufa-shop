@@ -57,6 +57,17 @@ const router = createRouter({
           }
         },
         {
+          path: 'shoppingcart',
+          name: 'ShoppingCart',
+          component: () => import('@/views/ShoppingCart/ShoppingCart.vue'),
+          meta: {
+            title: '购物车页面',  // 标题必须设置
+            requireSidebar: false,  // 是否需要侧边栏菜单
+            hidden: true,  // 不需要侧边栏设置为true
+            requireFooter: false
+          }
+        },
+        {
           path: 'payorder',
           name: 'PayOrder',
           component: () => import('@/views/PayOrder/PayOrder.vue'),
@@ -243,7 +254,7 @@ const router = createRouter({
         {
           path: 'shopcart',
           name: 'ShopCart',
-          component: () => import('@/views/ShopsManage/ShopCart/ShopCart.vue'),
+          redirect: '/shoppingcart',
           meta: {
             title: '购物车',
             requireSidebar: true

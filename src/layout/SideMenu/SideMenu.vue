@@ -1,15 +1,8 @@
 <template>
   <TopMenu />
   <div class="side-menu">
-    <a-menu
-      class="layout"
-      v-model:openKeys="openKeys"
-      v-model:selectedKeys="selectedKeys"
-      style="width: 206px"
-      mode="inline"
-      :items="items"
-      @click="handleClick"
-    />
+    <a-menu class="layout" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 206px"
+      mode="inline" :items="items" @click="handleClick" />
     <router-view />
   </div>
 </template>

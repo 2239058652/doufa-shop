@@ -4,7 +4,7 @@
       <img src="../../assets/image/fixed_live.png" />
       <span>我的收藏</span>
     </div>
-    <div class="r-menu-item">
+    <div class="r-menu-item" @click="$router.push('/shoppingcart')">
       <img src="../../assets/image/fixed_shopcar.png" />
       <span>购物车</span>
     </div>
