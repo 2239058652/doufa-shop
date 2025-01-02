@@ -593,7 +593,7 @@ import { message } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
-import Popover from '@/components/phopopver/index.vue'  // 以图搜索
+import Popover from '@/components/phopopover/index.vue'  // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()

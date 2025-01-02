@@ -13,7 +13,8 @@
           <template #suffix>
             <div class="s-suffix">
               <div>
-                <img src="../../assets/image/photo.png" alt="" />
+                <!-- 以图搜索封装组件 -->
+                <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
               </div>
               <div><span>搜索</span></div>
               <div><span>搜本店</span></div>
@@ -60,7 +61,7 @@
     <!-- 商品图片下单区域 -->
     <div class="goods-main">
       <div class="goods-order">
-        <!-- 左侧商品图片 -->
+        <!-- 左侧商品图片列表 -->
         <div class="goods-img">
           <div class="img-slide">
             <img @mouseover="handleImgMoveOver(item, index)" :class="imgIndex == index ? 'active' : ''" :src="item"
@@ -287,6 +288,7 @@ import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail } from '@/api/store'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
+import Popover from '@/components/phopopover/index.vue'  // 以图搜索
 
 // 商品详情框检测滚动浮现出来
 const el = ref<HTMLElement | null>(null)
@@ -334,13 +336,13 @@ watch([elementX, elementY, isOutside], () => {
 const route = useRoute()
 const router = useRouter()
 
-const inputVal = ref('')
-const rateVal = ref(4.6)
-const imgIndex = ref(0)
-const colorIndex = ref(0)
-const tabsIndex = ref(0)
-const sizeIndex = ref(0)
-const goodsDetailNum = ref(0)
+const inputVal = ref('')  // 搜索框输入框
+const fileList = ref([])  // 以图搜索list
+const imgIndex = ref(0)  // 左侧小图片列表选中的索引
+const colorIndex = ref(0)  // 颜色索引
+const tabsIndex = ref(0)  // 商品详情和代发说明tab切换
+const sizeIndex = ref(0)  // 尺码索引
+const goodsDetailNum = ref(0)  // 购买商品数量
 
 const goodsDetail = ref<any>({}) // 商品详情
 const imageBaseUrl = ref('') // 商品大图
@@ -400,6 +402,11 @@ const payOrderNow = () => {
       }
     })
   }
+}
+
+// 以图搜索
+const beforeUpload = (file: any) => {
+  console.log(file, 'aaaaaaaaaa')
 }
 
 fetchGoodsDetail()

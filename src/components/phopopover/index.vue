@@ -1,6 +1,6 @@
 <template>
   <a-popover trigger="click" v-model:open="photoPopoverVisible" placement="bottom"
-    :overlayStyle="{ paddingTop: '10px' }">
+    :overlayStyle="{ paddingTop: '10px' }" destroyTooltipOnHide @openChange="handleOpenChange">
     <template #title>
       <div class="title">
         <div>以图搜款</div>
@@ -54,6 +54,14 @@ const handleClose = () => {
 const beforeUpload = (file: any) => {
   emit('beforeUpload', file)
   return false  // 阻止默认行为，不然会上传文件
+}
+
+const handleOpenChange = (visible: any) => {
+  // 隐藏气泡时，清空fileList，避免重复上传
+  if (!visible) {
+    fileList.value = []
+  }
+
 }
 </script>
 

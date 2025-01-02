@@ -21,7 +21,7 @@
           <a-input v-model:value="inputVal" :bordered="false" placeholder="请搜索产品名称、货号"
             style="width: 100%;height: 100%;">
             <template #prefix>
-              <div class="func-sou-prefix">
+              <div>
                 <a-select :bordered="false" v-model:value="selectVal">
                   <a-select-option value="jack">宝贝货号</a-select-option>
                   <a-select-option value="lucy">档口搜索</a-select-option>
@@ -132,7 +132,7 @@ import { useRouter } from 'vue-router'
 import { getCategory, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
-import Popover from '@/components/phopopver/index.vue'  // 以图搜索
+import Popover from '@/components/phopopover/index.vue'  // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()

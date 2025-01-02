@@ -78,9 +78,6 @@
             color: #FFFFFF;
             position: relative;
 
-            // 下拉选择框
-            .func-sou-prefix {}
-
             .func-sou-suffix {
                 display: flex;
                 justify-content: center;
@@ -471,7 +468,7 @@
                 line-height: 19px;
                 text-align: left;
                 font-style: normal;
-                margin-left: 4px;
+                margin-left: 14px;
             }
         }
 

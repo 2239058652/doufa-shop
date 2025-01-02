@@ -64,8 +64,10 @@
               <a-table :dataSource="tableData" :columns="tableColumns" bordered :pagination="false">
                 <template #bodyCell="{ column, record }">
                   <template v-if="column.key === 'xint'">
-                    <a-select style="width: 100%;" :options="[{ label: '是', value: '1' }, { label: '否', value: '2' }]"
-                      v-model:value="record.xint" />
+                    <a-select style="width: 100%" :options="[
+                      { label: '是', value: '1' },
+                      { label: '否', value: '2' }
+                    ]" v-model:value="record.xint" />
                   </template>
                 </template>
               </a-table>
@@ -112,15 +114,32 @@
                       <template #label>
                         <div class="shouhou">
                           <span>售后处理</span>
-                          <a-popover>
-                            <template #content>
-                              <div class="shouhou_content">新塘售后(仅新塘货品)：
-                                若选择需要售后服务，需向代发团队支付2元售后
-                                费用（平台不收取任何费用）。若不需要售后服
-                                务，则无需支付该费用；但如果商品出现售后问
-                                题，平台与代发团队概不负责。</div>
-                            </template>
+                          <a-popover placement="right" :overlayInnerStyle="{
+                            width: '290px',
+                            height: '120px',
+                            background: '#33384D'
+                          }">
                             <img src="../../assets/image/question.png" alt="" />
+                            <template #content>
+                              <div style="
+                                  width: 263px;
+                                  height: 85px;
+                                  font-weight: 400;
+                                  font-size: 12px;
+                                  color: #ffffff;
+                                  line-height: 17px;
+                                  text-wrap: wrap;
+                                  display: flex;
+                                  flex-direction: column;
+                                ">
+                                <span>新塘售后(仅新塘货品)：</span>
+                                <span>
+                                  若选择需要售后服务，需向代发团队支付2元售后
+                                  费用（平台不收取任何费用）。若不需要售后服
+                                  务，则无需支付该费用；但如果商品出现售后问
+                                  题，平台与代发团队概不负责。</span>
+                              </div>
+                            </template>
                           </a-popover>
                         </div>
                       </template>
@@ -135,7 +154,24 @@
                       <template #label>
                         <div class="shouhou">
                           <span>货物处理</span>
-                          <img src="../../assets/image/question.png" alt="" />
+                          <a-popover placement="right" :overlayInnerStyle="{
+                            width: '410px',
+                            height: '40px',
+                            background: '#33384D'
+                          }">
+                            <img src="../../assets/image/question.png" alt="" />
+                            <template #content>
+                              <div style="
+                                  font-weight: 400;
+                                  font-size: 12px;
+                                  color: #ffffff;
+                                  line-height: 17px;
+                                  text-wrap: nowrap;
+                                ">
+                                <span>未拿到货的商品，自动进行退款处理，目前只对1个订单单个商品的生效</span>
+                              </div>
+                            </template>
+                          </a-popover>
                         </div>
                       </template>
                       <Checkbox v-model="checkedVal" label="有货先发，无货退款" round />
@@ -190,8 +226,14 @@
                 alt="" />
               <img class="payment-icon" src="../../assets/image/qianbao.png" alt="" />
               <span class="payment-text">钱包支付
-                <span
-                  style="width: 186px;height: 20px;font-weight: 400;font-size: 14px;color: #ff5c02;line-height: 20px;">
+                <span style="
+                    width: 186px;
+                    height: 20px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    color: #ff5c02;
+                    line-height: 20px;
+                  ">
                   （钱包可用余额：¥3209.16）
                 </span>
               </span>
@@ -236,8 +278,6 @@
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 </template>
@@ -252,7 +292,6 @@ import Checkbox from '@/components/checkbox/index.vue'
 import Radio from '@/components/radio/index.vue'
 import AddressParse, { Utils } from 'address-parse'
 
-
 const adressValue = ref<any>([])
 
 const getResolutionContent = () => {
@@ -260,30 +299,24 @@ const getResolutionContent = () => {
   console.log(result, 'aaaaaaaaa')
 
   const {
-    province = "", // 省
-    city = "", // 城市
-    area = "", // 区
-    details = "",//详细地址
-    mobile = "",//手机号码
-    name = "",//姓名
+    province = '', // 省
+    city = '', // 城市
+    area = '', // 区
+    details = '', //详细地址
+    mobile = '', //手机号码
+    name = '' //姓名
   } = result
   const resultes = Utils.getAreaByAddress({ province, city, area })
-  const [a, b, c] = Utils.getTargetAreaListByCode(
-    "province",
-    resultes.code,
-    true
-  )
+  const [a, b, c] = Utils.getTargetAreaListByCode('province', resultes.code, true)
   adressValue.value = [
-    a?.code.slice(0, 2) || "",
-    b?.code.slice(0, 4) || "",
-    c?.code.slice(0, 6) || "",
+    a?.code.slice(0, 2) || '',
+    b?.code.slice(0, 4) || '',
+    c?.code.slice(0, 6) || ''
   ]
   formState.name = name
   formState.phone = mobile
   formState.textarea = details
   formState.selectedOptions = adressValue.value
-
-
 }
 
 const [messageApi, contextHolder] = message.useMessage()
@@ -307,13 +340,13 @@ const tableColumns = ref([
     title: '商品详情',
     dataIndex: 'name',
     key: 'name',
-    align: 'center',
+    align: 'center'
   },
   {
     title: '规格',
     dataIndex: 'age',
     key: 'age',
-    align: 'center',
+    align: 'center'
   },
   {
     title: '数量',
@@ -356,13 +389,12 @@ const tableData = ref([
   }
 ])
 
-
 const formAddressRef = ref<FormInstance>()
 const formState = reactive<any>({
   name: '',
   phone: '',
   selectedOptions: [],
-  textarea: '',
+  textarea: ''
 })
 </script>
 

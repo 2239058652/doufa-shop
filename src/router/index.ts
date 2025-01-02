@@ -36,6 +36,17 @@ const router = createRouter({
           }
         },
         {
+          path: 'merhome',
+          name: 'MerHome',
+          component: () => import('@/views/MerHome/MerHome.vue'),
+          meta: {
+            title: '商品首页',  // 标题必须设置
+            requireSidebar: false,  // 是否需要侧边栏菜单
+            hidden: true,  // 不需要侧边栏设置为true
+            requireFooter: false  // 不需要底部设置为 false,默认为true
+          }
+        },
+        {
           path: 'detail/:id',
           name: 'Detail',
           component: () => import('@/views/Merchandis/Merchandis.vue'),
