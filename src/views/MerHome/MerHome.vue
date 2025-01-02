@@ -48,8 +48,8 @@
       </div>
       <div class="store-btn">
         <div>
-          <img src="../../assets/image/store-icon.png" alt="" />
-          <span>进入店铺</span>
+          <img src="../../assets/image/add.png" alt="" />
+          <span>关注店铺</span>
         </div>
         <div>
           <img src="../../assets/image/kefu-icon.png" alt="" />

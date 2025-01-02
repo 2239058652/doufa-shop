@@ -26,15 +26,134 @@
     <!-- 顶部个人店铺信息 -->
     <div class="user-store">
       <div class="store-info">
-        <div class="user-atrr">
-          <div class="atrr-img">
-            <img src="../../assets/image/user.png" alt="" />
+        <a-popover placement="bottom" :overlayInnerStyle="{
+          width: '279px',
+          height: '340px',
+          borderRadius: '12px'
+        }" :overlayStyle="{ paddingRight: '', paddingTop: '10px' }" :arrow="false">
+          <template #content>
+            <div class="store_pop">
+              <div class="pop_item" style="margin-top: 20px">
+                <span class="pop_name">综合评分：</span>
+                <span class="pop_name_1">4.6</span>
+              </div>
+              <div class="pop_item">
+                <span class="pop_name">联系方式：</span>
+                <span class="pop_name_1">{{ phone }}</span>
+                <img style="width: 12px; height: 12px; object-fit: cover;cursor: pointer;"
+                  src="../../assets/image/copy.png" alt="" @click="copyPhone(phone)" />
+              </div>
+              <div class="pop_item">
+                <span class="pop_name">客 服：</span>
+                <img style="width: 18px; height: 18px; object-fit: cover; margin-right: -5px"
+                  src="../../assets/image/kefu-icon.png" alt="" />
+                <span class="pop_name_1">在线客服</span>
+              </div>
+              <div class="woshiyitiaoxian"></div>
+              <div style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  gap: 48px;
+                  margin-top: 20px;
+                ">
+                <div style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 1px;
+                  ">
+                  <div class="pop_name1">评分</div>
+                  <div class="pop_name2">4.6</div>
+                </div>
+                <div style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 1px;
+                  ">
+                  <div class="pop_name1">退货率</div>
+                  <div class="pop_name2">3%</div>
+                </div>
+                <div style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 1px;
+                  ">
+                  <div class="pop_name1">缺货率</div>
+                  <div class="pop_name2">3%</div>
+                </div>
+              </div>
+              <div style="
+                  width: 222px;
+                  height: 38px;
+                  border-radius: 5px;
+                  background: #f3f6f8;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  cursor: pointer;
+                  position: absolute;
+                  top: 215px;
+                  right: -12px;
+                " @click="$router.push('/merhome')">
+                <span style="
+                    width: 72px;
+                    height: 25px;
+                    font-weight: bold;
+                    font-size: 18px;
+                    color: #333333;
+                    line-height: 25px;
+                  ">进入店铺</span>
+              </div>
+            </div>
+          </template>
+          <template #title>
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 55px">
+              <span style="
+                  width: 96px;
+                  height: 22px;
+                  font-weight: bold;
+                  font-size: 16px;
+                  color: #333333;
+                  line-height: 22px;
+                ">慢慢家男装店</span>
+              <span style="
+                  width: 76px;
+                  height: 26px;
+                  border-radius: 4px;
+                  border: 1px solid #e2e4e6;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                ">
+                <span style="
+                    width: 50px;
+                    height: 17px;
+                    font-weight: 400;
+                    font-size: 12px;
+                    color: #333333;
+                    line-height: 17px;
+                    white-space: nowrap;
+                    cursor: pointer;
+                  ">+关注店铺</span>
+              </span>
+            </div>
+          </template>
+          <div class="user-atrr">
+            <div class="atrr-img">
+              <img src="../../assets/image/user.png" alt="" />
+            </div>
+            <div class="atrr-info">
+              <div class="attr-name">慢慢家男装</div>
+              <div class="zhuying">主营: 男装</div>
+            </div>
           </div>
-          <div class="atrr-info">
-            <div class="attr-name">慢慢家男装</div>
-            <div class="zhuying">主营: 男装</div>
-          </div>
-        </div>
+        </a-popover>
         <div class="user-tongji">
           <div>
             <div>
@@ -47,7 +166,7 @@
         </div>
       </div>
       <div class="store-btn">
-        <div>
+        <div @click="$router.push('/merhome')">
           <img src="../../assets/image/store-icon.png" alt="" />
           <span>进入店铺</span>
         </div>
@@ -288,7 +407,8 @@ import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail } from '@/api/store'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
-import Popover from '@/components/phopopover/index.vue'  // 以图搜索
+import Popover from '@/components/phopopover/index.vue' // 以图搜索
+import { useClipboard } from '@vueuse/core'
 
 // 商品详情框检测滚动浮现出来
 const el = ref<HTMLElement | null>(null)
@@ -336,16 +456,26 @@ watch([elementX, elementY, isOutside], () => {
 const route = useRoute()
 const router = useRouter()
 
-const inputVal = ref('')  // 搜索框输入框
-const fileList = ref([])  // 以图搜索list
-const imgIndex = ref(0)  // 左侧小图片列表选中的索引
-const colorIndex = ref(0)  // 颜色索引
-const tabsIndex = ref(0)  // 商品详情和代发说明tab切换
-const sizeIndex = ref(0)  // 尺码索引
-const goodsDetailNum = ref(0)  // 购买商品数量
+const inputVal = ref('') // 搜索框输入框
+const fileList = ref([]) // 以图搜索list
+const imgIndex = ref(0) // 左侧小图片列表选中的索引
+const colorIndex = ref(0) // 颜色索引
+const tabsIndex = ref(0) // 商品详情和代发说明tab切换
+const sizeIndex = ref(0) // 尺码索引
+const goodsDetailNum = ref(0) // 购买商品数量
 
 const goodsDetail = ref<any>({}) // 商品详情
 const imageBaseUrl = ref('') // 商品大图
+
+const phone = ref('13823234343') // 手机号
+
+// 复制手机号
+const copyPhone = (source: any) => {
+  const { text, copy, copied, isSupported } = useClipboard({ source, legacy: true })
+  copy(source)
+  messageApi.success('复制成功')
+}
+
 
 // 接受商品详情的ID+
 const { id: detailId }: any = route.params
@@ -413,4 +543,58 @@ fetchGoodsDetail()
 </script>
 
 <style scoped src="./Merchandis.scss"></style>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.store_pop {
+  margin: 0 29px;
+  position: relative;
+}
+
+.pop_item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.pop_name {
+  width: 70px;
+  height: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #999999;
+  line-height: 20px;
+}
+
+.pop_name_1 {
+  height: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #333333;
+  line-height: 20px;
+}
+
+.woshiyitiaoxian {
+  width: 221px;
+  height: 1px;
+  border: 1px solid #e2e4e6;
+}
+
+.pop_name1 {
+  width: 42px;
+  height: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #999999;
+  line-height: 20px;
+}
+
+.pop_name2 {
+  width: 27px;
+  height: 25px;
+  font-weight: 500;
+  font-size: 18px;
+  color: #333333;
+  line-height: 25px;
+}
+</style>

@@ -84,13 +84,13 @@
                 :overlayInnerStyle="{ width: '612px', height: '446px' }">
                 <div class="item-right">
                   <div class="text-line">
-                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id">
+                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id" @click="$router.push('/search')">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
                   </div>
                   <div class="text-line">
-                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id">
+                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id" @click="$router.push('/search')">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
@@ -99,7 +99,7 @@
                 <template #content>
                   <div class="popover-content">
                     <div class="content-row">
-                      <div v-for="i in item.children" :key="i.id" class="content-item">
+                      <div v-for="i in item.children" :key="i.id" class="content-item" @click="$router.push('/search')">
                         {{ i.cate_name }}
                       </div>
                     </div>
