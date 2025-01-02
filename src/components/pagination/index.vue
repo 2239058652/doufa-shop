@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref, defineProps, defineEmits, computed } from 'vue'
 
 const props = defineProps({
   total: {
@@ -23,15 +23,22 @@ const props = defineProps({
 
 const emit = defineEmits(['update:current', 'update:pageSize', 'change'])
 
-const currentPage = ref(props.current)
-const pageSize = ref(props.defaultPageSize)
 const pageSizeOptions = [24, 48, 72, 96, 120]
+
+// 使用computed替代ref
+const currentPage = computed({
+  get: () => props.current,
+  set: (val) => emit('update:current', val)
+})
+
+const pageSize = computed({
+  get: () => props.defaultPageSize,
+  set: (val) => emit('update:pageSize', val)
+})
 
 const handleChange = (page: number, size: number) => {
   currentPage.value = page
   pageSize.value = size
-  emit('update:current', page)
-  emit('update:pageSize', size)
   emit('change')
 }
 

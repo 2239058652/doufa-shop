@@ -87,14 +87,19 @@
           </span>
           <span :class="tabsIndex == 3 ? 'active' : ''" @click="tabsIndex = 3">区间</span>
         </div>
+
         <div class="sp_tabs_pagination">
-          <img src="../../assets/image/toleft.png" alt="" />
+          <img src="../../assets/image/toleft.png" alt="" @click="handleTopPagination(Math.max(1, currentPage - 1))"
+            :class="{ disabled: currentPage <= 1 }" />
           <span>
-            <span>{{ '1' }}</span>
-            <span style="color: #333333;">{{ '/100' }}</span>
+            <span>{{ currentPage }}</span>
+            <span style="color: #333333;">/{{ Math.ceil(total / pageSize) }}</span>
           </span>
-          <img src="../../assets/image/toright.png" alt="" />
+          <img src="../../assets/image/toright.png" alt=""
+            @click="handleTopPagination(Math.min(Math.ceil(total / pageSize), currentPage + 1))"
+            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }" />
         </div>
+
       </div>
       <br />
       <div class="woshiyitiaoxian"></div>
@@ -122,7 +127,7 @@
 
 <script setup lang="ts">
 import { debounce } from '@/utils/util'
-import { onMounted, onUnmounted, ref, inject } from 'vue'
+import { onMounted, onUnmounted, ref, inject, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getCategory, getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
@@ -161,7 +166,15 @@ const routerToDetail = (item: any) => {
   })
 }
 
+const handleTopPagination = (page: number) => {
+  // 当页码数不能再减少时或再加时，不再执行
+  if (currentPage.value == page) {
+    return
+  }
 
+  currentPage.value = page
+  getProductsList()
+}
 
 // 获取分类列表
 const getCategoryList = () => {
@@ -196,4 +209,9 @@ getProductsList()
 </script>
 
 <style src="./Search.scss" scoped></style>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
