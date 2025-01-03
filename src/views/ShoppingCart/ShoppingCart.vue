@@ -122,10 +122,7 @@ const beforeUpload = (file: any) => {
 
 // 获取商品列表
 const getProductsList = () => {
-  getShoppingCart({
-    page: currentPage.value,
-    limit: pageSize.value
-  }).then((res: any) => {
+  getShoppingCart({ status: 1, page: currentPage.value, limit: pageSize.value }).then((res: any) => {
     console.log(res)
     if (res.status == 200) {
       tableDataList.value = res.data.valid

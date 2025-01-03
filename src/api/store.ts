@@ -48,12 +48,12 @@ export const getProductDetail = (id: string | number) => {
 
 // 购物车
 interface ICartsParams {
-  status?: string;
+  status: string | number;
   page: number;
   limit: number
 }
 export const getShoppingCart = (params: ICartsParams = {
-  status: '1',
+  status: 1,
   page: 0,
   limit: 10
 }) => {
