@@ -63,3 +63,11 @@ export const getShoppingCart = (params: ICartsParams = {
     params
   })
 }
+
+// 删除购物车
+export const deleteCarts = (data: { ids: string }) => {
+  return request.post({
+    url: `/api/cart/del`,
+    data
+  })
+}

@@ -28,7 +28,7 @@
       <div class="pay_table">
         <div class="top_btn">
           <div class="car_title">购物车</div>
-          <div class="pl_btn">
+          <div class="pl_btn" @click="handlePLDelete">
             <span>批量删除</span>
           </div>
         </div>
@@ -74,7 +74,7 @@
                 }}</div>
             </template>
             <template v-else-if="column.dataIndex === 'operater'">
-              <a-button type="link" style="color: #999999">删除</a-button>
+              <a-button type="link" style="color: #999999" @click="handleDelete(record.id)">删除</a-button>
             </template>
             <template v-else-if="column.dataIndex === 'cart_num'">
               <a-input-number v-model:value="record.cart_num" :min="0" :max="1000000">
@@ -120,9 +120,9 @@
 <script lang="ts" setup>
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
 import { ref, onActivated, onMounted, computed } from 'vue'
-import { message } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
-import { getShoppingCart } from '@/api/store'
+import { getShoppingCart, deleteCarts } from '@/api/store'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -188,11 +188,13 @@ const columns = [
 const tableDataList = ref([])
 
 const tableSelectedRowKeys = ref<any>([])
+const selectedTableRowKeys = ref<any>([])
 
 // 表格选中
 const hanldeTableRowChanged = (selectedRowKeys: any, selectedRows: any) => {
   jieSuanNum.value = selectedRowKeys.length
   tableSelectedRowKeys.value = selectedRows
+  selectedTableRowKeys.value = selectedRowKeys
 }
 
 // 以图搜索
@@ -232,6 +234,7 @@ const caculateGoodsNum = (type: string, record: any) => {
   }
 }
 
+// 计算总价
 const totalPrice = computed(() => {
   return tableSelectedRowKeys.value.reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
     const price = parseFloat(item.productInfo.attrInfo.price)
@@ -253,12 +256,77 @@ const getSize = (suk: string) => {
 // 结算
 const handleJieSuan = () => {
   console.log(tableSelectedRowKeys.value)
-  const xx = JSON.stringify(tableSelectedRowKeys.value)
-  router.push({ name: 'PayOrder', params: { username: xx } })
-  // router.push({
-  //   name: 'PayOrder',
-  //   params: { username: 'eduardo' }
-  // })
+  if (tableSelectedRowKeys.value.length == 0) {
+    messageApi.open({
+      type: 'warning',
+      content: '请先选择要结算的商品'
+    })
+    return
+  }
+  router.push({
+    name: 'PayOrder',
+    query: { payOderList: JSON.stringify(tableSelectedRowKeys.value) }
+  })
+}
+
+// 删除购物车
+const handleDelete = (record: any) => {
+  Modal.confirm({
+    title: '删除商品',
+    content: '是否删除该商品？',
+    maskClosable: true,
+    cancelText: '取消',
+    okText: '确认',
+    onOk: () => {
+      deleteCarts({ ids: record }).then((res: any) => {
+        if (res.status == 200) {
+          messageApi.open({
+            type: 'success',
+            content: '删除成功'
+          })
+          getProductsList()
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: res.msg
+          })
+        }
+      })
+    }
+  })
+}
+
+// 批量删除
+const handlePLDelete = () => {
+  if (selectedTableRowKeys.value.length == 0) {
+    return messageApi.open({
+      type: 'warning',
+      content: '请先选择要删除的商品'
+    })
+  }
+  Modal.confirm({
+    title: '批量删除',
+    content: '是否删除选择的所有商品？',
+    maskClosable: true,
+    cancelText: '取消',
+    okText: '确认',
+    onOk: () => {
+      deleteCarts({ ids: selectedTableRowKeys.value.join(',') }).then((res: any) => {
+        if (res.status == 200) {
+          messageApi.open({
+            type: 'success',
+            content: '删除成功'
+          })
+          getProductsList()
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: res.msg
+          })
+        }
+      })
+    }
+  })
 }
 
 getProductsList()

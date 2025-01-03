@@ -73,7 +73,7 @@ const asyncRoutes = [
         }
       },
       {
-        path: 'payorder/:username',
+        path: 'payorder',
         name: 'PayOrder',
         component: () => import('@/views/PayOrder/PayOrder.vue'),
         meta: {

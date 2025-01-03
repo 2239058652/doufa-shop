@@ -323,7 +323,7 @@ const getResolutionContent = () => {
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
 onMounted(() => {
-  console.log(route.params, 'route')
+  console.log(JSON.parse(route.query.payOderList), 'route')
 })
 
 
