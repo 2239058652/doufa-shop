@@ -32,42 +32,101 @@
             <span>批量删除</span>
           </div>
         </div>
-        <a-table :pagination="false" :row-selection="{ onChange: hanldeTaableRowChanged }" :columns="columns"
-          :data-source="tableDataList" bordered>
+        <a-table :pagination="false" :row-selection="{
+          onChange: hanldeTableRowChanged
+        }" :columns="columns" :data-source="tableDataList" bordered :scroll="{ x: 1100 }" rowKey="id">
           <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'detail'">
-              <span>{{ record.productInfo.store_name }}</span>
-            </template>
-            <template v-else-if="column.key === 'operater'">
-              <div>
-                xxx
+              <div class="detail_box">
+                <img :src="record.productInfo.attrInfo.image" alt="" />
+                <div class="detail_box_right">
+                  <div class="store_name">{{ record.productInfo.store_name }}</div>
+                  <div class="keyword">货号：{{ record.productInfo.keyword }}</div>
+                </div>
               </div>
+            </template>
+            <template v-else-if="column.dataIndex === 'money'">
+              <div class="money_box">
+                <div>商家：{{ record.productInfo.mer_name }}</div>
+                <div>站点：{{ record.productInfo.goods_address }}</div>
+              </div>
+            </template>
+            <template v-else-if="column.dataIndex === 'sku'">
+              <div style="
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: flex-start;
+                ">
+                <span><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk) }}</span>
+                <span><span style="color: #999999">尺码：</span>{{ getSize(record.productInfo.attrInfo.suk) }}</span>
+              </div>
+            </template>
+            <template v-else-if="column.dataIndex === 'price'">
+              <div style="
+                  height: 22px;
+                  font-weight: 500;
+                  font-size: 16px;
+                  color: #f83126;
+                  line-height: 22px;
+                ">{{
+                  parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
+                }}</div>
+            </template>
+            <template v-else-if="column.dataIndex === 'operater'">
+              <a-button type="link" style="color: #999999">删除</a-button>
+            </template>
+            <template v-else-if="column.dataIndex === 'cart_num'">
+              <a-input-number v-model:value="record.cart_num" :min="0" :max="1000000">
+                <template #addonBefore>
+                  <div class="caculate" @click="caculateGoodsNum('reduce', record)">-</div>
+                </template>
+                <template #addonAfter>
+                  <div class="caculate" @click="caculateGoodsNum('add', record)">+</div>
+                </template>
+              </a-input-number>
             </template>
           </template>
         </a-table>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px">
-          <Pagination :pageSizeOptions="[10, 20, 30, 50, 100]" v-model:current="currentPage" v-model:pageSize="pageSize"
-            :total="total" @change="getProductsList" />
+          <Pagination :pageSizeOptions="[10, 20, 30, 50, 1000]" v-model:current="currentPage"
+            v-model:pageSize="pageSize" :total="total" @change="getProductsList" />
         </div>
       </div>
 
       <!-- 结算框 -->
-      <div class="pay_cash"></div>
+      <div class="pay_cash">
+        <div class="pay_cash_top">
+          <span class="jsmx">结算明细</span>
+          <span class="tishi">实际支付金额以下单页为准</span>
+        </div>
+        <div class="pay_cash_img">
+          <img :src="item.productInfo.attrInfo.image" :alt="item.productInfo.attrInfo.suk"
+            v-for="item in tableSelectedRowKeys" :key="item.id" />
+        </div>
+        <div class="pay_cash_heji">
+          <div class="heji">合计商品金额：</div>
+          <div class="price_total">¥{{ totalPrice }}</div>
+        </div>
+        <div class="jiesuan" @click="handleJieSuan">
+          <span>结算 ({{ jieSuanNum }})</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
-import { ref, onActivated, onMounted, defineComponent } from 'vue'
+import { ref, onActivated, onMounted, computed } from 'vue'
 import { message } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import { getShoppingCart } from '@/api/store'
+import { useRouter } from 'vue-router'
 
-defineComponent({
-  name: 'ShoppingCart'
-})
+const router = useRouter()
+
 
 onMounted(() => {
   console.log('组件首次加载')
@@ -85,36 +144,44 @@ const inputVal = ref('') // 搜索框输入框
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
+const jieSuanNum = ref(0) // 结算数量
+
 
 const columns = [
   {
     title: '商品详情',
     dataIndex: 'detail',
-    align: 'center'
+    align: 'center',
+    width: 400,
+    fixed: 'left'
   },
   {
     title: '档口',
     dataIndex: 'money',
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '规格',
-    dataIndex: 'address',
+    dataIndex: 'sku',
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '数量',
-    dataIndex: 'address',
+    dataIndex: 'cart_num',
+    ellipsis: true,
     align: 'center'
   },
   {
     title: '金额（元）',
-    dataIndex: 'address',
+    dataIndex: 'price',
     align: 'center'
   },
   {
     title: '操作',
-    key: 'operater',
+    dataIndex: 'operater',
+    width: 90,
     align: 'center'
   }
 ]
@@ -123,8 +190,9 @@ const tableDataList = ref([])
 const tableSelectedRowKeys = ref<any>([])
 
 // 表格选中
-const hanldeTaableRowChanged = (selectedRowKeys: any, selectedRows: any) => {
-  console.log(selectedRowKeys, selectedRows)
+const hanldeTableRowChanged = (selectedRowKeys: any, selectedRows: any) => {
+  jieSuanNum.value = selectedRowKeys.length
+  tableSelectedRowKeys.value = selectedRows
 }
 
 // 以图搜索
@@ -134,16 +202,121 @@ const beforeUpload = (file: any) => {
 
 // 获取商品列表
 const getProductsList = () => {
-  getShoppingCart({ status: 1, page: currentPage.value, limit: pageSize.value }).then((res: any) => {
-    console.log(res)
-    if (res.status == 200) {
-      tableDataList.value = res.data.valid
-      total.value = res.data.valid.length
+  getShoppingCart({ status: 1, page: currentPage.value, limit: pageSize.value }).then(
+    (res: any) => {
+      console.log(res)
+      if (res.status == 200) {
+        tableDataList.value = res.data.valid
+        total.value = res.data.valid.length
+      }
     }
-  })
+  )
+}
+
+// 购物数量加减
+const caculateGoodsNum = (type: string, record: any) => {
+  switch (type) {
+    case 'add':
+      record.cart_num++
+      break
+    case 'reduce':
+      if (record.cart_num > 0) {
+        record.cart_num--
+      } else {
+        messageApi.open({
+          type: 'warning',
+          content: '商品数量不能小于0'
+        })
+      }
+      break
+  }
+}
+
+const totalPrice = computed(() => {
+  return tableSelectedRowKeys.value.reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
+    const price = parseFloat(item.productInfo.attrInfo.price)
+    const quantity = parseFloat(item.cart_num)
+    return total + price * quantity
+  }, 0).toFixed(2)
+})
+
+// 获取颜色
+const getColor = (suk: string) => {
+  return suk.split(',')[0]
+}
+
+// 获取尺码
+const getSize = (suk: string) => {
+  return suk.split(',')[1]
+}
+
+// 结算
+const handleJieSuan = () => {
+  console.log(tableSelectedRowKeys.value)
+  const xx = JSON.stringify(tableSelectedRowKeys.value)
+  router.push({ name: 'PayOrder', params: { username: xx } })
+  // router.push({
+  //   name: 'PayOrder',
+  //   params: { username: 'eduardo' }
+  // })
 }
 
 getProductsList()
 </script>
 
 <style scoped src="./ShoppingCart.scss"></style>
+<style scoped lang="scss">
+.detail_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+
+  img {
+    width: 82px;
+    height: 82px;
+    object-fit: cover;
+  }
+
+  .detail_box_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .store_name {
+      font-weight: 400;
+      font-size: 14px;
+      color: #333333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+    }
+
+    .keyword {
+      font-size: 14px;
+      color: #ff5a02;
+      text-align: left;
+      margin-top: 10px;
+    }
+  }
+}
+
+.money_box {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  text-align: left;
+}
+
+// 修改表格列样式
+:deep(.ant-table-cell) {
+  vertical-align: middle;
+}
+</style>

@@ -112,22 +112,123 @@
     justify-content: center;
     align-items: flex-start;
     gap: 30px;
+    position: relative;
 }
 
 .pay_table {
     width: 1122px;
-    min-height: 700px;
-    height: auto;
     background: #FFFFFF;
     border-radius: 8px;
 }
 
 .pay_cash {
     width: 408px;
-    height: 370px;
+    min-height: 370px;
+    height: auto;
     background: #FFFFFF;
     border-radius: 20px;
     border: 1px solid #E8E8E8;
+    position: sticky;
+    top: 30px;
+    padding-bottom: 30px;
+
+    .pay_cash_top {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+        margin-top: 30px;
+        margin-left: 32px;
+
+        .jsmx {
+            width: 73px;
+            height: 25px;
+            font-weight: 600;
+            font-size: 18px;
+            color: #333333;
+            line-height: 25px;
+        }
+
+        .tishi {
+            width: 171px;
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #999999;
+            line-height: 20px;
+        }
+    }
+
+    .pay_cash_img {
+        width: 400px;
+        min-height: 65px;
+        height: auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 7px;
+        flex-wrap: wrap;
+        margin-left: 30px;
+        margin-top: 20px;
+
+        img {
+            width: 64px;
+            height: 64px;
+            object-fit: cover;
+        }
+    }
+
+    .pay_cash_heji {
+        margin-left: 30px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 120px;
+        margin-top: 20px;
+
+        .heji {
+            width: 112px;
+            height: 22px;
+            font-weight: 400;
+            font-size: 16px;
+            color: #333333;
+            line-height: 22px;
+        }
+
+        .price_total {
+            width: 112px;
+            height: 48px;
+            font-weight: 500;
+            font-size: 34px;
+            color: #F83126;
+            line-height: 48px;
+        }
+    }
+
+    .jiesuan {
+        margin-left: 30px;
+        margin-top: 14px;
+        width: 348px;
+        height: 52px;
+        background: #F83126;
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        span {
+            height: 22px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #FFFFFF;
+            line-height: 22px;
+        }
+    }
 }
 
 .top_btn {
@@ -167,4 +268,8 @@
             line-height: 20px;
         }
     }
+}
+
+.caculate {
+    cursor: pointer;
 }

@@ -285,7 +285,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import { regionData, codeToText } from 'element-china-area-data'
 import Checkbox from '@/components/checkbox/index.vue'
@@ -294,6 +294,7 @@ import AddressParse, { Utils } from 'address-parse'
 
 const adressValue = ref<any>([])
 
+// 智能识别地址
 const getResolutionContent = () => {
   const [result] = AddressParse.parse(textareaVal.value, true)
   console.log(result, 'aaaaaaaaa')
@@ -321,7 +322,11 @@ const getResolutionContent = () => {
 
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
-console.log(route.query, 'route')
+onMounted(() => {
+  console.log(route.params, 'route')
+})
+
+
 const checkedVal = ref(false) //多选值
 const radioVal = ref('') //单选值
 
