@@ -61,6 +61,7 @@ const router = createRouter({
           name: 'ShoppingCart',
           component: () => import('@/views/ShoppingCart/ShoppingCart.vue'),
           meta: {
+            keepAlive: true,  // 是否需要缓存
             title: '购物车页面',  // 标题必须设置
             requireSidebar: false,  // 是否需要侧边栏菜单
             hidden: true,  // 不需要侧边栏设置为true
