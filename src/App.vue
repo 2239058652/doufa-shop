@@ -9,13 +9,12 @@ const locale = zhCN
 <template>
   <!-- 全局中文 -->
   <a-config-provider :locale="locale">
-    <RouterView v-slot="{ Component }">
-      <!-- 路由缓存 -->
-      <keep-alive v-if="$route.meta.keepAlive">
-        <component :is="Component" />
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" v-if="$route.meta.keepAlive" />
       </keep-alive>
-      <component v-else :is="Component" />
-    </RouterView>
+      <component :is="Component" v-if="!$route.meta.keepAlive" />
+    </router-view>
   </a-config-provider>
 </template>
 

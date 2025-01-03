@@ -60,10 +60,22 @@
 
 <script lang="ts" setup>
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
-import { ref } from 'vue'
+import { ref, onActivated, onMounted, defineComponent } from 'vue'
 import { message } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import { getShoppingCart } from '@/api/store'
+
+defineComponent({
+  name: 'ShoppingCart'
+})
+
+onMounted(() => {
+  console.log('组件首次加载')
+})
+
+onActivated(() => {
+  console.log('组件激活')
+})
 
 const [messageApi, contextHolder] = message.useMessage()
 
