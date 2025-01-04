@@ -34,7 +34,7 @@
         </div>
         <a-table :pagination="false" :row-selection="{
           onChange: hanldeTableRowChanged
-        }" :columns="columns" :data-source="tableDataList" bordered :scroll="{ x: 1100 }" rowKey="id">
+        }" :columns="tableColumns" :data-source="tableDataList" bordered :scroll="{ x: 1100 }" rowKey="id">
           <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'detail'">
               <div class="detail_box">
@@ -90,8 +90,8 @@
         </a-table>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px">
-          <Pagination :pageSizeOptions="[10, 20, 30, 50, 1000]" v-model:current="currentPage"
-            v-model:pageSize="pageSize" :total="total" @change="getProductsList" />
+          <Pagination :pageSizeOptions="[10, 20, 30, 50, 100]" v-model:current="currentPage" v-model:pageSize="pageSize"
+            :total="total" @change="getProductsList" />
         </div>
       </div>
 
@@ -119,7 +119,7 @@
 
 <script lang="ts" setup>
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
-import { ref, onActivated, onMounted, computed } from 'vue'
+import { ref, onActivated, onMounted, computed, provide } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import { getShoppingCart, deleteCarts } from '@/api/store'
@@ -147,7 +147,7 @@ const total = ref(0)
 const jieSuanNum = ref(0) // 结算数量
 
 
-const columns = [
+const tableColumns = [
   {
     title: '商品详情',
     dataIndex: 'detail',
@@ -253,6 +253,7 @@ const getSize = (suk: string) => {
   return suk.split(',')[1]
 }
 
+provide('goodsCartsRow', [1, 2, 3, 1, 23, 1, 5, 15, 1256])
 // 结算
 const handleJieSuan = () => {
   console.log(tableSelectedRowKeys.value)
@@ -263,9 +264,12 @@ const handleJieSuan = () => {
     })
     return
   }
+
+  // 跳转结算页面
+
   router.push({
     name: 'PayOrder',
-    query: { payOderList: JSON.stringify(tableSelectedRowKeys.value) }
+    params: { type: 'gwcjs' }
   })
 }
 

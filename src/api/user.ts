@@ -48,4 +48,10 @@ export const agreeMents = (data: { type: number; }) => {
   })
 }
 
+// 用户信息
+export const getUserInfo = () => {
+  return request.get({
+    url: '/api/userInfo',
+  })
+}
 

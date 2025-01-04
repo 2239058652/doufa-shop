@@ -49,7 +49,8 @@
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
-                  <a-form-item label="详细地址" name="textarea" :rules="[{ required: true, message: '请输入详细地址' }]">
+                  <a-form-item :label-col="{ span: 2 }" label="详细地址" name="textarea"
+                    :rules="[{ required: true, message: '请输入详细地址' }]">
                     <a-input v-model:value="formState.textarea" placeholder="请输入详细地址" />
                   </a-form-item>
                 </a-col>
@@ -63,11 +64,43 @@
             <div class="table_info">
               <a-table :dataSource="tableData" :columns="tableColumns" bordered :pagination="false">
                 <template #bodyCell="{ column, record }">
-                  <template v-if="column.key === 'xint'">
+                  <template v-if="column.dataIndex === 'detail'">
+                    <div class="detail_box">
+                      <img :src="record.productInfo.attrInfo.image" alt="" />
+                      <div class="detail_box_right">
+                        <div class="store_name">{{ record.productInfo.store_name }}</div>
+                        <div class="keyword">货号：{{ record.productInfo.keyword }}</div>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else-if="column.dataIndex === 'sku'">
+                    <div style="
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: flex-start;
+                ">
+                      <span><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk)
+                        }}</span>
+                      <span><span style="color: #999999">尺码：</span>{{ getSize(record.productInfo.attrInfo.suk) }}</span>
+                    </div>
+                  </template>
+                  <template v-else-if="column.dataIndex === 'xint'">
                     <a-select style="width: 100%" :options="[
                       { label: '是', value: '1' },
                       { label: '否', value: '2' }
                     ]" v-model:value="record.xint" />
+                  </template>
+                  <template v-else-if="column.dataIndex === 'price'">
+                    <div style="
+                  height: 22px;
+                  font-weight: 500;
+                  font-size: 16px;
+                  color: #f83126;
+                  line-height: 22px;
+                ">{{
+                  parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
+                      }}</div>
                   </template>
                 </template>
               </a-table>
@@ -234,7 +267,7 @@
                     color: #ff5c02;
                     line-height: 20px;
                   ">
-                  （钱包可用余额：¥3209.16）
+                  （钱包可用余额：¥{{ cashVal }}）
                 </span>
               </span>
             </div>
@@ -271,9 +304,9 @@
         <div class="bottom_btn">
           <div class="pay_jine">
             <div>实付金额：</div>
-            <div>¥22.00</div>
+            <div>¥{{ totalPrice }}</div>
           </div>
-          <div class="btn">
+          <div class="btn" @click="handleSubmit">
             <span>立即付款</span>
           </div>
         </div>
@@ -291,8 +324,101 @@ import { regionData, codeToText } from 'element-china-area-data'
 import Checkbox from '@/components/checkbox/index.vue'
 import Radio from '@/components/radio/index.vue'
 import AddressParse, { Utils } from 'address-parse'
+import { getUserInfo } from '@/api/user'
 
 const adressValue = ref<any>([])
+
+
+const [messageApi, contextHolder] = message.useMessage()
+const route = useRoute()
+
+onMounted(() => { })
+
+
+const checkedVal = ref(false) //多选值
+const radioVal = ref('') //单选值
+
+const textareaVal = ref('') // 智能识别信息
+const cashVal = ref(0) // 钱包余额
+
+const options = ref(regionData) //// 省市区选择数据
+
+// 支付方式，微信还是钱包支付宝等
+const selectedValue = ref('1')
+const selectPayment = (value: string) => {
+  selectedValue.value = value
+}
+
+const tableColumns = [
+  {
+    title: '商品详情',
+    dataIndex: 'detail',
+    align: 'center',
+    width: 300,
+    fixed: 'left'
+  },
+  {
+    title: '规格',
+    dataIndex: 'sku',
+    ellipsis: true,
+    align: 'center'
+  },
+  {
+    title: '数量',
+    dataIndex: 'cart_num',
+    ellipsis: true,
+    align: 'center'
+  },
+  {
+    title: '新塘售后',
+    dataIndex: 'xint',
+    align: 'center',
+    width: 200
+  },
+  {
+    title: '金额（元）',
+    dataIndex: 'price',
+    ellipsis: true,
+    align: 'center'
+  },
+]
+console.log(route, 'route')
+
+const tableData = ref([]) // 表格数据 JSON.parse(route.query?.payOderList) ||
+
+if (route) {
+  // tableData.value = injectData
+}
+
+const formAddressRef = ref<FormInstance>()
+const formState = reactive<any>({
+  name: '',
+  phone: '',
+  selectedOptions: [],
+  textarea: ''
+})
+
+
+
+// 获取颜色
+const getColor = (suk: string) => {
+  return suk.split(',')[0]
+}
+
+// 获取尺码
+const getSize = (suk: string) => {
+  return suk.split(',')[1]
+}
+
+// 计算总价
+const totalPrice = computed(() => {
+  return tableData.value.reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
+    const price = parseFloat(item.productInfo.attrInfo.price)
+    const quantity = parseFloat(item.cart_num)
+    return total + price * quantity
+  }, 0).toFixed(2)
+})
+
 
 // 智能识别地址
 const getResolutionContent = () => {
@@ -320,87 +446,76 @@ const getResolutionContent = () => {
   formState.selectedOptions = adressValue.value
 }
 
-const [messageApi, contextHolder] = message.useMessage()
-const route = useRoute()
-onMounted(() => {
-  console.log(JSON.parse(route.query.payOderList), 'route')
-})
-
-
-const checkedVal = ref(false) //多选值
-const radioVal = ref('') //单选值
-
-const textareaVal = ref('') // 智能识别信息
-
-const options = ref(regionData) //// 省市区选择数据
-
-const selectedValue = ref('1')
-
-const selectPayment = (value: string) => {
-  selectedValue.value = value
+// 获取用户信息，得到钱包余额
+const fetchCashInfo = () => {
+  getUserInfo().then((res: any) => {
+    if (res.status == 200) {
+      cashVal.value = res.data.now_money
+    }
+  })
 }
 
-const tableColumns = ref([
-  {
-    title: '商品详情',
-    dataIndex: 'name',
-    key: 'name',
-    align: 'center'
-  },
-  {
-    title: '规格',
-    dataIndex: 'age',
-    key: 'age',
-    align: 'center'
-  },
-  {
-    title: '数量',
-    dataIndex: 'num',
-    key: 'num',
-    align: 'center'
-  },
-  {
-    title: '新塘售后',
-    dataIndex: 'xint',
-    key: 'xint',
-    align: 'center',
-    width: 200
-  },
-  {
-    title: '优惠',
-    dataIndex: 'address',
-    key: 'address',
-    align: 'center'
-  },
-  {
-    title: '金额（元）',
-    dataIndex: 'address',
-    key: 'address',
-    align: 'center'
-  }
-])
-const tableData = ref([
-  {
-    key: '1',
-    name: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号'
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号'
-  }
-])
+// 立即付款
+const handleSubmit = () => {
+}
 
-const formAddressRef = ref<FormInstance>()
-const formState = reactive<any>({
-  name: '',
-  phone: '',
-  selectedOptions: [],
-  textarea: ''
-})
+fetchCashInfo()
 </script>
 
 <style src="./PayOrder.scss" scoped></style>
+
+<style scoped lang="scss">
+.detail_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+
+  img {
+    width: 82px;
+    height: 82px;
+    object-fit: cover;
+  }
+
+  .detail_box_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .store_name {
+      font-weight: 400;
+      font-size: 14px;
+      color: #333333;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+    }
+
+    .keyword {
+      font-size: 14px;
+      color: #ff5a02;
+      text-align: left;
+      margin-top: 10px;
+    }
+  }
+}
+
+.money_box {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  text-align: left;
+}
+
+// 修改表格列样式
+:deep(.ant-table-cell) {
+  vertical-align: middle;
+}
+</style>
