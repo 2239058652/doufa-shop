@@ -293,6 +293,14 @@ const handleDelete = (record: any) => {
             type: 'success',
             content: '删除成功'
           })
+          // 删除成功后重置选中状态和计数
+          tableSelectedRowKeys.value = tableSelectedRowKeys.value.filter(
+            (item: any) => item.id !== record
+          )
+          selectedTableRowKeys.value = selectedTableRowKeys.value.filter(
+            (id: any) => id !== record
+          )
+          jieSuanNum.value = tableSelectedRowKeys.value.length
           getProductsList()
         } else {
           messageApi.open({
@@ -326,6 +334,10 @@ const handlePLDelete = () => {
             type: 'success',
             content: '删除成功'
           })
+          // 删除成功后清空选中状态和计数
+          tableSelectedRowKeys.value = []
+          selectedTableRowKeys.value = []
+          jieSuanNum.value = 0
           getProductsList()
         } else {
           messageApi.open({
