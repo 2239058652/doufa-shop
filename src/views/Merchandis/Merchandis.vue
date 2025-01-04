@@ -43,7 +43,11 @@
             <div class="store-popover-content">
               <div class="popover-item">
                 <span class="item-label">综合评分：</span>
-                <span class="item-value">{{ storeInfo.rating }}</span>
+                <!-- <span class="item-value">{{ storeInfo.rating }}</span> -->
+                <div class="item-value" style="display: flex; align-items: center;">
+                  {{ storeInfo.rating }}
+                  <div class="star" v-for="(item, index) in 4" :key="index"></div>
+                </div>
               </div>
               <div class="popover-item">
                 <span class="item-label">联系方式：</span>
@@ -639,5 +643,12 @@ onMounted(() => {
   font-weight: 500;
   color: #333333;
   margin-top: 5px;
+}
+
+.star {
+  width: 14px;
+  height: 14px;
+  background: #F83126;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 </style>
