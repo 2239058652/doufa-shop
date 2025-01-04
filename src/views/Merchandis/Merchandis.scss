@@ -566,10 +566,10 @@
           justify-content: center;
           color: #333;
           font-size: 14px;
-          margin: 10px 10px;
+          margin: 10px 0 10px 10px;
           cursor: pointer;
           border-radius: 6px;
-          padding: 11px 18px;
+          padding: 11px 16px;
           white-space: nowrap; // 强制一行显示
           overflow: hidden; // 超出隐藏
           text-overflow: ellipsis; // 省略号
@@ -993,7 +993,8 @@
             font-size: 14px;
             cursor: pointer;
             border-radius: 6px;
-            padding: 8px 10px;
+            padding: 8px 10px 8px 10px;
+            margin-right: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;

@@ -75,11 +75,11 @@
                   </template>
                   <template v-else-if="column.dataIndex === 'sku'">
                     <div style="
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: flex-start;
-                ">
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: flex-start;
+                      ">
                       <span><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk)
                         }}</span>
                       <span><span style="color: #999999">尺码：</span>{{ getSize(record.productInfo.attrInfo.suk) }}</span>
@@ -93,13 +93,13 @@
                   </template>
                   <template v-else-if="column.dataIndex === 'price'">
                     <div style="
-                  height: 22px;
-                  font-weight: 500;
-                  font-size: 16px;
-                  color: #f83126;
-                  line-height: 22px;
-                ">{{
-                  parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
+                        height: 22px;
+                        font-weight: 500;
+                        font-size: 16px;
+                        color: #f83126;
+                        line-height: 22px;
+                      ">{{
+                        parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
                       }}</div>
                   </template>
                 </template>
@@ -306,12 +306,126 @@
             <div>实付金额：</div>
             <div>¥{{ totalPrice }}</div>
           </div>
-          <div class="btn" @click="handleSubmit">
+          <div class="btn" @click="payOrderOpen = true">
             <span>立即付款</span>
           </div>
         </div>
       </div>
     </div>
+    <a-modal v-model:open="payOrderOpen" width="618px">
+      <template #title>
+        <div style="display: flex; justify-content: center; align-items: center">
+          <span style="
+              width: 96px;
+              height: 31px;
+              font-weight: bold;
+              font-size: 24px;
+              color: #333333;
+              line-height: 31px;
+              text-align: center;
+            ">订单付款</span>
+        </div>
+      </template>
+
+      <div style="margin-top: 20px;">
+        <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f8f8f8;
+            border-radius: 8px;
+            width: 578px;
+            height: 48px;
+            padding: 1px;
+            margin-top: 20px;
+          ">
+          <a-input ref="AInputCodeRef" v-model:value="payCode" :bordered="false" placeholder="请输入支付密码" />
+        </div>
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;margin-top: 20px;
+          ">
+          <div style="display: flex; justify-content: space-around; align-items: center; gap: 6px">
+            <div style="
+                width: 134px;
+                height: 19px;
+                font-size: 14px;
+                color: #333333;
+                line-height: 19px;
+                text-align: left;
+                font-style: normal;
+              ">钱包余额：¥3218.76</div>
+            <div style="
+                width: 29px;
+                height: 19px;
+                font-size: 14px;
+                color: #3a84ff;
+                line-height: 19px;
+                text-align: left;
+                font-style: normal;
+                text-decoration-line: underline;
+                cursor: pointer;
+              ">刷新</div>
+          </div>
+          <div style="display: flex; justify-content: space-around; align-items: center; gap: 6px">
+            <div style="
+                width: 66px;
+                height: 19px;
+                font-size: 14px;
+                color: #333333;
+                line-height: 19px;
+                text-align: left;
+                font-style: normal;
+              ">共2笔订单</div>
+            <div style="
+                width: 57px;
+                height: 19px;
+                font-size: 14px;
+                color: #333333;
+                line-height: 19px;
+                text-align: left;
+                font-style: normal;
+              ">需支付：</div>
+            <div style="
+                width: 62px;
+                height: 24px;
+                font-weight: bold;
+                font-size: 18px;
+                color: #f83126;
+                line-height: 24px;
+                text-align: left;
+                font-style: normal;
+              ">¥52.00</div>
+          </div>
+        </div>
+      </div>
+      <div style="width: 100%;height: 179px;"></div>
+      <template #footer>
+        <div style="display: flex; justify-content: center; align-items: center">
+          <div @click="handleSubmit" style="
+              width: 90px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 36px;
+              background: #f83126;
+              border-radius: 6px;
+              cursor: pointer;
+            ">
+            <span style="
+                width: 57px;
+                height: 19px;
+                font-size: 14px;
+                color: #ffffff;
+                line-height: 19px;
+                text-align: right;
+              ">确认支付</span>
+          </div>
+        </div>
+      </template>
+    </a-modal>
   </div>
 </template>
 
@@ -327,10 +441,11 @@ import AddressParse, { Utils } from 'address-parse'
 import { getUserInfo } from '@/api/user'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
 
-const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车数据
+const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车数据
 
 const adressValue = ref<any>([])
-
+const AInputCodeRef = ref()
+const payCode = ref<any>('') // 支付密码
 
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
@@ -338,7 +453,7 @@ const route = useRoute()
 // 获取订单数据
 onMounted(() => { })
 
-
+const payOrderOpen = ref(false) //订单付款弹窗
 const checkedVal = ref(false) //多选值
 const radioVal = ref('') //单选值
 
@@ -384,9 +499,8 @@ const tableColumns = [
     dataIndex: 'price',
     ellipsis: true,
     align: 'center'
-  },
+  }
 ]
-
 
 console.log(route, 'rout=========')
 const tableData = ref<any>([]) // 表格数据
@@ -406,8 +520,6 @@ const formState = reactive<any>({
   textarea: ''
 })
 
-
-
 // 获取颜色
 const getColor = (suk: string) => {
   return suk.split(',')[0]
@@ -420,13 +532,17 @@ const getSize = (suk: string) => {
 
 // 计算总价
 const totalPrice = computed(() => {
-  return tableData.value.reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
-    const price = parseFloat(item.productInfo.attrInfo.price)
-    const quantity = parseFloat(item.cart_num)
-    return total + price * quantity
-  }, 0).toFixed(2)
+  return tableData.value
+    .reduce(
+      (total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
+        const price = parseFloat(item.productInfo.attrInfo.price)
+        const quantity = parseFloat(item.cart_num)
+        return total + price * quantity
+      },
+      0
+    )
+    .toFixed(2)
 })
-
 
 // 智能识别地址
 const getResolutionContent = () => {
@@ -465,6 +581,7 @@ const fetchCashInfo = () => {
 
 // 立即付款
 const handleSubmit = () => {
+  AInputCodeRef.value.focus()
 }
 
 fetchCashInfo()
