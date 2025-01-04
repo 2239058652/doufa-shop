@@ -266,8 +266,8 @@
                 </div>
               </div>
 
+              <!-- // 注释掉 -->
               <!-- div class="oders-fc_right">
-                  // 注释掉
                 <div class="fc_r_text">已选清单</div>
                 <div>
                   <img src="../../assets/image/fixed_toTop.png" alt="" />
