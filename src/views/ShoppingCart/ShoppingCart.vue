@@ -101,9 +101,13 @@
           <span class="jsmx">结算明细</span>
           <span class="tishi">实际支付金额以下单页为准</span>
         </div>
-        <div class="pay_cash_img">
+        <div class="pay_cash_img" v-if="tableSelectedRowKeys.length > 0">
           <img :src="item.productInfo.attrInfo.image" :alt="item.productInfo.attrInfo.suk"
             v-for="item in tableSelectedRowKeys" :key="item.id" />
+        </div>
+        <div class="pay_cash_empty_img" v-else>
+          <img src="../../assets/image/shopping_cart_empty.png" alt="" />
+          <div>请勾选要下单的商品结算</div>
         </div>
         <div class="pay_cash_heji">
           <div class="heji">合计商品金额：</div>
@@ -119,11 +123,15 @@
 
 <script lang="ts" setup>
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
-import { ref, onActivated, onMounted, computed, provide } from 'vue'
+import { ref, onActivated, onMounted, computed, } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import { getShoppingCart, deleteCarts } from '@/api/store'
 import { useRouter } from 'vue-router'
+import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+
+const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车表格数据,存到pinia中
+
 
 const router = useRouter()
 
@@ -253,10 +261,8 @@ const getSize = (suk: string) => {
   return suk.split(',')[1]
 }
 
-provide('goodsCartsRow', [1, 2, 3, 1, 23, 1, 5, 15, 1256])
 // 结算
 const handleJieSuan = () => {
-  console.log(tableSelectedRowKeys.value)
   if (tableSelectedRowKeys.value.length == 0) {
     messageApi.open({
       type: 'warning',
@@ -265,11 +271,10 @@ const handleJieSuan = () => {
     return
   }
 
-  // 跳转结算页面
-
-  router.push({
-    name: 'PayOrder',
-    params: { type: 'gwcjs' }
+  goodsCartsTableStore.reGoodsCartsTable(tableSelectedRowKeys.value)  // 将选中的商品存到pinia中
+  router.push({ // 跳转结算页面
+    path: '/payorder',
+    query: { type: 'gwcjs' }
   })
 }
 

@@ -325,6 +325,9 @@ import Checkbox from '@/components/checkbox/index.vue'
 import Radio from '@/components/radio/index.vue'
 import AddressParse, { Utils } from 'address-parse'
 import { getUserInfo } from '@/api/user'
+import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+
+const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车数据
 
 const adressValue = ref<any>([])
 
@@ -382,12 +385,14 @@ const tableColumns = [
     align: 'center'
   },
 ]
-console.log(route, 'route')
 
-const tableData = ref([]) // 表格数据 JSON.parse(route.query?.payOderList) ||
 
-if (route) {
-  // tableData.value = injectData
+console.log(route, 'rout=========')
+const tableData = ref<any>([]) // 表格数据
+
+// 如果是从购物车跳转过来的，则从pinia中获取购物车数据
+if (route.query.type && route.query.type === 'gwcjs') {
+  tableData.value = goodsCartsTableStore.goodsCartsTable
 }
 
 const formAddressRef = ref<FormInstance>()
