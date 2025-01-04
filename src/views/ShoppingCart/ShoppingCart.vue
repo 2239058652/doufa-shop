@@ -408,4 +408,9 @@ getProductsList()
 :deep(.ant-table-cell) {
   vertical-align: middle;
 }
+
+// 数字输入input内容居中
+:deep(.ant-input-number-input) {
+  text-align: center;
+}
 </style>

@@ -569,7 +569,7 @@
           font-size: 14px;
           margin: 10px 10px;
           cursor: pointer;
-          border-radius: 3px;
+          border-radius: 6px;
           padding: 11px 18px;
           white-space: nowrap; // 强制一行显示
           overflow: hidden; // 超出隐藏
@@ -629,9 +629,9 @@
         flex-grow: 1;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        padding-left: 30px;
-        gap: 80px;
+        justify-content: space-between;
+        padding: 0 30px;
+        // gap: 450px;
 
         .fc_text {
           font-weight: 400;
@@ -981,7 +981,7 @@
           overflow: hidden;
 
           #colors_item {
-            max-width: calc(100% - 20px);
+            // max-width: calc(100% - 20px);
             border: 0.1px solid #c4c4c6;
             display: flex;
             flex-wrap: wrap;
@@ -991,8 +991,8 @@
             font-size: 14px;
             margin: 10px 10px;
             cursor: pointer;
-            border-radius: 3px;
-            padding: 8px 12px;
+            border-radius: 6px;
+            padding: 8px 18px;
             white-space: nowrap; // 强制一行显示
             overflow: hidden; // 超出隐藏
             text-overflow: ellipsis; // 省略号

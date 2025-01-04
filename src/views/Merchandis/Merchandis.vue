@@ -265,12 +265,14 @@
                   <span class="fc_text">元</span>
                 </div>
               </div>
-              <div class="oders-fc_right">
+
+              <!-- div class="oders-fc_right">
+                  // 注释掉
                 <div class="fc_r_text">已选清单</div>
                 <div>
                   <img src="../../assets/image/fixed_toTop.png" alt="" />
                 </div>
-              </div>
+              </!-->
             </div>
             <div class="oders-btn">
               <div @click="payOrderNow">
@@ -596,5 +598,10 @@ fetchGoodsDetail()
   font-size: 18px;
   color: #333333;
   line-height: 25px;
+}
+
+// 数字输入input内容居中
+:deep(.ant-input-number-input) {
+  text-align: center;
 }
 </style>
