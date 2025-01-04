@@ -578,12 +578,13 @@
             border: 0.1px solid #f83126;
             color: #f83126;
           }
+
+          &:hover {
+            border: 0.1px solid #f83126;
+            color: #f83126;
+          }
         }
 
-        #colors_item:hover {
-          border: 0.1px solid #f83126;
-          color: #f83126;
-        }
       }
     }
 
@@ -978,35 +979,37 @@
           display: flex;
           flex-wrap: wrap;
           overflow: hidden;
+          margin-top: 20px;
+          gap: 10px;
 
           #colors_item {
-            // max-width: calc(100% - 20px);
+            flex: 0 1 auto; // Allow items to shrink but not grow
+            min-width: 0; // Enable text truncation
             border: 0.1px solid #c4c4c6;
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
             color: #333;
             font-size: 14px;
-            margin: 10px 5px;
             cursor: pointer;
             border-radius: 6px;
-            padding: 8px 18px;
-            white-space: nowrap; // 强制一行显示
-            overflow: hidden; // 超出隐藏
-            text-overflow: ellipsis; // 省略号
+            padding: 8px 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &.active {
               border: 0.1px solid #f83126;
               color: #f83126;
             }
-          }
 
-          #colors_item:hover {
-            border: 0.1px solid #f83126;
-            color: #f83126;
+            &:hover {
+              border: 0.1px solid #f83126;
+              color: #f83126;
+            }
           }
         }
+
       }
 
       .goods-num {

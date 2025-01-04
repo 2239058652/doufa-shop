@@ -335,6 +335,7 @@ const adressValue = ref<any>([])
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
 
+// 获取订单数据
 onMounted(() => { })
 
 
@@ -392,6 +393,8 @@ const tableData = ref<any>([]) // 表格数据
 
 // 如果是从购物车跳转过来的，则从pinia中获取购物车数据
 if (route.query.type && route.query.type === 'gwcjs') {
+  tableData.value = goodsCartsTableStore.goodsCartsTable
+} else {
   tableData.value = goodsCartsTableStore.goodsCartsTable
 }
 
@@ -506,6 +509,13 @@ fetchCashInfo()
       color: #ff5a02;
       text-align: left;
       margin-top: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
   }
 }

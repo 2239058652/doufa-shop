@@ -391,6 +391,13 @@ getProductsList()
       color: #ff5a02;
       text-align: left;
       margin-top: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      text-align: left;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
   }
 }

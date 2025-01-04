@@ -345,6 +345,9 @@ import { message } from 'ant-design-vue'
 import moment from 'moment'
 import Popover from '@/components/phopopover/index.vue'
 import { useClipboard } from '@vueuse/core'
+import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+
+const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车表格数据,存到pinia中
 
 const storeInfo = ref({
   name: '慢慢家男装店',
@@ -427,15 +430,38 @@ const caculateGoodsNum = (type: string) => {
 }
 
 // 立即下单
+// 立即下单
 const payOrderNow = () => {
   if (!selectedInfo.value.isValid) {
     messageApi.error('请选择商品数量、颜色和尺码！')
     return
   }
 
+  // 构建订单数据
+  const orderData = {
+    id: detailId,
+    productInfo: {
+      store_name: goodsDetail.value?.storeInfo?.store_name,
+      keyword: goodsDetail.value?.storeInfo?.keyword,
+      attrInfo: {
+        image: imageBaseUrl.value,
+        price: goodsDetail.value?.storeInfo?.price,
+        suk: `${selectedInfo.value.color},${selectedInfo.value.size}`,
+      }
+    },
+    cart_num: selectedInfo.value.quantity,
+    mer_name: goodsDetail.value?.storeInfo?.mer_name,
+    goods_address: goodsDetail.value?.storeInfo?.goods_address
+  }
+
+  // 存储订单数据到pinia
+  goodsCartsTableStore.reGoodsCartsTable([orderData])
+
+  // 跳转到支付页面
   router.push({
     path: '/payorder',
     query: {
+      type: 'direct', // 标记为直接购买
       id: detailId,
       num: selectedInfo.value.quantity,
       color: selectedInfo.value.color,
@@ -443,6 +469,7 @@ const payOrderNow = () => {
     }
   })
 }
+
 
 // 放大镜相关
 const { elementX, elementY, isOutside } = useMouseInElement(target)
