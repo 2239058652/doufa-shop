@@ -113,21 +113,20 @@
   border-radius: 12px;
   margin-top: -15px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 750px;
+  padding: 0 20px;
   background: #FFFFFF;
 
   .store-info {
     flex-grow: 1;
     height: 60px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 24px;
 
     .user-atrr {
-      flex-grow: 1;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -146,7 +145,7 @@
       }
 
       .atrr-info {
-        width: 180px;
+        // width: 180px;
         height: 42px;
         display: flex;
         flex-direction: column;

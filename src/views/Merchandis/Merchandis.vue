@@ -23,125 +23,56 @@
         </a-input>
       </div>
     </div>
+
     <!-- 顶部个人店铺信息 -->
     <div class="user-store">
       <div class="store-info">
         <a-popover placement="bottom" :overlayInnerStyle="{
           width: '279px',
-          height: '340px',
-          borderRadius: '12px'
+          height: 'auto',
+          borderRadius: '12px',
+          padding: '15px',
         }" :overlayStyle="{ paddingRight: '', paddingTop: '10px' }" :arrow="false">
-          <template #content>
-            <div class="store_pop">
-              <div class="pop_item" style="margin-top: 20px">
-                <span class="pop_name">综合评分：</span>
-                <span class="pop_name_1">4.6</span>
-              </div>
-              <div class="pop_item">
-                <span class="pop_name">联系方式：</span>
-                <span class="pop_name_1">{{ phone }}</span>
-                <img style="width: 12px; height: 12px; object-fit: cover;cursor: pointer;"
-                  src="../../assets/image/copy.png" alt="" @click="copyPhone(phone)" />
-              </div>
-              <div class="pop_item">
-                <span class="pop_name">客 服：</span>
-                <img style="width: 18px; height: 18px; object-fit: cover; margin-right: -5px"
-                  src="../../assets/image/kefu-icon.png" alt="" />
-                <span class="pop_name_1">在线客服</span>
-              </div>
-              <div class="woshiyitiaoxian"></div>
-              <div style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  gap: 48px;
-                  margin-top: 20px;
-                ">
-                <div style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 1px;
-                  ">
-                  <div class="pop_name1">评分</div>
-                  <div class="pop_name2">4.6</div>
-                </div>
-                <div style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 1px;
-                  ">
-                  <div class="pop_name1">退货率</div>
-                  <div class="pop_name2">3%</div>
-                </div>
-                <div style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 1px;
-                  ">
-                  <div class="pop_name1">缺货率</div>
-                  <div class="pop_name2">3%</div>
-                </div>
-              </div>
-              <div style="
-                  width: 222px;
-                  height: 38px;
-                  border-radius: 5px;
-                  background: #f3f6f8;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  cursor: pointer;
-                  position: absolute;
-                  top: 215px;
-                  right: -12px;
-                " @click="$router.push('/merhome')">
-                <span style="
-                    width: 72px;
-                    height: 25px;
-                    font-weight: bold;
-                    font-size: 18px;
-                    color: #333333;
-                    line-height: 25px;
-                  ">进入店铺</span>
-              </div>
+          <template #title>
+            <div class="store-popover-title">
+              <span class="store-name">{{ storeInfo.name }}</span>
+              <span class="follow-button" @click="followStore"> +关注店铺 </span>
             </div>
           </template>
-          <template #title>
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 55px">
-              <span style="
-                  width: 96px;
-                  height: 22px;
-                  font-weight: bold;
-                  font-size: 16px;
-                  color: #333333;
-                  line-height: 22px;
-                ">慢慢家男装店</span>
-              <span style="
-                  width: 76px;
-                  height: 26px;
-                  border-radius: 4px;
-                  border: 1px solid #e2e4e6;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                ">
-                <span style="
-                    width: 50px;
-                    height: 17px;
-                    font-weight: 400;
-                    font-size: 12px;
-                    color: #333333;
-                    line-height: 17px;
-                    white-space: nowrap;
-                    cursor: pointer;
-                  ">+关注店铺</span>
-              </span>
+          <template #content>
+            <div class="store-popover-content">
+              <div class="popover-item">
+                <span class="item-label">综合评分：</span>
+                <span class="item-value">{{ storeInfo.rating }}</span>
+              </div>
+              <div class="popover-item">
+                <span class="item-label">联系方式：</span>
+                <span class="item-value">{{ storeInfo.phone }}</span>
+                <img class="copy-icon" src="../../assets/image/copy.png" alt="" @click="copyPhone(storeInfo.phone)" />
+              </div>
+              <div class="popover-item">
+                <span class="item-label">客 服：</span>
+                <img class="kefu-icon" src="../../assets/image/kefu-icon.png" alt="" />
+                <span class="item-value">在线客服</span>
+              </div>
+              <div class="divider"></div>
+              <div class="store-stats">
+                <div class="stat-item">
+                  <div class="stat-label">评分</div>
+                  <div class="stat-value">{{ storeInfo.rating }}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">退货率</div>
+                  <div class="stat-value">{{ storeInfo.returnRate }}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">缺货率</div>
+                  <div class="stat-value">{{ storeInfo.outOfStockRate }}</div>
+                </div>
+              </div>
+              <div class="enter-store-button" @click="$router.push('/merhome')">
+                进入店铺
+              </div>
             </div>
           </template>
           <div class="user-atrr">
@@ -157,12 +88,12 @@
         <div class="user-tongji">
           <div>
             <div>
-              4.6
+              {{ storeInfo.rating }}
               <div class="star" v-for="(item, index) in 4" :key="index"></div>
             </div>
           </div>
-          <div>退货率3%</div>
-          <div>缺货率93%</div>
+          <div>退货率{{ storeInfo.returnRate }}</div>
+          <div>缺货率{{ storeInfo.outOfStockRate }}</div>
         </div>
       </div>
       <div class="store-btn">
@@ -176,7 +107,6 @@
         </div>
       </div>
     </div>
-
     <!-- 商品图片下单区域 -->
     <div class="goods-main">
       <div class="goods-order">
@@ -229,7 +159,7 @@
               <div class="colors_title">颜 色：</div>
               <div class="colors_box">
                 <div v-for="(item, index) in goodsDetail?.productAttr[0]?.attr_values" :key="index">
-                  <div id="colors_item" @click="colorIndex = index" :class="colorIndex == index ? 'active' : ''">
+                  <div id="colors_item" @click="handleColorSelect(index)" :class="colorIndex == index ? 'active' : ''">
                     <div>{{ item }}</div>
                   </div>
                 </div>
@@ -239,7 +169,7 @@
               <div class="colors_title">尺 码： </div>
               <div class="colors_box">
                 <div v-for="(item, index) in goodsDetail?.productAttr[1]?.attr_values" :key="index">
-                  <div id="colors_item" @click="sizeIndex = index" :class="sizeIndex == index ? 'active' : ''">
+                  <div id="colors_item" @click="handleSizeSelect(index)" :class="sizeIndex == index ? 'active' : ''">
                     <div>{{ item }}</div>
                   </div>
                 </div>
@@ -247,7 +177,7 @@
             </div>
             <div class="goods-num">
               <span>数 量：</span>
-              <a-input-number v-model:value="goodsDetailNum" :min="0" :max="1000000">
+              <a-input-number v-model:value="goodsDetailNum" :min="0" :max="100">
                 <template #addonBefore>
                   <div class="jian" @click="caculateGoodsNum('reduce')">-</div>
                 </template>
@@ -258,10 +188,10 @@
             </div>
             <div class="oders-fc">
               <div class="oders-fc_left">
-                <div class="fc_text">共2件</div>
+                <div class="fc_text">共{{ selectedInfo.quantity }}件</div>
                 <div>
                   <span class="fc_text">合计金额：</span>
-                  <span class="fc_price">698.01</span>
+                  <span class="fc_price">{{ selectedInfo.totalAmount }}</span>
                   <span class="fc_text">元</span>
                 </div>
               </div>
@@ -300,7 +230,9 @@
           </div>
         </a-skeleton>
       </div>
-      <div class="download-btn">
+
+      <!-- 图片下载先注释掉 -->
+      <!-- <div class="download-btn">
         <div>
           <span>
             <img src="../../assets/image/xcicon.png" alt="" />
@@ -313,7 +245,7 @@
           </span>
           <span>下载素材</span>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- 商品详情区 -->
@@ -344,7 +276,6 @@
           <!-- 代发说明 -->
           <div class="spdf" v-else></div>
         </a-skeleton>
-
         <!-- 浮动下单框 -->
         <div class="float_order">
           <a-skeleton :loading="!goodsDetail.storeInfo" active>
@@ -360,7 +291,7 @@
               <div class="colors_title">颜 色：</div>
               <div class="colors_box">
                 <div v-for="(item, index) in goodsDetail?.productAttr[0]?.attr_values" :key="index">
-                  <div id="colors_item" @click="colorIndex = index" :class="colorIndex == index ? 'active' : ''">
+                  <div id="colors_item" @click="handleColorSelect(index)" :class="colorIndex == index ? 'active' : ''">
                     <div>{{ item }}</div>
                   </div>
                 </div>
@@ -370,7 +301,7 @@
               <div class="colors_title">尺 码： </div>
               <div class="colors_box">
                 <div v-for="(item, index) in goodsDetail?.productAttr[1]?.attr_values" :key="index">
-                  <div id="colors_item" @click="sizeIndex = index" :class="sizeIndex == index ? 'active' : ''">
+                  <div id="colors_item" @click="handleSizeSelect(index)" :class="sizeIndex == index ? 'active' : ''">
                     <div>{{ item }}</div>
                   </div>
                 </div>
@@ -378,7 +309,7 @@
             </div>
             <div class="goods-num">
               <span>数 量：</span>
-              <a-input-number v-model:value="goodsDetailNum" :min="0" :max="1000000">
+              <a-input-number v-model:value="goodsDetailNum" :min="0" :max="100">
                 <template #addonBefore>
                   <div class="jian" @click="caculateGoodsNum('reduce')">-</div>
                 </template>
@@ -401,7 +332,6 @@
     </div>
   </div>
 </template>
-
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -409,104 +339,75 @@ import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail } from '@/api/store'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
-import Popover from '@/components/phopopover/index.vue' // 以图搜索
+import Popover from '@/components/phopopover/index.vue'
 import { useClipboard } from '@vueuse/core'
 
-// 商品详情框检测滚动浮现出来
+const storeInfo = ref({
+  name: '慢慢家男装店',
+  rating: 4.6,
+  phone: '13823234343',
+  returnRate: '3%',
+  outOfStockRate: '3%',
+})
+
+// 商品选择信息
+const selectedInfo = ref({
+  quantity: 0,
+  totalAmount: '0.00',
+  color: '',
+  size: '',
+  isValid: false
+})
+
+// 响应式数据
 const el = ref<HTMLElement | null>(null)
-const { y: scrollYval } = useScroll(el, { behavior: 'auto' })
-watch([scrollYval], () => {
-  const floatOrder = document.querySelector('.float_order')
-  floatOrder?.classList.add('show')
-  if (scrollYval.value >= 600) {
-    floatOrder?.classList.add('show')
-  } else {
-    floatOrder?.classList.remove('show')
-  }
-})
-onMounted(() => {
-  el.value = document.querySelector('.router-view')
-})
+const target = ref(null)
+const inputVal = ref('')
+const fileList = ref([])
+const imgIndex = ref(0)
+const colorIndex = ref(-1)
+const tabsIndex = ref(0)
+const sizeIndex = ref(-1)
+const goodsDetailNum = ref(0)
+const goodsDetail = ref<any>({})
+const imageBaseUrl = ref('')
+const phone = ref('13823234343')
 
 const [messageApi, contextHolder] = message.useMessage()
-
-const target = ref(null)
-// 放大镜相关代码
-const { elementX, elementY, isOutside } = useMouseInElement(target)
-const left = ref(0)
-const top = ref(0)
-const positionX = ref(0)
-const positionY = ref(0)
-watch([elementX, elementY, isOutside], () => {
-  if (isOutside.value) return
-
-  const containerWidth = 624
-  const containerHeight = 624
-  const layerSize = 197
-  const scale = 2 // 放大倍数
-
-  // 计算鼠标位置，考虑蒙层的一半尺寸
-  const halfLayer = layerSize / 2
-  left.value = Math.max(halfLayer, Math.min(elementX.value, containerWidth - halfLayer)) - halfLayer
-  top.value = Math.max(halfLayer, Math.min(elementY.value, containerHeight - halfLayer)) - halfLayer
-
-  // 计算放大图位置，使用比例计算
-  positionX.value = -(left.value / containerWidth) * (800 - 400)
-  positionY.value = -(top.value / containerHeight) * (800 - 400)
-})
-
 const route = useRoute()
 const router = useRouter()
 
-const inputVal = ref('') // 搜索框输入框
-const fileList = ref([]) // 以图搜索list
-const imgIndex = ref(0) // 左侧小图片列表选中的索引
-const colorIndex = ref(0) // 颜色索引
-const tabsIndex = ref(0) // 商品详情和代发说明tab切换
-const sizeIndex = ref(0) // 尺码索引
-const goodsDetailNum = ref(0) // 购买商品数量
+// 监听选择变化
+watch([goodsDetailNum, colorIndex, sizeIndex], () => {
+  updateSelectedInfo()
+})
 
-const goodsDetail = ref<any>({}) // 商品详情
-const imageBaseUrl = ref('') // 商品大图
+// 更新选择信息
+const updateSelectedInfo = () => {
+  const price = Number(goodsDetail.value?.storeInfo?.price || 0)
+  const quantity = goodsDetailNum.value
 
-const phone = ref('13823234343') // 手机号
-
-// 复制手机号
-const copyPhone = (source: any) => {
-  const { text, copy, copied, isSupported } = useClipboard({ source, legacy: true })
-  copy(source)
-  messageApi.success('复制成功')
+  selectedInfo.value = {
+    quantity,
+    totalAmount: (price * quantity).toFixed(2),
+    color: goodsDetail.value?.productAttr?.[0]?.attr_values?.[colorIndex.value] || '',
+    size: goodsDetail.value?.productAttr?.[1]?.attr_values?.[sizeIndex.value] || '',
+    isValid: quantity > 0 && colorIndex.value >= 0 && sizeIndex.value >= 0
+  }
 }
 
-
-// 接受商品详情的ID+
-const { id: detailId }: any = route.params
-console.log(detailId)
-// 获取商品详情
-const fetchGoodsDetail = () => {
-  getProductDetail(detailId).then((res: any) => {
-    console.log(res.data)
-    if (res.status == 200) {
-      goodsDetail.value = res.data
-      imageBaseUrl.value = res.data.storeInfo.image_base
-    } else {
-      messageApi.error(res.msg)
-    }
-  })
+// 选择颜色
+const handleColorSelect = (index: number) => {
+  colorIndex.value = index
+  updateSelectedInfo()
 }
 
-// 商品图鼠标移入
-const handleImgMoveOver = (item: any, index: number) => {
-  imgIndex.value = index
-  imageBaseUrl.value = item
+// 选择尺码
+const handleSizeSelect = (index: number) => {
+  sizeIndex.value = index
+  updateSelectedInfo()
 }
-
-// 转换时间戳
-const formatTime = (time: number) => {
-  return moment(time * 1000).format('YYYY-MM-DD HH:mm')
-}
-
-// 购物数量jian
+// 修改数量
 const caculateGoodsNum = (type: string) => {
   switch (type) {
     case 'add':
@@ -518,90 +419,225 @@ const caculateGoodsNum = (type: string) => {
       }
       break
   }
+  updateSelectedInfo()
 }
 
 // 立即下单
 const payOrderNow = () => {
-  if (goodsDetailNum.value <= 0) {
-    messageApi.error('请选择商品数量！')
+  if (!selectedInfo.value.isValid) {
+    messageApi.error('请选择商品数量、颜色和尺码！')
     return
-  } else {
-    router.push({
-      path: '/payorder',
-      query: {
-        id: detailId,
-        num: goodsDetailNum.value
-      }
-    })
   }
+
+  router.push({
+    path: '/payorder',
+    query: {
+      id: detailId,
+      num: selectedInfo.value.quantity,
+      color: selectedInfo.value.color,
+      size: selectedInfo.value.size
+    }
+  })
+}
+
+// 放大镜相关
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+const left = ref(0)
+const top = ref(0)
+const positionX = ref(0)
+const positionY = ref(0)
+
+watch([elementX, elementY, isOutside], () => {
+  if (isOutside.value) return
+
+  const containerWidth = 624
+  const containerHeight = 624
+  const layerSize = 197
+  const scale = 2
+
+  const halfLayer = layerSize / 2
+  left.value = Math.max(halfLayer, Math.min(elementX.value, containerWidth - halfLayer)) - halfLayer
+  top.value = Math.max(halfLayer, Math.min(elementY.value, containerHeight - halfLayer)) - halfLayer
+
+  positionX.value = -(left.value / containerWidth) * (800 - 400)
+  positionY.value = -(top.value / containerHeight) * (800 - 400)
+})
+
+// 滚动检测
+const { y: scrollYval } = useScroll(el, { behavior: 'auto' })
+watch([scrollYval], () => {
+  const floatOrder = document.querySelector('.float_order')
+  if (scrollYval.value >= 600) {
+    floatOrder?.classList.add('show')
+  } else {
+    floatOrder?.classList.remove('show')
+  }
+})
+
+const followStore = () => {
+  console.log('关注店铺')
+  // 可以在这里添加你的关注逻辑
+}
+
+// 复制手机号
+const copyPhone = (source: any) => {
+  const { copy } = useClipboard({ source, legacy: true })
+  copy(source)
+  messageApi.success('复制成功')
+}
+
+// 获取商品详情
+const { id: detailId }: any = route.params
+const fetchGoodsDetail = () => {
+  getProductDetail(detailId).then((res: any) => {
+    if (res.status == 200) {
+      goodsDetail.value = res.data
+      imageBaseUrl.value = res.data.storeInfo.image_base
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+
+// 商品图片切换
+const handleImgMoveOver = (item: any, index: number) => {
+  imgIndex.value = index
+  imageBaseUrl.value = item
+}
+
+// 时间格式化
+const formatTime = (time: number) => {
+  return moment(time * 1000).format('YYYY-MM-DD HH:mm')
 }
 
 // 以图搜索
 const beforeUpload = (file: any) => {
-  console.log(file, 'aaaaaaaaaa')
+  console.log(file)
 }
 
-fetchGoodsDetail()
+onMounted(() => {
+  el.value = document.querySelector('.router-view')
+  fetchGoodsDetail()
+})
 </script>
-
 <style scoped src="./Merchandis.scss"></style>
-<style scoped lang="scss">
-.store_pop {
-  margin: 0 29px;
-  position: relative;
-}
-
-.pop_item {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.pop_name {
-  width: 70px;
-  height: 20px;
-  font-weight: 400;
-  font-size: 14px;
-  color: #999999;
-  line-height: 20px;
-}
-
-.pop_name_1 {
-  height: 20px;
-  font-weight: 400;
-  font-size: 14px;
-  color: #333333;
-  line-height: 20px;
-}
-
-.woshiyitiaoxian {
-  width: 221px;
-  height: 1px;
-  border: 1px solid #e2e4e6;
-}
-
-.pop_name1 {
-  width: 42px;
-  height: 20px;
-  font-weight: 400;
-  font-size: 14px;
-  color: #999999;
-  line-height: 20px;
-}
-
-.pop_name2 {
-  width: 27px;
-  height: 25px;
-  font-weight: 500;
-  font-size: 18px;
-  color: #333333;
-  line-height: 25px;
-}
-
-// 数字输入input内容居中
+<style lang="scss" scoped>
 :deep(.ant-input-number-input) {
   text-align: center;
+}
+
+.store-popover-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.store-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.follow-button {
+  width: 76px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid #e2e4e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: #333333;
+  line-height: 17px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.store-popover-content {
+  padding: 10px;
+}
+
+.popover-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.item-label {
+  width: 70px;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.item-value {
+  font-size: 14px;
+  color: #333333;
+  line-height: 20px;
+}
+
+.copy-icon {
+  width: 12px;
+  height: 12px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.kefu-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+  margin-right: -5px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e2e4e6;
+  margin: 15px 0;
+}
+
+.store-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #999999;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.enter-store-button {
+  width: 100%;
+  height: 38px;
+  border-radius: 5px;
+  background: #f3f6f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333333;
+  margin-top: 5px;
 }
 </style>
