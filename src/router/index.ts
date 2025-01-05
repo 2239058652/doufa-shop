@@ -52,8 +52,8 @@ const asyncRoutes = [
         }
       },
       {
-        path: 'detail/:id',
-        name: 'Detail',
+        path: 'merchandis/:id',
+        name: 'Merchandis',
         component: () => import('@/views/Merchandis/Merchandis.vue'),
         meta: {
           title: '商品详情页',

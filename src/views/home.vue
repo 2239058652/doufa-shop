@@ -656,7 +656,7 @@ const bannerActiveList = ref<any>([]) //底部banner
 // 跳转商品详情
 const routerToDetail = (item: any) => {
   router.push({
-    path: `/detail/${item.id}`
+    path: `/merchandis/${item.id}`
   })
 }
 
