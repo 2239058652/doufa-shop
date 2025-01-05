@@ -355,62 +355,6 @@ getProductsList()
 
 <style scoped src="./ShoppingCart.scss"></style>
 <style scoped lang="scss">
-.detail_box {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 6px;
-
-  img {
-    width: 82px;
-    height: 82px;
-    object-fit: cover;
-  }
-
-  .detail_box_right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
-    .store_name {
-      font-weight: 400;
-      font-size: 14px;
-      color: #333333;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      text-align: left;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-    }
-
-    .keyword {
-      font-size: 14px;
-      color: #ff5a02;
-      text-align: left;
-      margin-top: 10px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
-      text-align: left;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-    }
-  }
-}
-
-.money_box {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-  text-align: left;
-}
-
 // 修改表格列样式
 :deep(.ant-table-cell) {
   vertical-align: middle;
