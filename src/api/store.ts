@@ -10,7 +10,7 @@ export const returnAddressList = (data: { page: number; limit: number }) => {
 
 // 首页分类接口 不传则全是站点分类：常熟：7 新塘：8：新塘 67：童装
 type CategoryType = '7' | '8' | '67' | ''
-export const getCategory = (params?: { id?: CategoryType }) => {
+export const getCategory = (params?: { id?: CategoryType; city_name?: string }) => {
   return request.get({
     url: "/api/category",
     params,
@@ -69,5 +69,12 @@ export const deleteCarts = (data: { ids: string }) => {
   return request.post({
     url: `/api/cart/del`,
     data
+  })
+}
+
+// 商品详情
+export const getAddressRegion = () => {
+  return request.get({
+    url: `/api/region`
   })
 }

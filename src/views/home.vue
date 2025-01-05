@@ -10,8 +10,8 @@
         </a>
       </div>
       <!-- 地址选择区 -->
-      <div class="func-address">
-        <div class="address-name">【济南】</div>
+      <div class="func-address" @click="handleAddressChange">
+        <div class="address-name">【{{ selectAddressVal }}】</div>
         <div class="address-tab">切换地址</div>
       </div>
       <!-- 搜索区域 -->
@@ -584,16 +584,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import { debounce } from '@/utils/util'
-import { onMounted, onUnmounted, ref, inject } from 'vue'
+import { onMounted, onUnmounted, ref, inject, watch, } from 'vue'
 import { useRouter } from 'vue-router'
-import { getCategory, getBanner, getProducts } from '@/api/store'
-import { message } from 'ant-design-vue'
+import { getCategory, getBanner, getProducts, getAddressRegion } from '@/api/store'
+import { message, Modal } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
 import Popover from '@/components/phopopover/index.vue'  // 以图搜索
+import './home.scss'
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
@@ -614,6 +615,8 @@ const productsList = ref<any>([])
 const page = ref(1)
 const token = localStorage.getItem('token')
 
+const addressList = ref<any>([])  // 地址列表
+const selectAddressVal = ref<string>('全部')  // 地址选择
 const fileList = ref([])  // 以图搜索list
 
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
@@ -662,7 +665,7 @@ const routerToDetail = (item: any) => {
 
 // 获取分类列表
 const getCategoryList = () => {
-  getCategory().then((res: any) => {
+  getCategory({ city_name: selectAddressVal.value }).then((res: any) => {
     if (res.status == 200) {
       categoryList.value = res.data
     } else {
@@ -685,7 +688,7 @@ const getProductsList = () => {
     loading.value = false
     return
   }
-  getProducts({ page: page.value, limit: 18 }).then((res: any) => {
+  getProducts({ page: page.value, limit: 18, goods_address: selectAddressVal.value }).then((res: any) => {
     if (res.status == 200) {
       productsList.value = [...productsList.value, ...res.data.list]
       loading.value = false
@@ -716,9 +719,65 @@ const beforeUpload = (file: any) => {
   console.log(file, 'aaaaaaaaaa')
 }
 
-getBannerList()
-getCategoryList()
-getProductsList()
+// 切换地址
+const handleAddressChange = () => {
+  Modal.confirm({
+    title: <>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span>选择地址</span>
+      </div>
+    </>,
+    icon: null,
+    footer: null,
+    width: 700,
+    closable: true,
+    maskClosable: true,
+    content: () => {
+      return (
+        <>
+          <div className='address-container'>
+            {addressList.value.map((item, index) => (
+              <div key={index} className={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`} onClick={handleAddressConfirm(item)}>
+                <span>{item.address_name}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )
+    },
+  })
+}
+// 选择地址
+const handleAddressConfirm = (item: any) => {
+  return () => {
+    selectAddressVal.value = item.address_name
+    Modal.destroyAll()
+  }
+}
+
+
+// 获取地址列表
+const getAddressList = () => {
+  getAddressRegion().then((res: any) => {
+    if (res.status == 200) {
+      addressList.value = [{ id: 0, address_name: '全部', kefu1_img: null, kefu2_img: null, name: '全部', status: 1 }, ...res.data]
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+
+// 监听地址变化，地址变化时请求分类接口和底部商品列表接口，要先清空商品列表自变量
+watch(() => selectAddressVal.value, () => {
+  productsList.value = []
+  getProductsList()
+  getCategoryList()
+})
+
+getAddressList()  // 获取地址列表
+getBannerList()  // 获取轮播图数据
+getCategoryList() // 获取分类列表
+getProductsList() // 获取商品列表
 </script>
 
 <style src="./home.scss" scoped></style>
