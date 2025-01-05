@@ -426,3 +426,142 @@
     }
   }
 }
+
+// 支付订单弹窗
+.payment-modal-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-modal-title-text {
+  width: 96px;
+  height: 31px;
+  font-weight: bold;
+  font-size: 24px;
+  color: #333333;
+  line-height: 31px;
+  text-align: center;
+}
+
+.payment-content {
+  margin-top: 20px;
+}
+
+.payment-input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 8px;
+  width: 578px;
+  height: 48px;
+  padding: 1px;
+  margin-top: 20px;
+}
+
+.payment-info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 20px;
+}
+
+.wallet-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 6px;
+}
+
+.wallet-balance {
+  width: 134px;
+  height: 19px;
+  font-size: 14px;
+  color: #333333;
+  line-height: 19px;
+  text-align: left;
+  font-style: normal;
+}
+
+.refresh-button {
+  width: 29px;
+  height: 19px;
+  font-size: 14px;
+  color: #3a84ff;
+  line-height: 19px;
+  text-align: left;
+  font-style: normal;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+
+.order-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-count {
+  width: 66px;
+  height: 19px;
+  font-size: 14px;
+  color: #333333;
+  line-height: 19px;
+  text-align: left;
+  font-style: normal;
+}
+
+.payment-label {
+  width: 57px;
+  height: 19px;
+  font-size: 14px;
+  color: #333333;
+  line-height: 19px;
+  text-align: left;
+  font-style: normal;
+}
+
+.payment-amount {
+  width: 62px;
+  height: 24px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #f83126;
+  line-height: 24px;
+  text-align: left;
+  font-style: normal;
+}
+
+.modal-spacer {
+  width: 100%;
+  height: 179px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-button {
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  background: #f83126;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit-button-text {
+  width: 57px;
+  height: 19px;
+  font-size: 14px;
+  color: #ffffff;
+  line-height: 19px;
+  text-align: right;
+}

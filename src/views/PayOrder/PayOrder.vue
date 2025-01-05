@@ -312,116 +312,38 @@
         </div>
       </div>
     </div>
+
+    <!-- 支付密码弹窗 -->
     <a-modal v-model:open="payOrderOpen" width="618px">
       <template #title>
-        <div style="display: flex; justify-content: center; align-items: center">
-          <span style="
-              width: 96px;
-              height: 31px;
-              font-weight: bold;
-              font-size: 24px;
-              color: #333333;
-              line-height: 31px;
-              text-align: center;
-            ">订单付款</span>
+        <div class="payment-modal-title">
+          <span class="payment-modal-title-text">订单付款</span>
         </div>
       </template>
-
-      <div style="margin-top: 20px;">
-        <div style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f8f8f8;
-            border-radius: 8px;
-            width: 578px;
-            height: 48px;
-            padding: 1px;
-            margin-top: 20px;
-          ">
+      <div class="payment-content">
+        <div class="payment-input-wrapper">
           <a-input ref="AInputCodeRef" v-model:value="payCode" :bordered="false" placeholder="请输入支付密码" />
         </div>
-        <div style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;margin-top: 20px;
-          ">
-          <div style="display: flex; justify-content: space-around; align-items: center; gap: 6px">
-            <div style="
-                width: 134px;
-                height: 19px;
-                font-size: 14px;
-                color: #333333;
-                line-height: 19px;
-                text-align: left;
-                font-style: normal;
-              ">钱包余额：¥3218.76</div>
-            <div style="
-                width: 29px;
-                height: 19px;
-                font-size: 14px;
-                color: #3a84ff;
-                line-height: 19px;
-                text-align: left;
-                font-style: normal;
-                text-decoration-line: underline;
-                cursor: pointer;
-              ">刷新</div>
+
+        <div class="payment-info-container">
+          <div class="wallet-info">
+            <div class="wallet-balance">钱包余额：¥3218.76</div>
+            <div class="refresh-button">刷新</div>
           </div>
-          <div style="display: flex; justify-content: space-around; align-items: center; gap: 6px">
-            <div style="
-                width: 66px;
-                height: 19px;
-                font-size: 14px;
-                color: #333333;
-                line-height: 19px;
-                text-align: left;
-                font-style: normal;
-              ">共2笔订单</div>
-            <div style="
-                width: 57px;
-                height: 19px;
-                font-size: 14px;
-                color: #333333;
-                line-height: 19px;
-                text-align: left;
-                font-style: normal;
-              ">需支付：</div>
-            <div style="
-                width: 62px;
-                height: 24px;
-                font-weight: bold;
-                font-size: 18px;
-                color: #f83126;
-                line-height: 24px;
-                text-align: left;
-                font-style: normal;
-              ">¥52.00</div>
+          <div class="order-info">
+            <div class="order-count">共2笔订单</div>
+            <div class="payment-label">需支付：</div>
+            <div class="payment-amount">¥52.00</div>
           </div>
         </div>
       </div>
-      <div style="width: 100%;height: 179px;"></div>
+
+      <div class="modal-spacer"></div>
+
       <template #footer>
-        <div style="display: flex; justify-content: center; align-items: center">
-          <div @click="handleSubmit" style="
-              width: 90px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 36px;
-              background: #f83126;
-              border-radius: 6px;
-              cursor: pointer;
-            ">
-            <span style="
-                width: 57px;
-                height: 19px;
-                font-size: 14px;
-                color: #ffffff;
-                line-height: 19px;
-                text-align: right;
-              ">确认支付</span>
+        <div class="modal-footer">
+          <div @click="handleSubmit" class="submit-button">
+            <span class="submit-button-text">确认支付</span>
           </div>
         </div>
       </template>
