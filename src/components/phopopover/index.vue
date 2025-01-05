@@ -1,4 +1,5 @@
 <template>
+  <context-holder />
   <a-popover trigger="click" v-model:open="photoPopoverVisible" placement="bottom"
     :overlayStyle="{ paddingTop: '10px' }" destroyTooltipOnHide @openChange="handleOpenChange">
     <template #title>
@@ -7,12 +8,11 @@
         <img src="../../assets/image/close.png" alt="" @click="handleClose" />
       </div>
     </template>
-
     <template #content>
       <div class="content">
         <div class="upload">
           <a-upload-dragger v-model:fileList="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
-            :beforeUpload="beforeUpload">
+            :beforeUpload="handleUpload">
             <div class="drag">
               <img src="../../assets/image/uploadBg.png" alt="" />
               <div>拖拽所需图片至选框内</div>
@@ -22,7 +22,7 @@
         </div>
         <div class="btn">
           <a-upload v-model:fileList="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
-            :beforeUpload="beforeUpload">
+            :beforeUpload="handleUpload">
             <span>选择文件</span>
           </a-upload>
         </div>
@@ -34,26 +34,59 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { fetchUploadFile } from '@/api/index'
+import { message } from 'ant-design-vue'
 
-const emit = defineEmits(['beforeUpload'])
+
+const [messageApi, contextHolder] = message.useMessage()
+const emit = defineEmits(['beforeUpload', 'update:open', 'update:fileList'])
 const props = defineProps({
   fileList: {
     type: Array,
     default: () => []
-  }
+  },
+  open: {
+    type: Boolean,
+    default: false
+  },
 })
-const fileList = ref(props?.fileList)
 
-const photoPopoverVisible = ref<boolean>(false)
+const fileList = computed({
+  get: () => props.fileList,
+  set: (val) => emit('update:fileList', val)
+})
+
+const photoPopoverVisible = computed({
+  get: () => props.open,
+  set: (val) => emit('update:open', val)
+})
 
 const handleClose = () => {
   photoPopoverVisible.value = false
 }
 
-const beforeUpload = (file: any) => {
-  emit('beforeUpload', file)
-  return false  // 阻止默认行为，不然会上传文件
+
+const handleUpload = async (file: any) => {
+  console.log(file, 'aaaaaaa')
+
+  const formData = new FormData()
+  formData.append('file', file)
+  try {
+    const res = await fetchUploadFile(formData)
+    if (res.status === 200) {
+      photoPopoverVisible.value = false
+      fileList.value = []
+      emit('beforeUpload', res) // 将返回的data传递给父组件
+      return false
+    } else {
+      messageApi.error(res.msg)
+      return false // 上传失败，阻止上传
+    }
+  } catch (e) {
+    messageApi.error('上传失败')
+    return false
+  }
 }
 
 const handleOpenChange = (visible: any) => {
@@ -63,6 +96,7 @@ const handleOpenChange = (visible: any) => {
   }
 
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -159,7 +193,7 @@ const handleOpenChange = (visible: any) => {
     }
 
     span {
-      width: 56px;
+      width: 60px;
       height: 19px;
       font-size: 14px;
       color: #FFFFFF;

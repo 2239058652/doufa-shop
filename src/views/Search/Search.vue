@@ -32,7 +32,7 @@
               <div class="func-sou-suffix">
                 <div class="photo-sou">
                   <!-- 以图搜索封装组件 -->
-                  <Popover @beforeUpload="beforeUpload" />
+                  <Popover @beforeUpload="beforeUpload" v-model:open="photoPopoverVisible" />
                 </div>
                 <div class="sousuo-btn" @click="handleSearchByInput">
                   <span>搜索</span>
@@ -138,7 +138,6 @@ import './Search.scss'
 
 const router = useRouter()
 const route = useRoute()
-console.log(',', route.query.keyword);
 
 const [messageApi, contextHolder] = message.useMessage()
 
@@ -147,10 +146,12 @@ const pageSize = ref(24) // 每页条数
 const total = ref(0) // 总条数
 
 const productsListLoading = ref(true) // 商品列表加载状态
+const photoPopoverVisible = ref(false) //  以图搜索弹窗显示状态
 
 const addressList = ref<any>([]) // 地址列表
 const selectAddressVal = ref<string>('全部')     // 地址选择
 const selectCateIdVal = ref<string | any>(route.query.sid || '')     //  分类选择,如果路由传值就用路由传的值
+const photoSearchUrl = ref<string | any>(route.query.url || '')     //  以图搜图传的图片url,如果路由传值就用路由传的值
 
 
 const inputVal = ref<any>(route.query.keyword || '')  // 搜索框输入值
@@ -165,8 +166,12 @@ const categoryList = ref<any>([])  // 分类列表
 const productsList = ref<any>([])  // 商品列表
 
 // 以图搜索
-const beforeUpload = (file: any) => {
-  console.log(file, 'aaaaaaaaaa')
+const beforeUpload = (res: any) => {
+  if (res.status == 200) {
+    messageApi.success('上传成功,正在搜索...')
+    photoSearchUrl.value = res.data.url
+    getProductsList()
+  }
 }
 
 // 跳转商品详情
@@ -207,6 +212,7 @@ const getProductsList = () => {
     goods_address: selectAddressVal.value,
     sid: selectCateIdVal.value,
     keyword: inputVal.value,
+    url: photoSearchUrl.value
   }).then((res: any) => {
     if (res.status == 200) {
       productsList.value = res.data.list
@@ -221,6 +227,7 @@ const getProductsList = () => {
 
 // 分类选择变化  当切换分类的时候把输入框的值置为空, 再点击一次就可以取消选中
 const handleCateClick = (item: any) => {
+  photoSearchUrl.value = ''
   if (item.id == selectCateIdVal.value) {
     selectCateIdVal.value = ''
   } else {
@@ -231,6 +238,7 @@ const handleCateClick = (item: any) => {
 
 // 搜索框输入  当点击搜索的时候把分类选中的项置为空，如果分类选中的项不为空，则把分类选中的项置为空，否则直接请求接口，因为watch监听了分类选中项
 const handleSearchByInput = () => {
+  photoSearchUrl.value = ''
   if (inputVal.value !== '') {
     if (selectCateIdVal.value == '') {
       getProductsList()
@@ -276,6 +284,7 @@ const handleAddressChange = () => {
 }
 // 选择地址  当切换地址把分类选中项置为空，输入框的值置为空，然后请求接口
 const handleAddressConfirm = (item: any) => {
+  photoSearchUrl.value = ''
   return () => {
     selectCateIdVal.value = ''
     inputVal.value = ''

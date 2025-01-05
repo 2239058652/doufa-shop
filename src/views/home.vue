@@ -33,7 +33,8 @@
                 <!-- 以图搜索图标功能 -->
                 <div class="photo-sou">
                   <!-- 以图搜索封装组件 -->
-                  <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
+                  <Popover @beforeUpload="beforeUpload" v-model:fileList="fileList"
+                    v-model:open="photoPopoverVisible" />
                 </div>
                 <div class="sousuo-btn" @click="routerToSearch">
                   <span>搜索</span>
@@ -593,6 +594,7 @@ import { debounce } from '@/utils/util'
 import { onMounted, onUnmounted, ref, inject, watch, } from 'vue'
 import { useRouter } from 'vue-router'
 import { getCategory, getBanner, getProducts, getAddressRegion } from '@/api/store'
+import { fetchUploadFile } from '@/api/index'
 import { message, Modal } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
@@ -613,15 +615,16 @@ const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])
 const rxsjList = ref(['薰衣草小熊猫', '橘子男装', '橘子男装'])
 const activeIndex = ref(0)
 const rxsjActiveIndex = ref(0)
-const cartCount = ref(113)
-const loading = ref(false)
-const productsList = ref<any>([])
-const page = ref(1)
+const cartCount = ref(113) // 购物车数量
+const loading = ref(false)  //
+const productsList = ref<any>([]) // 商品列表
+const page = ref(1)  // 分页
 const token = localStorage.getItem('token')
 
 const addressList = ref<any>([])  // 地址列表
 const selectAddressVal = ref<string>('全部')  // 地址选择
 const fileList = ref([])  // 以图搜索list
+const photoPopoverVisible = ref(false)  // 以图搜索弹窗
 
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用防抖包装滚动处理函数
@@ -730,8 +733,18 @@ const handleOutLogin = () => {
 }
 
 // 以图搜索
-const beforeUpload = (file: any) => {
-  console.log(file, 'aaaaaaaaaa')
+const beforeUpload = (res: any) => {
+  if (res.status == 200) {
+    messageApi.success('上传成功,即将跳转搜索页面搜索商品')
+    setTimeout(() => {
+      router.push({
+        path: `/search`,
+        query: {
+          url: res.data.url
+        }
+      })
+    }, 1000)
+  }
 }
 
 // 切换地址

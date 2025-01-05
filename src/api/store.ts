@@ -32,6 +32,7 @@ interface IProductParams {
   mer_id?: string
   sid?: string
   keyword?: string
+  url?: string
 }
 export const getProducts = (params: IProductParams) => {
   return request.get({
