@@ -30,6 +30,8 @@ interface IProductParams {
   limit: number
   goods_address?: string
   mer_id?: string
+  sid?: string
+  keyword?: string
 }
 export const getProducts = (params: IProductParams) => {
   return request.get({

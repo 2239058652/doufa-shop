@@ -35,7 +35,7 @@
                   <!-- 以图搜索封装组件 -->
                   <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
                 </div>
-                <div class="sousuo-btn" @click="$router.push('/search')">
+                <div class="sousuo-btn" @click="routerToSearch">
                   <span>搜索</span>
                 </div>
               </div>
@@ -80,26 +80,30 @@
               <div class="item-left">
                 <img src="../assets/image/fenlei.png" alt="" />
               </div>
+              <!-- 气泡的title为分类的大分类名称 -->
               <a-popover :title="item.cate_name" placement="right"
                 :overlayInnerStyle="{ width: '612px', height: '446px' }">
                 <div class="item-right">
+                  <!-- 分类的第一行列表 -->
                   <div class="text-line">
-                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id" @click="$router.push('/search')">
+                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id" @click="routerToSearch(v)">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
                   </div>
+                  <!-- 分类的第二行列表 -->
                   <div class="text-line">
-                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id" @click="$router.push('/search')">
+                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id" @click="routerToSearch(v)">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
                   </div>
                 </div>
+                <!-- 气泡里面的分类列表内容 -->
                 <template #content>
                   <div class="popover-content">
                     <div class="content-row">
-                      <div v-for="i in item.children" :key="i.id" class="content-item" @click="$router.push('/search')">
+                      <div v-for="i in item.children" :key="i.id" class="content-item" @click="routerToSearch(i)">
                         {{ i.cate_name }}
                       </div>
                     </div>
@@ -660,6 +664,17 @@ const bannerActiveList = ref<any>([]) //底部banner
 const routerToDetail = (item: any) => {
   router.push({
     path: `/merchandis/${item.id}`
+  })
+}
+
+// 跳转搜索页  传参选中的分类 和搜索关键词
+const routerToSearch = (item?: any) => {
+  router.push({
+    path: `/search`,
+    query: {
+      keyword: inputVal.value,
+      sid: item.sid
+    }
   })
 }
 
