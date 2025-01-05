@@ -26,11 +26,29 @@ const currentRoute = router.currentRoute
 const selectedKeys = ref<string[]>([currentRoute.value.fullPath])
 
 // 获取父级路径用于展开菜单
-const getCurrentParentPath = () => {
-  const matched = currentRoute.value.matched
-  return matched.length > 1 ? `/${matched[0].path}` : ''
+// const getCurrentParentPath = () => {
+//   const matched = currentRoute.value.matched
+//   return matched.length > 1 ? `/${matched[0].path}` : ''
+// }
+
+// 添加一个获取所有父级路径的函数
+const getAllParentPaths = (routes: any[]): string[] => {
+  const paths: string[] = []
+
+  const traverse = (route: any, parentPath: string = '') => {
+    const fullPath = (parentPath + '/' + route.path).replace('//', '/')
+    if (!route.meta?.hidden && route.path !== '/') {
+      paths.push(fullPath)
+    }
+    route.children?.forEach((child: any) => traverse(child, fullPath))
+  }
+
+  routes.forEach(route => traverse(route))
+  return paths
 }
-const openKeys = ref<string[]>([getCurrentParentPath()])
+
+// const openKeys = ref<string[]>([getCurrentParentPath()])  // 初始化展开的菜单项，只展开选中的菜单项
+const openKeys = ref<string[]>(getAllParentPaths(routes as any[])) // 展开所有菜单项
 // 初始化展开的菜单项
 // 获取所有需要默认展开的一级菜单路径
 const getParentPaths = () => {
