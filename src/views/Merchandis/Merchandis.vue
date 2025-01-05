@@ -162,9 +162,10 @@
             <div class="colors">
               <div class="colors_title">颜 色：</div>
               <div class="colors_box">
-                <div v-for="(item, index) in goodsDetail?.productAttr[0]?.attr_values" :key="index">
+                <div v-for="(item, index) in newAttrValueList" :key="index">
                   <div id="colors_item" @click="handleColorSelect(index)" :class="colorIndex == index ? 'active' : ''">
-                    <div>{{ item }}</div>
+                    <img :src="item.image" alt="item.attr" />
+                    <div>{{ item.attr }}</div>
                   </div>
                 </div>
               </div>
@@ -294,9 +295,10 @@
             <div class="colors">
               <div class="colors_title">颜 色：</div>
               <div class="colors_box">
-                <div v-for="(item, index) in goodsDetail?.productAttr[0]?.attr_values" :key="index">
+                <div v-for="(item, index) in newAttrValueList" :key="index">
                   <div id="colors_item" @click="handleColorSelect(index)" :class="colorIndex == index ? 'active' : ''">
-                    <div>{{ item }}</div>
+                    <img :src="item.image" alt="item.attr" />
+                    <div>{{ item.attr }}</div>
                   </div>
                 </div>
               </div>
@@ -378,7 +380,7 @@ const sizeIndex = ref(-1)
 const goodsDetailNum = ref(0)
 const goodsDetail = ref<any>({})
 const imageBaseUrl = ref('')
-const phone = ref('13823234343')
+const newAttrValueList = ref<any[]>([])
 
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
@@ -393,7 +395,6 @@ watch([goodsDetailNum, colorIndex, sizeIndex], () => {
 const updateSelectedInfo = () => {
   const price = Number(goodsDetail.value?.storeInfo?.price || 0)
   const quantity = goodsDetailNum.value
-
   selectedInfo.value = {
     quantity,
     totalAmount: (price * quantity).toFixed(2),
@@ -406,6 +407,7 @@ const updateSelectedInfo = () => {
 // 选择颜色
 const handleColorSelect = (index: number) => {
   colorIndex.value = index
+  imageBaseUrl.value = newAttrValueList.value[index]?.image
   updateSelectedInfo()
 }
 
@@ -429,7 +431,6 @@ const caculateGoodsNum = (type: string) => {
   updateSelectedInfo()
 }
 
-// 立即下单
 // 立即下单
 const payOrderNow = () => {
   if (!selectedInfo.value.isValid) {
@@ -522,10 +523,40 @@ const { id: detailId }: any = route.params
 const fetchGoodsDetail = () => {
   getProductDetail(detailId).then((res: any) => {
     if (res.status == 200) {
+      console.log(res.data)
+      handleColorFilter(res.data)
       goodsDetail.value = res.data
       imageBaseUrl.value = res.data.storeInfo.image_base
     } else {
       messageApi.error(res.msg)
+    }
+  })
+}
+
+// 处理颜色数据获取到颜色对应的图片
+const handleColorFilter = (item: any) => {
+  const productArray = convertToArray(item.productValue)
+  const newAttrValue = getAttrImages(productArray, item.productAttr?.[0]?.attr_value)
+  newAttrValueList.value = newAttrValue
+  console.log(newAttrValueList.value)
+}
+
+// 处理颜色数据获取到颜色对应的图片
+const getAttrImages = (productArray: any[], attrValue: any[]) => {
+  return attrValue.map(item => {
+    const matchProduct = productArray.find(product => product.suk.startsWith(item.attr))
+    return {
+      ...item,
+      image: matchProduct ? matchProduct.image : ''
+    }
+  })
+}
+// 将商品详情获取到的productValue处理为数组
+const convertToArray = (productValue: Record<string, any>) => {
+  return Object.entries(productValue).map(([key, value]) => {
+    return {
+      ...value,
+      suk_name: key
     }
   })
 }

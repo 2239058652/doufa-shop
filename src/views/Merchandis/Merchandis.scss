@@ -559,7 +559,7 @@
         #colors_item {
           // width: 84px;
           // height: 42px;
-          border: 0.1px solid #c4c4c6;
+          border: 1px solid #c4c4c6;
           display: flex;
           flex-wrap: wrap;
           align-items: center;
@@ -569,18 +569,26 @@
           margin: 10px 0 10px 10px;
           cursor: pointer;
           border-radius: 6px;
-          padding: 11px 16px;
+          padding: 5px 16px;
           white-space: nowrap; // 强制一行显示
           overflow: hidden; // 超出隐藏
           text-overflow: ellipsis; // 省略号
+          gap: 10px;
+
+          img {
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 4px;
+          }
 
           &.active {
-            border: 0.1px solid #f83126;
+            border: 1px solid #f83126;
             color: #f83126;
           }
 
           &:hover {
-            border: 0.1px solid #f83126;
+            border: 1px solid #f83126;
             color: #f83126;
           }
         }
@@ -993,11 +1001,20 @@
             font-size: 14px;
             cursor: pointer;
             border-radius: 6px;
-            padding: 8px 10px 8px 10px;
+            padding: 5px 10px;
             margin-right: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            gap: 10px;
+
+            img {
+              width: 30px;
+              height: 30px;
+              object-fit: cover;
+              border-radius: 4px;
+            }
 
             &.active {
               border: 0.1px solid #f83126;
