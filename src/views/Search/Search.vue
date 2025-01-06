@@ -21,14 +21,14 @@
           <a-input
             v-model:value="inputVal"
             :bordered="false"
-            :placeholder="selectVal == 'baobei' ? '请搜索产品名称、货号' : '请搜索商家名称'"
+            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
             style="width: 100%; height: 100%"
           >
             <template #prefix>
               <div>
                 <a-select :bordered="false" v-model:value="selectVal" @change="inputVal = ''">
-                  <a-select-option value="baobei">宝贝货号</a-select-option>
-                  <a-select-option value="dangkou">档口搜索</a-select-option>
+                  <a-select-option value="product">宝贝货号</a-select-option>
+                  <a-select-option value="stall">档口搜索</a-select-option>
                 </a-select>
               </div>
             </template>
@@ -239,7 +239,7 @@ const selectCateIdVal = ref<string | any>(route.query.sid || '') //  分类选�
 const photoSearchUrl = ref<string | any>(route.query.url || '') //  以图搜图传的图片url,如果路由传值就用路由传的值
 
 const inputVal = ref<any>(route.query.keyword || '') // 搜索框输入值
-const selectVal = ref('baobei') // 下拉框选择值
+const selectVal = ref(route.query.selectVal || 'product') // 下拉框选择值
 const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服']) // 热门搜索标签
 const activeIndex = ref(0) // 热门搜索标签选中状态
 const tabsIndex = ref<string | number>('') // 商品列表tab切换
@@ -327,7 +327,7 @@ const handleTopPagination = (page: number) => {
 
 // 获取分类列表
 const getCategoryList = () => {
-  if (selectVal.value == 'baobei') {
+  if (selectVal.value == 'product') {
     getCategory({ city_name: selectAddressVal.value }).then((res: any) => {
       if (res.status == 200) {
         categoryList.value = res.data
@@ -340,20 +340,19 @@ const getCategoryList = () => {
 
 // 获取商品列表
 const getProductsList = () => {
-  console.log('selectVal', selectVal.value)
   // 仅在初次切换搜索类型时设置默认分页大小
-  if (selectVal.value === 'baobei' && !pageSizeGoodsOptions.value.includes(pageSize.value)) {
+  if (selectVal.value === 'product' && !pageSizeGoodsOptions.value.includes(pageSize.value)) {
     pageSize.value = 24
     currentPage.value = 1
   } else if (
-    selectVal.value === 'dangkou' &&
+    selectVal.value === 'stall' &&
     !pageSizeDangKouOptions.value.includes(pageSize.value)
   ) {
     pageSize.value = 3
     currentPage.value = 1
   }
 
-  if (selectVal.value == 'baobei') {
+  if (selectVal.value == 'product') {
     showGoodsOrDangKou.value = true
     productsListLoading.value = true
     getProducts({
