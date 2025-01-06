@@ -84,21 +84,27 @@
           <span :class="tabsIndex == 1 ? 'active' : ''" @click="tabsIndex = 1">销量</span>
           <a-dropdown trigger="['click']">
             <span :class="tabsIndex == 2 ? 'active' : ''" @click="tabsIndex = 2">
-              <span>价格</span>
+              <span>价格 {{ priceSortText }}</span>
               <img src="../../assets/image/head-bot.png" alt="" />
             </span>
             <template #overlay>
-              <a-menu selectable>
-                <a-menu-item key="1">
+              <a-menu selectable @select="handlePriceSort">
+                <a-menu-item key="desc">
                   <span>从高到低</span>
                 </a-menu-item>
-                <a-menu-item key="2">
+                <a-menu-item key="asc">
                   <span>从低到高</span>
                 </a-menu-item>
               </a-menu>
             </template>
           </a-dropdown>
-          <span :class="tabsIndex == 3 ? 'active' : ''" @click="tabsIndex = 3">区间</span>
+          <span :class="tabsIndex == 3 ? 'active' : ''" @click="tabsIndex = 3">区间
+            <a-input v-model:value="value" placeholder="最低价" :bordered="false">
+              <template #prefix>
+                ¥
+              </template>
+            </a-input>
+          </span>
         </div>
 
         <div class="sp_tabs_pagination">
@@ -139,7 +145,7 @@
 </template>
 
 <script setup lang="tsx">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getAddressRegion, getCategory, getProducts, getCartCount } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
@@ -172,9 +178,33 @@ const activeIndex = ref(0)  // 热门搜索标签选中状态
 const tabsIndex = ref(0)  // 商品列表tab切换
 const cartCount = ref(0)  // 购物车商品数量
 const token = localStorage.getItem('token')
+const priceSort = ref('')
 
 const categoryList = ref<any>([])  // 分类列表
 const productsList = ref<any>([])  // 商品列表
+
+
+// 价格排序文本显示
+const priceSortText = computed(() => {
+  if (priceSort.value === 'desc') return '(从高到低)'
+  if (priceSort.value === 'asc') return '(从低到高)'
+  return ''
+})
+
+// 处理价格排序
+const handlePriceSort = (sel: any) => {
+  priceSort.value = sel.key
+  // 这里可以触发重新获取商品列表的方法
+  // getProductList({
+  //   sort: key
+  // })
+}
+
+// 获取商品列表方法(示例)
+const getProductList = (params: { sort?: string }) => {
+  // 调用API获取商品列表
+  console.log('获取商品列表，排序方式:', params.sort)
+}
 
 // 以图搜索
 const beforeUpload = (res: any) => {
