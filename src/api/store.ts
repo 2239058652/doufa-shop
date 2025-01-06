@@ -93,3 +93,11 @@ export const getCartCount = (params: { numType?: boolean } = { numType: true }) 
     params
   })
 }
+
+// 供应商列表
+export const getSystemAdmin = (params: { page: string | number; limit: string | number; name: string } = { page: 0, limit: 10, name: '' }) => {
+  return request.get({
+    url: `/api/systemAdminList`,
+    params
+  })
+}

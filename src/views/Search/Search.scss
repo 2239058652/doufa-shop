@@ -557,3 +557,43 @@
         }
     }
 }
+
+// 店铺列表
+.dianpu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 1560px;
+    min-height: 500px;
+    height: auto;
+
+    .dp_item {
+        width: 1560px;
+        height: 248px;
+        border-radius: 12px;
+        background: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 76px;
+
+        .dp_item_l {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+
+            img {
+                width: 142px;
+                height: 142px;
+                object-fit: cover;
+            }
+        }
+
+        .dp_item_r {
+            width: 1036px;
+        }
+    }
+}
