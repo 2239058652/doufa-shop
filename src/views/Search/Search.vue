@@ -82,10 +82,22 @@
         <div class="sp_tabs_item">
           <span :class="tabsIndex == 0 ? 'active' : ''" @click="tabsIndex = 0">综合</span>
           <span :class="tabsIndex == 1 ? 'active' : ''" @click="tabsIndex = 1">销量</span>
-          <span :class="tabsIndex == 2 ? 'active' : ''" @click="tabsIndex = 2">
-            <span>价格</span>
-            <img src="../../assets/image/head-bot.png" alt="" />
-          </span>
+          <a-dropdown trigger="['click']">
+            <span :class="tabsIndex == 2 ? 'active' : ''" @click="tabsIndex = 2">
+              <span>价格</span>
+              <img src="../../assets/image/head-bot.png" alt="" />
+            </span>
+            <template #overlay>
+              <a-menu selectable>
+                <a-menu-item key="1">
+                  <span>从高到低</span>
+                </a-menu-item>
+                <a-menu-item key="2">
+                  <span>从低到高</span>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
           <span :class="tabsIndex == 3 ? 'active' : ''" @click="tabsIndex = 3">区间</span>
         </div>
 
@@ -204,24 +216,19 @@ const getCategoryList = () => {
 
 // 获取商品列表
 const getProductsList = () => {
-  productsListLoading.value = true
-  getProducts({
-    page: currentPage.value,
-    limit: pageSize.value,
-    goods_address: selectAddressVal.value,
-    sid: selectCateIdVal.value,
-    keyword: inputVal.value,
-    url: photoSearchUrl.value
-  }).then((res: any) => {
+  productsListLoading.value = true;
+  getProducts({ page: currentPage.value, limit: pageSize.value, goods_address: selectAddressVal.value, sid: selectCateIdVal.value, keyword: inputVal.value, url: photoSearchUrl.value }).then((res: any) => {
     if (res.status == 200) {
-      productsList.value = res.data.list
-      total.value = res.data.count
-      productsListLoading.value = false
+      productsList.value = res.data.list;
+      total.value = res.data.count;
+      productsListLoading.value = false;
     } else {
-      messageApi.error(res.msg)
+      messageApi.error(res.msg);
     }
-  })
-}
+  }).finally(() => {
+    productsListLoading.value = false;
+  });
+};
 
 
 // 分类选择变化  当切换分类的时候把输入框的值置为空, 再点击一次就可以取消选中
@@ -250,13 +257,15 @@ const handleSearchByInput = () => {
 // 切换地址
 const handleAddressChange = () => {
   Modal.confirm({
-    title: (
-      <>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span>选择地址 </span>
-        </div>
-      </>
-    ),
+    title: () => {
+      return (
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span>选择地址 </span>
+          </div>
+        </>
+      )
+    },
     icon: null,
     footer: null,
     width: 700,
