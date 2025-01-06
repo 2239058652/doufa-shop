@@ -584,16 +584,124 @@
             justify-content: center;
             align-items: center;
             gap: 16px;
+            width: 420px;
+            height: 195px;
 
             img {
                 width: 142px;
                 height: 142px;
                 object-fit: cover;
             }
+
+            .dp_item_img_r {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                .real_name {
+                    width: 216px;
+                    height: 33px;
+                    font-weight: 600;
+                    font-size: 24px;
+                    color: #333333;
+                    line-height: 33px;
+                }
+
+                .zhuying {
+                    width: 80px;
+                    height: 21px;
+                    font-size: 16px;
+                    color: #999999;
+                    line-height: 21px;
+                    margin-top: 14px;
+                }
+
+                .dianpu_salse {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 10px;
+                    margin-top: 45px;
+
+                    .sp_jianshu {
+                        width: 66px;
+                        height: 19px;
+                        font-size: 14px;
+                        color: #999999;
+                        line-height: 19px;
+                    }
+
+                    .sp_sales {
+                        width: 39px;
+                        height: 22px;
+                        font-weight: 600;
+                        font-size: 16px;
+                        color: #F83126;
+                        line-height: 22px;
+                    }
+                }
+
+                .dianpu_btn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-wrap: nowrap;
+                    gap: 12px;
+                    margin-top: 24px;
+
+                    .btn_1 {
+                        width: 90px;
+                        height: 34px;
+                        border-radius: 6px;
+                        border: 1px solid #F7F6F6;
+                        background: #F7F6F6;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+
+                        span {
+                            width: 29px;
+                            height: 19px;
+                            font-size: 14px;
+                            color: #333333;
+                            line-height: 19px;
+                        }
+                    }
+
+                    .btn_2 {
+                        width: 106px;
+                        height: 34px;
+                        border-radius: 6px;
+                        border: 1px solid #F7F6F6;
+                        background: #F7F6F6;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        gap: 7px;
+
+                        img {
+                            width: 12px;
+                            height: 12px;
+                            object-fit: cover;
+                        }
+
+                        span {
+                            width: 57px;
+                            height: 19px;
+                            font-size: 14px;
+                            color: #333333;
+                            line-height: 19px;
+                        }
+                    }
+                }
+            }
         }
 
         .dp_item_r {
-            width: 1036px;
+            width: 1060px;
+            height: 195px;
         }
     }
 }

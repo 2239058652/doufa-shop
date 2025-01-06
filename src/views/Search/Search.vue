@@ -23,6 +23,7 @@
             :bordered="false"
             :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
             style="width: 100%; height: 100%"
+            @pressEnter="handleSearchByInput"
           >
             <template #prefix>
               <div>
@@ -196,6 +197,23 @@
       <div class="dp_item" v-for="item in SystemAdminList" :key="item.id">
         <div class="dp_item_l">
           <img :src="item.head_pic" alt="item.real_name" />
+          <div class="dp_item_img_r">
+            <div class="real_name">{{ item.real_name }}</div>
+            <div class="zhuying">{{ '主营：男装' }}</div>
+            <div class="dianpu_salse">
+              <span class="sp_jianshu">商品(件)：</span>
+              <span class="sp_sales"> {{ item.sales }}</span>
+            </div>
+            <div class="dianpu_btn">
+              <div class="btn_1">
+                <span>进店</span>
+              </div>
+              <div class="btn_2">
+                <img src="../../assets/image/add.png" alt="" />
+                <span>关注店铺</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="dp_item_r"></div>
       </div>
@@ -382,7 +400,7 @@ const getProductsList = () => {
   } else {
     showGoodsOrDangKou.value = false
     getSystemAdmin({
-      page: currentPage.value - 1,
+      page: currentPage.value > 0 ? currentPage.value - 1 : currentPage.value,
       limit: pageSize.value,
       name: inputVal.value
     }).then((res: any) => {
@@ -414,7 +432,9 @@ const handleSearchByInput = () => {
       selectCateIdVal.value = ''
     }
   } else {
-    getProductsList()
+    if (selectVal.value == 'product') {
+      getProductsList()
+    }
   }
 }
 

@@ -23,6 +23,7 @@
             :bordered="false"
             :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
             style="width: 100%; height: 100%"
+            @pressEnter="routerToSearch"
           >
             <template #prefix>
               <div class="func-sou-prefix">
