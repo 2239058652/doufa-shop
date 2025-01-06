@@ -29,7 +29,7 @@
       </div>
     </template>
 
-    <img src="../../assets/image/photo.png" alt="识图" />
+    <img class="photo-img" src="../../assets/image/photo.png" alt="识图" />
   </a-popover>
 </template>
 
@@ -198,6 +198,12 @@ const handleOpenChange = (visible: any) => {
       line-height: 19px;
     }
   }
+}
+
+.photo-img {
+  width: 22px;
+  height: 20px;
+  object-fit: cover;
 }
 
 :deep(.css-dev-only-do-not-override-1p3hq3p) {

@@ -14,10 +14,10 @@
             <div class="s-suffix">
               <div>
                 <!-- 以图搜索封装组件 -->
-                <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
+                <Popover @beforeUpload="beforeUpload" v-model:open="photoPopoverVisible" />
               </div>
-              <div @click="$router.push('/search')"><span>搜索</span></div>
-              <div><span>搜本店</span></div>
+              <div @click="routerToSearch"><span>搜索</span></div>
+              <div @click="$router.push('/merhome')"><span>搜本店</span></div>
             </div>
           </template>
         </a-input>
@@ -129,15 +129,35 @@ const total = ref(0)  // 总商品数量
 
 
 const inputVal = ref('') // 搜索框输入框
-const fileList = ref([])  // 以图搜索list
+const photoPopoverVisible = ref(false) //  以图搜索弹窗显示状态
 const tabsIndex = ref(0) // 商品tab切换
 const productsList = ref<any>([])  // 商品列表
 const token = localStorage.getItem('token')
 
 
 // 以图搜索
-const beforeUpload = (file: any) => {
-  console.log(file, 'aaaaaaaaaa')
+const beforeUpload = (res: any) => {
+  if (res.status == 200) {
+    messageApi.success('上传成功,即将跳转搜索页面搜索商品')
+    setTimeout(() => {
+      router.push({
+        path: `/search`,
+        query: {
+          url: res.data.url
+        }
+      })
+    }, 1000)
+  }
+}
+
+// 跳转搜索页  传参搜索关键词
+const routerToSearch = () => {
+  router.push({
+    path: `/search`,
+    query: {
+      keyword: inputVal.value,
+    }
+  })
 }
 
 // 跳转商品详情
