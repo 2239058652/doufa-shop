@@ -12,11 +12,11 @@
         <a-input :bordered="false" style="width: 100%; height: 100%" v-model:value="inputVal" placeholder="宝贝搜索">
           <template #suffix>
             <div class="s-suffix">
-              <div>
+              <div class="photo-sou">
                 <!-- 以图搜索封装组件 -->
-                <Popover @beforeUpload="beforeUpload" :fileList="fileList" />
+                <Popover @beforeUpload="beforeUpload" v-model:open="photoPopoverVisible" />
               </div>
-              <div @click="$router.push('/search')"><span>搜索</span></div>
+              <div class="sousuo-btn" @click="routerToSearch"><span>搜索</span></div>
             </div>
           </template>
         </a-input>
@@ -146,7 +146,7 @@ onActivated(() => {
 
 const [messageApi, contextHolder] = message.useMessage()
 
-const fileList = ref([]) // 以图搜索list
+const photoPopoverVisible = ref(false) // 以图搜索弹窗
 const inputVal = ref('') // 搜索框输入框
 
 const currentPage = ref(1)
@@ -206,8 +206,27 @@ const hanldeTableRowChanged = (selectedRowKeys: any, selectedRows: any) => {
 }
 
 // 以图搜索
-const beforeUpload = (file: any) => {
-  console.log(file, 'aaaaaaaaaa')
+const beforeUpload = (res: any) => {
+  if (res.status == 200) {
+    messageApi.success('上传成功,即将跳转搜索页面搜索商品')
+    setTimeout(() => {
+      router.push({
+        path: `/search`,
+        query: {
+          url: res.data.url
+        }
+      })
+    }, 1000)
+  }
+}
+// 跳转搜索页  传参搜索关键词
+const routerToSearch = () => {
+  router.push({
+    path: `/search`,
+    query: {
+      keyword: inputVal.value,
+    }
+  })
 }
 
 // 获取商品列表
