@@ -1,23 +1,14 @@
 <template>
   <div ref="createCreative" class="create-creative">
-    <a-modal
-      v-model:open="modalLoginVisible"
-      centered
-      :footer="null"
-      :getContainer="() => createCreative"
-      destroyOnClose
-      :afterClose="handleLoginModalClose"
-    >
+    <a-modal v-model:open="modalLoginVisible" centered :footer="null" :getContainer="() => createCreative"
+      destroyOnClose :afterClose="handleLoginModalClose">
       <div class="login-modal">
         <!-- 顶部登录和验证码登录切换部分 -->
         <div class="login-tabs">
           <div :class="activeKey == '1' ? 'tab-tane-active' : 'tab-tane'" @click="activeKey = '1'">
             登录
           </div>
-          <div
-            :class="activeKey == '1' ? 'tab-tane-phone' : 'tab-tane-phone-active'"
-            @click="activeKey = '2'"
-          >
+          <div :class="activeKey == '1' ? 'tab-tane-phone' : 'tab-tane-phone-active'" @click="activeKey = '2'">
             验证码登录
           </div>
         </div>
@@ -26,31 +17,14 @@
           <a-form>
             <!-- 账号密码登录 -->
             <template v-if="activeKey == '1'">
-              <a-input
-                class="login-input"
-                placeholder="手机号或用户名"
-                v-model:value="inputData.account"
-              />
-              <a-input-password
-                class="login-input-password"
-                placeholder="密码"
-                v-model:value="inputData.password"
-                autocomplete="off"
-              />
+              <a-input class="login-input" placeholder="手机号或用户名" v-model:value="inputData.account" />
+              <a-input-password class="login-input-password" placeholder="密码" v-model:value="inputData.password"
+                autocomplete="off" />
             </template>
             <!-- 手机验证码登录 -->
             <template v-else>
-              <a-input
-                class="login-input"
-                placeholder="手机号"
-                v-model:value="inputData.phone"
-                ref="phoneInputRef"
-              />
-              <a-input
-                class="login-input-password"
-                placeholder="验证码"
-                v-model:value="inputData.captcha"
-              >
+              <a-input class="login-input" placeholder="手机号" v-model:value="inputData.phone" ref="phoneInputRef" />
+              <a-input class="login-input-password" placeholder="验证码" v-model:value="inputData.captcha">
                 <template #suffix>
                   <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{
                     yanzhengma
@@ -65,13 +39,7 @@
           </div>
         </div>
         <!-- 登录按钮 -->
-        <a-button
-          key="submit"
-          type="primary"
-          :loading="loginLoading"
-          @click="handleLogin(activeKey)"
-          class="login-btn"
-        >
+        <a-button key="submit" type="primary" :loading="loginLoading" @click="handleLogin(activeKey)" class="login-btn">
           登录
         </a-button>
         <!-- 微信图标部分 -->
@@ -80,8 +48,7 @@
         </div>
         <!-- 下面协议说明部分 -->
         <div class="login-xieyi">
-          <div class="xieyi-html"
-            >注册登录即代表同意<span @click="viewXieYiModal(agreeMentList[0].data.content)">
+          <div class="xieyi-html">注册登录即代表同意<span @click="viewXieYiModal(agreeMentList[0].data.content)">
               《抖发用户协议》
             </span>
             <span @click="viewXieYiModal(agreeMentList[2].data.content)">《抖发隐私政策》</span>
@@ -90,13 +57,7 @@
         </div>
       </div>
     </a-modal>
-    <a-modal
-      destroyOnClose
-      :closable="false"
-      v-model:open="modalXieYiVisible"
-      :footer="null"
-      width="1000px"
-    >
+    <a-modal destroyOnClose :closable="false" v-model:open="modalXieYiVisible" :footer="null" width="1000px">
       <div class="xieyi-content" v-html="viewAgreeMent"></div>
     </a-modal>
   </div>
@@ -278,6 +239,7 @@ defineExpose({ setModalInit })
   display: flex;
   flex-direction: column;
 }
+
 .login-tabs {
   display: flex;
   justify-content: center;
@@ -285,6 +247,7 @@ defineExpose({ setModalInit })
   margin-top: 27px;
   height: auto;
 }
+
 .tab-tane {
   width: 36px;
   height: 25px;
@@ -296,6 +259,7 @@ defineExpose({ setModalInit })
   font-style: normal;
   cursor: pointer;
 }
+
 .tab-tane-active {
   width: 40px;
   height: 28px;
@@ -308,6 +272,7 @@ defineExpose({ setModalInit })
   cursor: pointer;
   border-bottom: 2px solid #333333;
 }
+
 .tab-tane-phone {
   width: 90px;
   height: 25px;
@@ -320,6 +285,7 @@ defineExpose({ setModalInit })
   margin-left: 40px;
   cursor: pointer;
 }
+
 .tab-tane-phone-active {
   width: 100px;
   height: 28px;
@@ -333,24 +299,30 @@ defineExpose({ setModalInit })
   cursor: pointer;
   border-bottom: 2px solid #333333;
 }
+
 .create-creative {
   :deep(.ant-modal-content) {
     border-radius: 24px;
   }
 }
+
 .login-content {
   width: 100%;
   height: 220px;
+
   .login-input {
     width: 378px;
     height: 46px;
     margin: 37px 51px 10px 51px;
   }
+
   .login-input-password {
     width: 378px;
     height: 46px;
-    margin: 10px 51px 10px 51px; /* 修改这里：把296px改为10px */
+    margin: 10px 51px 10px 51px;
+    /* 修改这里：把296px改为10px */
   }
+
   .hqyzm {
     width: 70px;
     height: 20px;
@@ -361,16 +333,19 @@ defineExpose({ setModalInit })
     text-align: right;
     font-style: normal;
     cursor: pointer;
+
     &.disabled {
       cursor: not-allowed;
       opacity: 0.5;
     }
   }
+
   .login-text {
     display: flex;
     justify-content: space-between;
     margin: 0 51px 10px 51px;
     height: 30px;
+
     span {
       width: 64px;
       height: 22px;
@@ -384,6 +359,7 @@ defineExpose({ setModalInit })
     }
   }
 }
+
 .login-btn {
   width: 378px;
   height: 40px;
@@ -391,28 +367,33 @@ defineExpose({ setModalInit })
   background: #f83126;
   margin: 0 51px 10px 51px;
   padding: 10px 175px;
+
   &:hover {
     background: #fa6f67;
   }
 }
+
 .login-wechat {
   width: 100%;
   height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+
   img {
     width: 34px;
     height: 34px;
     cursor: pointer;
   }
 }
+
 .login-xieyi {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 60px;
+
   .xieyi-html {
     width: 380px;
     font-weight: 400;
@@ -421,8 +402,10 @@ defineExpose({ setModalInit })
     line-height: 20px;
     text-align: center;
     font-style: normal;
+
     span {
       cursor: pointer;
+
       &:hover {
         color: #666666;
       }
@@ -433,6 +416,7 @@ defineExpose({ setModalInit })
 .xieyi-content {
   overflow-y: scroll;
   height: 711px;
+
   &::-webkit-scrollbar {
     width: 1px;
   }

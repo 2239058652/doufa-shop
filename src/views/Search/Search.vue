@@ -127,10 +127,9 @@
 </template>
 
 <script setup lang="tsx">
-import { debounce } from '@/utils/util'
-import { onMounted, onUnmounted, ref, inject, watch } from 'vue'
-import { useRouter, useRoute, type LocationQueryValue } from 'vue-router'
-import { getAddressRegion, getCategory, getProducts } from '@/api/store'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { getAddressRegion, getCategory, getProducts, getCartCount } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
@@ -159,7 +158,7 @@ const selectVal = ref('jack')  // 下拉框选择值
 const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])  // 热门搜索标签
 const activeIndex = ref(0)  // 热门搜索标签选中状态
 const tabsIndex = ref(0)  // 商品列表tab切换
-const cartCount = ref(113)  // 购物车商品数量
+const cartCount = ref(0)  // 购物车商品数量
 const token = localStorage.getItem('token')
 
 const categoryList = ref<any>([])  // 分类列表
@@ -323,9 +322,21 @@ watch(
     getProductsList()
   })
 
-getCategoryList()
-getProductsList()
-getAddressList()
+
+const getGoodsCartsNum = () => {
+  getCartCount().then((res: any) => {
+    if (res.status == 200) {
+      cartCount.value = res.data.count
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+
+getGoodsCartsNum()  //  获取购物车数量
+getAddressList()  // 获取地址列表
+getCategoryList() // 获取分类列表
+getProductsList() // 获取商品列表
 </script>
 
 <style src="./Search.scss" scoped></style>

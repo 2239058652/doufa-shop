@@ -593,8 +593,7 @@
 import { debounce } from '@/utils/util'
 import { onMounted, onUnmounted, ref, inject, watch, } from 'vue'
 import { useRouter } from 'vue-router'
-import { getCategory, getBanner, getProducts, getAddressRegion } from '@/api/store'
-import { fetchUploadFile } from '@/api/index'
+import { getCategory, getBanner, getProducts, getAddressRegion, getCartCount } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
@@ -615,7 +614,7 @@ const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])
 const rxsjList = ref(['薰衣草小熊猫', '橘子男装', '橘子男装'])
 const activeIndex = ref(0)
 const rxsjActiveIndex = ref(0)
-const cartCount = ref(113) // 购物车数量
+const cartCount = ref(0) // 购物车数量
 const loading = ref(false)  //
 const productsList = ref<any>([]) // 商品列表
 const page = ref(1)  // 分页
@@ -802,6 +801,17 @@ watch(() => selectAddressVal.value, () => {
   getCategoryList()
 })
 
+const getGoodsCartsNum = () => {
+  getCartCount().then((res: any) => {
+    if (res.status == 200) {
+      cartCount.value = res.data.count
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+
+getGoodsCartsNum()  //  获取购物车数量
 getAddressList()  // 获取地址列表
 getBannerList()  // 获取轮播图数据
 getCategoryList() // 获取分类列表

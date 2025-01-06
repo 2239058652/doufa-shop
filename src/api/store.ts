@@ -49,7 +49,7 @@ export const getProductDetail = (id: string | number) => {
   })
 }
 
-// 购物车
+// 购物车列表
 interface ICartsParams {
   status: string | number;
   page: number;
@@ -67,7 +67,7 @@ export const getShoppingCart = (params: ICartsParams = {
   })
 }
 
-// 删除购物车
+// 删除购物车商品
 export const deleteCarts = (data: { ids: string }) => {
   return request.post({
     url: `/api/cart/del`,
@@ -79,5 +79,13 @@ export const deleteCarts = (data: { ids: string }) => {
 export const getAddressRegion = () => {
   return request.get({
     url: `/api/region`
+  })
+}
+
+// 购物车数量
+export const getCartCount = (params: { numType?: boolean } = { numType: true }) => {
+  return request.get({
+    url: `/api/cart/count`,
+    params
   })
 }

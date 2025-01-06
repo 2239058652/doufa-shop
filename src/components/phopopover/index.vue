@@ -68,8 +68,6 @@ const handleClose = () => {
 
 
 const handleUpload = async (file: any) => {
-  console.log(file, 'aaaaaaa')
-
   const formData = new FormData()
   formData.append('file', file)
   try {

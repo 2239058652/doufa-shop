@@ -1,10 +1,11 @@
 <template>
   <a-pagination v-model:current="currentPage" :total="total" :pageSizeOptions="pageSizeOptions" :pageSize="pageSize"
-    show-quick-jumper show-size-changer @change="handleChange" @showSizeChange="handleSizeChange" />
+    show-quick-jumper show-size-changer @change="handleChange" @showSizeChange="handleSizeChange"
+    :show-total="showTotal" />
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits, computed } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   total: {
@@ -38,6 +39,14 @@ const currentPage = computed({
 const pageSize = computed({
   get: () => props.defaultPageSize,
   set: (val) => emit('update:pageSize', val)
+})
+
+const showTotal = computed(() => {
+  if (props.total) {
+    return (total: any) => `共 ${total} 条`
+  } else {
+    return (_total: any) => ` `
+  }
 })
 
 const handleChange = (page: number, size: number) => {
