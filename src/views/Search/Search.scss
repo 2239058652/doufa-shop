@@ -328,6 +328,42 @@
                     object-fit: cover;
                 }
             }
+
+            span:nth-child(4) {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+
+                div {
+                    span {
+                        width: 10px;
+                        height: 22px;
+                        font-size: 14px;
+                        color: #bfbfbf;
+                        line-height: 22px;
+                    }
+                }
+
+                div:nth-child(1) {
+                    width: 32px;
+                    height: 22px;
+                }
+
+                div:nth-child(2) {
+                    width: 176px;
+                    height: 32px;
+                    border-radius: 3px;
+                    border: 1px solid #E0E0E0;
+                }
+
+                div:nth-child(3) {
+                    width: 176px;
+                    height: 32px;
+                    border-radius: 3px;
+                    border: 1px solid #E0E0E0;
+                }
+            }
         }
 
         .sp_tabs_pagination {

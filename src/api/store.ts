@@ -33,6 +33,10 @@ interface IProductParams {
   sid?: string
   keyword?: string
   url?: string
+  salesOrder?: string
+  priceOrder?: string
+  star_price?: number | string
+  end_price?: number | string
 }
 export const getProducts = (params: IProductParams) => {
   return request.get({

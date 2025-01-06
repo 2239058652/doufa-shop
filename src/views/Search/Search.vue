@@ -80,8 +80,8 @@
     <div class="shangpin">
       <div class="shangpin_tabs">
         <div class="sp_tabs_item">
-          <span :class="tabsIndex == 0 ? 'active' : ''" @click="tabsIndex = 0">综合</span>
-          <span :class="tabsIndex == 1 ? 'active' : ''" @click="tabsIndex = 1">销量</span>
+          <span :class="tabsIndex == '' ? 'active' : ''" @click="handleTabsClick('')">综合</span>
+          <span :class="tabsIndex == 'desc' ? 'active' : ''" @click="handleXiaoLiang">销量</span>
           <a-dropdown trigger="['click']">
             <span :class="tabsIndex == 2 ? 'active' : ''" @click="tabsIndex = 2">
               <span>价格 {{ priceSortText }}</span>
@@ -98,12 +98,24 @@
               </a-menu>
             </template>
           </a-dropdown>
-          <span :class="tabsIndex == 3 ? 'active' : ''" @click="tabsIndex = 3">区间
-            <a-input v-model:value="value" placeholder="最低价" :bordered="false">
-              <template #prefix>
-                ¥
-              </template>
-            </a-input>
+          <span @click="tabsIndex = 3">
+            <div>区间</div>
+            <div>
+              <a-input type="number" style="width: 100%;height: 100%;" v-model:value="zuiDiVal" placeholder="最低价"
+                :bordered="false" @pressEnter="getProductsList">
+                <template #prefix>
+                  <span>¥</span>
+                </template>
+              </a-input>
+            </div>
+            <div>
+              <a-input type="number" style="width: 100%;height: 100%;" v-model:value="zuiGaoVal" placeholder="最高价"
+                :bordered="false" @pressEnter="getProductsList">
+                <template #prefix>
+                  <span>¥</span>
+                </template>
+              </a-input>
+            </div>
           </span>
         </div>
 
@@ -175,10 +187,12 @@ const inputVal = ref<any>(route.query.keyword || '')  // 搜索框输入值
 const selectVal = ref('jack')  // 下拉框选择值
 const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服'])  // 热门搜索标签
 const activeIndex = ref(0)  // 热门搜索标签选中状态
-const tabsIndex = ref(0)  // 商品列表tab切换
+const tabsIndex = ref<string | number>('')  // 商品列表tab切换
 const cartCount = ref(0)  // 购物车商品数量
 const token = localStorage.getItem('token')
 const priceSort = ref('')
+const zuiDiVal = ref('')
+const zuiGaoVal = ref('')
 
 const categoryList = ref<any>([])  // 分类列表
 const productsList = ref<any>([])  // 商品列表
@@ -191,19 +205,32 @@ const priceSortText = computed(() => {
   return ''
 })
 
-// 处理价格排序
-const handlePriceSort = (sel: any) => {
-  priceSort.value = sel.key
-  // 这里可以触发重新获取商品列表的方法
-  // getProductList({
-  //   sort: key
-  // })
+// 商品综合切换 点击综合清空其它选项
+const handleTabsClick = (key: string | number) => {
+  photoSearchUrl.value = ''
+  tabsIndex.value = key
+  priceSort.value = ''
+  zuiDiVal.value = ''
+  zuiGaoVal.value = ''
+  getProductsList()
+}
+// 销量排序
+const handleXiaoLiang = () => {
+  photoSearchUrl.value = ''
+  tabsIndex.value = 'desc'
+  priceSort.value = ''
+  zuiDiVal.value = ''
+  zuiGaoVal.value = ''
+  getProductsList()
 }
 
-// 获取商品列表方法(示例)
-const getProductList = (params: { sort?: string }) => {
-  // 调用API获取商品列表
-  console.log('获取商品列表，排序方式:', params.sort)
+// 处理价格排序
+const handlePriceSort = (sel: any) => {
+  photoSearchUrl.value = ''
+  priceSort.value = sel.key
+  zuiDiVal.value = ''
+  zuiGaoVal.value = ''
+  getProductsList()
 }
 
 // 以图搜索
@@ -211,6 +238,10 @@ const beforeUpload = (res: any) => {
   if (res.status == 200) {
     messageApi.success('上传成功,正在搜索...')
     photoSearchUrl.value = res.data.url
+    tabsIndex.value = ''
+    priceSort.value = ''
+    zuiDiVal.value = ''
+    zuiGaoVal.value = ''
     getProductsList()
   }
 }
@@ -247,7 +278,13 @@ const getCategoryList = () => {
 // 获取商品列表
 const getProductsList = () => {
   productsListLoading.value = true;
-  getProducts({ page: currentPage.value, limit: pageSize.value, goods_address: selectAddressVal.value, sid: selectCateIdVal.value, keyword: inputVal.value, url: photoSearchUrl.value }).then((res: any) => {
+  getProducts({
+    page: currentPage.value, limit: pageSize.value,
+    goods_address: selectAddressVal.value, sid: selectCateIdVal.value,
+    keyword: inputVal.value, url: photoSearchUrl.value,
+    salesOrder: tabsIndex.value == 'desc' ? 'desc' : '',
+    priceOrder: priceSort.value, star_price: zuiDiVal.value, end_price: zuiGaoVal.value,
+  }).then((res: any) => {
     if (res.status == 200) {
       productsList.value = res.data.list;
       total.value = res.data.count;
@@ -362,6 +399,7 @@ watch(
   })
 
 
+// 获取购物车数量
 const getGoodsCartsNum = () => {
   getCartCount().then((res: any) => {
     if (res.status == 200) {
