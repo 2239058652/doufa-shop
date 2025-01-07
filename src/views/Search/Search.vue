@@ -242,6 +242,7 @@ import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
 import './Search.scss'
+import { debounce } from '@/utils/util'
 
 const router = useRouter()
 const route = useRoute()
@@ -423,7 +424,8 @@ const handleCateClick = (item: any) => {
 }
 
 // 搜索框输入  当点击搜索的时候把分类选中的项置为空，如果分类选中的项不为空，则把分类选中的项置为空，否则直接请求接口，因为watch监听了分类选中项
-const handleSearchByInput = () => {
+// 使用防抖防止频繁请求
+const handleSearchByInput = debounce(() => {
   photoSearchUrl.value = ''
   if (inputVal.value !== '') {
     if (selectCateIdVal.value == '') {
@@ -436,7 +438,7 @@ const handleSearchByInput = () => {
       getProductsList()
     }
   }
-}
+}, 300)
 
 // 切换地址
 const handleAddressChange = () => {
