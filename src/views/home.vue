@@ -18,13 +18,9 @@
       <div class="func-sou">
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
-          <a-input
-            v-model:value="inputVal"
-            :bordered="false"
-            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
-            style="width: 100%; height: 100%"
-            @pressEnter="routerToSearch"
-          >
+          <a-input v-model:value="inputVal" :bordered="false"
+            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'" style="width: 100%; height: 100%"
+            @pressEnter="routerToSearch">
             <template #prefix>
               <div class="func-sou-prefix">
                 <a-select :bordered="false" v-model:value="selectVal" @change="inputVal = ''">
@@ -38,11 +34,8 @@
                 <!-- 以图搜索图标功能 -->
                 <div class="photo-sou">
                   <!-- 以图搜索封装组件 -->
-                  <Popover
-                    @beforeUpload="beforeUpload"
-                    v-model:fileList="fileList"
-                    v-model:open="photoPopoverVisible"
-                  />
+                  <Popover @beforeUpload="beforeUpload" v-model:fileList="fileList"
+                    v-model:open="photoPopoverVisible" />
                 </div>
                 <div class="sousuo-btn" @click="routerToSearch">
                   <span>搜索</span>
@@ -54,12 +47,8 @@
         <!-- 热门搜索标签 -->
         <div class="func-sou-type">
           <div class="hot-type">
-            <span
-              :class="{ active: activeIndex === index }"
-              v-for="(item, index) in hotSouTypeList"
-              :key="index"
-              @click="activeIndex = index"
-            >
+            <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
+              @click="activeIndex = index">
               {{ item }}
             </span>
           </div>
@@ -94,30 +83,19 @@
                 <img src="../assets/image/fenlei.png" alt="" />
               </div>
               <!-- 气泡的title为分类的大分类名称 -->
-              <a-popover
-                :title="item.cate_name"
-                placement="right"
-                :overlayInnerStyle="{ width: '612px', height: '446px' }"
-              >
+              <a-popover :title="item.cate_name" placement="right"
+                :overlayInnerStyle="{ width: '612px', height: '446px' }">
                 <div class="item-right">
                   <!-- 分类的第一行列表 -->
                   <div class="text-line">
-                    <span
-                      v-for="(v, index) in item.children.slice(0, 3)"
-                      :key="v.id"
-                      @click="routerToSearch(v)"
-                    >
+                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id" @click="routerToSearch(v)">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
                   </div>
                   <!-- 分类的第二行列表 -->
                   <div class="text-line">
-                    <span
-                      v-for="(v, index) in item.children.slice(4, 7)"
-                      :key="v.id"
-                      @click="routerToSearch(v)"
-                    >
+                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id" @click="routerToSearch(v)">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
@@ -127,12 +105,7 @@
                 <template #content>
                   <div class="popover-content">
                     <div class="content-row">
-                      <div
-                        v-for="i in item.children"
-                        :key="i.id"
-                        class="content-item"
-                        @click="routerToSearch(i)"
-                      >
+                      <div v-for="i in item.children" :key="i.id" class="content-item" @click="routerToSearch(i)">
                         {{ i.cate_name }}
                       </div>
                     </div>
@@ -202,28 +175,24 @@
         <div class="r-t">
           <div class="r-t-l">
             <div class="r-t-l-t">
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: flex-start;
                   align-items: center;
                   gap: 8px;
                   margin-top: 20px;
                   margin-left: 13px;
-                "
-              >
+                ">
                 <div class="dfjp">抖发竞拍</div>
                 <div class="yyqp">1元起拍</div>
               </div>
-              <div
-                style="
+              <div style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
                   gap: 29px;
                   margin-top: 22px;
-                "
-              >
+                ">
                 <div class="chuizi"></div>
                 <div class="ljcy">
                   <span>立即参与</span>
@@ -254,19 +223,15 @@
                 <img src="../assets/image/user.png" alt="" />
               </div>
               <div class="user-info">
-                <div
-                  style="
+                <div style="
                     width: 80px;
                     height: 21px;
                     font-size: 16px;
                     color: #333333;
                     line-height: 21px;
                     text-align: left;
-                  "
-                  >慢慢家男装</div
-                >
-                <div
-                  style="
+                  ">慢慢家男装</div>
+                <div style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
@@ -275,8 +240,7 @@
                     line-height: 16px;
                     text-align: left;
                     gap: 12px;
-                  "
-                >
+                  ">
                   <div style="cursor: pointer">切换账号</div>
                   <div class="longin-out" @click="handleOutLogin">退出</div>
                 </div>
@@ -504,12 +468,8 @@
         </div>
         <!-- 商家列表 -->
         <div class="rx-user">
-          <div
-            v-for="(item, index) in rxsjList"
-            @click="rxsjActiveIndex = index"
-            :key="index"
-            :class="{ active: rxsjActiveIndex === index }"
-          >
+          <div v-for="(item, index) in rxsjList" @click="rxsjActiveIndex = index" :key="index"
+            :class="{ active: rxsjActiveIndex === index }">
             {{ item }}
           </div>
         </div>
@@ -608,12 +568,7 @@
       <a-skeleton :loading="productsList.length === 0" active>
         <!-- 商品列表 -->
         <div class="q-s-content">
-          <div
-            class="q-s-item"
-            v-for="item in productsList"
-            :key="item.id"
-            @click="routerToDetail(item)"
-          >
+          <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
             <div class="img-content">
               <img :src="item.image" alt="" />
             </div>
@@ -629,7 +584,7 @@
       </a-skeleton>
     </div>
 
-    <div v-if="loading" class="spin-loading">
+    <div v-if="isLoading" class="spin-loading">
       <a-spin tip="加载中..." :delay="200" />
     </div>
   </div>
@@ -661,7 +616,6 @@ const rxsjList = ref(['薰衣草小熊猫', '橘子男装', '橘子男装'])
 const activeIndex = ref(0)
 const rxsjActiveIndex = ref(0)
 const cartCount = ref(0) // 购物车数量
-const loading = ref(false) //
 const productsList = ref<any>([]) // 商品列表
 const page = ref(1) // 分页
 const token = localStorage.getItem('token')
@@ -670,12 +624,14 @@ const addressList = ref<any>([]) // 地址列表
 const selectAddressVal = ref<string>('全部') // 地址选择
 const fileList = ref([]) // 以图搜索list
 const photoPopoverVisible = ref(false) // 以图搜索弹窗
-
+const isLoading = ref(false)  // 加载中
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用防抖包装滚动处理函数
 const handleScroll = debounce((e: Event) => {
   const target = e.target as HTMLElement
-  if (target.scrollHeight - target.scrollTop <= target.clientHeight + 50) {
+  const scrollBottom = target.scrollHeight - target.scrollTop - target.clientHeight
+
+  if (scrollBottom < 50 && !isLoading.value) {
     getProductsList()
   }
 }, 200) // 200ms的防抖延迟
@@ -746,23 +702,29 @@ const getBannerList = async () => {
 }
 
 // 获取商品列表
-const getProductsList = () => {
-  loading.value = true
-  if (page.value > 6) {
-    loading.value = false
+const getProductsList = async () => {
+  // 使用已有的loading变量作为状态控制
+  if (isLoading.value || page.value > 6) {
     return
   }
-  getProducts({ page: page.value, limit: 18, goods_address: selectAddressVal.value }).then(
-    (res: any) => {
-      if (res.status == 200) {
-        productsList.value = [...productsList.value, ...res.data.list]
-        loading.value = false
-        page.value++
-      } else {
-        messageApi.error(res.msg)
-      }
+
+  try {
+    isLoading.value = true
+    const res = await getProducts({
+      page: page.value,
+      limit: 18,
+      goods_address: selectAddressVal.value
+    })
+
+    if (res.status === 200) {
+      productsList.value = [...productsList.value, ...res.data.list]
+      page.value++
+    } else {
+      messageApi.error(res.msg)
     }
-  )
+  } finally {
+    isLoading.value = false
+  }
 }
 
 // 登录
