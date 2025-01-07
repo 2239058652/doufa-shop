@@ -489,7 +489,7 @@ const hanldeAddToCart = () => {
     return
   }
   // 需要选择的尺码的唯一标识uniqueId  goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique
-  addGoodsToCart({ productId: goodsDetail.value.storeInfo.id, cartNum: selectedInfo.value.quantity, uniqueId: goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique }).then(res => {
+  addGoodsToCart({ productId: goodsDetail.value.storeInfo.id, cartNum: selectedInfo.value.quantity, uniqueId: goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique }).then((res: any) => {
     if (res.status == 200) {
       messageApi.success('成功加入购物车')
     } else {

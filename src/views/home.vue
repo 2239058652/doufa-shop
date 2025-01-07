@@ -775,11 +775,11 @@ const handleAddressChange = () => {
     content: () => {
       return (
         <>
-          <div className="address-container">
-            {addressList.value.map((item, index) => (
+          <div class="address-container">
+            {addressList.value.map((item: { address_name: string }, index: PropertyKey | undefined) => (
               <div
                 key={index}
-                className={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
+                class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
                 onClick={handleAddressConfirm(item)}
               >
                 <span>{item.address_name}</span>
@@ -791,6 +791,7 @@ const handleAddressChange = () => {
     }
   })
 }
+
 // 选择地址
 const handleAddressConfirm = (item: any) => {
   return () => {

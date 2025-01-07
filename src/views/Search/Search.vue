@@ -18,13 +18,9 @@
       <div class="func-sou">
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
-          <a-input
-            v-model:value="inputVal"
-            :bordered="false"
-            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
-            style="width: 100%; height: 100%"
-            @pressEnter="handleSearchByInput"
-          >
+          <a-input v-model:value="inputVal" :bordered="false"
+            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'" style="width: 100%; height: 100%"
+            @pressEnter="handleSearchByInput">
             <template #prefix>
               <div>
                 <a-select :bordered="false" v-model:value="selectVal" @change="inputVal = ''">
@@ -49,12 +45,8 @@
         <!-- 热门搜索标签 -->
         <div class="func-sou-type">
           <div class="hot-type">
-            <span
-              :class="{ active: activeIndex === index }"
-              v-for="(item, index) in hotSouTypeList"
-              :key="index"
-              @click="activeIndex = index"
-            >
+            <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
+              @click="activeIndex = index">
               {{ item }}
             </span>
           </div>
@@ -77,13 +69,8 @@
       <div v-for="item in categoryList" :key="item.id" class="cate_item">
         <div class="main_cate_name">{{ item.cate_name }}</div>
         <div class="cate_item_list">
-          <div
-            class="cate_name_item"
-            v-for="i in item.children"
-            :class="{ active: selectCateIdVal == i.id }"
-            :key="i.id"
-            @click="handleCateClick(i)"
-          >
+          <div class="cate_name_item" v-for="i in item.children" :class="{ active: selectCateIdVal == i.id }"
+            :key="i.id" @click="handleCateClick(i)">
             {{ i.cate_name }}
           </div>
         </div>
@@ -115,28 +102,16 @@
           <span @click="tabsIndex = 3">
             <div>区间</div>
             <div>
-              <a-input
-                type="number"
-                style="width: 100%; height: 100%"
-                v-model:value="zuiDiVal"
-                placeholder="最低价"
-                :bordered="false"
-                @pressEnter="getProductsList"
-              >
+              <a-input type="number" style="width: 100%; height: 100%" v-model:value="zuiDiVal" placeholder="最低价"
+                :bordered="false" @pressEnter="getProductsList">
                 <template #prefix>
                   <span>¥</span>
                 </template>
               </a-input>
             </div>
             <div>
-              <a-input
-                type="number"
-                style="width: 100%; height: 100%"
-                v-model:value="zuiGaoVal"
-                placeholder="最高价"
-                :bordered="false"
-                @pressEnter="getProductsList"
-              >
+              <a-input type="number" style="width: 100%; height: 100%" v-model:value="zuiGaoVal" placeholder="最高价"
+                :bordered="false" @pressEnter="getProductsList">
                 <template #prefix>
                   <span>¥</span>
                 </template>
@@ -146,22 +121,15 @@
         </div>
 
         <div class="sp_tabs_pagination">
-          <img
-            src="../../assets/image/toleft.png"
-            alt=""
-            @click="handleTopPagination(Math.max(1, currentPage - 1))"
-            :class="{ disabled: currentPage <= 1 }"
-          />
+          <img src="../../assets/image/toleft.png" alt="" @click="handleTopPagination(Math.max(1, currentPage - 1))"
+            :class="{ disabled: currentPage <= 1 }" />
           <span>
             <span>{{ currentPage }}</span>
             <span style="color: #333333">/{{ Math.ceil(total / pageSize) }}</span>
           </span>
-          <img
-            src="../../assets/image/toright.png"
-            alt=""
+          <img src="../../assets/image/toright.png" alt=""
             @click="handleTopPagination(Math.min(Math.ceil(total / pageSize), currentPage + 1))"
-            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }"
-          />
+            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }" />
         </div>
       </div>
       <br />
@@ -169,12 +137,7 @@
       <a-skeleton :loading="productsListLoading" active>
         <!-- 商品列表 -->
         <div class="q-s-content">
-          <div
-            class="q-s-item"
-            v-for="item in productsList"
-            :key="item.id"
-            @click="routerToDetail(item)"
-          >
+          <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
             <div class="img-content">
               <img :src="item.image" alt="" />
             </div>
@@ -218,13 +181,8 @@
         <div class="dp_item_r"></div>
       </div>
     </div>
-    <Pagination
-      v-model:current="currentPage"
-      v-model:pageSize="pageSize"
-      :total="total"
-      @change="getProductsList"
-      :pageSizeOptions="showGoodsOrDangKou ? pageSizeGoodsOptions : pageSizeDangKouOptions"
-    />
+    <Pagination v-model:current="currentPage" v-model:pageSize="pageSize" :total="total" @change="getProductsList"
+      :pageSizeOptions="showGoodsOrDangKou ? pageSizeGoodsOptions : pageSizeDangKouOptions" />
   </div>
 </template>
 
@@ -443,15 +401,13 @@ const handleSearchByInput = debounce(() => {
 // 切换地址
 const handleAddressChange = () => {
   Modal.confirm({
-    title: () => {
-      return (
-        <>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span>选择地址 </span>
-          </div>
-        </>
-      )
-    },
+    title: (
+      <>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span>选择地址</span>
+        </div>
+      </>
+    ),
     icon: null,
     footer: null,
     width: 700,
@@ -460,14 +416,14 @@ const handleAddressChange = () => {
     content: () => {
       return (
         <>
-          <div className="address-container">
-            {addressList.value.map((item, index) => (
+          <div class="address-container">
+            {addressList.value.map((item: { address_name: string }, index: PropertyKey | undefined) => (
               <div
                 key={index}
-                className={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
+                class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
                 onClick={handleAddressConfirm(item)}
               >
-                <span>{item.address_name} </span>
+                <span>{item.address_name}</span>
               </div>
             ))}
           </div>
@@ -476,6 +432,7 @@ const handleAddressChange = () => {
     }
   })
 }
+
 // 选择地址  当切换地址把分类选中项置为空，输入框的值置为空，然后请求接口
 const handleAddressConfirm = (item: any) => {
   photoSearchUrl.value = ''
