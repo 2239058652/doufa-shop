@@ -473,9 +473,18 @@ const payOrderNow = () => {
 
 // 加入购物车
 const hanldeAddToCart = () => {
-  console.log('jiarugouwuche')
-
-  // addGoodsToCart({ })
+  if (!selectedInfo.value.isValid) {
+    messageApi.error('请选择商品数量、颜色和尺码！')
+    return
+  }
+  // 需要选择的尺码的唯一标识uniqueId  goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique
+  addGoodsToCart({ productId: goodsDetail.value.storeInfo.id, cartNum: selectedInfo.value.quantity, uniqueId: goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique }).then(res => {
+    if (res.status == 200) {
+      messageApi.success('成功加入购物车')
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
 }
 
 
