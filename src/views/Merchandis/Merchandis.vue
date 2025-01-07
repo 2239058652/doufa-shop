@@ -213,7 +213,7 @@
               <div @click="payOrderNow">
                 <span>立即下单</span>
               </div>
-              <div>
+              <div @click="hanldeAddToCart">
                 <span>加入购物车</span>
               </div>
               <div>
@@ -328,7 +328,7 @@
               <div @click="payOrderNow">
                 <span>立即下单</span>
               </div>
-              <div>
+              <div @click="hanldeAddToCart">
                 <span>加入购物车</span>
               </div>
             </div>
@@ -342,7 +342,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMouseInElement, useScroll } from '@vueuse/core'
-import { getProductDetail } from '@/api/store'
+import { getProductDetail, addGoodsToCart } from '@/api/store'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
 import Popover from '@/components/phopopover/index.vue'
@@ -469,6 +469,13 @@ const payOrderNow = () => {
       size: selectedInfo.value.size
     }
   })
+}
+
+// 加入购物车
+const hanldeAddToCart = () => {
+  console.log('jiarugouwuche')
+
+  // addGoodsToCart({ })
 }
 
 

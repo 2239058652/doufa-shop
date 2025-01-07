@@ -101,3 +101,11 @@ export const getSystemAdmin = (params: { page: string | number; limit: string | 
     params
   })
 }
+
+// 加入购物车
+export const addGoodsToCart = (data: { productId: string | number; cartNum: string | number; uniqueId: string | number; new?: string | number; }) => {
+  return request.post({
+    url: `/api/cart/add`,
+    data
+  })
+}
