@@ -110,7 +110,7 @@ export const addGoodsToCart = (data: { productId: string | number; cartNum: stri
   })
 }
 
-// 收藏商品
+// 收藏商品 status  1 收藏 2 取消收藏
 export const collectGoodsTo = (params: { id: string; status: string | number; }) => {
   return request.get({
     url: `/api/product/collectGoods`,

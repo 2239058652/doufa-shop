@@ -225,9 +225,11 @@
               <div>
                 <span>站内同款</span>
               </div>
-              <div>
+              <div @click="handleCollect">
                 <span>
-                  <img src="../../assets/image/fixed_live.png" alt="" />
+                  <img
+                    :src="goodsDetail?.storeInfo?.is_sc == 1 ? `/src/assets/image/redheart.png` : '/src/assets/image/fixed_live.png'"
+                    alt="" />
                 </span>
                 <span>收藏</span>
               </div>
@@ -331,6 +333,14 @@
               <div @click="hanldeAddToCart">
                 <span>加入购物车</span>
               </div>
+              <div @click="handleCollect">
+                <span>
+                  <img
+                    :src="goodsDetail?.storeInfo?.is_sc == 1 ? `/src/assets/image/redheart.png` : '/src/assets/image/fixed_live.png'"
+                    alt="" />
+                </span>
+                <span>收藏</span>
+              </div>
             </div>
           </a-skeleton>
         </div>
@@ -342,12 +352,13 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMouseInElement, useScroll } from '@vueuse/core'
-import { getProductDetail, addGoodsToCart } from '@/api/store'
+import { getProductDetail, addGoodsToCart, collectGoodsTo } from '@/api/store'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
 import Popover from '@/components/phopopover/index.vue'
 import { useClipboard } from '@vueuse/core'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+import { debounce } from '@/utils/util'
 
 const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车表格数据,存到pinia中
 
@@ -613,6 +624,21 @@ const routerToSearch = () => {
   })
 }
 
+// 收藏 添加防抖
+const handleCollect = debounce((e: Event) => {
+  collectGoodsTo({ id: detailId, status: goodsDetail.value?.storeInfo?.is_sc == 1 ? 2 : 1 }).then((res: any) => {
+    if (res.status == 200) {
+      fetchGoodsDetail()
+      if (goodsDetail.value?.storeInfo?.is_sc == 1) {
+        messageApi.success('取消收藏成功')
+      } else {
+        messageApi.success('收藏成功')
+      }
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}, 200)
 onMounted(() => {
   el.value = document.querySelector('.router-view')
   fetchGoodsDetail()

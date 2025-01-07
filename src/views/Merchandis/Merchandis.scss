@@ -737,6 +737,7 @@
       }
 
       div:last-child {
+        width: 40px;
         border: none;
         display: flex;
         flex-direction: column;
@@ -1053,7 +1054,7 @@
       }
 
       .goods_func {
-        width: 566px;
+        width: 610px;
         height: 60px;
         display: flex;
         align-items: center;
@@ -1102,6 +1103,37 @@
             line-height: 20px;
             text-align: center;
             font-style: normal;
+          }
+        }
+
+        div:last-child {
+          width: 40px;
+          border: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0;
+          background: #ffffff;
+
+          span {
+            width: 28px;
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #999999;
+            line-height: 20px;
+
+            img {
+              width: 20px;
+              height: 17px;
+              object-fit: cover;
+              margin-left: 4px;
+            }
+          }
+
+          &:hover {
+            box-shadow: none;
           }
         }
       }
