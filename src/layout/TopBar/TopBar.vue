@@ -140,12 +140,13 @@ const showFooter = computed(() => {
 })
 
 const handleClick = (path: string) => {
+  router.push(path)
   // 只有在用户登录时才允许访问(个人中心)
-  if (token) {
-    router.push(path)
-  } else {
-    messageApi.error('您还未登录，请先登录再访问个人中心！')
-  }
+  // if (token) {
+  //   router.push(path)
+  // } else {
+  //   messageApi.error('您还未登录，请先登录再访问个人中心！')
+  // }
 }
 // 登录
 const handleLogin = () => {

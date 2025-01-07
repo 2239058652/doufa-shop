@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import TopLayoutBar from '../layout/TopBar/TopBar.vue'
 import SiderMenuBar from '../layout/SideMenu/SideMenu.vue'
 import { message } from 'ant-design-vue'
@@ -10,7 +10,21 @@ import { message } from 'ant-design-vue'
 //   requireSidebar: false,  // 是否需要侧边栏菜单
 //   hidden: true,
 //   requireFooter: false  // 不需要底部设置为 false,默认为true
-const asyncRoutes = [
+//   requiresAuth: true,  // 是否需要登录
+
+// 定义路由元信息类型
+declare module 'vue-router' {
+  interface RouteMeta {
+    title: string
+    keepAlive?: boolean
+    requireSidebar?: boolean
+    hidden?: boolean
+    requireFooter?: boolean
+    requiresAuth?: boolean
+  }
+}
+
+const asyncRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/home',
@@ -80,16 +94,8 @@ const asyncRoutes = [
           title: '支付订单',
           requireSidebar: false,
           hidden: true,
-          requireFooter: false
-        },
-        beforeEnter: (to, from, next) => {
-          const token = localStorage.getItem('token')
-          if (token) {
-            next()
-          } else {
-            message.warning('请登录后再访问！')
-            next(from.fullPath)
-          }
+          requireFooter: false,
+          requiresAuth: true
         },
       },
     ]
@@ -100,16 +106,8 @@ const asyncRoutes = [
     redirect: '/usermanage/userinfo',
     meta: {
       title: '用户中心',
-      hidden: false
-    },
-    beforeEnter: (to, from, next) => {
-      const token = localStorage.getItem('token')
-      if (token) {
-        next()
-      } else {
-        message.warning('请登录后再访问！')
-        next(from.fullPath)
-      }
+      hidden: false,
+      requiresAuth: true
     },
     component: SiderMenuBar,
     children: [
@@ -175,16 +173,8 @@ const asyncRoutes = [
     redirect: '/ordermanage/ordelist',
     meta: {
       title: '订单管理',
-      hidden: false
-    },
-    beforeEnter: (to, from, next) => {
-      const token = localStorage.getItem('token')
-      if (token) {
-        next()
-      } else {
-        message.warning('请登录后再访问！')
-        next(from.fullPath)
-      }
+      hidden: false,
+      requiresAuth: true
     },
     component: SiderMenuBar,
     children: [
@@ -232,18 +222,8 @@ const asyncRoutes = [
     redirect: '/shopsmanage/ordestore',
     meta: {
       title: '下单管理',
-      hidden: false
-    },
-    beforeEnter: (to, from, next) => {
-      console.log(from)
-
-      const token = localStorage.getItem('token')
-      if (token) {
-        next()
-      } else {
-        message.warning('请登录后再访问！')
-        next(from.fullPath)
-      }
+      hidden: false,
+      requiresAuth: true
     },
     component: SiderMenuBar,
     children: [
@@ -298,6 +278,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: asyncRoutes,
   scrollBehavior() {
+    // 页面跳转时，滚动条位置还原
     // 回到顶部
     const appElement = document.getElementById('router-view')
     if (appElement) {
@@ -307,7 +288,6 @@ const router = createRouter({
     }
   }
 })
-
 
 
 export default router
