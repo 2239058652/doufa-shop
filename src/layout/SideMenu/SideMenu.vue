@@ -16,9 +16,10 @@
 import TopMenu from '../TopBar/TopBar.vue'
 import { reactive, ref, watch } from 'vue'
 import type { MenuProps, ItemType } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 const routes = router.options.routes
 const currentRoute = router.currentRoute
 

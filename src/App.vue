@@ -1,36 +1,9 @@
-<!-- <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
-
-const locale = zhCN
-
-</script>
-
-<template>
-  <a-config-provider :locale="locale">
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" v-if="$route.meta.keepAlive" />
-      </keep-alive>
-      <component :is="Component" v-if="!$route.meta.keepAlive" />
-    </router-view>
-  </a-config-provider>
-</template>
-
-<style scoped>
-#app {
-  height: 100vh;
-}
-</style> -->
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { ConfigProvider } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { computed, onErrorCaptured } from 'vue'
-import { useRoute } from 'vue-router'
+import { onErrorCaptured } from 'vue'
 
 const locale = zhCN
-const route = useRoute()
 
 // 错误处理
 onErrorCaptured((error, instance, info) => {
@@ -39,22 +12,33 @@ onErrorCaptured((error, instance, info) => {
   return false // 阻止错误继续传播
 })
 
-// 使用computed优化性能
-const isKeepAlive = computed(() => route.meta.keepAlive)
+// 处理二级路由加载俩次问题，1级就返回第1个就不加载俩次
+function getFirstLevelRoute(route: { matched: string | any[] }) {
+  if (!Array.isArray(route.matched) || route.matched.length === 0) {
+    return route
+  }
+  return route.matched[0]
+}
 </script>
 
 <template>
-  <ConfigProvider :locale="locale">
-    <router-view v-slot="{ Component }">
-      <template v-if="Component">
-        <keep-alive v-if="isKeepAlive">
-          <component :is="Component" />
-        </keep-alive>
-        <component :is="Component" v-else />
-      </template>
+  <a-config-provider :locale="locale">
+    <router-view v-slot="{ Component, route }">
+      <keep-alive>
+        <component :is="Component" :key="getFirstLevelRoute(route).name"
+          v-if="getFirstLevelRoute(route).meta.keepAlive" />
+      </keep-alive>
+      <component :is="Component" :key="getFirstLevelRoute(route).name"
+        v-if="!getFirstLevelRoute(route).meta.keepAlive" />
     </router-view>
-  </ConfigProvider>
+  </a-config-provider>
 </template>
+
+<style scoped>
+/* #app {
+  height: 100vh;
+} */
+</style>
 
 <style lang="scss">
 // 移除 scoped，因为这些是全局样式

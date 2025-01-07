@@ -109,3 +109,11 @@ export const addGoodsToCart = (data: { productId: string | number; cartNum: stri
     data
   })
 }
+
+// 收藏商品
+export const collectGoodsTo = (params: { id: string; status: string | number; }) => {
+  return request.get({
+    url: `/api/product/collectGoods`,
+    params
+  })
+}

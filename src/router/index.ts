@@ -51,7 +51,8 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '商品搜索页',
           requireSidebar: false,
-          hidden: true
+          hidden: true,
+          keepAlive: false
         }
       },
       {
@@ -72,7 +73,8 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '商品详情页',
           requireSidebar: false,
-          hidden: true
+          hidden: true,
+          keepAlive: false
         }
       },
       {

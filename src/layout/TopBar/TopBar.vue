@@ -89,11 +89,13 @@
         <RegisterModal ref="registerModalRef" />
       </div>
       <div class="router-view" id="router-view" v-if="showSidebar">
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component, route }">
           <keep-alive>
-            <component :is="Component" v-if="$route.meta.keepAlive" />
+            <component :is="Component" :key="getFirstLevelRoute(route).name"
+              v-if="getFirstLevelRoute(route).meta.keepAlive" />
           </keep-alive>
-          <component :is="Component" v-if="!$route.meta.keepAlive" />
+          <component :is="Component" :key="getFirstLevelRoute(route).name"
+            v-if="!getFirstLevelRoute(route).meta.keepAlive" />
         </router-view>
         <Footer v-if="showFooter" />
 
@@ -128,6 +130,13 @@ const router = useRouter()
 // 获取当前路由
 const route = useRoute()
 
+// 处理二级路由加载俩次问题，二级就返回第二个就不加载俩次
+function getFirstLevelRoute(route: { matched: string | any[] }) {
+  if (!Array.isArray(route.matched) || route.matched.length === 0) {
+    return route
+  }
+  return route.matched[route.matched.length - 1]
+}
 
 // 计算属性判断是否需要左侧菜单
 const showSidebar = computed(() => {
