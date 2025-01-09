@@ -18,7 +18,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://ceshi.doufapt.com/api',    // 正式地址
+        target: 'https://ceshi.doufapt.com',    // 正式地址
         // target: 'http://test.doufapt.com',      // 测试地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')

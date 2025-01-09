@@ -636,6 +636,8 @@ const handleScroll = debounce((e: Event) => {
   }
 }, 200) // 200ms的防抖延迟
 onMounted(() => {
+  console.log('import.meta.env', import.meta.env);
+
   const routerView = document.querySelector('.router-view')
   if (routerView) {
     routerView.addEventListener('scroll', handleScroll)
