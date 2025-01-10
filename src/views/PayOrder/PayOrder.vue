@@ -12,12 +12,11 @@
       <div class="address_sales_info">
         <a-form
           ref="formAddressRef"
-          :label-col="{ span: 3 }"
-          :wrapper-col="{ span: 21 }"
           labelAlign="left"
           :model="formState"
           name="address"
           autocomplete="off"
+          class="demo-form-inline"
         >
           <div class="address_info">
             <div class="address_title">确认收货信息</div>
@@ -45,8 +44,8 @@
                   <a-form-item
                     label="收货人"
                     name="name"
-                    :label-col="{ span: 6 }"
                     :rules="[{ required: true, message: '请输入收货人名称' }]"
+                    class="name-form-item"
                   >
                     <a-input v-model:value="formState.name" placeholder="请输入收货人名称" />
                   </a-form-item>
@@ -55,7 +54,6 @@
                   <a-form-item
                     label="联系方式"
                     name="phone"
-                    :label-col="{ span: 6 }"
                     :rules="[{ required: true, message: '请输入收货人联系方式' }]"
                   >
                     <a-input v-model:value="formState.phone" placeholder="请输入收货人联系方式" />
@@ -65,7 +63,6 @@
                   <a-form-item
                     label="收货地区"
                     name="selectedOptions"
-                    :label-col="{ span: 6 }"
                     :rules="[{ required: true, message: '请选择收货地区' }]"
                   >
                     <a-cascader
@@ -78,7 +75,6 @@
                 </a-col>
                 <a-col :span="24">
                   <a-form-item
-                    :label-col="{ span: 2 }"
                     label="详细地址"
                     name="textarea"
                     :rules="[{ required: true, message: '请输入详细地址' }]"
@@ -585,5 +581,10 @@ fetchCashInfo()
 // 修改表格列样式
 :deep(.ant-table-cell) {
   vertical-align: middle;
+}
+.name-form-item {
+  :deep(.ant-form-item-label) {
+    padding-right: 16px;
+  }
 }
 </style>
