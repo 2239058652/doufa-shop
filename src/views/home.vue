@@ -102,22 +102,14 @@
                 <div class="item-right">
                   <!-- 分类的第一行列表 -->
                   <div class="text-line">
-                    <span
-                      v-for="(v, index) in item.children.slice(0, 3)"
-                      :key="v.id"
-                      @click="routerToSearch(v)"
-                    >
+                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id" @click="routerToSearch(v)">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
                   </div>
                   <!-- 分类的第二行列表 -->
                   <div class="text-line">
-                    <span
-                      v-for="(v, index) in item.children.slice(4, 7)"
-                      :key="v.id"
-                      @click="routerToSearch(v)"
-                    >
+                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id" @click="routerToSearch(v)">
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
@@ -127,12 +119,7 @@
                 <template #content>
                   <div class="popover-content">
                     <div class="content-row">
-                      <div
-                        v-for="i in item.children"
-                        :key="i.id"
-                        class="content-item"
-                        @click="routerToSearch(i)"
-                      >
+                      <div v-for="i in item.children" :key="i.id" class="content-item" @click="routerToSearch(i)">
                         {{ i.cate_name }}
                       </div>
                     </div>
@@ -215,15 +202,7 @@
                 <div class="dfjp">抖发竞拍</div>
                 <div class="yyqp">1元起拍</div>
               </div>
-              <div
-                style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  gap: 29px;
-                  margin-top: 22px;
-                "
-              >
+              <div style="display: flex; justify-content: center; align-items: center; gap: 29px; margin-top: 22px">
                 <div class="chuizi"></div>
                 <div class="ljcy">
                   <span>立即参与</span>
@@ -623,12 +602,7 @@
       <a-skeleton :loading="productsList.length === 0" active>
         <!-- 商品列表 -->
         <div class="q-s-content">
-          <div
-            class="q-s-item"
-            v-for="item in productsList"
-            :key="item.id"
-            @click="routerToDetail(item)"
-          >
+          <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
             <div class="img-content">
               <img :src="item.image" alt="" />
             </div>
@@ -651,7 +625,7 @@
 </template>
 
 <script setup lang="tsx">
-import { debounce } from '@/utils/util'
+import { throttle } from '@/utils/util'
 import { onMounted, onUnmounted, ref, inject, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getCategory, getBanner, getProducts, getAddressRegion, getCartCount } from '@/api/store'
@@ -690,15 +664,15 @@ const fileList = ref([]) // 以图搜索list
 const photoPopoverVisible = ref(false) // 以图搜索弹窗
 const isLoading = ref(false) // 加载中
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
-// 使用防抖包装滚动处理函数
-const handleScroll = debounce((e: Event) => {
+// 使用节流包装滚动处理函数
+const handleScroll = throttle((e: Event) => {
   const target = e.target as HTMLElement
   const scrollBottom = target.scrollHeight - target.scrollTop - target.clientHeight
 
   if (scrollBottom < 50 && !isLoading.value) {
     getProductsList()
   }
-}, 200) // 200ms的防抖延迟
+}, 200) // 200ms的节流
 onMounted(() => {
   console.log('import.meta.env', import.meta.env)
 
@@ -842,17 +816,15 @@ const handleAddressChange = () => {
       return (
         <>
           <div class="address-container">
-            {addressList.value.map(
-              (item: { address_name: string }, index: PropertyKey | undefined) => (
-                <div
-                  key={index}
-                  class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
-                  onClick={handleAddressConfirm(item)}
-                >
-                  <span>{item.address_name}</span>
-                </div>
-              )
-            )}
+            {addressList.value.map((item: { address_name: string }, index: PropertyKey | undefined) => (
+              <div
+                key={index}
+                class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
+                onClick={handleAddressConfirm(item)}
+              >
+                <span>{item.address_name}</span>
+              </div>
+            ))}
           </div>
         </>
       )
