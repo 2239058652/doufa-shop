@@ -69,7 +69,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { onMounted, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { sendVerify, agreeMents, doLogin, doLoginByPhone } from '@/api/user'
 import { message } from 'ant-design-vue'
 import { debounce } from '@/utils/util' // 引入防抖函数
@@ -92,7 +92,7 @@ onMounted(() => {
 })
 
 // 在onUnmounted中移除监听
-onUnmounted(() => {
+onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeyDown)
 })
 

@@ -1,8 +1,15 @@
 <template>
   <TopMenu />
   <div class="side-menu">
-    <a-menu class="layout" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 206px"
-      mode="inline" :items="items" @click="handleClick" />
+    <a-menu
+      class="layout"
+      v-model:openKeys="openKeys"
+      v-model:selectedKeys="selectedKeys"
+      style="width: 206px"
+      mode="inline"
+      :items="items"
+      @click="handleClick"
+    />
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" v-if="$route.meta.keepAlive" />
@@ -44,7 +51,7 @@ const getAllParentPaths = (routes: any[]): string[] => {
     route.children?.forEach((child: any) => traverse(child, fullPath))
   }
 
-  routes.forEach(route => traverse(route))
+  routes.forEach((route) => traverse(route))
   return paths
 }
 
@@ -75,9 +82,7 @@ function getItem(route: any, parentPath: string = ''): ItemType {
 
 // 根据路由生成菜单项
 const items: ItemType[] = reactive(
-  routes
-    .filter((route: any) => !route.meta?.hidden && route.path !== '/')
-    .map((route: any) => getItem(route))
+  routes.filter((route: any) => !route.meta?.hidden && route.path !== '/').map((route: any) => getItem(route))
 )
 
 // 修改点击处理函数以支持路由跳转
@@ -114,7 +119,7 @@ watch(
 }
 
 .layout {
-  width: 256px;
+  width: 100%;
   height: 100%;
 }
 
