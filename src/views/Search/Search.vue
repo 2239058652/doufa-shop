@@ -18,9 +18,13 @@
       <div class="func-sou">
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
-          <a-input v-model:value="inputVal" :bordered="false"
-            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'" style="width: 100%; height: 100%"
-            @pressEnter="handleSearchByInput">
+          <a-input
+            v-model:value="inputVal"
+            :bordered="false"
+            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
+            style="width: 100%; height: 100%"
+            @pressEnter="handleSearchByInput"
+          >
             <template #prefix>
               <div>
                 <a-select :bordered="false" v-model:value="selectVal" @change="inputVal = ''">
@@ -45,8 +49,12 @@
         <!-- 热门搜索标签 -->
         <div class="func-sou-type">
           <div class="hot-type">
-            <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
-              @click="activeIndex = index">
+            <span
+              :class="{ active: activeIndex === index }"
+              v-for="(item, index) in hotSouTypeList"
+              :key="index"
+              @click="activeIndex = index"
+            >
               {{ item }}
             </span>
           </div>
@@ -69,8 +77,13 @@
       <div v-for="item in categoryList" :key="item.id" class="cate_item">
         <div class="main_cate_name">{{ item.cate_name }}</div>
         <div class="cate_item_list">
-          <div class="cate_name_item" v-for="i in item.children" :class="{ active: selectCateIdVal == i.id }"
-            :key="i.id" @click="handleCateClick(i)">
+          <div
+            class="cate_name_item"
+            v-for="i in item.children"
+            :class="{ active: selectCateIdVal == i.id }"
+            :key="i.id"
+            @click="handleCateClick(i)"
+          >
             {{ i.cate_name }}
           </div>
         </div>
@@ -102,16 +115,28 @@
           <span @click="tabsIndex = 3">
             <div>区间</div>
             <div>
-              <a-input type="number" style="width: 100%; height: 100%" v-model:value="zuiDiVal" placeholder="最低价"
-                :bordered="false" @pressEnter="getProductsList">
+              <a-input
+                type="number"
+                style="width: 100%; height: 100%"
+                v-model:value="zuiDiVal"
+                placeholder="最低价"
+                :bordered="false"
+                @pressEnter="getProductsList"
+              >
                 <template #prefix>
                   <span>¥</span>
                 </template>
               </a-input>
             </div>
             <div>
-              <a-input type="number" style="width: 100%; height: 100%" v-model:value="zuiGaoVal" placeholder="最高价"
-                :bordered="false" @pressEnter="getProductsList">
+              <a-input
+                type="number"
+                style="width: 100%; height: 100%"
+                v-model:value="zuiGaoVal"
+                placeholder="最高价"
+                :bordered="false"
+                @pressEnter="getProductsList"
+              >
                 <template #prefix>
                   <span>¥</span>
                 </template>
@@ -121,15 +146,22 @@
         </div>
 
         <div class="sp_tabs_pagination">
-          <img src="../../assets/image/toleft.png" alt="" @click="handleTopPagination(Math.max(1, currentPage - 1))"
-            :class="{ disabled: currentPage <= 1 }" />
+          <img
+            src="../../assets/image/toleft.png"
+            alt=""
+            @click="handleTopPagination(Math.max(1, currentPage - 1))"
+            :class="{ disabled: currentPage <= 1 }"
+          />
           <span>
             <span>{{ currentPage }}</span>
             <span style="color: #333333">/{{ Math.ceil(total / pageSize) }}</span>
           </span>
-          <img src="../../assets/image/toright.png" alt=""
+          <img
+            src="../../assets/image/toright.png"
+            alt=""
             @click="handleTopPagination(Math.min(Math.ceil(total / pageSize), currentPage + 1))"
-            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }" />
+            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }"
+          />
         </div>
       </div>
       <br />
@@ -181,21 +213,20 @@
         <div class="dp_item_r"></div>
       </div>
     </div>
-    <Pagination v-model:current="currentPage" v-model:pageSize="pageSize" :total="total" @change="getProductsList"
-      :pageSizeOptions="showGoodsOrDangKou ? pageSizeGoodsOptions : pageSizeDangKouOptions" />
+    <Pagination
+      v-model:current="currentPage"
+      v-model:pageSize="pageSize"
+      :total="total"
+      @change="getProductsList"
+      :pageSizeOptions="showGoodsOrDangKou ? pageSizeGoodsOptions : pageSizeDangKouOptions"
+    />
   </div>
 </template>
 
 <script setup lang="tsx">
 import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import {
-  getAddressRegion,
-  getCategory,
-  getProducts,
-  getCartCount,
-  getSystemAdmin
-} from '@/api/store'
+import { getAddressRegion, getCategory, getProducts, getCartCount, getSystemAdmin } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
@@ -321,10 +352,7 @@ const getProductsList = () => {
   if (selectVal.value === 'product' && !pageSizeGoodsOptions.value.includes(pageSize.value)) {
     pageSize.value = 24
     currentPage.value = 1
-  } else if (
-    selectVal.value === 'stall' &&
-    !pageSizeDangKouOptions.value.includes(pageSize.value)
-  ) {
+  } else if (selectVal.value === 'stall' && !pageSizeDangKouOptions.value.includes(pageSize.value)) {
     pageSize.value = 3
     currentPage.value = 1
   }
@@ -410,7 +438,7 @@ const handleAddressChange = () => {
     ),
     icon: null,
     footer: null,
-    width: 700,
+    width: '40%',
     closable: true,
     maskClosable: true,
     content: () => {

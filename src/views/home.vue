@@ -809,7 +809,7 @@ const handleAddressChange = () => {
     ),
     icon: null,
     footer: null,
-    width: 700,
+    width: '40%',
     closable: true,
     maskClosable: true,
     content: () => {

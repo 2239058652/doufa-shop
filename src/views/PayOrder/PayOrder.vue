@@ -390,7 +390,7 @@
     </div>
 
     <!-- 支付密码弹窗 -->
-    <a-modal v-model:open="payOrderOpen" style="width: 35%">
+    <a-modal v-model:open="payOrderOpen" style="width: 32%">
       <template #title>
         <div class="payment-modal-title">
           <span class="payment-modal-title-text">订单付款</span>
