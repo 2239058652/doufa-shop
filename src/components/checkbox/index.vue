@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue: boolean,
-  label?: string,
+  modelValue: boolean
+  label?: string
   round?: boolean
 }>()
 
@@ -49,23 +49,29 @@ const toggleCheck = () => {
 
     &.is-round {
       border-radius: 50%;
+      display: flex; // 添加flex布局
+      align-items: center;
+      justify-content: center;
 
       &.is-checked {
-        border-color: #F83126;
+        border-color: #f83126;
         background-color: white;
 
         .dot {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: #F83126;
+          background-color: #f83126;
+          flex-shrink: 0; // 防止缩放
+          position: relative; // 相对定位
+          display: block; // 确保显示为块级元素
         }
       }
     }
 
     &.is-checked:not(.is-round) {
-      background-color: #F83126;
-      border-color: #F83126;
+      background-color: #f83126;
+      border-color: #f83126;
     }
 
     .checkmark {

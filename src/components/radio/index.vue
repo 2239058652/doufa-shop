@@ -21,8 +21,8 @@ interface Option {
 }
 
 const props = defineProps<{
-  modelValue: string | number,
-  options: Option[],
+  modelValue: string | number
+  options: Option[]
   round?: boolean
 }>()
 
@@ -60,23 +60,29 @@ const handleClick = (value: string | number) => {
 
       &.is-round {
         border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         &.is-checked {
-          border-color: #F83126;
+          border-color: #f83126;
           background-color: white;
 
           .dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: #F83126;
+            background-color: #f83126;
+            flex-shrink: 0;
+            position: relative;
+            display: block;
           }
         }
       }
 
       &.is-checked:not(.is-round) {
-        background-color: #F83126;
-        border-color: #F83126;
+        background-color: #f83126;
+        border-color: #f83126;
         color: white;
       }
     }
