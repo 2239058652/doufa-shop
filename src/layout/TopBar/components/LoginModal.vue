@@ -69,32 +69,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { sendVerify, agreeMents, doLogin, doLoginByPhone } from '@/api/user'
 import { message } from 'ant-design-vue'
 import { debounce } from '@/utils/util' // 引入防抖函数
-
-// 添加防抖的登录处理函数
-const debouncedHandleLogin = debounce((key: string) => {
-  handleLogin(key)
-}, 300)
-
-// 添加键盘事件监听
-const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.key === 'Enter') {
-    debouncedHandleLogin(activeKey.value)
-  }
-}
-
-// 在onMounted中添加监听
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-
-// 在onUnmounted中移除监听
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
 
 const activeKey = ref('1')
 const modalLoginVisible = ref<boolean>(false)
@@ -257,24 +235,6 @@ const handleLoginModalClose = () => {
   })
 }
 
-watch(modalLoginVisible, (newVal) => {
-  if (!newVal) {
-    // 原有的清理代码
-    if (timer.value) {
-      clearInterval(timer.value)
-      timer.value = null
-    }
-    yanzhengma.value = '获取验证码'
-    canClick.value = true
-    activeKey.value = '1'
-
-    // 移除键盘事件监听
-    window.removeEventListener('keydown', handleKeyDown)
-  } else {
-    // modal打开时添加监听
-    window.addEventListener('keydown', handleKeyDown)
-  }
-})
 defineExpose({ setModalInit })
 </script>
 

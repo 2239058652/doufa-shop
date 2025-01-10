@@ -1,7 +1,13 @@
 <template>
   <context-holder />
-  <a-popover trigger="click" v-model:open="photoPopoverVisible" placement="bottom"
-    :overlayStyle="{ paddingTop: '10px' }" destroyTooltipOnHide @openChange="handleOpenChange">
+  <a-popover
+    trigger="click"
+    v-model:open="photoPopoverVisible"
+    placement="bottom"
+    :overlayStyle="{ paddingTop: '10px' }"
+    destroyTooltipOnHide
+    @openChange="handleOpenChange"
+  >
     <template #title>
       <div class="title">
         <div>以图搜款</div>
@@ -11,8 +17,12 @@
     <template #content>
       <div class="content">
         <div class="upload">
-          <a-upload-dragger v-model:fileList="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
-            :beforeUpload="handleUpload">
+          <a-upload-dragger
+            v-model:fileList="fileList"
+            accept=".png,.jpg,.jpeg,.pneg"
+            :max-count="1"
+            :beforeUpload="handleUpload"
+          >
             <div class="drag">
               <img src="../../assets/image/uploadBg.png" alt="" />
               <div>拖拽所需图片至选框内</div>
@@ -21,8 +31,12 @@
           </a-upload-dragger>
         </div>
         <div class="btn">
-          <a-upload v-model:fileList="fileList" accept=".png,.jpg,.jpeg,.pneg" :max-count="1"
-            :beforeUpload="handleUpload">
+          <a-upload
+            v-model:fileList="fileList"
+            accept=".png,.jpg,.jpeg,.pneg"
+            :max-count="1"
+            :beforeUpload="handleUpload"
+          >
             <span>选择文件</span>
           </a-upload>
         </div>
@@ -38,7 +52,6 @@ import { computed, ref, watch } from 'vue'
 import { fetchUploadFile } from '@/api/index'
 import { message } from 'ant-design-vue'
 
-
 const [messageApi, contextHolder] = message.useMessage()
 const emit = defineEmits(['beforeUpload', 'update:open', 'update:fileList'])
 const props = defineProps({
@@ -49,7 +62,7 @@ const props = defineProps({
   open: {
     type: Boolean,
     default: false
-  },
+  }
 })
 
 const fileList = computed({
@@ -65,7 +78,6 @@ const photoPopoverVisible = computed({
 const handleClose = () => {
   photoPopoverVisible.value = false
 }
-
 
 const handleUpload = async (file: any) => {
   const formData = new FormData()
@@ -92,9 +104,7 @@ const handleOpenChange = (visible: any) => {
   if (!visible) {
     fileList.value = []
   }
-
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -140,7 +150,7 @@ const handleOpenChange = (visible: any) => {
     border-radius: 6px;
 
     &:hover {
-      border: 1px dashed #F83126;
+      border: 1px dashed #f83126;
     }
 
     .drag {
@@ -169,7 +179,7 @@ const handleOpenChange = (visible: any) => {
         width: 236px;
         height: 19px;
         font-size: 14px;
-        color: #F83126;
+        color: #f83126;
         line-height: 19px;
       }
     }
@@ -178,7 +188,7 @@ const handleOpenChange = (visible: any) => {
   .btn {
     width: 90px;
     height: 40px;
-    background: #F83126;
+    background: #f83126;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -194,7 +204,7 @@ const handleOpenChange = (visible: any) => {
       width: 60px;
       height: 19px;
       font-size: 14px;
-      color: #FFFFFF;
+      color: #ffffff;
       line-height: 19px;
     }
   }
