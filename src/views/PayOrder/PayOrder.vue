@@ -10,13 +10,25 @@
     <!-- 订单信息, 左右布局，左侧为收货和订单信息，右侧为付款详情 -->
     <div class="oder_info">
       <div class="address_sales_info">
-        <a-form ref="formAddressRef" :label-col="{ span: 3 }" :wrapper-col="{ span: 21 }" labelAlign="left"
-          :model="formState" name="address" autocomplete="off">
+        <a-form
+          ref="formAddressRef"
+          :label-col="{ span: 3 }"
+          :wrapper-col="{ span: 21 }"
+          labelAlign="left"
+          :model="formState"
+          name="address"
+          autocomplete="off"
+        >
           <div class="address_info">
             <div class="address_title">确认收货信息</div>
             <div class="input_textarea">
-              <a-input type="textarea" :auto-size="{ minRows: 1, maxRows: 3 }" v-model:value="textareaVal"
-                :bordered="false" placeholder="粘贴文本，智能识别收货信息">
+              <a-input
+                type="textarea"
+                :auto-size="{ minRows: 1, maxRows: 3 }"
+                v-model:value="textareaVal"
+                :bordered="false"
+                placeholder="粘贴文本，智能识别收货信息"
+              >
                 <template #suffix>
                   <div class="suffix" @click="getResolutionContent">
                     <span>快速识别</span>
@@ -30,27 +42,47 @@
             <div class="form_row">
               <a-row :gutter="16">
                 <a-col :span="8">
-                  <a-form-item label="收货人" name="name" :label-col="{ span: 6 }"
-                    :rules="[{ required: true, message: '请输入收货人名称' }]">
+                  <a-form-item
+                    label="收货人"
+                    name="name"
+                    :label-col="{ span: 6 }"
+                    :rules="[{ required: true, message: '请输入收货人名称' }]"
+                  >
                     <a-input v-model:value="formState.name" placeholder="请输入收货人名称" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="8">
-                  <a-form-item label="联系方式" name="phone" :label-col="{ span: 6 }"
-                    :rules="[{ required: true, message: '请输入收货人联系方式' }]">
+                  <a-form-item
+                    label="联系方式"
+                    name="phone"
+                    :label-col="{ span: 6 }"
+                    :rules="[{ required: true, message: '请输入收货人联系方式' }]"
+                  >
                     <a-input v-model:value="formState.phone" placeholder="请输入收货人联系方式" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="8">
-                  <a-form-item label="收货地区" name="selectedOptions" :label-col="{ span: 6 }"
-                    :rules="[{ required: true, message: '请选择收货地区' }]">
-                    <a-cascader v-model:value="formState.selectedOptions" :options="options" expand-trigger="hover"
-                      placeholder="请选择收货地区" />
+                  <a-form-item
+                    label="收货地区"
+                    name="selectedOptions"
+                    :label-col="{ span: 6 }"
+                    :rules="[{ required: true, message: '请选择收货地区' }]"
+                  >
+                    <a-cascader
+                      v-model:value="formState.selectedOptions"
+                      :options="options"
+                      expand-trigger="hover"
+                      placeholder="请选择收货地区"
+                    />
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
-                  <a-form-item :label-col="{ span: 2 }" label="详细地址" name="textarea"
-                    :rules="[{ required: true, message: '请输入详细地址' }]">
+                  <a-form-item
+                    :label-col="{ span: 2 }"
+                    label="详细地址"
+                    name="textarea"
+                    :rules="[{ required: true, message: '请输入详细地址' }]"
+                  >
                     <a-input v-model:value="formState.textarea" placeholder="请输入详细地址" />
                   </a-form-item>
                 </a-col>
@@ -74,33 +106,31 @@
                     </div>
                   </template>
                   <template v-else-if="column.dataIndex === 'sku'">
-                    <div style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: flex-start;
-                      ">
-                      <span><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk)
-                        }}</span>
-                      <span><span style="color: #999999">尺码：</span>{{ getSize(record.productInfo.attrInfo.suk) }}</span>
+                    <div
+                      style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start"
+                    >
+                      <span
+                        ><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk) }}</span
+                      >
+                      <span
+                        ><span style="color: #999999">尺码：</span>{{ getSize(record.productInfo.attrInfo.suk) }}</span
+                      >
                     </div>
                   </template>
                   <template v-else-if="column.dataIndex === 'xint'">
-                    <a-select style="width: 100%" :options="[
-                      { label: '是', value: '1' },
-                      { label: '否', value: '2' }
-                    ]" v-model:value="record.xint" />
+                    <a-select
+                      style="width: 100%"
+                      :options="[
+                        { label: '是', value: '1' },
+                        { label: '否', value: '2' }
+                      ]"
+                      v-model:value="record.xint"
+                    />
                   </template>
                   <template v-else-if="column.dataIndex === 'price'">
-                    <div style="
-                        height: 22px;
-                        font-weight: 500;
-                        font-size: 16px;
-                        color: #f83126;
-                        line-height: 22px;
-                      ">{{
-                        parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
-                      }}</div>
+                    <div style="height: 22px; font-weight: 500; font-size: 16px; color: #f83126; line-height: 22px">{{
+                      parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
+                    }}</div>
                   </template>
                 </template>
               </a-table>
@@ -116,25 +146,37 @@
                   </a-col>
                   <a-col :span="24">
                     <a-form-item label="卡片" name="username">
-                      <Radio v-model="radioVal" :options="[
-                        { label: '无', value: '1' },
-                        { label: '评价有理', value: '2' }
-                      ]" round />
+                      <Radio
+                        v-model="radioVal"
+                        :options="[
+                          { label: '无', value: '1' },
+                          { label: '评价有理', value: '2' }
+                        ]"
+                        round
+                      />
                     </a-form-item>
                   </a-col>
                   <a-col :span="24">
                     <a-form-item label="选择快递" name="username">
-                      <a-cascader v-model:value="formState.value" :options="options" expand-trigger="hover"
-                        placeholder="请选择" />
+                      <a-cascader
+                        v-model:value="formState.value"
+                        :options="options"
+                        expand-trigger="hover"
+                        placeholder="请选择"
+                      />
                     </a-form-item>
                   </a-col>
                   <a-col :span="24">
                     <a-form-item label="质检" name="username">
-                      <Radio v-model="radioVal" :options="[
-                        { label: '无', value: '1' },
-                        { label: '简单核对（每件0.3）', value: '2' },
-                        { label: '高级质检（每件1.3）', value: '3' }
-                      ]" round />
+                      <Radio
+                        v-model="radioVal"
+                        :options="[
+                          { label: '无', value: '1' },
+                          { label: '简单核对（每件0.3）', value: '2' },
+                          { label: '高级质检（每件1.3）', value: '3' }
+                        ]"
+                        round
+                      />
                     </a-form-item>
                   </a-col>
                   <a-col :span="24">
@@ -147,14 +189,18 @@
                       <template #label>
                         <div class="shouhou">
                           <span>售后处理</span>
-                          <a-popover placement="right" :overlayInnerStyle="{
-                            width: '290px',
-                            height: '120px',
-                            background: '#33384D'
-                          }">
+                          <a-popover
+                            placement="right"
+                            :overlayInnerStyle="{
+                              width: '290px',
+                              height: '120px',
+                              background: '#33384D'
+                            }"
+                          >
                             <img src="../../assets/image/question.png" alt="" />
                             <template #content>
-                              <div style="
+                              <div
+                                style="
                                   width: 263px;
                                   height: 85px;
                                   font-weight: 400;
@@ -164,22 +210,26 @@
                                   text-wrap: wrap;
                                   display: flex;
                                   flex-direction: column;
-                                ">
+                                "
+                              >
                                 <span>新塘售后(仅新塘货品)：</span>
                                 <span>
-                                  若选择需要售后服务，需向代发团队支付2元售后
-                                  费用（平台不收取任何费用）。若不需要售后服
-                                  务，则无需支付该费用；但如果商品出现售后问
-                                  题，平台与代发团队概不负责。</span>
+                                  若选择需要售后服务，需向代发团队支付2元售后 费用（平台不收取任何费用）。若不需要售后服
+                                  务，则无需支付该费用；但如果商品出现售后问 题，平台与代发团队概不负责。</span
+                                >
                               </div>
                             </template>
                           </a-popover>
                         </div>
                       </template>
-                      <Radio v-model="radioVal" :options="[
-                        { label: '需要售后', value: '1' },
-                        { label: '无需售后', value: '2' }
-                      ]" round />
+                      <Radio
+                        v-model="radioVal"
+                        :options="[
+                          { label: '需要售后', value: '1' },
+                          { label: '无需售后', value: '2' }
+                        ]"
+                        round
+                      />
                     </a-form-item>
                   </a-col>
                   <a-col :span="24">
@@ -187,20 +237,25 @@
                       <template #label>
                         <div class="shouhou">
                           <span>货物处理</span>
-                          <a-popover placement="right" :overlayInnerStyle="{
-                            width: '410px',
-                            height: '40px',
-                            background: '#33384D'
-                          }">
+                          <a-popover
+                            placement="right"
+                            :overlayInnerStyle="{
+                              width: '410px',
+                              height: '40px',
+                              background: '#33384D'
+                            }"
+                          >
                             <img src="../../assets/image/question.png" alt="" />
                             <template #content>
-                              <div style="
+                              <div
+                                style="
                                   font-weight: 400;
                                   font-size: 12px;
                                   color: #ffffff;
                                   line-height: 17px;
                                   text-wrap: nowrap;
-                                ">
+                                "
+                              >
                                 <span>未拿到货的商品，自动进行退款处理，目前只对1个订单单个商品的生效</span>
                               </div>
                             </template>
@@ -220,7 +275,9 @@
             </div>
             <div class="xieyi">
               <Checkbox v-model="checkedVal" />
-              <span>当前提交订单，即视为您已充分知悉、理解并同意<span>第三方代发团队服务协议</span>中关于代发服务的介绍。</span>
+              <span
+                >当前提交订单，即视为您已充分知悉、理解并同意<span>第三方代发团队服务协议</span>中关于代发服务的介绍。</span
+              >
             </div>
           </div>
         </a-form>
@@ -255,18 +312,25 @@
           <div class="payment-wrapper">
             <div class="payment-row" @click="selectPayment('1')">
               <img v-if="selectedValue === '1'" class="checkmark" src="../../assets/image/checked.png" alt="" />
-              <img v-else :class="{ 'is-checked': selectedValue === '1' }" src="../../assets/image/nochecked.png"
-                alt="" />
+              <img
+                v-else
+                :class="{ 'is-checked': selectedValue === '1' }"
+                src="../../assets/image/nochecked.png"
+                alt=""
+              />
               <img class="payment-icon" src="../../assets/image/qianbao.png" alt="" />
-              <span class="payment-text">钱包支付
-                <span style="
+              <span class="payment-text"
+                >钱包支付
+                <span
+                  style="
                     width: 186px;
                     height: 20px;
                     font-weight: 400;
                     font-size: 14px;
                     color: #ff5c02;
                     line-height: 20px;
-                  ">
+                  "
+                >
                   （钱包可用余额：¥{{ cashVal }}）
                 </span>
               </span>
@@ -274,24 +338,36 @@
 
             <div class="payment-row" @click="selectPayment('2')">
               <img v-if="selectedValue === '2'" class="checkmark" src="../../assets/image/checked.png" alt="" />
-              <img v-else :class="{ 'is-checked': selectedValue === '2' }" src="../../assets/image/nochecked.png"
-                alt="" />
+              <img
+                v-else
+                :class="{ 'is-checked': selectedValue === '2' }"
+                src="../../assets/image/nochecked.png"
+                alt=""
+              />
               <img class="payment-icon" src="../../assets/image/zhifubao.png" alt="" />
               <span class="payment-text">支付宝</span>
             </div>
 
             <div class="payment-row" @click="selectPayment('3')">
               <img v-if="selectedValue === '3'" class="checkmark" src="../../assets/image/checked.png" alt="" />
-              <img v-else :class="{ 'is-checked': selectedValue === '3' }" src="../../assets/image/nochecked.png"
-                alt="" />
+              <img
+                v-else
+                :class="{ 'is-checked': selectedValue === '3' }"
+                src="../../assets/image/nochecked.png"
+                alt=""
+              />
               <img class="payment-icon" src="../../assets/image/weixin.png" alt="" />
               <span class="payment-text">微信</span>
             </div>
 
             <div class="payment-row" @click="selectPayment('4')">
               <img v-if="selectedValue === '4'" class="checkmark" src="../../assets/image/checked.png" alt="" />
-              <img v-else :class="{ 'is-checked': selectedValue === '4' }" src="../../assets/image/nochecked.png"
-                alt="" />
+              <img
+                v-else
+                :class="{ 'is-checked': selectedValue === '4' }"
+                src="../../assets/image/nochecked.png"
+                alt=""
+              />
               <img class="payment-icon" src="../../assets/image/yunshanfu.png" alt="" />
               <span class="payment-text">云闪付</span>
             </div>
@@ -314,7 +390,7 @@
     </div>
 
     <!-- 支付密码弹窗 -->
-    <a-modal v-model:open="payOrderOpen" width="618px">
+    <a-modal v-model:open="payOrderOpen" style="width: 35%">
       <template #title>
         <div class="payment-modal-title">
           <span class="payment-modal-title-text">订单付款</span>
@@ -327,8 +403,8 @@
 
         <div class="payment-info-container">
           <div class="wallet-info">
-            <div class="wallet-balance">钱包余额：¥3218.76</div>
-            <div class="refresh-button">刷新</div>
+            <div class="wallet-balance">钱包余额：¥{{ cashVal }}</div>
+            <div class="refresh-button" @click="fetchCashInfo">刷新</div>
           </div>
           <div class="order-info">
             <div class="order-count">共2笔订单</div>
@@ -356,12 +432,13 @@ import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
-import { regionData, codeToText } from 'element-china-area-data'
+import { regionData } from 'element-china-area-data'
 import Checkbox from '@/components/checkbox/index.vue'
 import Radio from '@/components/radio/index.vue'
 import AddressParse, { Utils } from 'address-parse'
 import { getUserInfo } from '@/api/user'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+import { debounce } from '@/utils/util'
 
 const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车数据
 
@@ -373,7 +450,7 @@ const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
 
 // 获取订单数据
-onMounted(() => { })
+onMounted(() => {})
 
 const payOrderOpen = ref(false) //订单付款弹窗
 const checkedVal = ref(false) //多选值
@@ -455,14 +532,11 @@ const getSize = (suk: string) => {
 // 计算总价
 const totalPrice = computed(() => {
   return tableData.value
-    .reduce(
-      (total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
-        const price = parseFloat(item.productInfo.attrInfo.price)
-        const quantity = parseFloat(item.cart_num)
-        return total + price * quantity
-      },
-      0
-    )
+    .reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
+      const price = parseFloat(item.productInfo.attrInfo.price)
+      const quantity = parseFloat(item.cart_num)
+      return total + price * quantity
+    }, 0)
     .toFixed(2)
 })
 
@@ -481,11 +555,7 @@ const getResolutionContent = () => {
   } = result
   const resultes = Utils.getAreaByAddress({ province, city, area })
   const [a, b, c] = Utils.getTargetAreaListByCode('province', resultes.code, true)
-  adressValue.value = [
-    a?.code.slice(0, 2) || '',
-    b?.code.slice(0, 4) || '',
-    c?.code.slice(0, 6) || ''
-  ]
+  adressValue.value = [a?.code.slice(0, 2) || '', b?.code.slice(0, 4) || '', c?.code.slice(0, 6) || '']
   formState.name = name
   formState.phone = mobile
   formState.textarea = details
@@ -493,13 +563,13 @@ const getResolutionContent = () => {
 }
 
 // 获取用户信息，得到钱包余额
-const fetchCashInfo = () => {
+const fetchCashInfo = debounce(() => {
   getUserInfo().then((res: any) => {
     if (res.status == 200) {
       cashVal.value = res.data.now_money
     }
   })
-}
+}, 300)
 
 // 立即付款
 const handleSubmit = () => {

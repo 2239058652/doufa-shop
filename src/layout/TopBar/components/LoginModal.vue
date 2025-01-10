@@ -1,13 +1,18 @@
 <template>
   <div ref="createCreative" class="create-creative">
-    <a-modal v-model:open="modalLoginVisible" centered :footer="null" :getContainer="() => createCreative"
-      destroyOnClose :afterClose="handleLoginModalClose">
+    <a-modal
+      v-model:open="modalLoginVisible"
+      centered
+      :footer="null"
+      :getContainer="() => createCreative"
+      destroyOnClose
+      :afterClose="handleLoginModalClose"
+      style="width: 27%"
+    >
       <div class="login-modal">
         <!-- 顶部登录和验证码登录切换部分 -->
         <div class="login-tabs">
-          <div :class="activeKey == '1' ? 'tab-tane-active' : 'tab-tane'" @click="activeKey = '1'">
-            登录
-          </div>
+          <div :class="activeKey == '1' ? 'tab-tane-active' : 'tab-tane'" @click="activeKey = '1'"> 登录 </div>
           <div :class="activeKey == '1' ? 'tab-tane-phone' : 'tab-tane-phone-active'" @click="activeKey = '2'">
             验证码登录
           </div>
@@ -18,17 +23,19 @@
             <!-- 账号密码登录 -->
             <template v-if="activeKey == '1'">
               <a-input class="login-input" placeholder="手机号或用户名" v-model:value="inputData.account" />
-              <a-input-password class="login-input-password" placeholder="密码" v-model:value="inputData.password"
-                autocomplete="off" />
+              <a-input-password
+                class="login-input-password"
+                placeholder="密码"
+                v-model:value="inputData.password"
+                autocomplete="off"
+              />
             </template>
             <!-- 手机验证码登录 -->
             <template v-else>
               <a-input class="login-input" placeholder="手机号" v-model:value="inputData.phone" ref="phoneInputRef" />
               <a-input class="login-input-password" placeholder="验证码" v-model:value="inputData.captcha">
                 <template #suffix>
-                  <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{
-                    yanzhengma
-                  }}</div>
+                  <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{ yanzhengma }}</div>
                 </template>
               </a-input>
             </template>
@@ -40,7 +47,7 @@
         </div>
         <!-- 登录按钮 -->
         <a-button key="submit" type="primary" :loading="loginLoading" @click="handleLogin(activeKey)" class="login-btn">
-          登录
+          <span>登录</span>
         </a-button>
         <!-- 微信图标部分 -->
         <div class="login-wechat">
@@ -48,9 +55,8 @@
         </div>
         <!-- 下面协议说明部分 -->
         <div class="login-xieyi">
-          <div class="xieyi-html">注册登录即代表同意<span @click="viewXieYiModal(agreeMentList[0].data.content)">
-              《抖发用户协议》
-            </span>
+          <div class="xieyi-html"
+            >注册登录即代表同意<span @click="viewXieYiModal(agreeMentList[0].data.content)"> 《抖发用户协议》 </span>
             <span @click="viewXieYiModal(agreeMentList[2].data.content)">《抖发隐私政策》</span>
             <span @click="viewXieYiModal(agreeMentList[1].data.content)">《抖发服务协议》</span>
           </div>
@@ -63,9 +69,32 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, ref, watch } from 'vue'
+import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { sendVerify, agreeMents, doLogin, doLoginByPhone } from '@/api/user'
 import { message } from 'ant-design-vue'
+import { debounce } from '@/utils/util' // 引入防抖函数
+
+// 添加防抖的登录处理函数
+const debouncedHandleLogin = debounce((key: string) => {
+  handleLogin(key)
+}, 300)
+
+// 添加键盘事件监听
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    debouncedHandleLogin(activeKey.value)
+  }
+}
+
+// 在onMounted中添加监听
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+// 在onUnmounted中移除监听
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 
 const activeKey = ref('1')
 const modalLoginVisible = ref<boolean>(false)
@@ -90,15 +119,13 @@ const emits = defineEmits(['hanldeToRegis'])
 
 const setModalInit = (open: boolean) => {
   // 获取协议list
-  Promise.all([agreeMents({ type: 1 }), agreeMents({ type: 2 }), agreeMents({ type: 3 })]).then(
-    (res) => {
-      agreeMentList.value = res
-    }
-  )
+  Promise.all([agreeMents({ type: 1 }), agreeMents({ type: 2 }), agreeMents({ type: 3 })]).then((res) => {
+    agreeMentList.value = res
+  })
   modalLoginVisible.value = open
 }
 // 登录
-const handleLogin = (key: string) => {
+const handleLogin = debounce((key: string) => {
   switch (key) {
     case '1': // 账号密码登录
       if (inputData.account && inputData.password) {
@@ -153,7 +180,7 @@ const handleLogin = (key: string) => {
       }
       break
   }
-}
+}, 200)
 
 // 正则校验手机号
 const phoneReg =
@@ -229,6 +256,25 @@ const handleLoginModalClose = () => {
     inputData[key] = ''
   })
 }
+
+watch(modalLoginVisible, (newVal) => {
+  if (!newVal) {
+    // 原有的清理代码
+    if (timer.value) {
+      clearInterval(timer.value)
+      timer.value = null
+    }
+    yanzhengma.value = '获取验证码'
+    canClick.value = true
+    activeKey.value = '1'
+
+    // 移除键盘事件监听
+    window.removeEventListener('keydown', handleKeyDown)
+  } else {
+    // modal打开时添加监听
+    window.addEventListener('keydown', handleKeyDown)
+  }
+})
 defineExpose({ setModalInit })
 </script>
 
@@ -367,6 +413,9 @@ defineExpose({ setModalInit })
   background: #f83126;
   margin: 0 51px 10px 51px;
   padding: 10px 175px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     background: #fa6f67;

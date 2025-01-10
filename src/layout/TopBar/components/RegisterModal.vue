@@ -7,6 +7,7 @@
       :getContainer="() => createRegisCreative"
       destroyOnClose
       :afterClose="handleRegisModalClose"
+      style="width: 27%"
     >
       <div class="login-modal">
         <!-- 顶部登录和验证码登录切换部分 -->
@@ -16,22 +17,11 @@
         <!-- 输入框部分 -->
         <div class="login-content">
           <a-form>
-            <a-input
-              class="login-input"
-              placeholder="手机号"
-              v-model:value="inputData.account"
-              ref="phoneInputRef"
-            />
-            <a-input
-              class="login-input-password"
-              placeholder="验证码"
-              v-model:value="inputData.captcha"
-            >
+            <a-input class="login-input" placeholder="手机号" v-model:value="inputData.account" ref="phoneInputRef" />
+            <a-input class="login-input-password" placeholder="验证码" v-model:value="inputData.captcha">
               <!-- 获取验证码 -->
               <template #suffix>
-                <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{
-                  yanzhengma
-                }}</div>
+                <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{ yanzhengma }}</div>
               </template>
             </a-input>
             <a-input-password
@@ -49,34 +39,20 @@
           </a-form>
         </div>
         <!-- 注册 -->
-        <a-button
-          key="submit"
-          type="primary"
-          :loading="loginLoading"
-          @click="handleRegister"
-          class="login-btn"
-        >
-          {{ modalTitle }}
+        <a-button key="submit" type="primary" :loading="loginLoading" @click="handleRegister" class="login-btn">
+          <span>{{ modalTitle }}</span>
         </a-button>
         <!-- 下面协议说明部分 -->
         <div class="login-xieyi">
           <div class="xieyi-html"
-            >注册登录即代表同意<span @click="viewXieYiModal(agreeMentList[0].data.content)">
-              《抖发用户协议》
-            </span>
+            >注册登录即代表同意<span @click="viewXieYiModal(agreeMentList[0].data.content)"> 《抖发用户协议》 </span>
             <span @click="viewXieYiModal(agreeMentList[2].data.content)">《抖发隐私政策》</span>
             <span @click="viewXieYiModal(agreeMentList[1].data.content)">《抖发服务协议》</span>
           </div>
         </div>
       </div>
     </a-modal>
-    <a-modal
-      destroyOnClose
-      :closable="false"
-      v-model:open="modalXieYiVisible"
-      :footer="null"
-      width="1000px"
-    >
+    <a-modal destroyOnClose :closable="false" v-model:open="modalXieYiVisible" :footer="null" width="1000px">
       <div class="xieyi-content" v-html="viewAgreeMent"></div>
     </a-modal>
   </div>
@@ -110,11 +86,9 @@ const setRegisModalInit = (open: boolean, type: string) => {
   modalTitle.value = type === 'zhuce' ? '注册' : '重置密码'
 
   // 获取协议list
-  Promise.all([agreeMents({ type: 1 }), agreeMents({ type: 2 }), agreeMents({ type: 3 })]).then(
-    (res) => {
-      agreeMentList.value = res
-    }
-  )
+  Promise.all([agreeMents({ type: 1 }), agreeMents({ type: 2 }), agreeMents({ type: 3 })]).then((res) => {
+    agreeMentList.value = res
+  })
   modalRegisterVisible.value = open
 }
 // 注册 或者 修改密码
@@ -291,7 +265,7 @@ defineExpose({ setRegisModalInit })
   .login-input-password {
     width: 378px;
     height: 46px;
-    margin: 10px 51px 10px 51px; /* 修改这里：把296px改为10px */
+    margin: 10px 51px 10px 51px;
   }
   .hqyzm {
     width: 70px;
@@ -316,6 +290,9 @@ defineExpose({ setRegisModalInit })
   background: #f83126;
   margin: 0 51px 10px 51px;
   padding: 10px 175px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover {
     background: #fa6f67;
   }
