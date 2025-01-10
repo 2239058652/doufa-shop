@@ -24,5 +24,8 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
+  },
+  build: {
+    outDir: process.env.MODE || 'dist'
   }
 })

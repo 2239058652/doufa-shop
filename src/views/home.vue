@@ -18,9 +18,13 @@
       <div class="func-sou">
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
-          <a-input v-model:value="inputVal" :bordered="false"
-            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'" style="width: 100%; height: 100%"
-            @pressEnter="routerToSearch">
+          <a-input
+            v-model:value="inputVal"
+            :bordered="false"
+            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
+            style="width: 100%; height: 100%"
+            @pressEnter="routerToSearch"
+          >
             <template #prefix>
               <div class="func-sou-prefix">
                 <a-select :bordered="false" v-model:value="selectVal" @change="inputVal = ''">
@@ -34,8 +38,11 @@
                 <!-- 以图搜索图标功能 -->
                 <div class="photo-sou">
                   <!-- 以图搜索封装组件 -->
-                  <Popover @beforeUpload="beforeUpload" v-model:fileList="fileList"
-                    v-model:open="photoPopoverVisible" />
+                  <Popover
+                    @beforeUpload="beforeUpload"
+                    v-model:fileList="fileList"
+                    v-model:open="photoPopoverVisible"
+                  />
                 </div>
                 <div class="sousuo-btn" @click="routerToSearch">
                   <span>搜索</span>
@@ -47,8 +54,12 @@
         <!-- 热门搜索标签 -->
         <div class="func-sou-type">
           <div class="hot-type">
-            <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
-              @click="activeIndex = index">
+            <span
+              :class="{ active: activeIndex === index }"
+              v-for="(item, index) in hotSouTypeList"
+              :key="index"
+              @click="activeIndex = index"
+            >
               {{ item }}
             </span>
           </div>
@@ -83,19 +94,30 @@
                 <img src="../assets/image/fenlei.png" alt="" />
               </div>
               <!-- 气泡的title为分类的大分类名称 -->
-              <a-popover :title="item.cate_name" placement="right"
-                :overlayInnerStyle="{ width: '612px', height: '446px' }">
+              <a-popover
+                :title="item.cate_name"
+                placement="right"
+                :overlayInnerStyle="{ width: '612px', height: '446px' }"
+              >
                 <div class="item-right">
                   <!-- 分类的第一行列表 -->
                   <div class="text-line">
-                    <span v-for="(v, index) in item.children.slice(0, 3)" :key="v.id" @click="routerToSearch(v)">
+                    <span
+                      v-for="(v, index) in item.children.slice(0, 3)"
+                      :key="v.id"
+                      @click="routerToSearch(v)"
+                    >
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
                   </div>
                   <!-- 分类的第二行列表 -->
                   <div class="text-line">
-                    <span v-for="(v, index) in item.children.slice(4, 7)" :key="v.id" @click="routerToSearch(v)">
+                    <span
+                      v-for="(v, index) in item.children.slice(4, 7)"
+                      :key="v.id"
+                      @click="routerToSearch(v)"
+                    >
                       {{ v.cate_name }}
                       {{ index !== 2 ? ' ' : '' }}
                     </span>
@@ -105,7 +127,12 @@
                 <template #content>
                   <div class="popover-content">
                     <div class="content-row">
-                      <div v-for="i in item.children" :key="i.id" class="content-item" @click="routerToSearch(i)">
+                      <div
+                        v-for="i in item.children"
+                        :key="i.id"
+                        class="content-item"
+                        @click="routerToSearch(i)"
+                      >
                         {{ i.cate_name }}
                       </div>
                     </div>
@@ -175,24 +202,28 @@
         <div class="r-t">
           <div class="r-t-l">
             <div class="r-t-l-t">
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: flex-start;
                   align-items: center;
                   gap: 8px;
                   margin-top: 20px;
                   margin-left: 13px;
-                ">
+                "
+              >
                 <div class="dfjp">抖发竞拍</div>
                 <div class="yyqp">1元起拍</div>
               </div>
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
                   gap: 29px;
                   margin-top: 22px;
-                ">
+                "
+              >
                 <div class="chuizi"></div>
                 <div class="ljcy">
                   <span>立即参与</span>
@@ -223,15 +254,19 @@
                 <img src="../assets/image/user.png" alt="" />
               </div>
               <div class="user-info">
-                <div style="
+                <div
+                  style="
                     width: 80px;
                     height: 21px;
                     font-size: 16px;
                     color: #333333;
                     line-height: 21px;
                     text-align: left;
-                  ">慢慢家男装</div>
-                <div style="
+                  "
+                  >慢慢家男装</div
+                >
+                <div
+                  style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
@@ -240,7 +275,8 @@
                     line-height: 16px;
                     text-align: left;
                     gap: 12px;
-                  ">
+                  "
+                >
                   <div style="cursor: pointer">切换账号</div>
                   <div class="longin-out" @click="handleOutLogin">退出</div>
                 </div>
@@ -371,7 +407,7 @@
       </div>
       <!-- 热销榜 -->
       <div class="hot-rank-item-rx">
-        <!-- 标题部分 -->
+        <!-- 标题部分保持不变 -->
         <div class="hot-rexiao">
           <div class="rxb-img">
             <span>热销榜</span>
@@ -381,10 +417,24 @@
             <img src="../assets/image/redarrow.png" alt="" />
           </div>
         </div>
-        <!-- 商品总区域部份 要滚动 -->
-        <div class="hot-swiper">
-          <!-- 单个商品区域 -->
-          <div class="hot-swiper-item" v-for="(item, index) in 5" :key="index">
+
+        <!-- 使用Swiper替换原有滚动部分 -->
+        <swiper
+          :modules="[Autoplay]"
+          :direction="'vertical'"
+          :slides-per-view="2"
+          :space-between="10"
+          :loop="true"
+          :speed="1000"
+          :autoplay="{
+            delay: 0,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }"
+          class="hot-swiper"
+        >
+          <!-- 增加数据量使滚动更连贯 -->
+          <swiper-slide v-for="(item, index) in 10" :key="index" class="hot-swiper-item">
             <div class="h-s-i-left">
               <img src="../assets/static/rexiaoimg2.png" alt="" />
             </div>
@@ -394,9 +444,10 @@
               <div>3211人已购买</div>
               <div><span>¥</span>23.20</div>
             </div>
-          </div>
-        </div>
+          </swiper-slide>
+        </swiper>
       </div>
+
       <div class="hot-rank-item-hp">
         <!-- 标题部分 -->
         <div class="hot-hp">
@@ -468,8 +519,12 @@
         </div>
         <!-- 商家列表 -->
         <div class="rx-user">
-          <div v-for="(item, index) in rxsjList" @click="rxsjActiveIndex = index" :key="index"
-            :class="{ active: rxsjActiveIndex === index }">
+          <div
+            v-for="(item, index) in rxsjList"
+            @click="rxsjActiveIndex = index"
+            :key="index"
+            :class="{ active: rxsjActiveIndex === index }"
+          >
             {{ item }}
           </div>
         </div>
@@ -568,7 +623,12 @@
       <a-skeleton :loading="productsList.length === 0" active>
         <!-- 商品列表 -->
         <div class="q-s-content">
-          <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
+          <div
+            class="q-s-item"
+            v-for="item in productsList"
+            :key="item.id"
+            @click="routerToDetail(item)"
+          >
             <div class="img-content">
               <img :src="item.image" alt="" />
             </div>
@@ -602,6 +662,10 @@ import photo2 from '../assets/static/photo1.png'
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
 import './home.scss'
 
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Autoplay } from 'swiper/modules'
+import 'swiper/css'
+
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
 
@@ -624,7 +688,7 @@ const addressList = ref<any>([]) // 地址列表
 const selectAddressVal = ref<string>('全部') // 地址选择
 const fileList = ref([]) // 以图搜索list
 const photoPopoverVisible = ref(false) // 以图搜索弹窗
-const isLoading = ref(false)  // 加载中
+const isLoading = ref(false) // 加载中
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用防抖包装滚动处理函数
 const handleScroll = debounce((e: Event) => {
@@ -636,7 +700,7 @@ const handleScroll = debounce((e: Event) => {
   }
 }, 200) // 200ms的防抖延迟
 onMounted(() => {
-  console.log('import.meta.env', import.meta.env);
+  console.log('import.meta.env', import.meta.env)
 
   const routerView = document.querySelector('.router-view')
   if (routerView) {
@@ -778,15 +842,17 @@ const handleAddressChange = () => {
       return (
         <>
           <div class="address-container">
-            {addressList.value.map((item: { address_name: string }, index: PropertyKey | undefined) => (
-              <div
-                key={index}
-                class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
-                onClick={handleAddressConfirm(item)}
-              >
-                <span>{item.address_name}</span>
-              </div>
-            ))}
+            {addressList.value.map(
+              (item: { address_name: string }, index: PropertyKey | undefined) => (
+                <div
+                  key={index}
+                  class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
+                  onClick={handleAddressConfirm(item)}
+                >
+                  <span>{item.address_name}</span>
+                </div>
+              )
+            )}
           </div>
         </>
       )

@@ -79,7 +79,9 @@
       position: relative;
 
       // 下拉选择框
-      .func-sou-prefix {}
+      .func-sou-prefix {
+        width: 100%;
+      }
 
       .func-sou-suffix {
         display: flex;
@@ -1069,6 +1071,37 @@
     background-size: 100% 100%;
     background-repeat: no-repeat;
     position: relative;
+
+    .hot-swiper {
+      height: 400px; // 设置合适的高度
+
+      .swiper-slide {
+        height: auto;
+      }
+
+      .swiper-wrapper {
+        transition-timing-function: linear !important;
+      }
+
+      .hot-swiper-item {
+        display: flex;
+        padding: 10px;
+
+        .h-s-i-left {
+          width: 100px;
+
+          img {
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .h-s-i-right {
+          flex: 1;
+          padding-left: 10px;
+        }
+      }
+    }
 
     .hot-rexiao {
       width: 100%;

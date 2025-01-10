@@ -44,6 +44,9 @@ importers:
       sass-loader:
         specifier: ^16.0.4
         version: 16.0.4(sass@1.83.0)
+      swiper:
+        specifier: ^11.2.0
+        version: 11.2.0
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.6.3)
@@ -1862,6 +1865,10 @@ packages:
 
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==, tarball: https://registry.npmmirror.com/svg-tags/-/svg-tags-1.0.0.tgz}
+
+  swiper@11.2.0:
+    resolution: {integrity: sha512-rjjAKgDEs+grR2eQshVDCcE4KNPC7CI294nfcbV9gE8WCsLdvOYXDeZKUYevqAZZp8j5hE7kpT3dAGVKFBWlxQ==, tarball: https://registry.npmmirror.com/swiper/-/swiper-11.2.0.tgz}
+    engines: {node: '>= 4.7.0'}
 
   synckit@0.9.2:
     resolution: {integrity: sha512-vrozgXDQwYO72vHjUb/HnFbQx1exDjoKzqx23aXEg2a9VIg2TSFZ8FmeZpTjUCFMYw7mpX4BE2SFu8wI7asYsw==, tarball: https://registry.npmmirror.com/synckit/-/synckit-0.9.2.tgz}
@@ -3817,6 +3824,8 @@ snapshots:
       has-flag: 4.0.0
 
   svg-tags@1.0.0: {}
+
+  swiper@11.2.0: {}
 
   synckit@0.9.2:
     dependencies:
