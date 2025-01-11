@@ -118,7 +118,7 @@ const asyncRoutes: RouteRecordRaw[] = [
         name: 'UserInfo',
         component: () => import('@/views/UserManage/UserInfo/UserInfo.vue'),
         meta: {
-          title: '用户信息',
+          title: '我的抖发',
           requireSidebar: true
         }
       },

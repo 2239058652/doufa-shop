@@ -1,0 +1,112 @@
+.user-info {
+    width: 100%;
+    height: 100%;
+    padding: 35px;
+    position: relative;
+
+    .title {
+        width: 72px;
+        height: 24px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #333333;
+        line-height: 24px;
+        text-align: left;
+        font-style: normal;
+        margin-bottom: 10px;
+    }
+
+    .attr_img {
+        margin-top: 30px;
+
+        img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+    }
+
+    .arr_calss {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 98px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid #E2E3E5;
+
+        span {
+            width: 56px;
+            height: 19px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 19px;
+            cursor: pointer;
+        }
+    }
+
+    .code_cls {
+        width: 57px;
+        height: 19px;
+        font-size: 14px;
+        color: #F83126;
+        line-height: 19px;
+        text-align: left;
+        font-style: normal;
+        text-decoration-line: underline;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .submit_btn {
+        width: 90px;
+        height: 36px;
+        border-radius: 6px;
+        background: #F83126;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        span {
+            width: 29px;
+            height: 19px;
+            font-size: 14px;
+            color: #FFFFFF;
+            line-height: 19px;
+            text-align: right;
+            font-style: normal;
+        }
+    }
+
+    .cancel_btn {
+        width: 90px;
+        height: 36px;
+        border-radius: 6px;
+        background: #E6E6E6;
+        border: 1px solid #E6E6E6;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 15px;
+
+        &:hover {
+            background: #D9D9D9;
+        }
+
+        span {
+            width: 29px;
+            height: 19px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 19px;
+            text-align: right;
+            font-style: normal;
+        }
+    }
+}
