@@ -1,7 +1,7 @@
 .user-info {
     width: 100%;
     height: 100%;
-    padding: 35px;
+    padding: 20px;
     position: relative;
 
     .title {
@@ -108,5 +108,154 @@
             text-align: right;
             font-style: normal;
         }
+    }
+}
+
+.user_arr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.arr_img {
+    img {
+        width: 78px;
+        height: 78px;
+        object-fit: cover;
+    }
+}
+
+
+.user_info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user_nich {
+    width: 72px;
+    height: 24px;
+    font-size: 18px;
+    color: #333333;
+    line-height: 24px;
+    text-align: left;
+}
+
+.user_uid {
+    width: 105px;
+    height: 19px;
+    font-size: 14px;
+    color: #999999;
+    line-height: 19px;
+    text-align: left;
+}
+
+.youhuiquan {
+    width: 306px;
+    height: 126px;
+    border-radius: 8px;
+    background: #FCF3F4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    padding-left: 10px;
+}
+
+.yhq_title {
+    height: 20px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333333;
+    line-height: 20px;
+    text-align: left;
+    font-style: normal;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+
+    span:nth-child(2) {
+        height: 28px;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+    }
+}
+
+.yhq_card {
+    width: 285px;
+    height: 70px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.yhq_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    img {
+        width: 50px;
+        height: 49px;
+        object-fit: cover;
+    }
+
+    .yhq_font {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+
+        div:nth-child(1) {
+            width: 98px;
+            height: 20px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #333333;
+            line-height: 20px;
+            text-align: left;
+            font-style: normal;
+        }
+
+        div:nth-child(2) {
+            width: 93px;
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #F75038;
+            line-height: 20px;
+            text-align: left;
+            font-style: normal;
+        }
+    }
+}
+
+.yhq_btn {
+    width: 65px;
+    height: 26px;
+    border-radius: 4px;
+    background: #F83126;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+        width: 42px;
+        height: 20px;
+        font-weight: 400;
+        font-size: 14px;
+        color: #FFFFFF;
+        line-height: 20px;
     }
 }

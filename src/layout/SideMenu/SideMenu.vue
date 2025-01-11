@@ -1,21 +1,24 @@
 <template>
-  <TopMenu />
-  <div class="side-menu">
-    <a-menu
-      class="layout"
-      v-model:openKeys="openKeys"
-      v-model:selectedKeys="selectedKeys"
-      style="width: 206px"
-      mode="inline"
-      :items="items"
-      @click="handleClick"
-    />
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" v-if="$route.meta.keepAlive" />
-      </keep-alive>
-      <component :is="Component" v-if="!$route.meta.keepAlive" />
-    </router-view>
+  <div class="main">
+    <TopMenu />
+    <div class="side-menu">
+      <a-menu
+        v-model:openKeys="openKeys"
+        v-model:selectedKeys="selectedKeys"
+        style="width: 206px"
+        mode="inline"
+        :items="items"
+        @click="handleClick"
+      />
+      <div class="router-view">
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" v-if="$route.meta.keepAlive" />
+          </keep-alive>
+          <component :is="Component" v-if="!$route.meta.keepAlive" />
+        </router-view>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -112,19 +115,22 @@ watch(
 </script>
 
 <style scoped>
+.main {
+  width: 100%;
+  height: 100%;
+}
 .side-menu {
   display: flex;
   width: 100%;
-  height: calc(100vh - 40px);
-}
-
-.layout {
-  width: 100%;
-  height: 100%;
+  height: calc(100% - 40px);
 }
 
 .router-view {
   flex-grow: 1;
   padding: 20px;
+  overflow-y: auto;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
 }
 </style>

@@ -18,7 +18,7 @@
       </template>
       <div class="r-menu-item">
         <img src="../../assets/image/fixed_waiter.png" />
-        <span>联系我们</span>
+        <span>在线客服</span>
       </div>
     </a-popover>
     <div class="r-menu-item">
@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue'
-onMounted(() => { })
+onMounted(() => {})
 
 // 固定栏返回顶部按钮
 const goTop = () => {
