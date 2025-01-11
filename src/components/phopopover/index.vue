@@ -22,6 +22,7 @@
             accept=".png,.jpg,.jpeg,.pneg"
             :max-count="1"
             :beforeUpload="handleUpload"
+            :showUploadList="false"
           >
             <div class="drag">
               <img src="../../assets/image/uploadBg.png" alt="" />
@@ -36,6 +37,7 @@
             accept=".png,.jpg,.jpeg,.pneg"
             :max-count="1"
             :beforeUpload="handleUpload"
+            :showUploadList="false"
           >
             <span>选择文件</span>
           </a-upload>
