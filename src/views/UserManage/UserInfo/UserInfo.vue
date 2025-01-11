@@ -94,8 +94,41 @@
             {{ option.label }}
           </div>
         </div>
+        <div class="echarts_wh">
+          <div id="main" style="width: 100%; height: 100%"></div>
+        </div>
       </a-card>
-      <a-card style="width: 100%">4</a-card>
+      <!-- 类别销量 -->
+      <a-card class="xltj">
+        <div class="top">
+          <div class="title">类别销量</div>
+          <div class="custom-radio-group">
+            <div
+              v-for="option in options"
+              :key="option.value"
+              class="custom-radio"
+              :class="{ selected: selectedValue === option.value }"
+              @click="handleSelect(option.value)"
+            >
+              {{ option.label }}
+            </div>
+          </div>
+        </div>
+        <div class="adaptive-radio-group">
+          <div
+            v-for="option in options1"
+            :key="option.value"
+            class="adaptive-radio"
+            :class="{ selected: selectedValue1 === option.value }"
+            @click="handleSelect(option.value)"
+          >
+            {{ option.label }}
+          </div>
+        </div>
+        <div class="echarts_wh">
+          <div id="main" style="width: 100%; height: 100%"></div>
+        </div>
+      </a-card>
       <a-card style="width: 100%">5</a-card>
     </a-flex>
 
@@ -171,11 +204,109 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { fetchUploadFile } from '@/api/index'
 import { message } from 'ant-design-vue'
 import srcUrl from '../../../assets/image/touxiang.png'
+import * as echarts from 'echarts'
+
+type EChartsOption = echarts.EChartsOption
+var chartDom
+var myChart: echarts.ECharts
+var option: EChartsOption
+option = {
+  tooltip: {
+    trigger: 'axis',
+    formatter: function (params:any) {
+      return `<div style="color: #666666">${params[0].value}件</div>
+              <div style="color: #F23025">￥998</div>`
+    },
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#6a7985'
+      }
+    }
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: [
+    {
+      type: 'category',
+      boundaryGap: false,
+      data: [
+        '10/2',
+        '10/4',
+        '10/6',
+        '10/8',
+        '10/10',
+        '10/12',
+        '10/14',
+        '10/16',
+        '10/18',
+        '10/20',
+        '10/22',
+        '10/24',
+        '10/26',
+        '10/28',
+        '10/30'
+      ]
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value',
+      min: 0,
+      max: 100
+    }
+  ],
+  series: [
+    {
+      name: '销量',
+      type: 'line',
+      stack: 'Total',
+
+
+      smooth: true,
+      showSymbol: false,
+      areaStyle: {
+        color: '#F23025',
+        opacity: 0.1
+      },
+      lineStyle: {
+        color: '#F23025'
+      },
+      itemStyle: {
+        color: '#F23025'
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [45, 32, 65, 78, 24, 56, 89, 43, 67, 45, 90, 23, 45, 78, 56]
+    }
+  ]
+
+}const chartData = {
+  a: [45, 32, 65, 78, 24, 56, 89, 43, 67, 45, 90, 23, 45, 78, 56],
+  b: [23, 45, 67, 89, 34, 67, 45, 78, 90, 12, 34, 56, 78, 89, 67],
+  c: [78, 56, 34, 12, 45, 78, 90, 23, 45, 67, 89, 34, 56, 78, 90],
+  d: [34, 56, 78, 90, 23, 45, 67, 89, 12, 34, 56, 78, 90, 23, 45]
+}
+
+onMounted(() => {
+  chartDom = document.getElementById('main')!
+  myChart = echarts.init(chartDom)
+  option && myChart.setOption(option)
+  // 添加窗口resize监听
+  window.addEventListener('resize', () => {
+    myChart.resize()
+  })
+})
 
 const [messageApi, contextHolder] = message.useMessage()
 
@@ -212,6 +343,8 @@ const arrSrcUrl = ref(srcUrl)
 const handleSelect = (value: string) => {
   selectedValue.value = value
   selectedValue1.value = value
+  option.series[0].data = chartData[value]
+  myChart.setOption(option)
 }
 
 // 更换头像上传
