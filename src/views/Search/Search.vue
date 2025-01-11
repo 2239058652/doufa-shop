@@ -224,7 +224,7 @@
 </template>
 
 <script setup lang="tsx">
-import { computed, ref, watch } from 'vue'
+import { computed, h, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getAddressRegion, getCategory, getProducts, getCartCount, getSystemAdmin } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
@@ -429,12 +429,16 @@ const handleSearchByInput = debounce(() => {
 // 切换地址
 const handleAddressChange = () => {
   Modal.confirm({
-    title: (
-      <>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span>选择地址</span>
-        </div>
-      </>
+    title: h(
+      'div',
+      {
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }
+      },
+      [h('span', '选择地址')]
     ),
     icon: null,
     footer: null,
@@ -442,20 +446,20 @@ const handleAddressChange = () => {
     closable: true,
     maskClosable: true,
     content: () => {
-      return (
-        <>
-          <div class="address-container">
-            {addressList.value.map((item: { address_name: string }, index: PropertyKey | undefined) => (
-              <div
-                key={index}
-                class={`address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`}
-                onClick={handleAddressConfirm(item)}
-              >
-                <span>{item.address_name}</span>
-              </div>
-            ))}
-          </div>
-        </>
+      return h(
+        'div',
+        { class: 'address-container' },
+        addressList.value.map((item: { address_name: string }, index: any) =>
+          h(
+            'div',
+            {
+              key: index,
+              class: `address-item ${selectAddressVal.value == item.address_name ? 'active' : ''}`,
+              onClick: handleAddressConfirm(item)
+            },
+            [h('span', item.address_name)]
+          )
+        )
       )
     }
   })

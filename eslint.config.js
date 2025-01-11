@@ -15,6 +15,11 @@ export default [
   ...vueTsEslintConfig(),
   skipFormatting,
   {
+    parserOptions: {
+      ecmaFeatures: {
+        'tsx': true,
+      }
+    },
     rules: {
       'vue/script-setup-uses-vars': 'error',
       'vue/no-reserved-component-names': 'off',

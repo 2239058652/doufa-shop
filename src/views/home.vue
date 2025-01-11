@@ -599,7 +599,8 @@
         </div>
         <div>Quality source</div>
       </div>
-      <a-skeleton :loading="productsList.length === 0" active>
+      <a-empty v-if="productsList.length === 0" />
+      <a-skeleton :loading="productsList.length === 0" v-else active>
         <!-- 商品列表 -->
         <div class="q-s-content">
           <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
@@ -663,6 +664,8 @@ const selectAddressVal = ref<string>('全部') // 地址选择
 const fileList = ref([]) // 以图搜索list
 const photoPopoverVisible = ref(false) // 以图搜索弹窗
 const isLoading = ref(false) // 加载中
+const hasNoMore = ref(false) //  m有更多数据
+
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用节流包装滚动处理函数
 const handleScroll = throttle((e: Event) => {
@@ -674,8 +677,6 @@ const handleScroll = throttle((e: Event) => {
   }
 }, 200) // 200ms的节流
 onMounted(() => {
-  console.log('import.meta.env', import.meta.env)
-
   const routerView = document.querySelector('.router-view')
   if (routerView) {
     routerView.addEventListener('scroll', handleScroll)
@@ -743,8 +744,8 @@ const getBannerList = async () => {
 
 // 获取商品列表
 const getProductsList = async () => {
-  // 使用已有的loading变量作为状态控制
-  if (isLoading.value || page.value > 6) {
+  // 检查加载状态和页码限制
+  if (isLoading.value || hasNoMore.value || page.value > 6) {
     return
   }
 
@@ -757,8 +758,31 @@ const getProductsList = async () => {
     })
 
     if (res.status === 200) {
-      productsList.value = [...productsList.value, ...res.data.list]
-      page.value++
+      if (page.value === 1) {
+        productsList.value = res.data.list || []
+        // 只有第一页就为空时才标记没有更多
+        if (!res.data.list || res.data.list.length === 0) {
+          hasNoMore.value = true
+        }
+      } else {
+        // 如果不是第一页且有数据，则追加数据
+        if (res.data.list && res.data.list.length > 0) {
+          productsList.value = [...productsList.value, ...res.data.list]
+        }
+        // 如果中间页没有数据，直接标记加载完成
+        else {
+          hasNoMore.value = true
+        }
+      }
+
+      // 只有获取到数据时才增加页码
+      if (res.data.list && res.data.list.length > 0) {
+        page.value++
+        // 到达第6页后标记没有更多
+        if (page.value > 6) {
+          hasNoMore.value = true
+        }
+      }
     } else {
       messageApi.error(res.msg)
     }
@@ -858,9 +882,12 @@ const getAddressList = () => {
 watch(
   () => selectAddressVal.value,
   () => {
-    productsList.value = []
-    getProductsList()
-    getCategoryList()
+    hasNoMore.value = false // 重置加载完成标记
+    productsList.value = [] // 清空商品列表
+    page.value = 1 // 重置页码
+    isLoading.value = false // 重置加载状态
+    getProductsList() // 重新获取商品列表
+    getCategoryList() // 获取分类列表
   }
 )
 
