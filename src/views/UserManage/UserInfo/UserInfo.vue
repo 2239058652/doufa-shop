@@ -7,11 +7,11 @@
         <a-flex align="center" justify="space-between">
           <div class="user_arr" @click="showUserInfo = true">
             <div class="arr_img">
-              <img src="../../../assets/image/user.png" alt="" />
+              <img :src="formDatas.avatar" alt="" />
             </div>
             <div class="user_info">
-              <div class="user_nich">sky以沫_</div>
-              <div class="user_uid">UID：86868686</div>
+              <div class="user_nich">{{ formDatas.nickname }}</div>
+              <div class="user_uid">UID：{{ formDatas.uid }}</div>
             </div>
           </div>
           <div class="youhuiquan">
@@ -182,13 +182,14 @@
         class="demo-form-inline"
         :rules="rules"
         autocomplete="off"
+        :model="formDatas"
       >
         <a-row :gutter="16">
           <a-col :span="24">
             <a-form-item label="头像">
               <a-flex gap="10px" vertical justify="center" align="center" style="width: 120px; height: auto">
                 <div class="attr_img">
-                  <img :src="arrSrcUrl" alt="头像" />
+                  <img :src="formDatas.avatar" alt="头像" />
                 </div>
                 <div class="arr_calss">
                   <a-upload
@@ -204,24 +205,24 @@
             </a-form-item>
           </a-col>
           <a-col :span="24">
-            <a-form-item label="用户名" name="username">
-              <a-input v-model:value="formData.username" placeholder="用户名" style="width: 30%" autocomplete="off" />
+            <a-form-item label="用户名" name="nickname">
+              <a-input v-model:value="formDatas.nickname" placeholder="用户名" style="width: 30%" autocomplete="off" />
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="UID">
-              <a-input v-model:value="formData.UID" placeholder="UID" style="width: 30%" autocomplete="off" />
+              <a-input v-model:value="formDatas.uid" placeholder="uid" style="width: 30%" autocomplete="off" />
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="用户组">
-              <a-input v-model:value="formData.nameinfo" placeholder="用户组" style="width: 30%" autocomplete="off" />
+              <a-input v-model:value="formDatas.user_type" placeholder="用户组" style="width: 30%" autocomplete="off" />
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="密码" name="code">
               <a-input-password
-                v-model:value="formData.code"
+                v-model:value="formDatas.code"
                 placeholder="密码"
                 :visibility-toggle="false"
                 autocomplete="current-password"
@@ -244,14 +245,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { inject, onMounted, onUnmounted, ref } from 'vue'
+import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { fetchUploadFile } from '@/api/index'
 import { getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
-import srcUrl from '../../../assets/image/touxiang.png'
 import * as echarts from 'echarts'
 import { useRouter } from 'vue-router'
+import { getUserInfo } from '@/api/user'
 
 const router = useRouter()
 const topMenuRef = inject('topMenuRef') as any // 获取退出登录弹窗
@@ -414,7 +415,6 @@ const getProductsList = async () => {
     messageApi.error(res.msg)
   }
 }
-getProductsList()
 
 // 跳转商品详情
 const routerToDetail = (item: any) => {
@@ -450,12 +450,7 @@ const rules: Record<string, Rule[]> = {
   name: [{ required: true, message: 'Please input Activity name', trigger: 'change' }],
   code: [{ required: true, message: 'Please select Activity zone', trigger: 'change' }]
 }
-const formData = ref({
-  username: '黄欢欢',
-  code: '············',
-  UID: '263323432',
-  nameinfo: '普通用户'
-})
+const formDatas = ref<any>({})
 
 const options = [
   { value: 'a', label: '日' },
@@ -473,7 +468,6 @@ const selectedValue = ref('a')
 const selectedValue1 = ref('a')
 
 const fileList = ref([])
-const arrSrcUrl = ref(srcUrl)
 
 const handleSelect = (value: string) => {
   selectedValue.value = value
@@ -489,7 +483,7 @@ const handleUpload = async (file: any) => {
   try {
     const res = await fetchUploadFile(formData)
     if (res.status === 200) {
-      arrSrcUrl.value = res.data.url
+      formDatas.value.avatar = res.data.url
       fileList.value = []
       return false
     } else {
@@ -506,6 +500,28 @@ const handleUpload = async (file: any) => {
 const handleEditCode = async () => {
   topMenuRef.value.handleRegister('chognzhi')
 }
+
+// 用户信息
+const fetchUserInfo = () => {
+  getUserInfo().then((res: any) => {
+    if (res.status == 200) {
+      formDatas.value = res.data
+    }
+  })
+}
+
+// 用户信息弹窗关闭时刷新用户信息
+watch(
+  () => showUserInfo.value,
+  (newVal) => {
+    if (!newVal) {
+      fetchUserInfo()
+    }
+  }
+)
+
+getProductsList() // 获取商品列表
+fetchUserInfo() // 获取用户信息
 </script>
 
 <style scoped src="./UserInfo.scss"></style>

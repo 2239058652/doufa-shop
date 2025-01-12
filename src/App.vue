@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import { onErrorCaptured } from 'vue'
+import { onErrorCaptured, ref } from 'vue'
 
 const locale = zhCN
+const matchVal = ref<any>([])
 
 // 错误处理
 onErrorCaptured((error, instance, info) => {
@@ -18,6 +19,14 @@ function getFirstLevelRoute(route: { matched: string | any[] }) {
     return route
   }
   return route.matched[0]
+
+  if (matchVal.value.path == route.matched[0]?.path) {
+    matchVal.value = route.matched[0]?.path
+    return route.matched[0]
+  } else {
+    matchVal.value = route.matched[0]?.path
+    return route.matched[1]
+  }
 }
 </script>
 
@@ -25,11 +34,17 @@ function getFirstLevelRoute(route: { matched: string | any[] }) {
   <a-config-provider :locale="locale">
     <router-view v-slot="{ Component, route }">
       <keep-alive>
-        <component :is="Component" :key="getFirstLevelRoute(route).name"
-          v-if="getFirstLevelRoute(route).meta.keepAlive" />
+        <component
+          :is="Component"
+          :key="getFirstLevelRoute(route).name"
+          v-if="getFirstLevelRoute(route).meta.keepAlive"
+        />
       </keep-alive>
-      <component :is="Component" :key="getFirstLevelRoute(route).name"
-        v-if="!getFirstLevelRoute(route).meta.keepAlive" />
+      <component
+        :is="Component"
+        :key="getFirstLevelRoute(route).name"
+        v-if="!getFirstLevelRoute(route).meta.keepAlive"
+      />
     </router-view>
   </a-config-provider>
 </template>
