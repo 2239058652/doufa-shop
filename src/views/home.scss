@@ -584,9 +584,11 @@
           margin-left: 10px;
 
           .user-img {
-            width: 48px;
-            height: 48px;
-            object-fit: cover;
+            img {
+              width: 48px;
+              height: 48px;
+              object-fit: cover;
+            }
           }
 
           .user-info {

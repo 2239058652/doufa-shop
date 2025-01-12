@@ -7,7 +7,9 @@
           <div class="menu-bar">
             <div class="menu-content">
               <div class="menu-title">
-                <span>{{ 'hi 你好！' }}</span>
+                <span @click="$router.push('/usermanage/userinfo')"
+                  >hi, {{ userInfo ? userInfo.nickname : ' 你好！' }}</span
+                >
               </div>
               <div class="menu-items">
                 <span class="menu-item" @click="$router.push('/home')">首页</span>
@@ -20,13 +22,13 @@
                   <template #content>
                     <div class="con" style="display: flex; justify-content: space-around; font-size: 14px; color: #333">
                       <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 30px">
-                        <span class="active" style="margin-top: 16px" @click="handleClick('/usermanage')">
+                        <span class="active" style="margin-top: 16px" @click="router.push('/usermanage')">
                           用户中心
                         </span>
-                        <span class="active" style="margin-top: 22px" @click="handleClick('/ordermanage')">
+                        <span class="active" style="margin-top: 22px" @click="router.push('/ordermanage')">
                           订单管理
                         </span>
-                        <span class="active" style="margin-top: 22px" @click="handleClick('/shopsmanage')">
+                        <span class="active" style="margin-top: 22px" @click="router.push('/shopsmanage')">
                           下单管理
                         </span>
                       </div>
@@ -113,9 +115,11 @@ const open = ref<boolean>(false)
 const loading = ref<boolean>(false)
 const addressOpen = ref<boolean>(false)
 const addressList = ref<any>([])
-const token = localStorage.getItem('token')
 const loginModalRef = ref()
 const registerModalRef = ref()
+
+const token = localStorage.getItem('token')
+const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
 
 const [messageApi, contextHolder] = message.useMessage()
 
@@ -141,15 +145,6 @@ const showFooter = computed(() => {
   return route.meta.requireFooter == false ? false : true
 })
 
-const handleClick = (path: string) => {
-  router.push(path)
-  // 只有在用户登录时才允许访问(个人中心)
-  // if (token) {
-  //   router.push(path)
-  // } else {
-  //   messageApi.error('您还未登录，请先登录再访问个人中心！')
-  // }
-}
 // 登录
 const handleLogin = () => {
   loginModalRef.value.setModalInit(true)
@@ -186,6 +181,7 @@ const getAddressList = async () => {
     messageApi.error(res.msg)
   }
 }
+
 provide('loginOut', open)
 provide('loginModalRef', loginModalRef)
 provide('registerModalRef', registerModalRef)

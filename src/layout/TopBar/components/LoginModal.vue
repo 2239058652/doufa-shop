@@ -70,7 +70,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue'
-import { sendVerify, agreeMents, doLogin, doLoginByPhone } from '@/api/user'
+import { sendVerify, agreeMents, doLogin, doLoginByPhone, getUserInfo } from '@/api/user'
 import { message } from 'ant-design-vue'
 import { debounce } from '@/utils/util' // 引入防抖函数
 
@@ -116,7 +116,7 @@ const handleLogin = debounce((key: string) => {
                 localStorage.setItem('token', res.data.token)
                 loginLoading.value = false
                 modalLoginVisible.value = false
-                location.reload()
+                fetchUserInfo()
               }, 200)
             } else {
               message.error('请检查账号密码是否正确')
@@ -141,7 +141,7 @@ const handleLogin = debounce((key: string) => {
               localStorage.setItem('token', res.data.token)
               loginLoading.value = false
               modalLoginVisible.value = false
-              location.reload()
+              fetchUserInfo()
             } else if (res.msg == '请完成注册后再登录') {
               message.error('请完成注册后再登录')
               loginLoading.value = false
@@ -214,6 +214,18 @@ const handleToEditRegister = () => {
 const viewXieYiModal = (view: any) => {
   viewAgreeMent.value = view
   modalXieYiVisible.value = true
+}
+
+// 用户信息, 登录后获取
+const fetchUserInfo = () => {
+  getUserInfo().then((res: any) => {
+    if (res.status == 200) {
+      localStorage.setItem('userInfo', JSON.stringify(res.data))
+      location.reload()
+      return
+    }
+    location.reload()
+  })
 }
 
 watch(modalLoginVisible, (newVal) => {

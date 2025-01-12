@@ -230,7 +230,7 @@
           <div class="r-t-r" v-if="token">
             <div class="r-t-r-user">
               <div class="user-img">
-                <img src="../assets/image/user.png" alt="" />
+                <img :src="token ? userInfo.avatar : '../assets/image/user.png'" alt="" />
               </div>
               <div class="user-info">
                 <div
@@ -242,7 +242,7 @@
                     line-height: 21px;
                     text-align: left;
                   "
-                  >慢慢家男装</div
+                  >{{ userInfo.nickname }}</div
                 >
                 <div
                   style="
@@ -256,7 +256,7 @@
                     gap: 12px;
                   "
                 >
-                  <div style="cursor: pointer">切换账号</div>
+                  <div style="cursor: pointer" @click="handleLogin">切换账号</div>
                   <div class="longin-out" @click="handleOutLogin">退出</div>
                 </div>
               </div>
@@ -657,6 +657,8 @@ const rxsjActiveIndex = ref(0)
 const cartCount = ref(0) // 购物车数量
 const productsList = ref<any>([]) // 商品列表
 const page = ref(1) // 分页
+
+const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
 const token = localStorage.getItem('token')
 
 const addressList = ref<any>([]) // 地址列表
