@@ -18,12 +18,7 @@
                     <img src="../../assets/image/head-bot.png" />
                   </span>
                   <template #content>
-                    <div class="con" style="
-                      display: flex;
-                      justify-content: space-around;
-                      font-size: 14px;
-                      color: #333;
-                    ">
+                    <div class="con" style="display: flex; justify-content: space-around; font-size: 14px; color: #333">
                       <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 30px">
                         <span class="active" style="margin-top: 16px" @click="handleClick('/usermanage')">
                           用户中心
@@ -91,11 +86,17 @@
       <div class="router-view" id="router-view" v-if="showSidebar">
         <router-view v-slot="{ Component, route }">
           <keep-alive>
-            <component :is="Component" :key="getFirstLevelRoute(route).name"
-              v-if="getFirstLevelRoute(route).meta.keepAlive" />
+            <component
+              :is="Component"
+              :key="getFirstLevelRoute(route).name"
+              v-if="getFirstLevelRoute(route).meta.keepAlive"
+            />
           </keep-alive>
-          <component :is="Component" :key="getFirstLevelRoute(route).name"
-            v-if="!getFirstLevelRoute(route).meta.keepAlive" />
+          <component
+            :is="Component"
+            :key="getFirstLevelRoute(route).name"
+            v-if="!getFirstLevelRoute(route).meta.keepAlive"
+          />
         </router-view>
         <Footer v-if="showFooter" />
 
@@ -196,6 +197,10 @@ const getAddressList = async () => {
 provide('loginOut', open)
 provide('loginModalRef', loginModalRef)
 provide('registerModalRef', registerModalRef)
+
+defineExpose({
+  handleRegister // 暴露出去的注册方法
+})
 </script>
 
 <style src="./TopBar.scss" scoped></style>

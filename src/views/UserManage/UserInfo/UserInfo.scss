@@ -419,7 +419,143 @@
             }
         }
     }
+}
 
+// 我的足迹
+.quality-source {
+    padding: 0 11px;
+    background: #FFFFFF;
+    border-radius: 12px;
 
+    .title {
+        height: 24px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #333333;
+        line-height: 24px;
+        text-align: left;
+        font-style: normal;
+        margin-bottom: 24px;
+    }
 
+    .q-s-content {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-column-gap: 2px;
+        grid-row-gap: 20px;
+    }
+
+    .q-s-item {
+        width: 255px;
+        height: 372px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 10px;
+        padding: 1px;
+
+        &:hover {
+            border: 1px solid #ff5c02;
+        }
+
+        .img-content {
+            width: 244px;
+            height: 244px;
+            overflow: hidden;
+            border-radius: 8px;
+
+            img {
+                width: 244px;
+                height: 244px;
+                object-fit: cover;
+
+                &:hover {
+                    transform: scale(1.05);
+                    transition: transform 0.3s ease;
+                }
+            }
+        }
+
+        .store_name {
+            width: 250px;
+            height: 44px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #333333;
+            line-height: 22px;
+            text-align: left;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            white-space: normal;
+            padding-left: 5px;
+        }
+
+        .keyword {
+            width: 250px;
+            height: 19px;
+            font-size: 14px;
+            color: #FF5C02;
+            line-height: 19px;
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-indent: 5px;
+        }
+
+        .price {
+            width: 250px;
+            text-indent: 5px;
+
+            span:nth-child(1) {
+                width: 9px;
+                height: 19px;
+                font-size: 14px;
+                color: #F83126;
+                line-height: 19px;
+                text-align: left;
+            }
+
+            span:nth-child(2) {
+                width: 80px;
+                height: 26px;
+                font-weight: bold;
+                font-size: 20px;
+                color: #F83126;
+                line-height: 26px;
+                text-align: left;
+                margin-left: 4px;
+            }
+
+            span:nth-child(3) {
+                width: 130px;
+                height: 19px;
+                font-size: 14px;
+                color: #999999;
+                line-height: 19px;
+                text-align: left;
+                font-style: normal;
+                margin-left: 4px;
+            }
+        }
+
+    }
+
+    .spin-loading {
+        text-align: center;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        padding: 30px 50px;
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

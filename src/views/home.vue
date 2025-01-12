@@ -176,7 +176,7 @@
         <!-- 底部banner -->
         <div class="m-b">
           <a-skeleton v-if="bannerActiveList.length == 0" active />
-          <div v-for="(x, index) in bannerActiveList" :key="index">
+          <div v-for="(x, index) in bannerActiveList.slice(0, 1)" :key="index">
             <a>
               <img :src="x.image_input" />
             </a>

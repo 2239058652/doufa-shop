@@ -29,7 +29,7 @@
                 </div>
               </div>
               <div class="yhq_btn">
-                <span>去查看</span>
+                <span @click="$router.push('/usermanage/coupon')">去查看</span>
               </div>
             </div>
           </div>
@@ -146,7 +146,30 @@
         </div>
       </a-card>
 
-      <a-card style="width: 100%">5</a-card>
+      <!-- 我的足迹 -->
+      <a-card style="width: 100%; height: auto">
+        <div class="quality-source">
+          <div class="title">我的足迹</div>
+          <a-empty v-if="productsList.length === 0" />
+          <a-skeleton :loading="productsList.length === 0" v-else active>
+            <!-- 商品列表 -->
+            <div class="q-s-content">
+              <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
+                <div class="img-content">
+                  <img :src="item.image" alt="" />
+                </div>
+                <div class="store_name">{{ item.store_name }}</div>
+                <div class="keyword">货号: &nbsp;{{ item.keyword }}</div>
+                <div class="price">
+                  <span>¥</span>
+                  <span>{{ item.price }}</span>
+                  <span>{{ item.sales }}人已购买</span>
+                </div>
+              </div>
+            </div>
+          </a-skeleton>
+        </div>
+      </a-card>
     </a-flex>
 
     <!-- 修改基本信息 -->
@@ -204,7 +227,7 @@
                 autocomplete="current-password"
                 style="width: 30%"
               />
-              <span class="code_cls">更改密码</span>
+              <span class="code_cls" @click="handleEditCode">更改密码</span>
             </a-form-item>
           </a-col>
           <a-form-item noStyle>
@@ -221,12 +244,17 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { inject, onMounted, onUnmounted, ref } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { fetchUploadFile } from '@/api/index'
+import { getProducts } from '@/api/store'
 import { message } from 'ant-design-vue'
 import srcUrl from '../../../assets/image/touxiang.png'
 import * as echarts from 'echarts'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const topMenuRef = inject('topMenuRef') as any // 获取退出登录弹窗
 
 type EChartsOption = echarts.EChartsOption
 var chartDom
@@ -371,6 +399,31 @@ const tableData = ref([
   }
 ])
 
+const productsList = ref<any>([]) // 商品列表
+
+// 获取商品列表
+const getProductsList = async () => {
+  const res = await getProducts({
+    page: 1,
+    limit: 18
+  })
+
+  if (res.status === 200) {
+    productsList.value = res.data.list || []
+  } else {
+    messageApi.error(res.msg)
+  }
+}
+getProductsList()
+
+// 跳转商品详情
+const routerToDetail = (item: any) => {
+  router.push({
+    path: `/merchandis/${item.id}`
+  })
+}
+
+// echarts 自适应
 const handleResize = () => {
   myChart.resize()
   myPieChart.resize()
@@ -447,6 +500,11 @@ const handleUpload = async (file: any) => {
     messageApi.error('上传失败')
     return false
   }
+}
+
+// 更改密码
+const handleEditCode = async () => {
+  topMenuRef.value.handleRegister('chognzhi')
 }
 </script>
 

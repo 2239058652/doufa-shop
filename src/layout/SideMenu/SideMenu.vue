@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <TopMenu />
+    <TopMenu ref="topMenuRef" />
     <div class="side-menu">
       <a-menu
         v-model:openKeys="openKeys"
@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import TopMenu from '../TopBar/TopBar.vue'
-import { reactive, ref, watch } from 'vue'
+import { inject, onMounted, provide, reactive, ref, watch } from 'vue'
 import type { MenuProps, ItemType } from 'ant-design-vue'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -32,6 +32,7 @@ const router = useRouter()
 const route = useRoute()
 const routes = router.options.routes
 const currentRoute = router.currentRoute
+const topMenuRef = ref<any>(null)
 
 // 根据当前路由路径初始化选中的菜单项
 const selectedKeys = ref<string[]>([currentRoute.value.fullPath])
@@ -112,6 +113,8 @@ watch(
   },
   { immediate: true }
 )
+
+provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
 </script>
 
 <style scoped>

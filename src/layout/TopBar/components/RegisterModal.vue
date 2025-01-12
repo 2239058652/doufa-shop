@@ -74,6 +74,8 @@ const timer = ref<any>(null)
 const canClick = ref(true)
 const modalTitle = ref<string>('注册')
 
+const token = localStorage.getItem('token') // token
+
 const inputData = reactive<any>({
   account: '',
   password: '',
@@ -131,6 +133,9 @@ const handleRegister = () => {
             message.success('修改密码成功')
             loginLoading.value = false
             modalRegisterVisible.value = false
+            if (token) {
+              localStorage.removeItem('token')
+            }
           } else {
             message.error(res.msg) //'请检查信息填写是否正确'
             loginLoading.value = false
