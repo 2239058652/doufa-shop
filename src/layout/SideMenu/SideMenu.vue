@@ -5,7 +5,7 @@
       <a-menu
         v-model:openKeys="openKeys"
         v-model:selectedKeys="selectedKeys"
-        style="width: 206px"
+        class="menu"
         mode="inline"
         :items="items"
         @click="handleClick"
@@ -121,22 +121,22 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
 .main {
   width: 100%;
   height: 100%;
-  /* overflow-x: hidden; */
+  // overflow-x: hidden;
 }
 .side-menu {
   display: flex;
   width: 100%;
   height: calc(100% - 40px);
 }
-
+.menu {
+  width: 206px;
+}
 .router-view {
   flex-grow: 1;
-  padding: 20px;
   overflow-y: auto;
-  width: 100%;
   height: auto;
-  margin-bottom: 20px;
 }
+
 /* 添加父级菜单样式 */
 :deep(.ant-menu-submenu-title) {
   font-weight: bold;

@@ -27,12 +27,17 @@
     <!-- 顶部个人店铺信息 -->
     <div class="user-store">
       <div class="store-info">
-        <a-popover placement="bottom" :overlayInnerStyle="{
-          width: '279px',
-          height: 'auto',
-          borderRadius: '12px',
-          padding: '15px',
-        }" :overlayStyle="{ paddingRight: '', paddingTop: '10px' }" :arrow="false">
+        <a-popover
+          placement="bottom"
+          :overlayInnerStyle="{
+            width: '279px',
+            height: 'auto',
+            borderRadius: '12px',
+            padding: '15px'
+          }"
+          :overlayStyle="{ paddingRight: '', paddingTop: '10px' }"
+          :arrow="false"
+        >
           <template #title>
             <div class="store-popover-title">
               <span class="store-name">{{ storeInfo.name }}</span>
@@ -44,7 +49,7 @@
               <div class="popover-item">
                 <span class="item-label">综合评分：</span>
                 <!-- <span class="item-value">{{ storeInfo.rating }}</span> -->
-                <div class="item-value" style="display: flex; align-items: center;">
+                <div class="item-value" style="display: flex; align-items: center">
                   {{ storeInfo.rating }}
                   <div class="star" v-for="(item, index) in 4" :key="index"></div>
                 </div>
@@ -74,9 +79,7 @@
                   <div class="stat-value">{{ storeInfo.outOfStockRate }}</div>
                 </div>
               </div>
-              <div class="enter-store-button" @click="$router.push('/merhome')">
-                进入店铺
-              </div>
+              <div class="enter-store-button" @click="$router.push('/merhome')"> 进入店铺 </div>
             </div>
           </template>
           <div class="user-atrr">
@@ -117,25 +120,38 @@
         <!-- 左侧商品图片列表 -->
         <div class="goods-img">
           <div class="img-slide">
-            <img @mouseover="handleImgMoveOver(item, index)" :class="imgIndex == index ? 'active' : ''" :src="item"
-              alt="" v-for="(item, index) in goodsDetail?.storeInfo?.slider_image" :key="index" />
+            <img
+              @mouseover="handleImgMoveOver(item, index)"
+              :class="imgIndex == index ? 'active' : ''"
+              :src="item"
+              alt=""
+              v-for="(item, index) in goodsDetail?.storeInfo?.slider_image"
+              :key="index"
+            />
           </div>
 
           <!-- 右侧主大图 -->
           <div class="main-img" ref="target">
             <img :src="imageBaseUrl" alt="加载中。。。" />
             <!-- 蒙层小滑块 -->
-            <div class="img-layer" v-show="!isOutside"
-              :style="{ left: `${left}px`, top: `${top}px`, borderRadius: '12px' }">
+            <div
+              class="img-layer"
+              v-show="!isOutside"
+              :style="{ left: `${left}px`, top: `${top}px`, borderRadius: '12px' }"
+            >
             </div>
             <!-- 放大镜大图 -->
-            <div class="img-large" :style="[
-              {
-                backgroundImage: `url(${imageBaseUrl})`,
-                backgroundPositionX: `${positionX}px`,
-                backgroundPositionY: `${positionY}px`
-              }
-            ]" v-show="!isOutside"></div>
+            <div
+              class="img-large"
+              :style="[
+                {
+                  backgroundImage: `url(${imageBaseUrl})`,
+                  backgroundPositionX: `${positionX}px`,
+                  backgroundPositionY: `${positionY}px`
+                }
+              ]"
+              v-show="!isOutside"
+            ></div>
           </div>
         </div>
         <!-- 右侧下单区域 -->
@@ -228,8 +244,13 @@
               <div @click="handleCollect">
                 <span>
                   <img
-                    :src="goodsDetail?.storeInfo?.is_sc == 1 ? `/src/assets/image/redheart.png` : '/src/assets/image/fixed_live.png'"
-                    alt="" />
+                    :src="
+                      goodsDetail?.storeInfo?.is_sc == 1
+                        ? `/src/assets/image/redheart.png`
+                        : '/src/assets/image/fixed_live.png'
+                    "
+                    alt=""
+                  />
                 </span>
                 <span>收藏</span>
               </div>
@@ -288,7 +309,7 @@
           <a-skeleton :loading="!goodsDetail.storeInfo" active>
             <!-- 图片和售价 -->
             <div class="float_top_img_price">
-              <img src="../../assets/static/shangpinbg.png" alt="" />
+              <img :src="imageBaseUrl" alt="" />
               <div>
                 <span>售价：</span>
                 <span>¥{{ goodsDetail?.storeInfo?.price }}</span>
@@ -336,8 +357,13 @@
               <div @click="handleCollect">
                 <span>
                   <img
-                    :src="goodsDetail?.storeInfo?.is_sc == 1 ? `/src/assets/image/redheart.png` : '/src/assets/image/fixed_live.png'"
-                    alt="" />
+                    :src="
+                      goodsDetail?.storeInfo?.is_sc == 1
+                        ? `/src/assets/image/redheart.png`
+                        : '/src/assets/image/fixed_live.png'
+                    "
+                    alt=""
+                  />
                 </span>
                 <span>收藏</span>
               </div>
@@ -360,14 +386,14 @@ import { useClipboard } from '@vueuse/core'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
 import { debounce } from '@/utils/util'
 
-const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车表格数据,存到pinia中
+const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
 const storeInfo = ref({
   name: '慢慢家男装店',
   rating: 4.6,
   phone: '13823234343',
   returnRate: '3%',
-  outOfStockRate: '3%',
+  outOfStockRate: '3%'
 })
 
 // 商品选择信息
@@ -458,7 +484,7 @@ const payOrderNow = () => {
       attrInfo: {
         image: imageBaseUrl.value,
         price: goodsDetail.value?.storeInfo?.price,
-        suk: `${selectedInfo.value.color},${selectedInfo.value.size}`,
+        suk: `${selectedInfo.value.color},${selectedInfo.value.size}`
       }
     },
     cart_num: selectedInfo.value.quantity,
@@ -489,7 +515,11 @@ const hanldeAddToCart = () => {
     return
   }
   // 需要选择的尺码的唯一标识uniqueId  goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique
-  addGoodsToCart({ productId: goodsDetail.value.storeInfo.id, cartNum: selectedInfo.value.quantity, uniqueId: goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique }).then((res: any) => {
+  addGoodsToCart({
+    productId: goodsDetail.value.storeInfo.id,
+    cartNum: selectedInfo.value.quantity,
+    uniqueId: goodsDetail.value.productValue[selectedInfo.value.color + ',' + selectedInfo.value.size].unique
+  }).then((res: any) => {
     if (res.status == 200) {
       messageApi.success('成功加入购物车')
     } else {
@@ -497,7 +527,6 @@ const hanldeAddToCart = () => {
     }
   })
 }
-
 
 // 放大镜相关
 const { elementX, elementY, isOutside } = useMouseInElement(target)
@@ -570,8 +599,8 @@ const handleColorFilter = (item: any) => {
 
 // 处理颜色数据获取到颜色对应的图片
 const getAttrImages = (productArray: any[], attrValue: any[]) => {
-  return attrValue.map(item => {
-    const matchProduct = productArray.find(product => product.suk.startsWith(item.attr))
+  return attrValue.map((item) => {
+    const matchProduct = productArray.find((product) => product.suk.startsWith(item.attr))
     return {
       ...item,
       image: matchProduct ? matchProduct.image : ''
@@ -619,7 +648,7 @@ const routerToSearch = () => {
   router.push({
     path: `/search`,
     query: {
-      keyword: inputVal.value,
+      keyword: inputVal.value
     }
   })
 }
@@ -768,7 +797,7 @@ onMounted(() => {
 .star {
   width: 14px;
   height: 14px;
-  background: #F83126;
+  background: #f83126;
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 </style>

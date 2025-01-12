@@ -1,10 +1,12 @@
 .user-info {
     width: 100%;
     height: 100%;
-    padding: 0 20px;
+    padding: 20px;
     position: relative;
+    overflow-x: hidden;
 }
 
+// 修改个人信息部分
 .info_title {
     width: 72px;
     height: 24px;
@@ -112,6 +114,7 @@
     }
 }
 
+// 个人信息优惠劵
 .user_arr {
     display: flex;
     justify-content: space-between;
@@ -422,10 +425,9 @@
 }
 
 // 我的足迹
-.quality-source {
-    padding: 0 11px;
-    background: #FFFFFF;
-    border-radius: 12px;
+.wdzj {
+    width: 100%;
+    height: auto;
 
     .title {
         height: 24px;
@@ -435,10 +437,10 @@
         line-height: 24px;
         text-align: left;
         font-style: normal;
-        margin-bottom: 24px;
     }
 
-    .q-s-content {
+    .content {
+        width: 100%;
         display: grid;
         grid-template-columns: repeat(6, 1fr);
         grid-template-rows: repeat(3, 1fr);
@@ -446,7 +448,7 @@
         grid-row-gap: 20px;
     }
 
-    .q-s-item {
+    .item {
         width: 255px;
         height: 372px;
         display: flex;
@@ -455,7 +457,7 @@
         align-items: center;
         cursor: pointer;
         border-radius: 10px;
-        padding: 1px;
+        border: 1px dashed transparent;
 
         &:hover {
             border: 1px solid #ff5c02;

@@ -147,14 +147,14 @@
       </a-card>
 
       <!-- 我的足迹 -->
-      <a-card style="width: 100%; height: auto">
-        <div class="quality-source">
+      <a-card style="width: 100%">
+        <div class="wdzj">
           <div class="title">我的足迹</div>
           <a-empty v-if="productsList.length === 0" />
           <a-skeleton :loading="productsList.length === 0" v-else active>
             <!-- 商品列表 -->
-            <div class="q-s-content">
-              <div class="q-s-item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
+            <div class="content">
+              <div class="item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
                 <div class="img-content">
                   <img :src="item.image" alt="" />
                 </div>
@@ -234,8 +234,8 @@
             <span class="submit_btn">
               <span>提交</span>
             </span>
-            <span class="cancel_btn">
-              <span @click="showUserInfo = false">取消</span>
+            <span class="cancel_btn" @click="showUserInfo = false">
+              <span>取消</span>
             </span>
           </a-form-item>
         </a-row>
