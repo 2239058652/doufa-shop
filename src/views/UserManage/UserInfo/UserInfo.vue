@@ -99,7 +99,7 @@
         </div>
       </a-card>
       <!-- 类别销量 -->
-      <a-card class="xltj">
+      <a-card class="lbxl">
         <div class="top">
           <div class="title">类别销量</div>
           <div class="custom-radio-group">
@@ -125,10 +125,27 @@
             {{ option.label }}
           </div>
         </div>
-        <div class="echarts_wh">
-          <div id="main" style="width: 100%; height: 100%"></div>
+        <div class="chart-container">
+          <div class="pie-chart">
+            <div id="pie" style="width: 100%; height: 100%"></div>
+          </div>
+          <div class="data-table">
+            <div class="table-header">
+              <span>种类</span>
+              <span>占比</span>
+              <span>销量(件)</span>
+              <span>利润(元)</span>
+            </div>
+            <div class="table-row" v-for="item in tableData" :key="item.type">
+              <span>{{ item.type }}</span>
+              <span>{{ item.percent }}</span>
+              <span>{{ item.sales }}</span>
+              <span>{{ item.profit }}</span>
+            </div>
+          </div>
         </div>
       </a-card>
+
       <a-card style="width: 100%">5</a-card>
     </a-flex>
 
@@ -204,7 +221,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { fetchUploadFile } from '@/api/index'
 import { message } from 'ant-design-vue'
@@ -213,12 +230,48 @@ import * as echarts from 'echarts'
 
 type EChartsOption = echarts.EChartsOption
 var chartDom
+var chartPieDom
 var myChart: echarts.ECharts
+var myPieChart: echarts.ECharts
 var option: EChartsOption
+var pieOption: EChartsOption
+pieOption = {
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    orient: 'vertical',
+    top: 'center',
+    right: '40%', // 调整右侧距离
+    itemGap: 40, // 图例项之间的间距
+    itemWidth: 10, // 图例标记的宽度
+    itemHeight: 10, // 图例标记的高度
+    textStyle: {
+      fontSize: 14,
+      color: '#666666'
+    }
+  },
+  series: [
+    {
+      type: 'pie',
+      radius: '70%',
+      center: ['25%', '50%'],
+      data: [
+        { value: 1048, name: '男装', itemStyle: { color: '#FFD168' } },
+        { value: 735, name: '女装', itemStyle: { color: '#FD5474' } },
+        { value: 580, name: '童装', itemStyle: { color: '#6198FC' } }
+      ],
+      label: {
+        show: false
+      }
+    }
+  ]
+}
+
 option = {
   tooltip: {
     trigger: 'axis',
-    formatter: function (params:any) {
+    formatter: function (params: any) {
       return `<div style="color: #666666">${params[0].value}件</div>
               <div style="color: #F23025">￥998</div>`
     },
@@ -271,7 +324,6 @@ option = {
       type: 'line',
       stack: 'Total',
 
-
       smooth: true,
       showSymbol: false,
       areaStyle: {
@@ -290,22 +342,52 @@ option = {
       data: [45, 32, 65, 78, 24, 56, 89, 43, 67, 45, 90, 23, 45, 78, 56]
     }
   ]
-
-}const chartData = {
+}
+const chartData = {
   a: [45, 32, 65, 78, 24, 56, 89, 43, 67, 45, 90, 23, 45, 78, 56],
   b: [23, 45, 67, 89, 34, 67, 45, 78, 90, 12, 34, 56, 78, 89, 67],
   c: [78, 56, 34, 12, 45, 78, 90, 23, 45, 67, 89, 34, 56, 78, 90],
   d: [34, 56, 78, 90, 23, 45, 67, 89, 12, 34, 56, 78, 90, 23, 45]
 }
 
+const tableData = ref([
+  {
+    type: '男装',
+    percent: '44.3%',
+    sales: '1048',
+    profit: '52400'
+  },
+  {
+    type: '女装',
+    percent: '31.1%',
+    sales: '735',
+    profit: '36750'
+  },
+  {
+    type: '童装',
+    percent: '24.6%',
+    sales: '580',
+    profit: '29000'
+  }
+])
+
+const handleResize = () => {
+  myChart.resize()
+  myPieChart.resize()
+}
+
 onMounted(() => {
   chartDom = document.getElementById('main')!
+  chartPieDom = document.getElementById('pie')!
   myChart = echarts.init(chartDom)
+  myPieChart = echarts.init(chartPieDom)
   option && myChart.setOption(option)
-  // 添加窗口resize监听
-  window.addEventListener('resize', () => {
-    myChart.resize()
-  })
+  pieOption && myPieChart.setOption(pieOption)
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
 })
 
 const [messageApi, contextHolder] = message.useMessage()
