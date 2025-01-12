@@ -20,15 +20,15 @@
                     <img src="../../assets/image/head-bot.png" />
                   </span>
                   <template #content>
-                    <div class="con" style="display: flex; justify-content: space-around; font-size: 14px; color: #333">
-                      <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 30px">
-                        <span class="active" style="margin-top: 16px" @click="router.push('/usermanage')">
+                    <div class="con">
+                      <div class="order_ctrl" style="display: flex; flex-direction: column; margin: 0 20px">
+                        <span class="active" style="margin-top: 2px" @click="router.push('/usermanage')">
                           用户中心
                         </span>
-                        <span class="active" style="margin-top: 22px" @click="router.push('/ordermanage')">
+                        <span class="active" style="margin-top: 16px" @click="router.push('/ordermanage')">
                           订单管理
                         </span>
-                        <span class="active" style="margin-top: 22px" @click="router.push('/shopsmanage')">
+                        <span class="active" style="margin-top: 16px" @click="router.push('/shopsmanage')">
                           下单管理
                         </span>
                       </div>

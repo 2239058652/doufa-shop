@@ -106,6 +106,23 @@
                         margin-top: 1px;
                     }
                 }
+
+                .con {
+                    display: flex;
+                    justify-content: space-around;
+                    font-size: 14px;
+                    color: #333;
+
+                    .order_ctrl {
+                        .active {
+                            padding: 4px 8px;
+                            cursor: pointer;
+                            border-radius: 4px;
+                        }
+                    }
+
+
+                }
             }
         }
     }
