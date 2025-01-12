@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import TopLayoutBar from '../layout/TopBar/TopBar.vue'
 import SiderMenuBar from '../layout/SideMenu/SideMenu.vue'
-import { message } from 'ant-design-vue'
 
 
 // meta:
@@ -35,17 +34,18 @@ const asyncRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
-        path: 'home',
+        path: '/home',
         name: 'Home',
         component: () => import('@/views/home.vue'),
         meta: {
           title: '首页',
           requireSidebar: false,
-          hidden: true
+          hidden: true,
+          keepAlive: true
         }
       },
       {
-        path: 'search',
+        path: '/search',
         name: 'Search',
         component: () => import('@/views/Search/Search.vue'),
         meta: {
@@ -56,7 +56,7 @@ const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'merhome',
+        path: '/merhome',
         name: 'MerHome',
         component: () => import('@/views/MerHome/MerHome.vue'),
         meta: {
@@ -67,7 +67,7 @@ const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'merchandis/:id',
+        path: '/merchandis/:id',
         name: 'Merchandis',
         component: () => import('@/views/Merchandis/Merchandis.vue'),
         meta: {
@@ -78,7 +78,7 @@ const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'shoppingcart',
+        path: '/shoppingcart',
         name: 'ShoppingCart',
         component: () => import('@/views/ShoppingCart/ShoppingCart.vue'),
         meta: {
@@ -89,7 +89,7 @@ const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'payorder',
+        path: '/payorder',
         name: 'PayOrder',
         component: () => import('@/views/PayOrder/PayOrder.vue'),
         meta: {
@@ -119,7 +119,8 @@ const asyncRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/UserManage/UserInfo/UserInfo.vue'),
         meta: {
           title: '我的抖发',
-          requireSidebar: true
+          requireSidebar: true,
+          keepAlive: true
         }
       },
       {

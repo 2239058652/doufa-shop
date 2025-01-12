@@ -244,6 +244,7 @@
     </a-card>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'

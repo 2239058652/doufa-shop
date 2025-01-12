@@ -11,11 +11,11 @@
         @click="handleClick"
       />
       <div class="router-view">
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component, route }">
           <keep-alive>
-            <component :is="Component" v-if="$route.meta.keepAlive" />
+            <component :is="Component" v-if="getFirstLevelRoute(route).meta.keepAlive" />
           </keep-alive>
-          <component :is="Component" v-if="!$route.meta.keepAlive" />
+          <component :is="Component" v-if="!getFirstLevelRoute(route).meta.keepAlive" />
         </router-view>
       </div>
     </div>
@@ -36,6 +36,14 @@ const topMenuRef = ref<any>(null)
 
 // 根据当前路由路径初始化选中的菜单项
 const selectedKeys = ref<string[]>([currentRoute.value.fullPath])
+
+// 处理二级路由加载俩次问题，二级就返回第二个就不加载俩次
+function getFirstLevelRoute(route: { matched: string | any[] }) {
+  if (!Array.isArray(route.matched) || route.matched.length === 0) {
+    return route
+  }
+  return route.matched[route.matched.length - 1]
+}
 
 // 获取父级路径用于展开菜单
 // const getCurrentParentPath = () => {

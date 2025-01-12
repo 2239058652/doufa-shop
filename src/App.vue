@@ -19,14 +19,6 @@ function getFirstLevelRoute(route: { matched: string | any[] }) {
     return route
   }
   return route.matched[0]
-
-  if (matchVal.value.path == route.matched[0]?.path) {
-    matchVal.value = route.matched[0]?.path
-    return route.matched[0]
-  } else {
-    matchVal.value = route.matched[0]?.path
-    return route.matched[1]
-  }
 }
 </script>
 
@@ -34,17 +26,9 @@ function getFirstLevelRoute(route: { matched: string | any[] }) {
   <a-config-provider :locale="locale">
     <router-view v-slot="{ Component, route }">
       <keep-alive>
-        <component
-          :is="Component"
-          :key="getFirstLevelRoute(route).name"
-          v-if="getFirstLevelRoute(route).meta.keepAlive"
-        />
+        <component :is="Component" v-if="getFirstLevelRoute(route).meta.keepAlive" />
       </keep-alive>
-      <component
-        :is="Component"
-        :key="getFirstLevelRoute(route).name"
-        v-if="!getFirstLevelRoute(route).meta.keepAlive"
-      />
+      <component :is="Component" v-if="!getFirstLevelRoute(route).meta.keepAlive" />
     </router-view>
   </a-config-provider>
 </template>

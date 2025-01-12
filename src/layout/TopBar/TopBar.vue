@@ -86,17 +86,9 @@
       <div class="router-view" id="router-view" v-if="showSidebar">
         <router-view v-slot="{ Component, route }">
           <keep-alive>
-            <component
-              :is="Component"
-              :key="getFirstLevelRoute(route).name"
-              v-if="getFirstLevelRoute(route).meta.keepAlive"
-            />
+            <component :is="Component" v-if="getFirstLevelRoute(route).meta.keepAlive" />
           </keep-alive>
-          <component
-            :is="Component"
-            :key="getFirstLevelRoute(route).name"
-            v-if="!getFirstLevelRoute(route).meta.keepAlive"
-          />
+          <component :is="Component" v-if="!getFirstLevelRoute(route).meta.keepAlive" />
         </router-view>
         <Footer v-if="showFooter" />
 
