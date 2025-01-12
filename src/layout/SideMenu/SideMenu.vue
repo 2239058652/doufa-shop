@@ -32,7 +32,7 @@ const router = useRouter()
 const route = useRoute()
 const routes = router.options.routes
 const currentRoute = router.currentRoute
-const topMenuRef = ref<any>(null)
+const topMenuRef = ref<any>(null) // topmenu组件的方法已经暴露出来了，可以在这个provide给侧边菜单的子组建
 
 // 根据当前路由路径初始化选中的菜单项
 const selectedKeys = ref<string[]>([currentRoute.value.fullPath])

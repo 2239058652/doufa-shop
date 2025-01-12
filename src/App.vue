@@ -1,3 +1,14 @@
+<template>
+  <a-config-provider :locale="locale">
+    <router-view v-slot="{ Component, route }">
+      <keep-alive>
+        <component :is="Component" v-if="getFirstLevelRoute(route).meta.keepAlive" />
+      </keep-alive>
+      <component :is="Component" v-if="!getFirstLevelRoute(route).meta.keepAlive" />
+    </router-view>
+  </a-config-provider>
+</template>
+
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
@@ -21,17 +32,6 @@ function getFirstLevelRoute(route: { matched: string | any[] }) {
   return route.matched[0]
 }
 </script>
-
-<template>
-  <a-config-provider :locale="locale">
-    <router-view v-slot="{ Component, route }">
-      <keep-alive>
-        <component :is="Component" v-if="getFirstLevelRoute(route).meta.keepAlive" />
-      </keep-alive>
-      <component :is="Component" v-if="!getFirstLevelRoute(route).meta.keepAlive" />
-    </router-view>
-  </a-config-provider>
-</template>
 
 <style scoped>
 /* #app {
