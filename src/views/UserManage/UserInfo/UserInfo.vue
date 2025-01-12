@@ -211,12 +211,18 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="UID">
-              <a-input v-model:value="formDatas.uid" placeholder="uid" style="width: 30%" autocomplete="off" />
+              <a-input v-model:value="formDatas.uid" placeholder="uid" style="width: 30%" autocomplete="off" disabled />
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="用户组">
-              <a-input v-model:value="formDatas.user_type" placeholder="用户组" style="width: 30%" autocomplete="off" />
+              <a-input
+                v-model:value="formDatas.user_type"
+                placeholder="用户组"
+                style="width: 30%"
+                autocomplete="off"
+                disabled
+              />
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -232,7 +238,7 @@
             </a-form-item>
           </a-col>
           <a-form-item noStyle>
-            <span class="submit_btn">
+            <span class="submit_btn" @click="handleEditUserInfo">
               <span>提交</span>
             </span>
             <span class="cancel_btn" @click="showUserInfo = false">
@@ -250,10 +256,10 @@ import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { fetchUploadFile } from '@/api/index'
 import { getProducts } from '@/api/store'
+import { getUserInfo, editUser } from '@/api/user'
 import { message } from 'ant-design-vue'
 import * as echarts from 'echarts'
 import { useRouter } from 'vue-router'
-import { getUserInfo } from '@/api/user'
 
 const router = useRouter()
 const topMenuRef = inject('topMenuRef') as any // 获取退出登录弹窗
@@ -451,7 +457,7 @@ const rules: Record<string, Rule[]> = {
   name: [{ required: true, message: 'Please input Activity name', trigger: 'change' }],
   code: [{ required: true, message: 'Please select Activity zone', trigger: 'change' }]
 }
-const formDatas = ref<any>({})
+const formDatas = ref<any>(JSON.parse(localStorage.getItem('userInfo') || '{}'))
 
 const options = [
   { value: 'a', label: '日' },
@@ -507,22 +513,27 @@ const fetchUserInfo = () => {
   getUserInfo().then((res: any) => {
     if (res.status == 200) {
       formDatas.value = res.data
+      localStorage.setItem('userInfo', JSON.stringify(res.data))
     }
   })
 }
 
-// 用户信息弹窗关闭时刷新用户信息
-watch(
-  () => showUserInfo.value,
-  (newVal) => {
-    if (!newVal) {
-      fetchUserInfo()
+// 修改个人信息
+const handleEditUserInfo = () => {
+  editUser({ nickname: formDatas.value.nickname, avatar: formDatas.value.avatar, alipay: formDatas.value.alipay }).then(
+    (res: any) => {
+      if (res.status == 200) {
+        messageApi.success('修改个人信息成功')
+        showUserInfo.value = false
+        fetchUserInfo()
+      } else {
+        messageApi.error(res.msg)
+      }
     }
-  }
-)
+  )
+}
 
 getProductsList() // 获取商品列表
-fetchUserInfo() // 获取用户信息
 </script>
 
 <style scoped src="./UserInfo.scss"></style>

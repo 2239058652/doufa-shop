@@ -55,3 +55,10 @@ export const getUserInfo = () => {
   })
 }
 
+// 修改个人资料
+export const editUser = (data: { avatar: string; nickname: string; alipay?: string; }) => {
+  return request.post({
+    url: '/api/user/edit',
+    data,
+  })
+}
