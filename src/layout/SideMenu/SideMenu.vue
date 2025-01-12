@@ -117,7 +117,7 @@ watch(
 provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .main {
   width: 100%;
   height: 100%;
@@ -136,5 +136,28 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
   width: 100%;
   height: auto;
   margin-bottom: 20px;
+}
+/* 添加父级菜单样式 */
+:deep(.ant-menu-submenu-title) {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333333;
+  line-height: 21px;
+}
+
+:deep(.ant-menu-submenu-selected > .ant-menu-submenu-title) {
+  color: #f83126;
+}
+
+/* 二级菜单颜色修改 */
+
+:deep(.ant-menu-item) {
+  font-size: 14px;
+  color: #666666;
+  line-height: 19px;
+}
+:deep(.ant-menu-item-selected) {
+  background-color: #ffebe9;
+  color: #f83126;
 }
 </style>
