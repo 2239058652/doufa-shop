@@ -15,7 +15,6 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { onErrorCaptured, ref } from 'vue'
 
 const locale = zhCN
-const matchVal = ref<any>([])
 
 // 错误处理
 onErrorCaptured((error, instance, info) => {

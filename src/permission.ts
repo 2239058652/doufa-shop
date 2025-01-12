@@ -4,6 +4,7 @@ import router from './router'
 const whiteList = ['/'] // 不重定向白名单
 
 router.beforeEach((to, from, next) => {
+
   // 检查是否在白名单中
   // if (whiteList.includes(to.path)) {
   //   next()
