@@ -36,7 +36,7 @@
             </a-space>
           </div>
           <a-skeleton :loading="loading" active>
-            <!-- 商品列表 -->
+            <!-- 收藏商品商品列表 -->
             <div class="content">
               <div class="item" v-for="item in productsList" :key="item.id" @click="routerToDetail(item)">
                 <div class="img-content">
@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { getProducts, collectGoodsTo } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
