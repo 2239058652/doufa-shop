@@ -437,6 +437,16 @@ const handleResize = () => {
 }
 
 onMounted(() => {
+  // 消除echarts渲染的警告，不使用default-passive-events
+  window.addEventListener(
+    'touchstart',
+    function (event) {
+      if (event.cancelable) {
+        event.preventDefault()
+      }
+    },
+    { passive: false }
+  )
   chartDom = document.getElementById('main')!
   chartPieDom = document.getElementById('pie')!
   myChart = echarts.init(chartDom)

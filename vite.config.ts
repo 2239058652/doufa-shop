@@ -6,6 +6,9 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // optimizeDeps: {
+  //   include: ['default-passive-events']
+  // },
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
