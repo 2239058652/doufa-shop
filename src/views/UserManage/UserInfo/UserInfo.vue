@@ -437,6 +437,8 @@ const handleResize = () => {
 }
 
 onMounted(() => {
+  chartDom = document.getElementById('main')!
+  chartPieDom = document.getElementById('pie')!
   // 消除echarts渲染的警告，不使用default-passive-events
   window.addEventListener(
     'touchstart',
@@ -447,8 +449,6 @@ onMounted(() => {
     },
     { passive: false }
   )
-  chartDom = document.getElementById('main')!
-  chartPieDom = document.getElementById('pie')!
   myChart = echarts.init(chartDom)
   myPieChart = echarts.init(chartPieDom)
   option && myChart.setOption(option)

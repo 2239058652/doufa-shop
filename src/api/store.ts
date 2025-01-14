@@ -37,6 +37,7 @@ interface IProductParams {
   priceOrder?: string
   star_price?: number | string
   end_price?: number | string
+  ids?: string
 }
 export const getProducts = (params: IProductParams) => {
   return request.get({
@@ -111,7 +112,7 @@ export const addGoodsToCart = (data: { productId: string | number; cartNum: stri
 }
 
 // 收藏商品 status  1 收藏 2 取消收藏
-export const collectGoodsTo = (params: { id: string; status: string | number; }) => {
+export const collectGoodsTo = (params?: { id?: string; status?: string | number; }) => {
   return request.get({
     url: `/api/product/collectGoods`,
     params

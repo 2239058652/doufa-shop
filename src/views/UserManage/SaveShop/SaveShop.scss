@@ -21,13 +21,47 @@
         margin: 0 0 20px 0;
     }
 
+    .funct {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 10px;
+    }
+
+    .btn {
+        width: 98px;
+        height: 34px;
+        border-radius: 6px;
+        border: 1px solid #E2E3E5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: #cbcece 0px 0px 2px 0px;
+        }
+
+        span {
+            width: 57px;
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #333333;
+            line-height: 20px;
+        }
+    }
+
     .content {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: repeat(3, 1fr);
+        // grid-template-rows: repeat(3, 1fr);
         grid-column-gap: 2px;
         grid-row-gap: 20px;
+        grid-auto-rows: auto;
     }
 
     .item {
@@ -40,6 +74,7 @@
         cursor: pointer;
         border-radius: 10px;
         border: 1px dashed transparent;
+        z-index: 1;
 
         &:hover {
             border: 1px solid #ff5c02;
@@ -50,6 +85,7 @@
             height: 244px;
             overflow: hidden;
             border-radius: 8px;
+            position: relative;
 
             img {
                 width: 244px;
@@ -60,6 +96,13 @@
                     transform: scale(1.05);
                     transition: transform 0.3s ease;
                 }
+            }
+
+            .checkbox {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 9;
             }
         }
 
