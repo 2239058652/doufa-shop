@@ -5,11 +5,18 @@ export const fetchUploadFile = (data: FormData) => {
   return request.post({
     url: '/api/upload/image',
     data,
-    headersType: 'multipart/form-data',
+    headersType: 'multipart/form-data'
     // headersType: {
     //   'Content-Type': 'multipart/form-data'
     // }
   })
 }
 
-
+// api/user.ts
+export const exportBalance = (data: { keyWord: string }) => {
+  return request.get({
+    url: '/api/pc/export_balance',
+    params: data,
+    responseType: 'blob' // 设置响应类型为blob
+  })
+}

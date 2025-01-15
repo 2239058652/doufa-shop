@@ -29,17 +29,17 @@
           <a-space :size="100">
             <div class="a-flex">
               <div class="yue">{{ userInfo.now_money }}</div>
-              <div class="jine">账户余额（元）</div>
+              <div class="jine">账户余额(元)</div>
             </div>
             <div class="xiantiao"> </div>
             <div class="a-flex">
-              <div class="yuan">10010.010</div>
-              <div class="jine">申请退款中（元）</div>
+              <div class="yuan">1001</div>
+              <div class="jine">申请退款中(元)</div>
             </div>
             <div class="xiantiao"> </div>
             <div class="a-flex">
-              <div class="yuan">111000.00</div>
-              <div class="jine">提现在途（元）</div>
+              <div class="yuan">1001</div>
+              <div class="jine">提现在途(元)</div>
             </div>
           </a-space>
           <a-space>
@@ -61,7 +61,7 @@
             <img src="../../../assets/image/jrlr.png" alt="jrlr" />
             <div class="a-flex">
               <div class="jrlr">688,642.00</div>
-              <div class="jine">今日利润（元）</div>
+              <div class="jine">今日利润(元)</div>
             </div>
           </div>
           <div class="xiantiao"> </div>
@@ -69,7 +69,7 @@
             <img src="../../../assets/image/ljlr.png" alt="ljlr" />
             <div class="a-flex">
               <div class="ljlr">688,642.00</div>
-              <div class="jine">累计利润（元）</div>
+              <div class="jine">累计利润(元)</div>
             </div>
           </div>
           <div class="xiantiao"> </div>
@@ -77,7 +77,7 @@
             <img src="../../../assets/image/ljtx.png" alt="ljtx" />
             <div class="a-flex">
               <div class="ljtx">688,642.00</div>
-              <div class="jine">累计提现（元）</div>
+              <div class="jine">累计提现(元)</div>
             </div>
           </div>
         </a-flex>
@@ -89,23 +89,32 @@
           <a-row :gutter="16">
             <a-col :span="4">
               <a-form-item label="订单编号">
-                <a-input></a-input>
+                <a-input v-model:value="formData.keyWord" allowClear placeholder="请输入订单编号" />
               </a-form-item>
             </a-col>
             <a-col :span="4">
               <a-form-item label="类型">
-                <a-select></a-select>
+                <a-select v-model:value="formData.BalanceType">
+                  <a-select-option :value="0">全部</a-select-option>
+                  <a-select-option :value="1">支出</a-select-option>
+                  <a-select-option :value="2">收入</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
             <a-col :span="8">
               <a-form-item label="时间">
-                <a-range-picker v-model:value="formData.time" />
+                <a-range-picker
+                  :value="hackValue"
+                  :format="dateFormat"
+                  @change="onChange"
+                  :placeholder="['开始时间', '结束时间']"
+                />
               </a-form-item>
             </a-col>
             <a-col :span="8">
               <a-form-item label="">
                 <a-space :size="24">
-                  <a-button type="primary">查找</a-button>
+                  <a-button type="primary" @click="getProductsList">查找</a-button>
                   <a-button type="primary">导出明细</a-button>
                 </a-space>
               </a-form-item>
@@ -119,7 +128,29 @@
           :pagination="false"
           :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)"
         >
-          <template #bodyCell="{ column }">
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.dataIndex === 'pm'">
+              <span
+                >￥{{
+                  record.pm == 1
+                    ? (Number(record.balance) - Number(record.number)).toFixed(2)
+                    : (Number(record.balance) + Number(record.number)).toFixed(2)
+                }}</span
+              >
+            </template>
+            <template v-if="column.dataIndex === 'balance'">
+              <span>￥{{ record.balance }}</span>
+            </template>
+            <template v-if="column.dataIndex === 'number'">
+              <a-tag color="success" v-if="record.pm == 1">
+                <span>+￥{{ record.number }}</span>
+                <ArrowUpOutlined />
+              </a-tag>
+              <a-tag color="error" v-else>
+                <span>-￥{{ record.number }}</span>
+                <ArrowDownOutlined />
+              </a-tag>
+            </template>
             <template v-if="column.key === 'operate'">
               <a-button type="link">查看订单</a-button>
             </template>
@@ -139,14 +170,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
 import { getUserBalance } from '@/api/user'
+import type { BalanceType } from '@/api/user'
 import { message } from 'ant-design-vue'
+import { Dayjs } from 'dayjs'
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons-vue'
+
+const dateFormat = 'YYYY-MM-DD'
+type RangeValue = [Dayjs, Dayjs]
+const hackValue = ref<RangeValue>()
 
 const [messageApi, contextHolder] = message.useMessage()
-const formData = ref({
-  tiem: ''
+const formData = ref<{
+  startTime: string
+  endTime: string
+  keyWord: string
+  BalanceType: BalanceType
+}>({
+  startTime: '',
+  endTime: '',
+  keyWord: '',
+  BalanceType: 0
 })
 const currentPage = ref(1) // 当前页码
 const pageSize = ref(10) // 每页条数
@@ -154,68 +200,37 @@ const total = ref(0) // 总条数
 
 const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
 
-const dataSource = ref([
-  {
-    key: '1',
-    name: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号'
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号'
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号'
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号'
-  }
-])
+const dataSource = ref([])
 const columns = ref([
   {
     title: '类型',
-    dataIndex: 'name',
     align: 'center',
-    key: 'name'
+    dataIndex: 'title'
   },
   {
     title: '订单编号',
-    dataIndex: 'age',
-    align: 'center',
-    key: 'age'
+    dataIndex: 'order_id',
+    align: 'center'
   },
   {
     title: '原金额',
-    dataIndex: 'address',
-    align: 'center',
-    key: 'address'
+    dataIndex: 'pm',
+    align: 'center'
   },
   {
     title: '金额变动',
-    dataIndex: 'name',
-    align: 'center',
-    key: 'name'
+    dataIndex: 'number',
+    align: 'center'
   },
   {
     title: '剩余金额',
-    dataIndex: 'age',
-    align: 'center',
-    key: 'age'
+    dataIndex: 'balance',
+    align: 'center'
   },
   {
     title: '日期',
-    dataIndex: 'address',
-    align: 'center',
-    key: 'address'
+    dataIndex: 'add_time',
+    align: 'center'
   },
   {
     title: '操作',
@@ -228,12 +243,12 @@ const getProductsList = () => {
   getUserBalance({
     page: currentPage.value,
     limit: pageSize.value,
-    BalanceType: 0,
-    keyWord: '',
-    startTime: '',
-    endTime: ''
+    BalanceType: formData.value.BalanceType,
+    keyWord: formData.value.keyWord,
+    startTime: formData.value.startTime,
+    endTime: formData.value.endTime,
+    keyWordType: 'order'
   }).then((res: any) => {
-    console.log(res)
     if (res.status == 200) {
       dataSource.value = res.data.list
       total.value = res.data.count
@@ -242,6 +257,17 @@ const getProductsList = () => {
     }
   })
 }
+const onChange = (val: RangeValue) => {
+  if (val) {
+    formData.value.startTime = val[0].format(dateFormat)
+    formData.value.endTime = val[1].format(dateFormat)
+  } else {
+    formData.value.startTime = ''
+    formData.value.endTime = ''
+  }
+  hackValue.value = val
+}
+
 getProductsList()
 </script>
 

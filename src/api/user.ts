@@ -4,7 +4,7 @@ import request from '@/axios'
 export const doLogin = (data: { account: string; password: string }) => {
   return request.post({
     url: '/api/login',
-    data,
+    data
   })
 }
 
@@ -12,14 +12,14 @@ export const doLogin = (data: { account: string; password: string }) => {
 export const doLoginByPhone = (data: { phone: string; captcha: string }) => {
   return request.post({
     url: '/api/login/mobile',
-    data,
+    data
   })
 }
 // 登录(手机验证码)
-export const resetRegister = (data: { account: string; captcha: string; password: string; }) => {
+export const resetRegister = (data: { account: string; captcha: string; password: string }) => {
   return request.post({
     url: '/api/register/reset',
-    data,
+    data
   })
 }
 
@@ -28,46 +28,54 @@ type VerifyType = 'register' | 'login' | 'mobile' | 'reset' | 'setpaypwd'
 export const sendVerify = (data: { phone: string; type: VerifyType }) => {
   return request.post({
     url: '/api/register/verify',
-    data,
+    data
   })
 }
 
 // 注册
-export const doRegister = (data: { account: string | number; password: string, captcha: string }) => {
+export const doRegister = (data: { account: string | number; password: string; captcha: string }) => {
   return request.post({
     url: '/api/register',
-    data,
+    data
   })
 }
 
 // 协议
-export const agreeMents = (data: { type: number; }) => {
+export const agreeMents = (data: { type: number }) => {
   return request.get({
     url: '/api/agreement',
-    params: data,
+    params: data
   })
 }
 
 // 用户信息
 export const getUserInfo = () => {
   return request.get({
-    url: '/api/userInfo',
+    url: '/api/userInfo'
   })
 }
 
 // 修改个人资料
-export const editUser = (data: { avatar: string; nickname: string; alipay?: string; }) => {
+export const editUser = (data: { avatar: string; nickname: string; alipay?: string }) => {
   return request.post({
     url: '/api/user/edit',
-    data,
+    data
   })
 }
 
-// 用户余额变动记录  0:全部 1：支持 2：收入
-type BalanceType = 0 | 1 | 2
-export const getUserBalance = (data: { page: number | string; limit: number | string; BalanceType: BalanceType; keyWord: string; startTime: string; endTime: string; }) => {
+// 用户余额变动记录  0:全部 1：支chu 2：收入
+export type BalanceType = 0 | 1 | 2
+export const getUserBalance = (data: {
+  page: number | string;
+  limit: number | string;
+  BalanceType: BalanceType;
+  keyWord: string;
+  startTime: string;
+  endTime: string;
+  keyWordType: string;
+}) => {
   return request.get({
     url: '/api/pc/get_balance_record/0',
-    params: data,
+    params: data
   })
 }

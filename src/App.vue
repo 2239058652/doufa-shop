@@ -11,8 +11,13 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { onErrorCaptured, ref } from 'vue'
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+
+// 设置 dayjs 的语言为中文
+dayjs.locale('zh-cn')
 
 const locale = zhCN
 
