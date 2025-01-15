@@ -62,3 +62,12 @@ export const editUser = (data: { avatar: string; nickname: string; alipay?: stri
     data,
   })
 }
+
+// 用户余额变动记录  0:全部 1：支持 2：收入
+type BalanceType = 0 | 1 | 2
+export const getUserBalance = (data: { page: number | string; limit: number | string; BalanceType: BalanceType; keyWord: string; startTime: string; endTime: string; }) => {
+  return request.get({
+    url: '/api/pc/get_balance_record/0',
+    params: data,
+  })
+}

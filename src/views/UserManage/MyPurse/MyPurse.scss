@@ -1,0 +1,218 @@
+.my-purse {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    background: #F9F9F9;
+}
+
+// 个人信息
+.avatar-card {
+    width: 100%;
+    height: 144px;
+
+    .avatar-space {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+
+        .avatar {
+
+            img {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+            }
+
+            .nickname {
+                height: 24px;
+                font-size: 18px;
+                color: #333333;
+                line-height: 24px;
+            }
+
+            .uid {
+                height: 19px;
+                font-size: 14px;
+                color: #999999;
+                line-height: 19px;
+            }
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+
+            .btn {
+                width: 120px;
+                height: 36px;
+                border-radius: 8px;
+                border: 1px solid #E6E6E6;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                span {
+                    height: 19px;
+                    font-size: 14px;
+                    color: #333333;
+                    line-height: 19px;
+                }
+
+                &:hover {
+                    background-color: #F5F5F5;
+                }
+            }
+
+
+        }
+    }
+
+}
+
+// 账户余额
+.zhye {
+    width: 100%;
+    height: 140px;
+
+    .xiantiao {
+        width: 2px;
+        height: 74px;
+        border: 1px solid #E5E9ED;
+        color: #E5E9ED;
+    }
+
+    .a-flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        .yue {
+            height: 31px;
+            font-weight: bold;
+            font-size: 24px;
+            color: #FBB312;
+            line-height: 31px;
+        }
+
+        .yuan {
+            height: 21px;
+            font-size: 16px;
+            color: #333333;
+            line-height: 21px;
+        }
+
+        .jine {
+            height: 19px;
+            font-size: 14px;
+            color: #666666;
+            line-height: 19px;
+        }
+    }
+
+    .btn {
+        width: 90px;
+        height: 36px;
+        border-radius: 8px;
+        border: 1px solid #E6E6E6;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            width: 29px;
+            height: 19px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 19px;
+        }
+
+        &:hover {
+            box-shadow: #E5E9ED 0px 0px 10px;
+        }
+    }
+
+}
+
+// 今日利润（元）
+.jrlr {
+    width: 100%;
+    height: 140px;
+
+    .xiantiao {
+        width: 2px;
+        height: 74px;
+        border: 1px solid #E5E9ED;
+        color: #E5E9ED;
+    }
+
+    .kuai {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+
+        img {
+            width: 38px;
+            height: 39px;
+            object-fit: cover;
+        }
+
+        .a-flex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            .jrlr {
+                height: 31px;
+                font-weight: bold;
+                font-size: 24px;
+                color: #FBB312;
+                line-height: 31px;
+                text-align: left;
+            }
+
+            .ljlr {
+                height: 31px;
+                font-weight: bold;
+                font-size: 24px;
+                color: #E14D21;
+                line-height: 31px;
+                text-align: left;
+            }
+
+            .ljtx {
+                height: 31px;
+                font-weight: bold;
+                font-size: 24px;
+                color: #1A6DF2;
+                line-height: 31px;
+                text-align: left;
+            }
+
+            .jine {
+                height: 19px;
+                font-size: 14px;
+                color: #666666;
+                line-height: 19px;
+            }
+        }
+    }
+
+}
+
+// 列表记录
+.lbjl {
+    width: 100%;
+    height: auto;
+}
