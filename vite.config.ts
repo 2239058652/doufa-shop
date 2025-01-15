@@ -29,6 +29,12 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: process.env.MODE || 'dist'
+    chunkSizeWarningLimit: 2000,
+    rollupOptions: {
+      output: {
+
+      }
+    },
+    outDir: 'dist'
   }
 })

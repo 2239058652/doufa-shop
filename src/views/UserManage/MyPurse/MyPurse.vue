@@ -115,7 +115,7 @@
               <a-form-item label="">
                 <a-space :size="24">
                   <a-button type="primary" @click="getProductsList">查找</a-button>
-                  <a-button type="primary">导出明细</a-button>
+                  <a-button type="primary" @click="handleExport">导出明细</a-button>
                 </a-space>
               </a-form-item>
             </a-col>
@@ -177,6 +177,7 @@ import type { BalanceType } from '@/api/user'
 import { message } from 'ant-design-vue'
 import { Dayjs } from 'dayjs'
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons-vue'
+import * as XLSX from 'xlsx'
 
 const dateFormat = 'YYYY-MM-DD'
 type RangeValue = [Dayjs, Dayjs]
@@ -266,6 +267,26 @@ const onChange = (val: RangeValue) => {
     formData.value.endTime = ''
   }
   hackValue.value = val
+}
+const handleExport = () => {
+  // 准备导出数据
+  const exportData = dataSource.value.map((item: any) => ({
+    类型: item.type === 1 ? '支出' : '收入',
+    订单编号: item.order_id,
+    原金额: item.pm == 1 ? '+' + item.balance : '-' + item.balance,
+    金额变动: item.number,
+    剩余金额: item.balance,
+    日期: item.add_time
+  }))
+
+  // 创建工作簿
+  const wb = XLSX.utils.book_new()
+  // 创建工作表
+  const ws = XLSX.utils.json_to_sheet(exportData)
+  // 将工作表添加到工作簿
+  XLSX.utils.book_append_sheet(wb, ws, '余额明细')
+  // 导出文件
+  XLSX.writeFile(wb, `余额明细${new Date().getTime()}.xlsx`)
 }
 
 getProductsList()
