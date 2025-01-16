@@ -13,10 +13,10 @@
             </a-flex>
           </a-space>
           <a-space :size="24" class="btn-group">
-            <div class="btn">
+            <div class="btn" @click="handleApply">
               <span>绑定管理</span>
             </div>
-            <div class="btn">
+            <div class="btn" @click="handleSetPayCode">
               <span>设置支付密码</span>
             </div>
           </a-space>
@@ -44,10 +44,10 @@
           </a-space>
           <a-space>
             <a-space :size="24">
-              <div class="btn" style="background: #f7f8fa">
+              <div class="btn" style="background: #f7f8fa" @click="handleRecharge">
                 <span>充值</span>
               </div>
-              <div class="btn">
+              <div class="btn" @click="handleWithdraw">
                 <span>提现</span>
               </div>
             </a-space>
@@ -123,7 +123,43 @@
         </a-form>
         <a-table
           :dataSource="dataSource"
-          :columns="columns"
+          :columns="[
+            {
+              title: '类型',
+              align: 'center',
+              dataIndex: 'title'
+            },
+            {
+              title: '订单编号',
+              dataIndex: 'order_id',
+              align: 'center'
+            },
+            {
+              title: '原金额',
+              dataIndex: 'pm',
+              align: 'center'
+            },
+            {
+              title: '金额变动',
+              dataIndex: 'number',
+              align: 'center'
+            },
+            {
+              title: '剩余金额',
+              dataIndex: 'balance',
+              align: 'center'
+            },
+            {
+              title: '日期',
+              dataIndex: 'add_time',
+              align: 'center'
+            },
+            {
+              title: '操作',
+              key: 'operate',
+              align: 'center'
+            }
+          ]"
           bordered
           :pagination="false"
           :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)"
@@ -152,7 +188,7 @@
               </a-tag>
             </template>
             <template v-if="column.key === 'operate'">
-              <a-button type="link">查看订单</a-button>
+              <a-button v-if="record.type == 'pay_product'" type="link">查看订单</a-button>
             </template>
           </template>
         </a-table>
@@ -169,15 +205,27 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, watch } from 'vue'
+<script lang="tsx" setup>
+import { ref, reactive } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
-import { getUserBalance } from '@/api/user'
+import {
+  getUserBalance,
+  editUser,
+  getUserInfo,
+  sendVerify,
+  setPayPwd,
+  reCharge,
+  applyWithdraw,
+  checkPayPwd
+} from '@/api/user'
 import type { BalanceType } from '@/api/user'
-import { message } from 'ant-design-vue'
+import { message, Modal, Form, FormItem, Input, QRCode } from 'ant-design-vue'
 import { Dayjs } from 'dayjs'
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons-vue'
 import * as XLSX from 'xlsx'
+import { debounce } from '@/utils/util'
+import './MyPurse.scss'
+import zhifubaoImg from '@/assets/image/zhifubao.png'
 
 const dateFormat = 'YYYY-MM-DD'
 type RangeValue = [Dayjs, Dayjs]
@@ -202,43 +250,359 @@ const total = ref(0) // 总条数
 const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
 
 const dataSource = ref([])
-const columns = ref([
-  {
-    title: '类型',
-    align: 'center',
-    dataIndex: 'title'
-  },
-  {
-    title: '订单编号',
-    dataIndex: 'order_id',
-    align: 'center'
-  },
-  {
-    title: '原金额',
-    dataIndex: 'pm',
-    align: 'center'
-  },
-  {
-    title: '金额变动',
-    dataIndex: 'number',
-    align: 'center'
-  },
-  {
-    title: '剩余金额',
-    dataIndex: 'balance',
-    align: 'center'
-  },
-  {
-    title: '日期',
-    dataIndex: 'add_time',
-    align: 'center'
-  },
-  {
-    title: '操作',
-    key: 'operate',
-    align: 'center'
+
+// 绑定管理
+const handleApply = () => {
+  const zhifubao = ref(userInfo.alipay || '')
+  const AInputRef = ref()
+  const debouncedOk = debounce((resolve, reject) => {
+    if (!zhifubao.value) {
+      AInputRef.value.focus()
+      message.error('请输入支付宝账号')
+      reject(new Error('请输入支付宝账号'))
+    } else {
+      editUser({ alipay: zhifubao.value }).then((res: any) => {
+        if (res.status === 200) {
+          message.success('绑定成功')
+          fetchUserInfo()
+        } else {
+          message.error(res.msg)
+        }
+      })
+      setTimeout(() => {
+        resolve(true)
+      }, 1000)
+    }
+  }, 300)
+  Modal.confirm({
+    title: () => (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start', marginBottom: '20px' }}>
+        <span>绑定支付宝账号</span>
+      </div>
+    ),
+    icon: null,
+    width: '30%',
+    closable: true,
+    maskClosable: true,
+    okText: '确认绑定',
+    content: () => {
+      return (
+        <Form>
+          <FormItem label="支付宝账号">
+            <Input ref={AInputRef} v-model={[zhifubao.value, 'value']} allowClear placeholder="请输入支付宝账号" />
+          </FormItem>
+        </Form>
+      )
+    },
+    onOk() {
+      return new Promise((resolve, reject) => {
+        debouncedOk(resolve, reject)
+      })
+    },
+    afterClose() {
+      zhifubao.value = ''
+    }
+  })
+}
+
+// 设置支付密码
+const handleSetPayCode = () => {
+  const yanzhengma = ref('获取验证码')
+  const countdown = ref(60)
+  const password = ref('')
+  const verifyCode = ref('')
+  const codeRef = ref()
+  const verifyCodeRef = ref()
+
+  const startCountdown = () => {
+    const timer = setInterval(() => {
+      countdown.value--
+      yanzhengma.value = `${countdown.value}s`
+      if (countdown.value <= 0) {
+        clearInterval(timer)
+        yanzhengma.value = '获取验证码'
+        countdown.value = 60
+      }
+    }, 1000)
   }
-])
+
+  const debouncedOk = debounce((resolve, reject) => {
+    if (!password.value) {
+      codeRef.value.focus()
+      message.error('请输入密码')
+      return reject(new Error('请输入密码'))
+    }
+    if (!verifyCode.value) {
+      verifyCodeRef.value.focus()
+      message.error('请输入验证码')
+      return reject(new Error('请输入验证码'))
+    }
+
+    setPayPwd({
+      pwd: password.value,
+      code: verifyCode.value
+    }).then((res: any) => {
+      if (res.status === 200) {
+        message.success('设置成功')
+        resolve(true)
+      } else {
+        message.error(res.msg)
+        reject(new Error(res.msg))
+      }
+    })
+  }, 300)
+
+  Modal.confirm({
+    title: () => (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start', marginBottom: '20px' }}>
+        <span>设置支付密码</span>
+      </div>
+    ),
+    icon: null,
+    width: '30%',
+    closable: true,
+    maskClosable: true,
+    content: () => {
+      return (
+        <Form labelAlign={'right'} labelCol={{ span: 3 }} wrapperCol={{ span: 20 }} colon={false}>
+          <input type="text" name="username" autocomplete="username" style="display: none" />
+          <FormItem label="密码">
+            <Input
+              ref={codeRef}
+              v-model={[password.value, 'value']}
+              autocomplete="current-password"
+              type="password"
+              allowClear
+              placeholder="请输入密码"
+            />
+          </FormItem>
+          <FormItem label="手机号">
+            <Input disabled v-model={[userInfo.phone, 'value']} placeholder="请输入手机号" />
+          </FormItem>
+          <FormItem label="验证码">
+            <Input
+              ref={verifyCodeRef}
+              style={{ width: '70%' }}
+              v-model={[verifyCode.value, 'value']}
+              allowClear
+              placeholder="请输入验证码"
+            />
+            <span
+              class="yanzhengma"
+              onClick={() => {
+                if (yanzhengma.value !== '获取验证码') return
+                startCountdown()
+                sendVerify({
+                  phone: userInfo.phone,
+                  type: 'setpaypwd'
+                }).then((res: any) => {
+                  if (res.status === 200) {
+                    message.success('验证码发送成功，请注意接收短信')
+                  } else {
+                    message.error(res.msg)
+                  }
+                })
+              }}
+            >
+              {yanzhengma.value}
+            </span>
+          </FormItem>
+        </Form>
+      )
+    },
+    onOk() {
+      return new Promise((resolve, reject) => {
+        debouncedOk(resolve, reject)
+      })
+    },
+    afterClose() {
+      password.value = ''
+      verifyCode.value = ''
+      yanzhengma.value = '获取验证码'
+    }
+  })
+}
+
+// 充值
+const handleRecharge = () => {
+  const applyUrl = ref('')
+  const applyMoney = ref('')
+  const AInputRef = ref()
+  const debouncedOk = debounce((resolve, reject) => {
+    if (!applyMoney.value) {
+      AInputRef.value.focus()
+      message.error('请输入充值金额')
+      reject(new Error('请输入充值金额'))
+    } else {
+      reCharge({ money: applyMoney.value, returl: 'http://localhost:5468/usermanage/mypurse', type: 2 }).then(
+        (res: any) => {
+          if (res.status === 200) {
+            applyUrl.value = res.data.url
+            message.success('请打开支付宝扫码支付')
+            Modal.info({
+              icon: null,
+              closable: true,
+              footer: null,
+              width: 350,
+              centered: true,
+              content: () => {
+                return (
+                  <div class="arcode">
+                    <QRCode size={300} value={applyUrl.value} />
+                    <div>请使用手机扫码支付</div>
+                    <div>付款成功后请及时刷新页面</div>
+                  </div>
+                )
+              }
+            })
+          } else {
+            message.error(res.msg)
+            reject(new Error(res.msg))
+          }
+        }
+      )
+      setTimeout(() => {
+        resolve(true)
+      }, 1000)
+    }
+  }, 300)
+  Modal.confirm({
+    title: () => (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start', marginBottom: '20px' }}>
+        <span>充值</span>
+      </div>
+    ),
+    icon: null,
+    width: '30%',
+    closable: true,
+    maskClosable: true,
+    okText: '确认充值',
+    content: () => {
+      return (
+        <Form>
+          <FormItem label="充值金额">
+            <Input ref={AInputRef} v-model={[applyMoney.value, 'value']} allowClear placeholder="请输入充值金额" />
+          </FormItem>
+          <FormItem label="支付方式">
+            <div class={'pay-type'}>
+              <img src={zhifubaoImg} alt="zhifubao" />
+              <span>支付宝</span>
+            </div>
+          </FormItem>
+        </Form>
+      )
+    },
+    onOk() {
+      return new Promise((resolve, reject) => {
+        debouncedOk(resolve, reject)
+      })
+    },
+    afterClose() {
+      applyMoney.value = ''
+    }
+  })
+}
+
+// 提现
+const handleWithdraw = () => {
+  const withdrawMoney = ref('')
+  const password = ref('')
+  const moneyRef = ref()
+  const passwordRef = ref()
+
+  const debouncedOk = debounce((resolve, reject) => {
+    if (!withdrawMoney.value) {
+      moneyRef.value.focus()
+      message.error('请输入提现金额')
+      return reject(new Error('请输入提现金额'))
+    }
+    if (!password.value) {
+      passwordRef.value.focus()
+      message.error('请输入支付密码')
+      return reject(new Error('请输入支付密码'))
+    }
+    // if (!userInfo.alipay) {
+    //   message.error('请先绑定支付宝账号')
+    //   return reject(new Error('请先绑定支付宝账号'))
+    // }
+
+    checkPayPwd({ pwd: password.value }).then((res: any) => {
+      if (res.status === 200) {
+        applyWithdraw({
+          money: withdrawMoney.value,
+          alipay: userInfo.alipay
+        }).then((res: any) => {
+          if (res.status === 200) {
+            message.success('提现申请成功')
+            resolve(true)
+          } else {
+            message.error(res.msg)
+            reject(new Error(res.msg))
+          }
+        })
+      } else {
+        message.error(res.msg)
+        reject(new Error(res.msg))
+      }
+    })
+  }, 300)
+
+  Modal.confirm({
+    title: () => (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'start', marginBottom: '20px' }}>
+        <span>提现</span>
+      </div>
+    ),
+    icon: null,
+    width: '40%',
+    closable: true,
+    maskClosable: true,
+    okText: '确认提现',
+    content: () => {
+      return (
+        // labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}
+        <Form labelAlign={'right'} colon={false} class="withdraw-form">
+          <div class="txts">
+            注：最低提现金额为100元，提交提现申请后，将进入人工审核流程。审核通过后，款项将在提交申请起48小时内到账。
+          </div>
+          <FormItem label="提现金额">
+            <Input ref={moneyRef} v-model={[withdrawMoney.value, 'value']} allowClear placeholder="请输入提现金额" />
+            <div class="txsxf">
+              到账金额
+              {withdrawMoney.value && (
+                <span>({(Number(withdrawMoney.value) - Number(withdrawMoney.value) * 0.005).toFixed(2)}元)</span>
+              )}
+              = 提现金额 - 提现金额*0.5%
+            </div>
+          </FormItem>
+          {/* <FormItem label="支付宝账号">
+            <Input v-model={[userInfo.alipay, 'value']} placeholder="支付宝账号" />
+          </FormItem> */}
+          <input type="text" name="username" autocomplete="username" style="display: none" />
+          <FormItem label="支付密码">
+            <Input
+              ref={passwordRef}
+              type="password"
+              autocomplete="current-password"
+              v-model={[password.value, 'value']}
+              allowClear
+              placeholder="请输入支付密码"
+            />
+          </FormItem>
+        </Form>
+      )
+    },
+    onOk() {
+      return new Promise((resolve, reject) => {
+        debouncedOk(resolve, reject)
+      })
+    },
+    afterClose() {
+      withdrawMoney.value = ''
+      password.value = ''
+    }
+  })
+}
 
 const getProductsList = () => {
   getUserBalance({
@@ -289,6 +653,16 @@ const handleExport = () => {
   XLSX.writeFile(wb, `余额明细${new Date().getTime()}.xlsx`)
 }
 
+const fetchUserInfo = () => {
+  getUserInfo().then((res: any) => {
+    if (res.status == 200) {
+      localStorage.setItem('userInfo', JSON.stringify(res.data))
+      location.reload()
+      return
+    }
+    location.reload()
+  })
+}
 getProductsList()
 </script>
 

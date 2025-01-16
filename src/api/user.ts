@@ -32,6 +32,14 @@ export const sendVerify = (data: { phone: string; type: VerifyType }) => {
   })
 }
 
+// 设置交易密码  code：验证码 pwd：密码
+export const setPayPwd = (params: { pwd: string; code: string }) => {
+  return request.get({
+    url: '/api/setPayPassword',
+    params
+  })
+}
+
 // 注册
 export const doRegister = (data: { account: string | number; password: string; captcha: string }) => {
   return request.post({
@@ -56,7 +64,7 @@ export const getUserInfo = () => {
 }
 
 // 修改个人资料
-export const editUser = (data: { avatar: string; nickname: string; alipay?: string }) => {
+export const editUser = (data: { avatar?: string; nickname?: string; alipay?: string | number }) => {
   return request.post({
     url: '/api/user/edit',
     data
@@ -77,5 +85,29 @@ export const getUserBalance = (data: {
   return request.get({
     url: '/api/pc/get_balance_record/0',
     params: data
+  })
+}
+
+// 充值余额   type 1:微信 2：支付宝 3：云闪付 默认支付宝
+export const reCharge = (data: { money: string; returl: string; type: string | number; }) => {
+  return request.post({
+    url: '/api/user/rechargeBalance',
+    data
+  })
+}
+
+// 验证交易密码
+export const checkPayPwd = (params: { pwd: string }) => {
+  return request.get({
+    url: '/api/isPayPassword',
+    params
+  })
+}
+
+// 余额申请提现
+export const applyWithdraw = (params: { money: string; alipay: string }) => {
+  return request.get({
+    url: '/api/addWithdrawal',
+    params
   })
 }

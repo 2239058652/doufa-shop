@@ -18,6 +18,9 @@ export default defineConfig({
   server: {
     // open: true,  // 自动打开浏览器
     port: 5468,
+    hmr: {
+      overlay: false
+    },
     host: '0.0.0.0',
     proxy: {
       '/api': {
@@ -30,11 +33,14 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 2000,
-    rollupOptions: {
-      output: {
-
+    minify: 'terser',
+    outDir: 'dist',
+    sourcemap: 'inline',
+    terserOptions: {
+      compress: {
+        drop_debugger: false,
+        drop_console: false
       }
-    },
-    outDir: 'dist'
-  }
+    }
+  },
 })
