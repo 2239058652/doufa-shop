@@ -206,7 +206,7 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
 import {
   getUserBalance,
