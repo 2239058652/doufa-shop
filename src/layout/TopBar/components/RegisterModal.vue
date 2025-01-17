@@ -16,7 +16,9 @@
         </div>
         <!-- 输入框部分 -->
         <div class="login-content">
-          <a-form>
+          <a-form
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px"
+          >
             <a-input class="login-input" placeholder="手机号" v-model:value="inputData.account" ref="phoneInputRef" />
             <a-input class="login-input-password" placeholder="验证码" v-model:value="inputData.captcha">
               <!-- 获取验证码 -->
@@ -233,7 +235,7 @@ defineExpose({ setRegisModalInit })
 <style scoped lang="scss">
 .login-modal {
   width: 480px;
-  height: 514px;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -261,20 +263,18 @@ defineExpose({ setRegisModalInit })
 }
 .login-content {
   width: 100%;
-  height: 400px;
+  height: 100%;
+  padding: 37px 51px;
   .login-input {
     width: 378px;
     height: 46px;
-    margin: 37px 51px 20px 51px;
   }
   .login-input-password {
     width: 378px;
     height: 46px;
-    margin: 10px 51px 10px 51px;
   }
   .hqyzm {
     width: 70px;
-    height: 20px;
     font-weight: 400;
     font-size: 14px;
     color: #f83126;

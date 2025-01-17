@@ -253,7 +253,8 @@ defineExpose({ setModalInit })
 <style scoped lang="scss">
 .login-modal {
   width: 480px;
-  height: 514px;
+  height: 100%;
+  max-height: 514px;
   display: flex;
   flex-direction: column;
 }
