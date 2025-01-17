@@ -295,7 +295,7 @@
             </div>
             <div class="r-t-r-qb">
               <div class="my-ballet">我的钱包</div>
-              <div class="vie-mybalet">查看我的钱包</div>
+              <div class="vie-mybalet" @click="$router.push('/usermanage/mypurse')">查看我的钱包</div>
             </div>
           </div>
           <!-- 登录前首页个人信息展示 -->

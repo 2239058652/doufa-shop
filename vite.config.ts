@@ -32,14 +32,22 @@ export default defineConfig({
     }
   },
   build: {
-    chunkSizeWarningLimit: 2000,
+    // 分包策略
+    rollupOptions: {
+      output: {
+        manualChunks: {
+        }
+      }
+    },
+    chunkSizeWarningLimit: 4096,
     minify: 'terser',
     outDir: 'dist',
-    sourcemap: 'inline',
+    sourcemap: false,
+    cssCodeSplit: true,
     terserOptions: {
       compress: {
-        drop_debugger: false,
-        drop_console: false
+        drop_debugger: true,
+        drop_console: true
       }
     }
   },
