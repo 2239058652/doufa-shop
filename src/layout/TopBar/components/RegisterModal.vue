@@ -236,6 +236,7 @@ defineExpose({ setRegisModalInit })
 .login-modal {
   width: 480px;
   height: 100%;
+  max-height: 514px;
   display: flex;
   flex-direction: column;
 }

@@ -86,7 +86,8 @@ const asyncRoutes: RouteRecordRaw[] = [
           title: '购物车页面',
           requireSidebar: false,
           hidden: true,
-          requireFooter: false
+          requireFooter: false,
+          requiresAuth: true,
         }
       },
       {
