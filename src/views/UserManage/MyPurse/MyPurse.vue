@@ -667,13 +667,14 @@ const fetchUserInfo = () => {
   getUserInfo().then((res: any) => {
     if (res.status == 200) {
       localStorage.setItem('userInfo', JSON.stringify(res.data))
-      location.reload()
+      // location.reload()
       return
     }
-    location.reload()
+    // location.reload()
   })
 }
 getProductsList()
+fetchUserInfo()
 </script>
 
 <style scoped src="./MyPurse.scss"></style>

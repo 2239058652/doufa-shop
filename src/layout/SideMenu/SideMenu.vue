@@ -137,10 +137,11 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
   height: calc(100% - 40px);
 }
 .menu {
+  // width: 240px;
   width: 206px;
 }
 .router-view {
-  flex-grow: 1;
+  width: 100%;
   overflow-y: auto;
   height: auto;
 }
