@@ -28,7 +28,7 @@
               <div class="price">¥1</div>
               <div class="price_name">商品优惠券</div>
             </a-flex>
-            <a-flex justify="center" align="center" vertical :gap="8">
+            <a-flex align="flex-start" vertical :gap="8">
               <div class="require">满20可用</div>
               <div class="time">2024.12.12 15:57—2025.2.12 15:57</div>
               <div class="type">所有店铺通用券</div>

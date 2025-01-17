@@ -111,3 +111,11 @@ export const applyWithdraw = (params: { money: string; alipay: string }) => {
     params
   })
 }
+
+// 历史登录记录
+export const getLoginHistory = (params: { page: number | string; limit: number | string; }) => {
+  return request.get({
+    url: '/api/userLoginLog',
+    params
+  })
+}

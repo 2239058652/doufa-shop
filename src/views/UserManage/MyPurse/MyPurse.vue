@@ -155,6 +155,16 @@
               align: 'center'
             },
             {
+              title: '售后订单',
+              dataIndex: 'add_time',
+              align: 'center'
+            },
+            {
+              title: '来源订单',
+              dataIndex: 'add_time',
+              align: 'center'
+            },
+            {
               title: '操作',
               key: 'operate',
               align: 'center'
