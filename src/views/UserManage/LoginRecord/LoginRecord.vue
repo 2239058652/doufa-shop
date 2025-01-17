@@ -31,38 +31,40 @@
             </a-form-item>
           </a-row>
         </a-form>
-        <a-table
-          :dataSource="dataSource"
-          :columns="[
-            {
-              title: '登录IP',
-              align: 'center',
-              dataIndex: 'ip'
-            },
-            {
-              title: '登录时间',
-              dataIndex: 'time',
-              align: 'center'
-            }
-          ]"
-          bordered
-          :pagination="false"
-          :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex === 'time'"
-              >{{ dayjs(record.time * 1000).format('YYYY-MM-DD HH:mm:ss') }}
+        <a-skeleton :loading="loading" active>
+          <a-table
+            :dataSource="dataSource"
+            :columns="[
+              {
+                title: '登录IP',
+                align: 'center',
+                dataIndex: 'ip'
+              },
+              {
+                title: '登录时间',
+                dataIndex: 'time',
+                align: 'center'
+              }
+            ]"
+            bordered
+            :pagination="false"
+            :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex === 'time'"
+                >{{ dayjs(record.time * 1000).format('YYYY-MM-DD HH:mm:ss') }}
+              </template>
             </template>
-          </template>
-        </a-table>
-        <Pagination
-          style="display: flex; justify-content: center; margin: 20px 0"
-          v-model:current="currentPage"
-          v-model:pageSize="pageSize"
-          :total="total"
-          @change="getRecordsList"
-          :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
-        />
+          </a-table>
+          <Pagination
+            style="display: flex; justify-content: center; margin: 20px 0"
+            v-model:current="currentPage"
+            v-model:pageSize="pageSize"
+            :total="total"
+            @change="getRecordsList"
+            :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
+          />
+        </a-skeleton>
       </a-card>
     </a-flex>
   </div>
@@ -85,6 +87,7 @@ const hackValue = ref<RangeValue>()
 const currentPage = ref(1) // 当前页码
 const pageSize = ref(10) // 每页条数
 const total = ref(0) // 总条数
+const loading = ref(false) // 加载状态
 
 const formData = ref({
   startTime: '',
@@ -94,6 +97,7 @@ const formData = ref({
 const dataSource = ref([])
 
 const getRecordsList = () => {
+  loading.value = true
   getLoginHistory({
     page: currentPage.value,
     limit: pageSize.value
@@ -101,8 +105,10 @@ const getRecordsList = () => {
     if (res.status == 200) {
       dataSource.value = res.data.list
       total.value = res.data.count
+      loading.value = false
     } else {
       messageApi.error(res.msg)
+      loading.value = false
     }
   })
 }

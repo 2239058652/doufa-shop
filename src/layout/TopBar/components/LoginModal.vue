@@ -28,12 +28,18 @@
                 placeholder="密码"
                 v-model:value="inputData.password"
                 autocomplete="off"
+                @pressEnter="handleLogin(activeKey)"
               />
             </template>
             <!-- 手机验证码登录 -->
             <template v-else>
               <a-input class="login-input" placeholder="手机号" v-model:value="inputData.phone" ref="phoneInputRef" />
-              <a-input class="login-input-password" placeholder="验证码" v-model:value="inputData.captcha">
+              <a-input
+                class="login-input-password"
+                placeholder="验证码"
+                v-model:value="inputData.captcha"
+                @pressEnter="handleLogin(activeKey)"
+              >
                 <template #suffix>
                   <div class="hqyzm" :class="{ disabled: !canClick }" @click="getYanzhengma">{{ yanzhengma }}</div>
                 </template>
