@@ -65,7 +65,7 @@
         </a-modal>
 
         <!-- 退货地址 -->
-        <a-modal v-model:open="addressOpen" title="退货地址" width="1000px">
+        <a-modal v-model:open="addressOpen" title="退货地址" width="55%">
           <div class="return_address">
             <div v-for="(item, index) in addressList" :key="index" class="dialog_wrap">
               <div class="dialog_title_wrap">{{ item.address_name }}仓-{{ item.real_name }}</div>
