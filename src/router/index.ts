@@ -8,7 +8,7 @@ import SiderMenuBar from '../layout/SideMenu/SideMenu.vue'
 //   keepAlive: true,  // 是否需要缓存
 //   title: '购物车页面',  // 标题必须设置
 //   requireSidebar: false,  // 是否需要侧边栏菜单
-//   hidden: true,
+//   hidden: true,           // 是否需要隐藏
 //   requireFooter: false  // 不需要底部设置为 false,默认为true
 //   requiresAuth: true,  // 是否需要登录
 
@@ -29,10 +29,6 @@ const asyncRoutes: RouteRecordRaw[] = [
     path: '/',
     redirect: '/home',
     component: TopLayoutBar,
-    meta: {
-      title: '顶部菜单',
-      hidden: true
-    },
     children: [
       {
         path: '/home',
@@ -41,7 +37,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '首页',
           requireSidebar: false,
-          hidden: true,
           keepAlive: false
         }
       },
@@ -52,7 +47,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '商品搜索页',
           requireSidebar: false,
-          hidden: true,
           keepAlive: false
         }
       },
@@ -63,7 +57,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '商品首页',
           requireSidebar: false,
-          hidden: true,
           requireFooter: false
         }
       },
@@ -74,7 +67,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '商品详情页',
           requireSidebar: false,
-          hidden: true,
           keepAlive: false
         }
       },
@@ -85,7 +77,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '购物车页面',
           requireSidebar: false,
-          hidden: true,
           requireFooter: false,
           requiresAuth: true,
         }
@@ -97,7 +88,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         meta: {
           title: '支付订单',
           requireSidebar: false,
-          hidden: true,
           requireFooter: false,
           requiresAuth: true
         },
