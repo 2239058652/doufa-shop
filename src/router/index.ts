@@ -255,7 +255,7 @@ const asyncRoutes: RouteRecordRaw[] = [
         name: 'MuchOder',
         component: () => import('@/views/ShopsManage/MuchOder/MuchOder.vue'),
         meta: {
-          title: '批量下单',
+          title: '同步订单',
           requireSidebar: true
         }
       }
