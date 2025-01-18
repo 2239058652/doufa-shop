@@ -317,18 +317,7 @@
               <img class="payment-icon" src="../../assets/image/qianbao.png" alt="" />
               <span class="payment-text"
                 >钱包支付
-                <span
-                  style="
-                    width: 186px;
-                    height: 20px;
-                    font-weight: 400;
-                    font-size: 14px;
-                    color: #ff5c02;
-                    line-height: 20px;
-                  "
-                >
-                  （钱包可用余额：¥{{ cashVal }}）
-                </span>
+                <span style=""> （钱包可用余额：¥{{ cashVal }}） </span>
               </span>
             </div>
 
