@@ -2,7 +2,7 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
-# prereview 预览 (http://doufapt.com/home)
+# prereview 预览 (http://newshop.doufapt.com/home)
 
 ## Recommended IDE Setup
 
