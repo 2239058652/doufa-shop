@@ -75,11 +75,11 @@ import Pagination from '@/components/pagination/index.vue'
 import { SearchOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
 import { ref } from 'vue'
-const [messageApi, contextHolder] = message.useMessage()
 import { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { getLoginHistory } from '@/api/user'
 
+const [messageApi, contextHolder] = message.useMessage()
 const dateFormat = 'YYYY-MM-DD'
 type RangeValue = [Dayjs, Dayjs]
 const hackValue = ref<RangeValue>()

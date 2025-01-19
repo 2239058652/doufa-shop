@@ -135,15 +135,15 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
   display: flex;
   width: 100%;
   height: calc(100% - 40px);
-}
-.menu {
-  // width: 240px;
-  width: 206px;
-}
-.router-view {
-  width: 100%;
-  overflow-y: auto;
-  height: auto;
+  .menu {
+    width: 240px;
+    // width: 206px;
+  }
+  .router-view {
+    width: 100%;
+    overflow-y: auto;
+    height: auto;
+  }
 }
 
 /* 添加父级菜单样式 */
