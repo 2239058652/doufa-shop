@@ -33,7 +33,7 @@
           />
         </div>
         <div class="tbdd-btn" @click="handleTBDD">
-          <span>同步订单</span>
+          <span>{{ tbddtext }}</span>
         </div>
         <div class="tjdp-btn" @click="handleTJDP">
           <span>添加店铺</span>
@@ -151,8 +151,7 @@
             {
               title: '操作',
               key: 'operate',
-              align: 'center',
-              scopedSlots: { customRender: 'operate' }
+              align: 'center'
             }
           ]"
           bordered
@@ -184,13 +183,16 @@
               </a-tag>
             </template>
             <template v-if="column.key === 'operate'">
-              <a-button v-if="record.type == 'pay_product'" type="link">查看订单</a-button>
+              <a-space>
+                <a-button type="primary" danger>立即结算</a-button>
+                <a-button type="primary" danger ghost>稍后结算</a-button>
+              </a-space>
             </template>
           </template>
         </a-table>
       </div>
       <Pagination
-        style="display: flex; justify-content: center; margin: 20px 0"
+        style="display: flex; justify-content: center; margin: 20px 0; padding-bottom: 10px"
         v-model:current="currentPage"
         v-model:pageSize="pageSize"
         :total="total"
@@ -202,19 +204,50 @@
     <!-- 底部结算 -->
     <a-affix :offset-bottom="10">
       <div class="bottom-summary">
-        <span>底部内容</span>
+        <div class="summary-left">
+          <div class="left-btn" v-show="true">
+            <span>关联商品管理</span>
+          </div>
+          <Checkbox v-model="lirunVal" label="利润计算：" class="lirun" />
+          <div class="antv-box">
+            <div class="tbdp">快递</div>
+            <a-input :bordered="false" v-model:value="formData.product" placeholder="请输入订单号" class="aselect">
+            </a-input>
+          </div>
+          <div class="antv-box">
+            <div class="tbdp">无</div>
+            <a-input :bordered="false" v-model:value="formData.product" placeholder="请输入订单号" class="aselect">
+            </a-input>
+          </div>
+        </div>
+        <div class="summary-right">
+          <div class="right-1">已勾选成本：</div>
+          <div class="right-2">0.00</div>
+          <div class="right-3">利润：</div>
+          <div class="right-4">0.00</div>
+          <div class="right-5">批量下为礼品单</div>
+          <div class="right-6">
+            <div class="right-btn-1">
+              <span>稍后结算</span>
+            </div>
+            <div class="right-btn-2">
+              <span>批量结算</span>
+            </div>
+          </div>
+        </div>
       </div>
     </a-affix>
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
 import { Dayjs } from 'dayjs'
 import { message, Modal } from 'ant-design-vue'
 import { userStoreList, authorizeGoods, syncDyOrder } from '@/api/shops'
 import { useRouter } from 'vue-router'
+import Checkbox from '@/components/checkbox/index.vue'
 
 const router = useRouter()
 const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
@@ -225,6 +258,8 @@ const hackValue = ref<RangeValue>()
 
 const oderCardTab = ref(0)
 const dataSource = ref<any>([])
+const lirunVal = ref(false)
+const tbddtext = ref('同步订单')
 
 const [messageApi, contextHolder] = message.useMessage()
 const currentPage = ref(1) // 当前页码
@@ -302,7 +337,8 @@ const handleTBDD = async () => {
   try {
     dataSource.value = []
     total.value = 0
-
+    tbddtext.value = '同步中...'
+    messageApi.destroy()
     const baseParams = {
       user_id: userInfo.uid,
       page: 0,
@@ -339,7 +375,19 @@ const handleTBDD = async () => {
         total.value += res.data.total
         successCount++
       } else {
-        messageApi.error(`店铺「${storeMap[res.store_id]}」同步失败: ${res.msg}`, 10)
+        messageApi.error({
+          content: () => (
+            <>
+              <span>
+                店铺「{storeMap[res.store_id]}」同步失败: {res.msg}(点击关闭或10秒后自动关闭)
+              </span>
+            </>
+          ),
+          duration: 10,
+          onClick: () => {
+            messageApi.destroy()
+          }
+        })
         failCount++
       }
     })
@@ -356,6 +404,8 @@ const handleTBDD = async () => {
   } catch (error) {
     messageApi.error('同步订单失败')
     console.error('同步订单错误:', error)
+  } finally {
+    tbddtext.value = '同步订单'
   }
 }
 

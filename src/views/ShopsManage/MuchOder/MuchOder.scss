@@ -3,6 +3,8 @@
     height: 100%;
     background: #F5F5F5;
     padding: 20px;
+    position: relative;
+    padding-bottom: 97px;
 }
 
 .top-fun {
@@ -112,7 +114,6 @@
 
 .muchoder-table {
     width: 100%;
-    min-height: 1607px;
     height: auto;
     background: #FFFFFF;
     border-radius: 6px;
@@ -343,9 +344,189 @@
 }
 
 .bottom-summary {
-    margin-top: 20px;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
+    padding: 10px 15px;
+    border-radius: 6px;
+    width: calc(100% - 40px);
+    height: 77px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 0px 10px 0px rgba(158, 146, 145, 0.5);
+    position: absolute;
+    bottom: 10px;
+    margin-bottom: 10px;
+    background: #FFFFFF;
+
+
+    .summary-left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+
+        .lirun {
+            margin-left: 20px;
+        }
+
+        .left-btn {
+            width: 122px;
+            height: 44px;
+            border-radius: 4px;
+            background: #3A84FF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            &:hover {
+                box-shadow: 0px 0px 10px 0px rgba(58, 132, 255, 0.5);
+            }
+
+            span {
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                color: #FFFFFF;
+                line-height: 20px;
+            }
+        }
+
+        .antv-box {
+            min-width: 176px;
+            width: auto;
+            min-height: 34px;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #E2E3E5;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 10px;
+
+            .tbdp {
+                width: 40px;
+                height: 20px;
+                font-weight: 400;
+                font-size: 14px;
+                color: #666666;
+                line-height: 20px;
+            }
+
+            .aselect {
+                min-width: 120px;
+            }
+        }
+    }
+
+    .summary-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+
+        .right-1 {
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            color: #333333;
+            line-height: 20px;
+        }
+
+        .right-2 {
+            height: 24px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+            line-height: 24px;
+        }
+
+        .right-3 {
+            height: 19px;
+            font-size: 14px;
+            color: #333333;
+            line-height: 19px;
+        }
+
+        .right-4 {
+            height: 24px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #FF5C02;
+            line-height: 24px;
+        }
+
+        .right-5 {
+            height: 19px;
+            font-size: 14px;
+            color: #F83126;
+            line-height: 19px;
+            text-align: left;
+            text-decoration-line: underline;
+            cursor: pointer;
+
+            &:hover {
+                color: #f30e02;
+            }
+        }
+
+        .right-6 {
+            height: 50px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .right-btn-1 {
+                width: 149px;
+                height: 50px;
+                border: 2px solid #F83126;
+                border-radius: 6px 0px 0px 6px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                span {
+                    height: 21px;
+                    font-size: 16px;
+                    color: #F83126;
+                    line-height: 21px;
+                }
+
+                &:hover {
+                    box-shadow: 0px 0px 10px 0px rgba(248, 49, 38, 0.5);
+
+                    span {
+                        font-size: 17px;
+                    }
+                }
+            }
+
+            .right-btn-2 {
+                width: 149px;
+                height: 50px;
+                background: #F83126;
+                border-radius: 0px 6px 6px 0px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                span {
+                    height: 21px;
+                    font-size: 16px;
+                    color: #FFFFFF;
+                    line-height: 21px;
+                }
+
+                &:hover {
+                    box-shadow: 0px 0px 10px 0px rgba(248, 49, 38, 0.5);
+
+                    span {
+                        font-size: 17px;
+                    }
+                }
+            }
+        }
+    }
 }
