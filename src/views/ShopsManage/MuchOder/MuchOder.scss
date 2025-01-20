@@ -350,6 +350,64 @@
                 background: inherit !important;
             }
 
+            // 添加以下样式来移除单元格的默认内边距
+            .ant-table-tbody>tr>td {
+                padding: 10px; // 移除单元格内边距
+                vertical-align: middle; // 内容靠上对齐
+            }
+
+        }
+
+        .original-product {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 10px;
+
+            .dy-info {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 5px;
+
+                .shop-name {
+                    height: 19px;
+                    font-size: 14px;
+                    color: #333333;
+                    line-height: 19px;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+
+                    img {
+                        width: 16px;
+                        height: 16px;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            .ydd-box-flex {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .ydd-box {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                    gap: 5px;
+
+                    img {
+                        width: 86px;
+                        height: 86px;
+                        object-fit: cover;
+                    }
+                }
+            }
         }
 
         .daifa-box {

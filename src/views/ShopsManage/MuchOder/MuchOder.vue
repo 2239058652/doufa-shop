@@ -133,7 +133,28 @@
           <template #bodyCell="{ column, record }">
             <!-- 原订单商品 -->
             <template v-if="column.dataIndex === 'original_product'">
-              <span> {{ record.balance }}</span>
+              <div class="original-product">
+                <div class="dy-info">
+                  <div class="shop-name">
+                    <img src="../../../assets/image/douyin.png" alt="" />
+                    {{ record.shop_name }}
+                  </div>
+                  <div class="shop-name">订单编号：{{ record.order_id }}</div>
+                  <div class="shop-name"
+                    >下单时间：{{ dayjs(record.create_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div
+                  >
+                  <div class="shop-name">订单金额：¥{{ record.pay_amount / 100 }}</div>
+                </div>
+                <div v-for="(item, index) in record.sku_order_list" :key="item.app_id" class="ydd-box-flex">
+                  <div class="ydd-box">
+                    <img :src="item.product_pic" alt="" />
+                    <div>颜色: {{ Object(item.spec[0]).value }} 件</div>
+                    <div>尺码: {{ Object(item.spec[1]).value }} 件</div>
+                    <div> 单价:￥{{ record.sku_order_list[index].goods_price / 100 }}元 </div>
+                    <div>数量: {{ item.item_num }} 件</div>
+                  </div>
+                </div>
+              </div>
             </template>
             <!-- 最终代发商品 -->
             <template v-if="column.dataIndex === 'final_product'">
@@ -229,6 +250,7 @@
 import { ref } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
 import { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { message, Modal } from 'ant-design-vue'
 import { userStoreList, authorizeGoods, syncDyOrder } from '@/api/shops'
 import { useRouter } from 'vue-router'
@@ -246,7 +268,10 @@ const columns = [
   {
     title: '原订单商品',
     align: 'center',
-    dataIndex: 'original_product'
+    dataIndex: 'original_product',
+    width: 260,
+    minWidth: 200,
+    maxWidth: 500
   },
   {
     title: '最终代发商品',
