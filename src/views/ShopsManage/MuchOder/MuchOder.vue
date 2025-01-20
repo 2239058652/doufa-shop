@@ -122,65 +122,49 @@
       <div class="order-table">
         <a-table
           :dataSource="dataSource"
-          :columns="[
-            {
-              title: '原订单商品',
-              align: 'center',
-              dataIndex: 'original_product'
-            },
-            {
-              title: '最终代发商品',
-              dataIndex: 'final_product',
-              align: 'center'
-            },
-            {
-              title: '收件人信息',
-              dataIndex: 'recipient_info',
-              align: 'center'
-            },
-            {
-              title: '利润',
-              dataIndex: 'profit',
-              align: 'center'
-            },
-            {
-              title: '订单备注',
-              dataIndex: 'order_note',
-              align: 'center'
-            },
-            {
-              title: '操作',
-              key: 'operate',
-              align: 'center'
-            }
-          ]"
+          :columns="columns"
           bordered
           :pagination="false"
-          :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)"
           :row-selection="{
             onChange: hanldeTableRowChanged
           }"
+          :hover="false"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex === 'pm'">
-              <span
-                >￥{{
-                  record.pm == 1
-                    ? (Number(record.balance) - Number(record.number)).toFixed(2)
-                    : (Number(record.balance) + Number(record.number)).toFixed(2)
-                }}</span
-              >
+            <!-- 原订单商品 -->
+            <template v-if="column.dataIndex === 'original_product'">
+              <span> {{ record.balance }}</span>
             </template>
-            <template v-if="column.dataIndex === 'balance'">
-              <span>￥{{ record.balance }}</span>
+            <!-- 最终代发商品 -->
+            <template v-if="column.dataIndex === 'final_product'">
+              <div class="daifa-box">
+                <div class="final-product"></div>
+                <div class="glsp-btn">
+                  <span>关联商品</span>
+                </div>
+              </div>
             </template>
-            <template v-if="column.dataIndex === 'number'">
-              <a-tag color="success" v-if="record.pm == 1">
-                <span>+￥{{ record.number }}</span>
-              </a-tag>
-              <a-tag color="error" v-else>
-                <span>-￥{{ record.number }}</span>
-              </a-tag>
+            <!-- 收件人信息 -->
+            <template v-if="column.dataIndex === 'recipient_info'">
+              <div>
+                <span>{{ record.mask_post_receiver }}</span
+                >&emsp;&emsp;
+                <span>{{ record.mask_post_tel }}</span>
+              </div>
+              <div>
+                <span>{{ record.mask_post_addr.province.name }}</span>
+                <span>{{ record.mask_post_addr.city.name }}</span>
+                <span>{{ record.mask_post_addr.town.name }}</span>
+              </div>
+              <div>{{ record.mask_post_addr.detail }}</div>
+            </template>
+            <!-- 利润 -->
+            <template v-if="column.dataIndex === 'profit'">
+              <span> {{ record.balance }}</span>
+            </template>
+            <!-- 订单备注 -->
+            <template v-if="column.dataIndex === 'buyer_words'">
+              <span> {{ record.buyer_words ? record.buyer_words : '无' }}</span>
             </template>
             <template v-if="column.key === 'operate'">
               <a-space>
@@ -190,19 +174,20 @@
             </template>
           </template>
         </a-table>
+        <Pagination
+          style="display: flex; justify-content: center; margin: 20px 0"
+          v-model:current="currentPage"
+          v-model:pageSize="pageSize"
+          :total="total"
+          @change="handleTBDD"
+          :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
+        />
       </div>
-      <Pagination
-        style="display: flex; justify-content: center; margin: 20px 0; padding-bottom: 10px"
-        v-model:current="currentPage"
-        v-model:pageSize="pageSize"
-        :total="total"
-        @change="handleTBDD"
-        :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
-      />
     </div>
+    <div class="zhanwei"></div>
 
     <!-- 底部结算 -->
-    <a-affix :offset-bottom="10">
+    <a-affix :offset-bottom="10" style="width: 100%">
       <div class="bottom-summary">
         <div class="summary-left">
           <div class="left-btn" v-show="true">
@@ -257,6 +242,44 @@ type RangeValue = [Dayjs, Dayjs]
 const hackValue = ref<RangeValue>()
 
 const oderCardTab = ref(0)
+const columns = [
+  {
+    title: '原订单商品',
+    align: 'center',
+    dataIndex: 'original_product'
+  },
+  {
+    title: '最终代发商品',
+    dataIndex: 'final_product',
+    align: 'center',
+    width: 150,
+    minWidth: 150,
+    maxWidth: 330
+  },
+  {
+    title: '收件人信息',
+    dataIndex: 'recipient_info',
+    align: 'center',
+    width: 150,
+    minWidth: 150,
+    maxWidth: 270
+  },
+  {
+    title: '利润',
+    dataIndex: 'profit',
+    align: 'center'
+  },
+  {
+    title: '订单备注',
+    dataIndex: 'buyer_words',
+    align: 'center'
+  },
+  {
+    title: '操作',
+    key: 'operate',
+    align: 'center'
+  }
+]
 const dataSource = ref<any>([])
 const lirunVal = ref(false)
 const tbddtext = ref('同步订单')

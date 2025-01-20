@@ -4,7 +4,6 @@
     background: #F5F5F5;
     padding: 20px;
     position: relative;
-    padding-bottom: 97px;
 }
 
 .top-fun {
@@ -114,6 +113,7 @@
 
 .muchoder-table {
     width: 100%;
+    min-height: 800px;
     height: auto;
     background: #FFFFFF;
     border-radius: 6px;
@@ -338,15 +338,67 @@
 
     .order-table {
         width: 100%;
-        height: auto;
+        height: 100%;
         margin-top: 20px;
+
+        :deep(.ant-table) {
+
+            // 禁用所有行的hover效果
+            .ant-table-tbody>tr:hover>td,
+            .ant-table-tbody>tr.ant-table-row:hover>td,
+            .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+                background: inherit !important;
+            }
+
+        }
+
+        .daifa-box {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 10px;
+
+            .final-product {
+                width: 326px;
+                height: 146px;
+                border-radius: 6px;
+                background: #F7F8FA;
+            }
+
+            .glsp-btn {
+                width: 94px;
+                height: 28px;
+                border-radius: 4px;
+                border: 1px solid #ff5c02;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+
+                span {
+                    width: 57px;
+                    height: 20px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    color: #ff5c02;
+                    line-height: 20px;
+                }
+            }
+        }
     }
 }
 
+.zhanwei {
+    width: 100%;
+    height: 100px;
+    background: #F5F5F5;
+}
+
 .bottom-summary {
-    padding: 10px 15px;
+    padding: 0 15px;
     border-radius: 6px;
-    width: calc(100% - 40px);
+    width: 100%;
     height: 77px;
     display: flex;
     align-items: center;
@@ -354,7 +406,6 @@
     box-shadow: 0px 0px 10px 0px rgba(158, 146, 145, 0.5);
     position: absolute;
     bottom: 10px;
-    margin-bottom: 10px;
     background: #FFFFFF;
 
 
