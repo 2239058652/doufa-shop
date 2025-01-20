@@ -267,6 +267,15 @@ const asyncRoutes: RouteRecordRaw[] = [
       title: '错误处理页面',
       hidden: true
     },
+  },
+  {
+    path: '/relax',
+    name: 'relax',
+    component: () => import('@/views/ShopsManage/MuchOder/clickme.vue'),
+    meta: {
+      title: 'relax',
+      hidden: true
+    }
   }
 ]
 const router = createRouter({

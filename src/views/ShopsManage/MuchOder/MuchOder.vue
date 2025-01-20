@@ -126,47 +126,33 @@
             {
               title: '原订单商品',
               align: 'center',
-              dataIndex: 'title'
+              dataIndex: 'original_product'
             },
             {
-              title: '订单编号',
-              dataIndex: 'order_id',
+              title: '最终代发商品',
+              dataIndex: 'final_product',
               align: 'center'
             },
             {
-              title: '原金额',
-              dataIndex: 'pm',
+              title: '收件人信息',
+              dataIndex: 'recipient_info',
               align: 'center'
             },
             {
-              title: '金额变动',
-              dataIndex: 'number',
+              title: '利润',
+              dataIndex: 'profit',
               align: 'center'
             },
             {
-              title: '剩余金额',
-              dataIndex: 'balance',
-              align: 'center'
-            },
-            {
-              title: '日期',
-              dataIndex: 'add_time',
-              align: 'center'
-            },
-            {
-              title: '售后订单',
-              dataIndex: 'add_time',
-              align: 'center'
-            },
-            {
-              title: '来源订单',
-              dataIndex: 'add_time',
+              title: '订单备注',
+              dataIndex: 'order_note',
               align: 'center'
             },
             {
               title: '操作',
               key: 'operate',
-              align: 'center'
+              align: 'center',
+              scopedSlots: { customRender: 'operate' }
             }
           ]"
           bordered
@@ -175,21 +161,7 @@
           :row-selection="{
             onChange: hanldeTableRowChanged
           }"
-          :defaultExpandAllRows="true"
-          :expandable="{
-            defaultExpandAllRows: true
-          }"
         >
-          <template #expandedRowRender="{ record }">
-            <div class="custom-expanded-row">
-              <div class="order-info">
-                <div class="product-title">{{ record.title }}</div>
-                <div class="product-specs">
-                  <span>订单信息展示区域</span>
-                </div>
-              </div>
-            </div>
-          </template>
           <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'pm'">
               <span
