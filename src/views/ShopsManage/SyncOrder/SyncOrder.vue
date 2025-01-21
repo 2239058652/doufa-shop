@@ -166,7 +166,7 @@
             <template v-if="column.dataIndex === 'final_product'">
               <div class="daifa-box">
                 <div class="final-product"></div>
-                <div class="glsp-btn">
+                <div class="glsp-btn" @click="handleRelationGoods(record)">
                   <span>关联商品</span>
                 </div>
               </div>
@@ -253,14 +253,16 @@
 </template>
 
 <script lang="tsx" setup>
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
 import { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import { message, Modal } from 'ant-design-vue'
+import { message, Modal, Space, Input, Button } from 'ant-design-vue'
 import { userStoreList, authorizeGoods, syncDyOrder } from '@/api/shops'
+import { getProducts } from '@/api/store'
 import { useRouter } from 'vue-router'
 import Checkbox from '@/components/checkbox/index.vue'
+import './SyncOrder.scss'
 
 const router = useRouter()
 const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
@@ -319,15 +321,17 @@ const columns = [
 const dataSource = ref<any>([])
 const lirunVal = ref(false)
 const tbddtext = ref('同步订单')
+const goodsVal = ref('')
+const goodsList = ref([])
 
 const [messageApi, contextHolder] = message.useMessage()
 const currentPage = ref(1) // 当前页码
 const pageSize = ref(10) // 每页条数
 const total = ref(0) // 总条数
 const formData = ref({
-  startTime: '',
-  endTime: '',
-  store_id: '',
+  startTime: '1735689600',
+  endTime: '1740700800',
+  store_id: '25573562',
   user_id: '',
   product: '',
   shop_name: '',
@@ -343,7 +347,7 @@ const handleChange = (value: string[], option: any) => {
   console.log(`selected ${value}`, option)
   multipleSelVal.value = option
 }
-const multipleVal = ref([])
+const multipleVal = ref(['25573562'])
 const multipleSelVal = ref([])
 const multipleOptions = ref<any[]>([])
 const tabsList = ref<any[]>([])
@@ -402,8 +406,10 @@ const handleTBDD = async () => {
       user_id: userInfo.uid,
       page: 0,
       limit: 10,
-      time_start: new Date(formData.value.startTime).getTime() / 1000,
-      time_end: new Date(formData.value.endTime).getTime() / 1000,
+      time_start: formData.value.startTime,
+      // time_start: new Date(formData.value.startTime).getTime() / 1000,
+      // time_end: new Date(formData.value.endTime).getTime() / 1000,
+      time_end: formData.value.endTime,
       product: formData.value.product
     }
 
@@ -467,6 +473,7 @@ const handleTBDD = async () => {
     tbddtext.value = '同步订单'
   }
 }
+handleTBDD()
 
 // 添加店铺
 const handleTJDP = () => {
@@ -483,11 +490,109 @@ const handleTJDP = () => {
 // 表格选中
 const hanldeTableRowChanged = (selectedRowKeys: any, selectedRows: any) => {}
 
+// 店铺字典
 const fetchUserStoreList = async () => {
   const res = await userStoreList({ page: 1, limit: 100 })
   if (res.status == 200) {
     multipleOptions.value = res.data.list
   }
+}
+
+const handleRelationGoods = (record: any) => {
+  Modal.confirm({
+    title: () => (
+      <>
+        <div class="relate-title">
+          <span>关联商品</span>
+        </div>
+      </>
+    ),
+    icon: null,
+    width: '55%',
+    style: { top: '20px' },
+    footer: (
+      <>
+        <div class={'relate-footer'}>
+          <div class={'relate-footer-btn-1'}>
+            <span>提交关联</span>
+          </div>
+          <div class={'relate-footer-btn-2'} onClick={() => Modal.destroyAll()}>
+            <span>暂不关联</span>
+          </div>
+        </div>
+      </>
+    ),
+    content: (
+      <>
+        <div class={'relate-content'}>
+          <div class={'left-con'}>
+            <div class={'goods-info'}>
+              <img src={record.sku_order_list[0].product_pic} alt="" />
+              <div class={'goods-info-content'}>
+                <div>{record.sku_order_list[0].product_name}</div>
+                <div>店铺名称：{record.shop_name}</div>
+                <div>下单颜色：{record.sku_order_list[0].spec[0].value}</div>
+                <div>价格：¥{record.sku_order_list[0].goods_price / 100}</div>
+              </div>
+            </div>
+            <div class={'search-fun'}>
+              <div class={'search-input'}>
+                <Input bordered={false} v-model={[goodsVal.value, 'value']} placeholder={'请输入货号或商品名称'} />
+              </div>
+              <div
+                class={'search-btn'}
+                onClick={() => {
+                  getProducts({ page: 1, limit: 12 }).then((res: any) => {
+                    if (res.status == 200) {
+                      goodsList.value = res.data.list
+                      Modal.destroyAll()
+                      handleRelationGoods(record)
+                    } else {
+                      messageApi.error(res.msg)
+                    }
+                  })
+                }}
+              >
+                <span>查询</span>
+              </div>
+              <div
+                class={'search-img-btn'}
+                onClick={() => {
+                  getProducts({ page: 1, limit: 12, url: record.sku_order_list[0].product_pic }).then((res: any) => {
+                    if (res.status == 200) {
+                      messageApi.success('图片识别成功')
+                      nextTick(() => {
+                        goodsList.value = res.data.list
+                        Modal.destroyAll()
+                        handleRelationGoods(record)
+                      })
+                    } else {
+                      messageApi.error(res.msg)
+                    }
+                  })
+                }}
+              >
+                <span>图片识别</span>
+              </div>
+            </div>
+            <div class={'l-s'}>x</div>
+          </div>
+          <div class={'right-con'}>
+            <div class={'img-box'}>
+              {goodsList.value.map((item: any, index) => (
+                <div class={'box'} key={item.id}>
+                  <img src={item.image} alt="" />
+                  <div class={'price'}>¥{item.price}</div>
+                  <div class={'keyword'}>货号：{item.keyword}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    ),
+    onOk: () => {}
+  })
 }
 fetchUserStoreList()
 </script>
