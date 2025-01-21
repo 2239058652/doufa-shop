@@ -60,8 +60,14 @@
             <a-empty v-if="productsList.length == 0" />
           </a-skeleton>
         </div>
+        <Pagination
+          style="display: flex; justify-content: center; margin-top: 20px"
+          v-model:current="currentPage"
+          v-model:pageSize="pageSize"
+          :total="total"
+          @change="getProductsList"
+        />
       </a-card>
-      <Pagination v-model:current="currentPage" v-model:pageSize="pageSize" :total="total" @change="getProductsList" />
     </a-flex>
   </div>
 </template>

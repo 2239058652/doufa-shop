@@ -4,11 +4,13 @@
     padding: 20px;
     position: relative;
     overflow-x: hidden;
+    background: #F5F5F5;
 }
 
 // 收藏商品
 .wdzj {
     width: 100%;
+    min-height: 700px;
     height: auto;
 
     .title {

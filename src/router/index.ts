@@ -214,7 +214,7 @@ const asyncRoutes: RouteRecordRaw[] = [
   {
     path: '/shopsmanage',
     name: 'ShopsManage',
-    redirect: '/shopsmanage/ordestore',
+    redirect: '/shopsmanage/orderstore',
     meta: {
       title: '下单管理',
       hidden: false,
@@ -223,9 +223,9 @@ const asyncRoutes: RouteRecordRaw[] = [
     component: SiderMenuBar,
     children: [
       {
-        path: 'ordestore',
-        name: 'OerderStore',
-        component: () => import('@/views/ShopsManage/OerderStore/OerderStore.vue'),
+        path: 'orderstore',
+        name: 'OrderStore',
+        component: () => import('@/views/ShopsManage/OrderStore/OrderStore.vue'),
         meta: {
           title: '下单店铺管理',
           requireSidebar: true

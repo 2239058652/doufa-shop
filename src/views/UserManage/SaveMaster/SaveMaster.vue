@@ -72,14 +72,15 @@
             <a-empty v-if="shopAtrrList.length == 0" />
           </a-skeleton>
         </div>
+        <Pagination
+          style="display: flex; justify-content: center; margin-top: 20px"
+          v-model:current="currentPage"
+          v-model:pageSize="pageSize"
+          :total="total"
+          @change="getProductsList"
+          :pageSizeOptions="[5, 10, 20, 30, 40, 50, 100]"
+        />
       </a-card>
-      <Pagination
-        v-model:current="currentPage"
-        v-model:pageSize="pageSize"
-        :total="total"
-        @change="getProductsList"
-        :pageSizeOptions="[5, 10, 20, 30, 40, 50, 100]"
-      />
     </a-flex>
   </div>
 </template>
