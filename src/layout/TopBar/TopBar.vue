@@ -36,7 +36,7 @@
                   </template>
                 </a-popover>
                 <span class="hr">|</span>
-                <span class="menu-item" @click="$router.push(`/`)">消息通知</span>
+                <span class="menu-item" @click="() => messageApi.warning('暂未开放')">消息通知</span>
                 <span class="hr">|</span>
                 <span class="menu-item" @click="getAddressList">退货地址</span>
                 <span class="hr">|</span>

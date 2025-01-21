@@ -91,7 +91,7 @@
           <template v-if="column.key === 'operate'">
             <a-popconfirm
               v-if="record.expire_time > nowtime"
-              title="确定解绑此店铺吗?"
+              title=" 确定解绑此店铺吗? "
               ok-text="确定"
               cancel-text="取消"
               @confirm="handleUnBind(record.store_id)"

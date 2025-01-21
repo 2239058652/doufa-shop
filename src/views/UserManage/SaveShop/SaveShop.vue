@@ -1,9 +1,9 @@
 <template>
   <context-holder />
-  <div class="contain">
-    <a-flex gap="20" align="center" justify="center" vertical>
+  <div class="save-shop">
+    <a-flex gap="20" align="center" justify="center" vertical style="width: 100%; height: 100%">
       <!-- 收藏商品 -->
-      <a-card style="width: 100%">
+      <a-card style="width: 100%; height: 100%">
         <div class="wdzj">
           <div class="title">收藏商品</div>
           <div class="funct">
