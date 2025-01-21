@@ -45,6 +45,9 @@
     <div class="muchoder-table">
       <!-- 切换店铺 -->
       <div class="store-tabs">
+        <div class="tab" v-if="tabsList.length == 0">
+          <span>请同步订单</span>
+        </div>
         <div
           class="tab"
           v-for="(item, index) in tabsList"

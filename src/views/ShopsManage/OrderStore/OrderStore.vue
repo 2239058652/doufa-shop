@@ -7,14 +7,28 @@
     </div>
     <!-- 列表记录 -->
     <a-card class="store-card">
+      <div class="tabs">
+        <div class="tab" :class="{ active: activeTab === 0 }" @click="handleTabClick(0)">
+          <span>全部平台</span>
+        </div>
+        <div class="tab" :class="{ active: activeTab === 1 }" @click="handleTabClick(1)">
+          <span>抖店</span>
+        </div>
+        <div class="tab" :class="{ active: activeTab === 2 }" @click="handleTabClick(2)">
+          <span>快手</span>
+        </div>
+        <div class="tab" :class="{ active: activeTab === 3 }" @click="handleTabClick(3)">
+          <span>淘宝</span>
+        </div>
+      </div>
       <a-form :colon="false" :model="formData">
         <a-row :gutter="16">
-          <a-col :span="4">
+          <a-col :span="5">
             <a-form-item label="店铺名称">
               <a-input v-model:value="formData.store_name" allowClear placeholder="请输入店铺名称" />
             </a-form-item>
           </a-col>
-          <a-col :span="4">
+          <a-col :span="5">
             <a-form-item label="店铺ID">
               <a-input v-model:value="formData.store_id" allowClear placeholder="请输入店铺ID" />
             </a-form-item>
@@ -65,7 +79,10 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'store_type_label'">
-            <span>{{ '抖店' }}</span>
+            <div class="store-type">
+              <img src="../../../assets/image/douyin.png" alt="" />
+              <span>{{ '抖店' }}</span>
+            </div>
           </template>
           <template v-if="column.dataIndex === 'expire_time'">
             <a-tag color="success" v-if="record.expire_time > nowtime">{{ '正常' }}</a-tag>
@@ -123,6 +140,16 @@ const pageSize = ref(10) // 每页条数
 const total = ref(0) // 总条数
 const dataSource = ref([])
 const originalData = ref([])
+const activeTab = ref(0)
+
+// 切换tab
+const handleTabClick = (index: number) => {
+  if (index == 2 || index == 3) {
+    messageApi.warning('暂未开放')
+    return
+  }
+  activeTab.value = index
+}
 
 // 本地搜索方法
 const handleSearch = () => {
@@ -177,7 +204,7 @@ const handleAdd = () => {
 
 // 获取店铺列表
 const getStoreList = () => {
-  userStoreList({ page: currentPage.value, limit: pageSize.value }).then((res) => {
+  userStoreList({ page: currentPage.value, limit: pageSize.value }).then((res: any) => {
     if (res.status == 200) {
       dataSource.value = res.data.list
       originalData.value = res.data.list
