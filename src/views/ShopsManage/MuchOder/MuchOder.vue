@@ -131,27 +131,30 @@
           :hover="false"
         >
           <template #bodyCell="{ column, record }">
+            <!-- 来源信息 -->
+            <template v-if="column.dataIndex === 'original_info'">
+              <div class="original-info">
+                <div class="shop-name">
+                  <img src="../../../assets/image/douyin.png" alt="" />
+                  {{ record.shop_name }}
+                </div>
+                <div class="shop-name">订单编号：{{ record.order_id }}</div>
+                <div class="shop-name"
+                  >下单时间：{{ dayjs(record.create_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div
+                >
+                <div class="shop-name">订单金额：¥{{ record.pay_amount / 100 }}</div>
+              </div>
+            </template>
             <!-- 原订单商品 -->
             <template v-if="column.dataIndex === 'original_product'">
               <div class="original-product">
-                <div class="dy-info">
-                  <div class="shop-name">
-                    <img src="../../../assets/image/douyin.png" alt="" />
-                    {{ record.shop_name }}
-                  </div>
-                  <div class="shop-name">订单编号：{{ record.order_id }}</div>
-                  <div class="shop-name"
-                    >下单时间：{{ dayjs(record.create_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div
-                  >
-                  <div class="shop-name">订单金额：¥{{ record.pay_amount / 100 }}</div>
-                </div>
                 <div v-for="(item, index) in record.sku_order_list" :key="item.app_id" class="ydd-box-flex">
+                  <img :src="item.product_pic" alt="" />
                   <div class="ydd-box">
-                    <img :src="item.product_pic" alt="" />
-                    <div>颜色: {{ Object(item.spec[0]).value }} 件</div>
-                    <div>尺码: {{ Object(item.spec[1]).value }} 件</div>
-                    <div> 单价:￥{{ record.sku_order_list[index].goods_price / 100 }}元 </div>
-                    <div>数量: {{ item.item_num }} 件</div>
+                    <div>颜色: {{ Object(item.spec[0]).value }}</div>
+                    <div>尺码: {{ Object(item.spec[1]).value }}</div>
+                    <div> 单价:￥{{ record.sku_order_list[index].goods_price / 100 }}元</div>
+                    <div>数量: {{ item.item_num }}件</div>
                   </div>
                 </div>
               </div>
@@ -266,12 +269,17 @@ const hackValue = ref<RangeValue>()
 const oderCardTab = ref(0)
 const columns = [
   {
+    title: '来源信息',
+    align: 'center',
+    dataIndex: 'original_info'
+  },
+  {
     title: '原订单商品',
     align: 'center',
     dataIndex: 'original_product',
-    width: 260,
+    width: 220,
     minWidth: 200,
-    maxWidth: 500
+    maxWidth: 220
   },
   {
     title: '最终代发商品',
