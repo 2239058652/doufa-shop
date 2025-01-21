@@ -9,17 +9,17 @@
     <a-card class="store-card">
       <a-form :colon="false" :model="formData">
         <a-row :gutter="16">
-          <a-col :span="8">
+          <a-col :span="4">
             <a-form-item label="店铺名称">
               <a-input v-model:value="formData.store_name" allowClear placeholder="请输入店铺名称" />
             </a-form-item>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="4">
             <a-form-item label="店铺ID">
               <a-input v-model:value="formData.store_id" allowClear placeholder="请输入店铺ID" />
             </a-form-item>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" style="margin-left: 60px">
             <a-form-item label="">
               <a-space :size="24">
                 <a-button type="primary" danger @click="handleSearch">查询</a-button>
