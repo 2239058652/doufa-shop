@@ -241,9 +241,9 @@ const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'muchoder',
-        name: 'MuchOder',
-        component: () => import('@/views/ShopsManage/MuchOder/MuchOder.vue'),
+        path: 'syncorder',
+        name: 'SyncOrder',
+        component: () => import('@/views/ShopsManage/SyncOrder/SyncOrder.vue'),
         meta: {
           title: '同步订单',
           requireSidebar: true,
@@ -272,7 +272,7 @@ const asyncRoutes: RouteRecordRaw[] = [
   {
     path: '/relax',
     name: 'relax',
-    component: () => import('@/views/ShopsManage/MuchOder/clickme.vue'),
+    component: () => import('@/views/Relax/index.vue'),
     meta: {
       title: 'relax',
       hidden: true

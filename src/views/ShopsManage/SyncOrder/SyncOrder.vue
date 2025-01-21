@@ -211,7 +211,7 @@
     <div class="zhanwei"></div>
 
     <!-- 底部结算 -->
-    <a-affix :offset-bottom="10" style="width: 100%">
+    <a-affix :offset-bottom="10">
       <div class="bottom-summary">
         <div class="summary-left">
           <div class="left-btn" v-show="true">
@@ -468,9 +468,11 @@ const handleTBDD = async () => {
 // 添加店铺
 const handleTJDP = () => {
   authorizeGoods({ path: window.location.href }).then(
-    (res: { code: number; data: { url: string | URL | undefined } }) => {
+    (res: { code: number; data: { url: string | URL | undefined }; msg: string }) => {
       if (res.code == 100010) {
         window.open(res.data.url)
+      } else {
+        messageApi.error(res.msg)
       }
     }
   )
@@ -487,4 +489,4 @@ const fetchUserStoreList = async () => {
 fetchUserStoreList()
 </script>
 
-<style scoped src="./MuchOder.scss"></style>
+<style scoped src="./SyncOrder.scss"></style>
