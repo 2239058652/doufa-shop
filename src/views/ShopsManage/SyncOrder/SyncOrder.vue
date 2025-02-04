@@ -164,20 +164,47 @@
             </template>
             <!-- 最终代发商品 -->
             <template v-if="column.dataIndex === 'final_product'">
-              <div class="daifa-box">
+              <div class="daifa-box" v-for="(items, index) in record.sku_order_list" :key="items.app_id">
                 <div class="final-product" v-if="record.finalProduct">
                   <div class="product-info">
-                    <img :src="record.finalProduct.image" alt="" />
-                    <div>
-                      <div>货号：{{ record.finalProduct.keyword }}</div>
-                      <div>颜色：{{ record.finalProduct.color }}</div>
-                      <div>尺码：{{ record.finalProduct.size }}</div>
-                      <div>数量：{{ record.finalProduct.num }}</div>
-                      <div>单价：¥{{ record.finalProduct.price }}</div>
+                    <div class="product-info-box-l">
+                      <img :src="record.finalProduct.image" alt="" />
+                      <div class="btn">
+                        <span>修改属性</span>
+                      </div>
+                    </div>
+                    <div class="product-info-box-r">
+                      <div class="r-item">
+                        <span>档口：</span>
+                        <span>{{ record.finalProduct.storeInfo.goods_address }}</span>
+                      </div>
+                      <div class="r-item">
+                        <span>货号：</span>
+                        <span>{{ record.finalProduct.keyword }}</span>
+                      </div>
+                      <div class="r-item">
+                        <span>颜色：</span>
+                        <span>{{ record.finalProduct.color }}</span>
+                      </div>
+                      <div class="r-item">
+                        <span>尺码：</span>
+                        <span>{{ record.finalProduct.size }}</span>
+                      </div>
+                      <div class="r-item">
+                        <span>数量：</span>
+                        <span>{{ record.finalProduct.num }}</span>
+                        <span>单价：¥</span>
+                        <span>{{ record.finalProduct.price }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="glsp-btn" @click="handleRelationGoods(record)">
+                <div
+                  class="glsp-btn"
+                  @click="handleRelationGoods(record)"
+                  v-for="(item, index) in items.item_num"
+                  :key="index"
+                >
                   <span>关联商品</span>
                 </div>
               </div>
@@ -206,7 +233,7 @@
             </template>
             <template v-if="column.key === 'operate'">
               <a-space>
-                <a-button type="primary" danger>立即结算</a-button>
+                <a-button type="primary" danger @click="handleJieSuanNow(record)">立即结算</a-button>
                 <a-button type="primary" danger ghost>稍后结算</a-button>
               </a-space>
             </template>
@@ -253,7 +280,7 @@
             <div class="right-btn-1">
               <span>稍后结算</span>
             </div>
-            <div class="right-btn-2">
+            <div class="right-btn-2" @click="handleJieSuan">
               <span>批量结算</span>
             </div>
           </div>
@@ -384,6 +411,9 @@ import { getProducts, getProductDetail } from '@/api/store'
 import { useRouter } from 'vue-router'
 import Checkbox from '@/components/checkbox/index.vue'
 import './SyncOrder.scss'
+import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+
+const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
 const router = useRouter()
 const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}')
@@ -392,6 +422,7 @@ const dateFormat = 'YYYY-MM-DD'
 type RangeValue = [Dayjs, Dayjs]
 const hackValue = ref<RangeValue>()
 
+const tableSelectedRowKeys = ref<any>([])
 const oderCardTab = ref(0)
 const columns = [
   {
@@ -536,10 +567,10 @@ const handleTBDD = async () => {
       user_id: userInfo.uid,
       page: 0,
       limit: 10,
-      time_start: formData.value.startTime,
-      // time_start: new Date(formData.value.startTime).getTime() / 1000,
-      // time_end: new Date(formData.value.endTime).getTime() / 1000,
-      time_end: formData.value.endTime,
+      // time_start: formData.value.startTime,
+      // time_end: formData.value.endTime,
+      time_start: new Date(formData.value.startTime).getTime() / 1000,
+      time_end: new Date(formData.value.endTime).getTime() / 1000,
       product: formData.value.product
     }
 
@@ -616,7 +647,12 @@ const handleSubmitRelation = () => {
   const index = dataSource.value.findIndex((item: any) => item.order_id === relateRecord.value.order_id)
 
   if (index !== -1) {
-    dataSource.value[index].finalProduct = relateRecord.value.finalProduct
+    dataSource.value[index].finalProduct = {
+      ...relateRecord.value.finalProduct,
+      color: relateSelectVal.value.color,
+      num: relateSelectVal.value.num,
+      size: relateSelectVal.value.size
+    }
     messageApi.success('关联成功')
     relateVisble.value = false
   }
@@ -635,7 +671,11 @@ const handleTJDP = () => {
   )
 }
 // 表格选中
-const hanldeTableRowChanged = (selectedRowKeys: any, selectedRows: any) => {}
+const hanldeTableRowChanged = (selectedRowKeys: any, selectedRows: any) => {
+  console.log(selectedRows)
+
+  tableSelectedRowKeys.value = selectedRows
+}
 
 // 店铺字典
 const fetchUserStoreList = async () => {
@@ -653,7 +693,7 @@ const handleRelationGoods = (record: any) => {
   })
 }
 
-// 查询  图片识别
+//   图片识别
 const handleImageSearch = (product_pic?: string) => {
   getProducts({ page: 1, limit: 12, url: product_pic }).then((res: any) => {
     if (res.status == 200) {
@@ -666,6 +706,7 @@ const handleImageSearch = (product_pic?: string) => {
     }
   })
 }
+// 查询
 const handleQuerySearch = () => {
   getProducts({ page: 1, limit: 12, keyword: goodsVal.value }).then((res: any) => {
     if (res.status == 200) {
@@ -689,8 +730,63 @@ const handleClickRelate = (item: any) => {
         keyword: item.keyword,
         color: relateSelectVal.value.color,
         size: relateSelectVal.value.size,
-        num: relateSelectVal.value.num
+        num: relateSelectVal.value.num,
+        storeInfo: res.data.storeInfo
       }
+    }
+  })
+}
+
+// 批量结算
+const handleJieSuan = () => {}
+
+// 立即结算
+const handleJieSuanNow = (record: any) => {
+  console.log(record, 'record')
+  if (!record.finalProduct) {
+    messageApi.open({
+      type: 'warning',
+      content: '请先关联最终代发商品'
+    })
+    return
+  }
+  if (!record.finalProduct.color || !record.finalProduct.size || !record.finalProduct.num) {
+    messageApi.open({
+      type: 'warning',
+      content: '请填写完整最终代发商品的信息'
+    })
+    return
+  }
+
+  // 构建订单数据
+  const orderData = {
+    id: record.finalProduct.id,
+    productInfo: {
+      store_name: record.finalProduct.storeInfo?.store_name,
+      keyword: record.finalProduct.storeInfo?.keyword,
+      attrInfo: {
+        image: record.finalProduct.image,
+        price: record.finalProduct.price,
+        suk: `${record.finalProduct.color},${record.finalProduct.size}`
+      }
+    },
+    cart_num: record.finalProduct.num,
+    mer_name: record.shop_name,
+    goods_address: record.finalProduct.storeInfo.goods_address
+  }
+
+  // 存储订单数据到pinia
+  goodsCartsTableStore.reGoodsCartsTable([orderData])
+
+  // 跳转到支付页面
+  router.push({
+    path: '/payorder',
+    query: {
+      type: 'syncorder', // 标记为直接购买
+      id: relateRecord.value.finalProduct,
+      num: record.finalProduct.num,
+      color: record.finalProduct.color,
+      size: record.finalProduct.size
     }
   })
 }

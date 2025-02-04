@@ -18,7 +18,7 @@
           autocomplete="off"
           class="demo-form-inline"
         >
-          <div class="address_info">
+          <div class="address_info" v-if="route.query.type !== 'syncorder'">
             <div class="address_title">确认收货信息</div>
             <div class="input_textarea">
               <a-input
@@ -492,7 +492,9 @@ const tableData = ref<any>([]) // 表格数据
 // 如果是从购物车跳转过来的，则从pinia中获取购物车数据
 if (route.query.type && route.query.type === 'gwcjs') {
   tableData.value = goodsCartsTableStore.goodsCartsTable
-} else {
+} else if (route.query.type && route.query.type === 'direct') {
+  tableData.value = goodsCartsTableStore.goodsCartsTable
+} else if (route.query.type && route.query.type === 'syncorder') {
   tableData.value = goodsCartsTableStore.goodsCartsTable
 }
 
