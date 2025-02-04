@@ -169,7 +169,7 @@
                   <div class="product-info">
                     <div class="product-info-box-l">
                       <img :src="record.finalProduct.image" alt="" />
-                      <div class="btn">
+                      <div class="btn" @click="handleRelationGoods(record)">
                         <span>修改属性</span>
                       </div>
                     </div>
@@ -191,10 +191,14 @@
                         <span>{{ record.finalProduct.size }}</span>
                       </div>
                       <div class="r-item">
-                        <span>数量：</span>
-                        <span>{{ record.finalProduct.num }}</span>
-                        <span>单价：¥</span>
-                        <span>{{ record.finalProduct.price }}</span>
+                        <div class="r-item">
+                          <span>单价：¥</span>
+                          <span>{{ record.finalProduct.price }}</span>
+                        </div>
+                        <div class="r-item">
+                          <span>数量：</span>
+                          <span>{{ record.finalProduct.num }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -255,7 +259,7 @@
     <a-affix :offset-bottom="10">
       <div class="bottom-summary">
         <div class="summary-left">
-          <div class="left-btn" v-show="true">
+          <div class="left-btn" v-show="false">
             <span>关联商品管理</span>
           </div>
           <Checkbox v-model="lirunVis" label="利润计算：" class="lirun" />
@@ -484,7 +488,7 @@ const currentPage = ref(1) // 当前页码
 const pageSize = ref(10) // 每页条数
 const total = ref(0) // 总条数
 const formData = ref({
-  startTime: '1735689600',
+  startTime: '1738368000',
   endTime: '1740700800',
   store_id: '25573562',
   user_id: '',
@@ -567,10 +571,10 @@ const handleTBDD = async () => {
       user_id: userInfo.uid,
       page: 0,
       limit: 10,
-      // time_start: formData.value.startTime,
-      // time_end: formData.value.endTime,
-      time_start: new Date(formData.value.startTime).getTime() / 1000,
-      time_end: new Date(formData.value.endTime).getTime() / 1000,
+      time_start: formData.value.startTime,
+      time_end: formData.value.endTime,
+      // time_start: new Date(formData.value.startTime).getTime() / 1000,
+      // time_end: new Date(formData.value.endTime).getTime() / 1000,
       product: formData.value.product
     }
 
@@ -738,7 +742,63 @@ const handleClickRelate = (item: any) => {
 }
 
 // 批量结算
-const handleJieSuan = () => {}
+const handleJieSuan = () => {
+  if (tableSelectedRowKeys.value.length === 0) {
+    messageApi.open({
+      type: 'warning',
+      content: '请先选择要结算的订单'
+    })
+    return
+  }
+  // 校验所有选中订单的 finalProduct 是否有效
+  const invalidOrders = tableSelectedRowKeys.value.filter(
+    (item: any) => !item.finalProduct || !item.finalProduct.color || !item.finalProduct.size || !item.finalProduct.num
+  )
+
+  if (invalidOrders.length > 0) {
+    messageApi.warning('部分订单未关联商品或信息不完整')
+    return
+  }
+
+  // 构建有效订单数据
+  const orderData = tableSelectedRowKeys.value.map((item: any) => {
+    const finalProduct = item.finalProduct
+
+    return {
+      id: finalProduct.id,
+      productInfo: {
+        store_name: finalProduct.storeInfo.store_name,
+        keyword: finalProduct.keyword,
+        attrInfo: {
+          image: finalProduct.image,
+          price: finalProduct.price,
+          suk: `${finalProduct.color},${finalProduct.size}`
+        }
+      },
+      cart_num: finalProduct.num,
+      mer_name: item.shop_name,
+      goods_address: finalProduct.storeInfo.goods_address,
+      order_id: item.order_id // 添加唯一标识符
+    }
+  })
+
+  try {
+    // 存储所有订单到 Pinia
+    goodsCartsTableStore.reGoodsCartsTable(orderData)
+
+    // 跳转到支付页面
+    router.push({
+      path: '/payorder',
+      query: {
+        type: 'syncorder',
+        order_ids: orderData.map((order: { order_id: any }) => order.order_id).join(',') // 传递订单ID列表
+      }
+    })
+  } catch (error) {
+    console.error('批量结算失败:', error)
+    messageApi.error('订单处理异常，请检查数据')
+  }
+}
 
 // 立即结算
 const handleJieSuanNow = (record: any) => {
