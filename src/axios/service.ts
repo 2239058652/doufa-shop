@@ -12,7 +12,7 @@ import { config } from './config'
 
 const { base_url } = config
 
-export const PATH_URL = base_url[import.meta.env.VITE_API_BASEPATH as keyof typeof base_url]
+export const PATH_URL = base_url[import.meta.env.VITE_API_BASEPATH as keyof typeof base_url] || '/api'
 
 // 创建axios实例
 const service: AxiosInstance = axios.create({
