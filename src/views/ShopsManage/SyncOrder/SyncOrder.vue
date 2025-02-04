@@ -165,7 +165,18 @@
             <!-- 最终代发商品 -->
             <template v-if="column.dataIndex === 'final_product'">
               <div class="daifa-box">
-                <div class="final-product"></div>
+                <div class="final-product" v-if="record.finalProduct">
+                  <div class="product-info">
+                    <img :src="record.finalProduct.image" alt="" />
+                    <div>
+                      <div>货号：{{ record.finalProduct.keyword }}</div>
+                      <div>颜色：{{ record.finalProduct.color }}</div>
+                      <div>尺码：{{ record.finalProduct.size }}</div>
+                      <div>数量：{{ record.finalProduct.num }}</div>
+                      <div>单价：¥{{ record.finalProduct.price }}</div>
+                    </div>
+                  </div>
+                </div>
                 <div class="glsp-btn" @click="handleRelationGoods(record)">
                   <span>关联商品</span>
                 </div>
@@ -220,7 +231,7 @@
           <div class="left-btn" v-show="true">
             <span>关联商品管理</span>
           </div>
-          <Checkbox v-model="lirunVal" label="利润计算：" class="lirun" />
+          <Checkbox v-model="lirunVis" label="利润计算：" class="lirun" />
           <div class="antv-box">
             <div class="tbdp">快递</div>
             <a-input :bordered="false" v-model:value="formData.product" placeholder="请输入订单号" class="aselect">
@@ -250,6 +261,116 @@
       </div>
     </a-affix>
   </div>
+
+  <!-- 关联商品 -->
+  <a-modal v-model:open="relateVisble" width="56%" style="top: 20px">
+    <template #title>
+      <div class="relate-title">
+        <span>关联商品</span>
+      </div>
+    </template>
+    <template #footer>
+      <div class="relate-footer">
+        <div class="relate-footer-btn-1" @click="handleSubmitRelation">
+          <span>提交关联</span>
+        </div>
+        <div class="relate-footer-btn-2" @click="relateVisble = false">
+          <span>暂不关联</span>
+        </div>
+      </div>
+    </template>
+    <div class="relate-content">
+      <div class="left-con">
+        <div class="goods-info" v-if="relateRecord.sku_order_list && relateRecord.sku_order_list.length > 0">
+          <img :src="relateRecord.sku_order_list[0].product_pic" alt="" />
+          <div class="goods-info-content">
+            <div>{{ relateRecord.sku_order_list[0].product_name }}</div>
+            <div>店铺名称：{{ relateRecord.shop_name }}</div>
+            <div>下单颜色：{{ relateRecord.sku_order_list[0].spec[0].value }}</div>
+            <div>价格：¥{{ relateRecord.sku_order_list[0].goods_price / 100 }}</div>
+          </div>
+        </div>
+        <div class="search-fun">
+          <div class="search-input">
+            <a-input :bordered="false" v-model:value="goodsVal" placeholder="请输入货号或商品名称" />
+          </div>
+          <div class="search-btn" @click="handleQuerySearch">
+            <span>查询</span>
+          </div>
+          <div class="search-img-btn" @click="handleImageSearch(relateRecord.sku_order_list[0].product_pic)">
+            <span>图片识别</span>
+          </div>
+        </div>
+        <div class="l-s" v-if="relateSelectVal.storeInfo">
+          <div class="select-l">
+            <img :src="relateSelectVal.storeInfo.image" alt="" />
+            <div>
+              <span>对比</span>
+            </div>
+          </div>
+          <div class="select-r">
+            <div class="s-item">
+              <span>档口：</span>
+              <span>{{ relateSelectVal.storeInfo.goods_address }}</span>
+            </div>
+            <div class="s-item">
+              <span>货号：</span>
+              <span>{{ relateSelectVal.storeInfo.keyword }}</span>
+            </div>
+            <div class="s-item">
+              <span>颜色：</span>
+              <div class="color-box">
+                <a-select
+                  style="width: 100%; height: 100%"
+                  :bordered="false"
+                  :options="relateSelectVal.productAttr[0].attr_value"
+                  :fieldNames="{ label: 'attr', value: 'attr' }"
+                  v-model:value="relateSelectVal.color"
+                ></a-select>
+              </div>
+            </div>
+            <div class="s-item">
+              <div class="s-item">
+                <span>尺码：</span>
+                <div class="color-box">
+                  <a-select
+                    style="width: 100%; height: 100%"
+                    :bordered="false"
+                    :options="relateSelectVal.productAttr[1].attr_value"
+                    :fieldNames="{ label: 'attr', value: 'attr' }"
+                    v-model:value="relateSelectVal.size"
+                  ></a-select>
+                </div>
+              </div>
+              <div class="s-item">
+                <span>数量：</span>
+                <div class="color-box">
+                  <a-input
+                    style="width: 100%; height: 100%"
+                    :bordered="false"
+                    v-model:value="relateSelectVal.num"
+                  ></a-input>
+                </div>
+              </div>
+            </div>
+            <div class="s-item">
+              <span>单价：</span>
+              <span style="color: #ff5c02">￥{{ relateSelectVal.storeInfo.price }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-con">
+        <div class="img-box">
+          <div v-for="item in goodsList" :key="item.id" class="box" @click="handleClickRelate(item)">
+            <img :src="item.image" alt="" />
+            <div class="price">¥{{ item.price }}</div>
+            <div class="keyword">货号：{{ item.keyword }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a-modal>
 </template>
 
 <script lang="tsx" setup>
@@ -259,7 +380,7 @@ import { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { message, Modal, Space, Input, Button } from 'ant-design-vue'
 import { userStoreList, authorizeGoods, syncDyOrder } from '@/api/shops'
-import { getProducts } from '@/api/store'
+import { getProducts, getProductDetail } from '@/api/store'
 import { useRouter } from 'vue-router'
 import Checkbox from '@/components/checkbox/index.vue'
 import './SyncOrder.scss'
@@ -319,10 +440,13 @@ const columns = [
   }
 ]
 const dataSource = ref<any>([])
-const lirunVal = ref(false)
+const relateRecord = ref<any>({})
+const relateSelectVal = ref<any>({})
+const relateVisble = ref(false)
+const lirunVis = ref(false)
 const tbddtext = ref('同步订单')
 const goodsVal = ref('')
-const goodsList = ref([])
+const goodsList = ref<{ id: string | number; image: string; price: string; keyword: string }[]>([])
 
 const [messageApi, contextHolder] = message.useMessage()
 const currentPage = ref(1) // 当前页码
@@ -342,16 +466,17 @@ const formData = ref({
   qizhi: ''
 })
 
-// 同步店铺
-const handleChange = (value: string[], option: any) => {
-  console.log(`selected ${value}`, option)
-  multipleSelVal.value = option
-}
 const multipleVal = ref(['25573562'])
 const multipleSelVal = ref([])
 const multipleOptions = ref<any[]>([])
 const tabsList = ref<any[]>([])
 const activeTab = ref(0)
+
+// 同步店铺选择
+const handleChange = (value: string[], option: any) => {
+  console.log(`selected ${value}`, option)
+  multipleSelVal.value = option
+}
 
 // 时间日期
 const onChange = (val: RangeValue) => {
@@ -377,7 +502,12 @@ const handleSearch = () => {
     product: formData.value.product
   }).then((res: any) => {
     if (res.status == 200) {
-      dataSource.value = res.data.shop_order_list
+      // dataSource.value = res.data.shop_order_list
+      // 初始化或请求数据时，为每条订单添加 finalProduct 字段
+      dataSource.value = res.data.shop_order_list.map((order: any) => ({
+        ...order,
+        finalProduct: null // 初始化为 null 或空对象
+      }))
       total.value = res.data.total
     } else {
       messageApi.error(res.msg)
@@ -475,6 +605,23 @@ const handleTBDD = async () => {
 }
 handleTBDD()
 
+// 添加提交关联方法
+const handleSubmitRelation = () => {
+  if (!relateRecord.value.finalProduct) {
+    messageApi.warning('请先选择商品')
+    return
+  }
+
+  // 更新表格数据源
+  const index = dataSource.value.findIndex((item: any) => item.order_id === relateRecord.value.order_id)
+
+  if (index !== -1) {
+    dataSource.value[index].finalProduct = relateRecord.value.finalProduct
+    messageApi.success('关联成功')
+    relateVisble.value = false
+  }
+}
+
 // 添加店铺
 const handleTJDP = () => {
   authorizeGoods({ path: window.location.href }).then(
@@ -498,102 +645,56 @@ const fetchUserStoreList = async () => {
   }
 }
 
+// 关联商品
 const handleRelationGoods = (record: any) => {
-  Modal.confirm({
-    title: () => (
-      <>
-        <div class="relate-title">
-          <span>关联商品</span>
-        </div>
-      </>
-    ),
-    icon: null,
-    width: '55%',
-    style: { top: '20px' },
-    footer: (
-      <>
-        <div class={'relate-footer'}>
-          <div class={'relate-footer-btn-1'}>
-            <span>提交关联</span>
-          </div>
-          <div class={'relate-footer-btn-2'} onClick={() => Modal.destroyAll()}>
-            <span>暂不关联</span>
-          </div>
-        </div>
-      </>
-    ),
-    content: (
-      <>
-        <div class={'relate-content'}>
-          <div class={'left-con'}>
-            <div class={'goods-info'}>
-              <img src={record.sku_order_list[0].product_pic} alt="" />
-              <div class={'goods-info-content'}>
-                <div>{record.sku_order_list[0].product_name}</div>
-                <div>店铺名称：{record.shop_name}</div>
-                <div>下单颜色：{record.sku_order_list[0].spec[0].value}</div>
-                <div>价格：¥{record.sku_order_list[0].goods_price / 100}</div>
-              </div>
-            </div>
-            <div class={'search-fun'}>
-              <div class={'search-input'}>
-                <Input bordered={false} v-model={[goodsVal.value, 'value']} placeholder={'请输入货号或商品名称'} />
-              </div>
-              <div
-                class={'search-btn'}
-                onClick={() => {
-                  getProducts({ page: 1, limit: 12 }).then((res: any) => {
-                    if (res.status == 200) {
-                      goodsList.value = res.data.list
-                      Modal.destroyAll()
-                      handleRelationGoods(record)
-                    } else {
-                      messageApi.error(res.msg)
-                    }
-                  })
-                }}
-              >
-                <span>查询</span>
-              </div>
-              <div
-                class={'search-img-btn'}
-                onClick={() => {
-                  getProducts({ page: 1, limit: 12, url: record.sku_order_list[0].product_pic }).then((res: any) => {
-                    if (res.status == 200) {
-                      messageApi.success('图片识别成功')
-                      nextTick(() => {
-                        goodsList.value = res.data.list
-                        Modal.destroyAll()
-                        handleRelationGoods(record)
-                      })
-                    } else {
-                      messageApi.error(res.msg)
-                    }
-                  })
-                }}
-              >
-                <span>图片识别</span>
-              </div>
-            </div>
-            <div class={'l-s'}>x</div>
-          </div>
-          <div class={'right-con'}>
-            <div class={'img-box'}>
-              {goodsList.value.map((item: any, index) => (
-                <div class={'box'} key={item.id}>
-                  <img src={item.image} alt="" />
-                  <div class={'price'}>¥{item.price}</div>
-                  <div class={'keyword'}>货号：{item.keyword}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </>
-    ),
-    onOk: () => {}
+  nextTick(() => {
+    relateRecord.value = record
+    relateVisble.value = true
   })
 }
+
+// 查询  图片识别
+const handleImageSearch = (product_pic?: string) => {
+  getProducts({ page: 1, limit: 12, url: product_pic }).then((res: any) => {
+    if (res.status == 200) {
+      messageApi.success('图片识别成功')
+      nextTick(() => {
+        goodsList.value = res.data.list
+      })
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+const handleQuerySearch = () => {
+  getProducts({ page: 1, limit: 12, keyword: goodsVal.value }).then((res: any) => {
+    if (res.status == 200) {
+      goodsList.value = res.data.list
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
+
+// 点击商品
+const handleClickRelate = (item: any) => {
+  getProductDetail(item.id).then((res: any) => {
+    console.log(res, 'res')
+    if (res.status == 200) {
+      relateSelectVal.value = res.data
+      relateRecord.value.finalProduct = {
+        id: item.id,
+        image: item.image,
+        price: item.price,
+        keyword: item.keyword,
+        color: relateSelectVal.value.color,
+        size: relateSelectVal.value.size,
+        num: relateSelectVal.value.num
+      }
+    }
+  })
+}
+
 fetchUserStoreList()
 </script>
 
