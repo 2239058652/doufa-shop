@@ -235,7 +235,7 @@
               <div>
                 <span>加入货架</span>
               </div>
-              <div>
+              <div @click="handleUploadToDy">
                 <span>一件上传</span>
               </div>
               <div>
@@ -375,10 +375,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, type RendererElement, type RendererNode, type VNode } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail, addGoodsToCart, collectGoodsTo } from '@/api/store'
+import { AuthStoreGoodsList } from '@/api/upstore'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
 import Popover from '@/components/phopopover/index.vue'
@@ -418,10 +419,16 @@ const goodsDetailNum = ref(0)
 const goodsDetail = ref<any>({})
 const imageBaseUrl = ref('')
 const newAttrValueList = ref<any[]>([])
+const tableDataList = ref<any[]>([]) //上货店铺列表
 
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
 const router = useRouter()
+
+onMounted(() => {
+  el.value = document.querySelector('.router-view')
+  fetchGoodsDetail()
+})
 
 // 监听选择变化
 watch([goodsDetailNum, colorIndex, sizeIndex], () => {
@@ -579,7 +586,7 @@ const { id: detailId }: any = route.params
 const fetchGoodsDetail = () => {
   getProductDetail(detailId).then((res: any) => {
     if (res.status == 200) {
-      console.log(res.data)
+      console.log('商品详情', res.data)
       handleColorFilter(res.data)
       goodsDetail.value = res.data
       imageBaseUrl.value = res.data.storeInfo.image_base
@@ -594,7 +601,7 @@ const handleColorFilter = (item: any) => {
   const productArray = convertToArray(item.productValue)
   const newAttrValue = getAttrImages(productArray, item.productAttr?.[0]?.attr_value)
   newAttrValueList.value = newAttrValue
-  console.log(newAttrValueList.value)
+  console.log('处理颜色数据获取到颜色对应的图片', newAttrValueList.value)
 }
 
 // 处理颜色数据获取到颜色对应的图片
@@ -668,10 +675,24 @@ const handleCollect = debounce((e: Event) => {
     }
   })
 }, 200)
-onMounted(() => {
-  el.value = document.querySelector('.router-view')
-  fetchGoodsDetail()
-})
+
+// 一件上传
+const handleUploadToDy = () => {
+  // 获取店铺列表
+  AuthStoreGoodsList().then((res: { status: number; data: { list: object[]; count: number }; msg: string }) => {
+    if (res.status == 200) {
+      if (res.data.list.length == 0) {
+        messageApi.error('请先添加店铺')
+        return
+      }
+      // 过滤掉过期的店铺列表
+      const currentTime = Math.floor(Date.now() / 1000)
+      tableDataList.value = res.data.list.filter((item: any) => item.expire_time > currentTime)
+    } else {
+      messageApi.error(res.msg)
+    }
+  })
+}
 </script>
 <style scoped src="./Merchandis.scss"></style>
 <style lang="scss" scoped>
