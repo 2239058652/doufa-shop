@@ -372,6 +372,50 @@
         </div>
       </div>
     </div>
+
+    <!-- 上传店铺 -->
+    <div class="upload_mask" v-if="uploadState">
+      <div class="upload_con">
+        <div class="top">
+          <div></div>
+          <div class="title">上传店铺</div>
+          <img @click="uploadState = false" src="../../assets/image/close.png" alt="" />
+        </div>
+        <div class="center">
+          <div style="margin-left: 42px; display: flex; justify-content: space-between; align-items: center">
+            <a-button type="primary" danger ghost @click="addShopList">添加店铺</a-button>
+          </div>
+          <a-table
+            bordered
+            :dataSource="tableDataList"
+            :pagination="false"
+            :columns="columns"
+            style="margin-left: 38px; margin-top: 10px"
+            rowKey="store_id"
+          >
+            <!-- 自定义 ID 列 -->
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex === 'store_id'">
+                <div style="display: flex; align-items: center; justify-content: center">
+                  <span style="width: 18px; height: 18px">
+                    <img style="width: 18px; height: 18px" src="@/assets/image/douyin.png" alt="" />
+                  </span>
+                  <span style="margin-left: 10px">{{ record.store_id }}</span>
+                </div>
+              </template>
+
+              <!-- 自定义操作列 -->
+              <template v-else-if="column.dataIndex === 'actions'">
+                <a-button type="primary" danger @click="confirmUpload(record)">确认上传</a-button>
+              </template>
+            </template>
+          </a-table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 商品上传必填项页面 -->
+    <SellUpload ref="sellUploadRef" @closeStateUpload="uploadState = false" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -379,13 +423,14 @@ import { onMounted, ref, watch, type RendererElement, type RendererNode, type VN
 import { useRoute, useRouter } from 'vue-router'
 import { useMouseInElement, useScroll } from '@vueuse/core'
 import { getProductDetail, addGoodsToCart, collectGoodsTo } from '@/api/store'
-import { AuthStoreGoodsList } from '@/api/upstore'
+import { AuthStoreGoodsList, getSellsUpload } from '@/api/upstore'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
 import Popover from '@/components/phopopover/index.vue'
 import { useClipboard } from '@vueuse/core'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
 import { debounce } from '@/utils/util'
+import SellUpload from './components/sellUpload.vue'
 
 const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
@@ -420,6 +465,20 @@ const goodsDetail = ref<any>({})
 const imageBaseUrl = ref('')
 const newAttrValueList = ref<any[]>([])
 const tableDataList = ref<any[]>([]) //上货店铺列表
+const uploadState = ref(false) // 上传店铺弹窗显示状态
+const columns = ref([
+  { title: 'ID', dataIndex: 'store_id', key: 'store_id', align: 'center' },
+  { title: '店铺', dataIndex: 'store_name', key: 'store_name', align: 'center' },
+  { title: '操作', dataIndex: 'actions', key: 'actions', align: 'center' }
+])
+
+const sellUploadRef = ref() // 一件上传组件
+
+const type = ref('')
+const skuList = ref<any>([])
+const detailData = ref([]) //商品&店铺信息
+const colorData = ref([]) //颜色信息
+const infoData = ref([]) //尺寸信息
 
 const [messageApi, contextHolder] = message.useMessage()
 const route = useRoute()
@@ -590,6 +649,21 @@ const fetchGoodsDetail = () => {
       handleColorFilter(res.data)
       goodsDetail.value = res.data
       imageBaseUrl.value = res.data.storeInfo.image_base
+      type.value = res.data.storeInfo.cate_id
+      detailData.value = res.data.storeInfo //赋值商品&店铺信息
+      let [color, size] = res.data.productAttr //颜色信息、尺码信息解构
+      colorData.value = color.attr_value //颜色
+      infoData.value = size.attr_value //尺寸
+      // 添加颜色和尺码字段用以表格展示、
+      var test = Object.values(res.data.productValue)
+      skuList.value = test.map((element: any, index: number) => {
+        const [colorName, size] = element.suk.split(',')
+        return {
+          ...element,
+          color: colorName.trim(),
+          size: size.trim()
+        }
+      })
     } else {
       messageApi.error(res.msg)
     }
@@ -688,9 +762,32 @@ const handleUploadToDy = () => {
       // 过滤掉过期的店铺列表
       const currentTime = Math.floor(Date.now() / 1000)
       tableDataList.value = res.data.list.filter((item: any) => item.expire_time > currentTime)
+      uploadState.value = true
     } else {
       messageApi.error(res.msg)
     }
+  })
+}
+// 添加店铺/跳转授权
+const addShopList = () => {
+  getSellsUpload({
+    path: window.location.href
+  }).then((res: { code: number; data: { url: string | URL | undefined } }) => {
+    if (res.code == 100010) {
+      window.open(res.data.url)
+    }
+  })
+}
+
+// 确认上传
+const confirmUpload = (row: any) => {
+  sellUploadRef.value.dialogControl('商品上传', {
+    color: colorData.value,
+    info: detailData.value,
+    size: infoData.value,
+    selectionList: [{ ...row }],
+    skuList: skuList.value,
+    type: type.value
   })
 }
 </script>
