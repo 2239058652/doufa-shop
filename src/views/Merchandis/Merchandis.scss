@@ -1151,17 +1151,21 @@
   height: 100%;
   background: rgba(0, 0, 0, .4);
   z-index: 111;
-  z-index: 1299;
+
+  /* 确保蒙层可点击 */
+  pointer-events: auto;
 
   .upload_con {
     width: 832px;
     height: 578px;
     border-radius: 24px;
-    background: #f7f7f7;
+    background: #ffff;
     left: 50%;
     top: 50%;
     position: fixed;
     transform: translate(-50%, -50%);
+    /* 阻止内容区域事件穿透 */
+    pointer-events: auto;
 
     .top {
       width: 754px;
@@ -1175,19 +1179,58 @@
       img {
         width: 24px;
         height: 24px;
+        object-fit: cover;
         cursor: pointer;
       }
 
       .title {
-        font-size: 24px;
-        color: #333;
+        height: 31px;
         font-weight: bold;
+        font-size: 24px;
+        color: #333333;
+        line-height: 31px;
+        text-align: center;
+        font-style: normal;
       }
     }
 
     .center {
       width: 754px;
       height: 450px;
+
+      .btn-addshop {
+        margin-left: 42px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 86px;
+        height: 30px;
+        background: #fef0f0;
+        border: 1px solid #fab7b7;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          background: #f56c6c;
+
+          span {
+            color: #FFFFFF;
+          }
+        }
+
+        span {
+          height: 20px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #f56c6c;
+          line-height: 20px;
+          text-align: left;
+          font-style: normal;
+        }
+      }
     }
 
     .bottom {

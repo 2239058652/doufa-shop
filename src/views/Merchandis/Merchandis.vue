@@ -374,16 +374,16 @@
     </div>
 
     <!-- 上传店铺 -->
-    <div class="upload_mask" v-if="uploadState">
-      <div class="upload_con">
+    <div class="upload_mask" v-if="uploadState" @click="uploadState = false">
+      <div class="upload_con" @click.stop>
         <div class="top">
           <div></div>
           <div class="title">上传店铺</div>
           <img @click="uploadState = false" src="../../assets/image/close.png" alt="" />
         </div>
         <div class="center">
-          <div style="margin-left: 42px; display: flex; justify-content: space-between; align-items: center">
-            <a-button type="primary" danger ghost @click="addShopList">添加店铺</a-button>
+          <div class="btn-addshop" @click="addShopList">
+            <span>添加店铺</span>
           </div>
           <a-table
             bordered
@@ -762,11 +762,11 @@ const handleUploadToDy = () => {
       // 过滤掉过期的店铺列表
       const currentTime = Math.floor(Date.now() / 1000)
       tableDataList.value = res.data.list.filter((item: any) => item.expire_time > currentTime)
-      uploadState.value = true
     } else {
       messageApi.error(res.msg)
     }
   })
+  uploadState.value = true
 }
 // 添加店铺/跳转授权
 const addShopList = () => {

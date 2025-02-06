@@ -9,47 +9,51 @@
     destroyOnClose
   >
     <div class="content">
+      <!-- 左侧ssasahsahg商品名称价格 设置 -->
       <div class="left_content">
         <div class="left_name">商品名称</div>
         <div class="left_radio">
-          <a-typography-text strong style="font-size: 12px">价格设置:</a-typography-text>
+          <a-col :span="24">
+            <span style="font-size: 12px; font-weight: bold">价格设置:</span>
+          </a-col>
           <a-radio-group v-model:value="cgorlrRio" @change="handleRadioChange">
-            <a-row style="margin-left: 30px">
-              <a-col :span="24" class="radio-item">
-                <a-radio value="1">来源价+</a-radio>
-                <a-input
-                  :disabled="cgorlrRio !== '1'"
-                  v-model:value="cgval"
-                  style="width: 100px; margin-left: 8px"
-                  type="number"
-                  @change="handleCgChange"
-                >
-                  <template #suffix>
-                    <span>元</span>
-                  </template>
-                </a-input>
-              </a-col>
-              <a-col :span="24" class="radio-item" style="margin-top: 10px">
-                <a-radio value="2">来源价×</a-radio>
-                <a-input
-                  :disabled="cgorlrRio !== '2'"
-                  v-model:value="lrval"
-                  style="width: 100px; margin-left: 8px"
-                  type="number"
-                  @change="handleLrChange"
-                >
-                  <template #suffix>
-                    <span>倍</span>
-                  </template>
-                </a-input>
-              </a-col>
-            </a-row>
+            <a-radio :style="radioStyle" :value="1" class="radio-item">
+              来源价+
+              <a-input-number
+                :disabled="cgorlrRio == '2'"
+                v-model:value="cgval"
+                style="width: 146px; margin-left: 8px"
+                @change="handleCgChange"
+              >
+                <template #addonAfter>
+                  <span>元</span>
+                </template>
+              </a-input-number>
+            </a-radio>
+            <a-radio :style="radioStyle" :value="2" class="radio-item">
+              来源价×
+              <a-input-number
+                :disabled="cgorlrRio == '1'"
+                v-model:value="lrval"
+                style="width: 146px; margin-left: 8px"
+                @change="handleLrChange"
+                :min="0"
+              >
+                <template #addonAfter>
+                  <span>倍</span>
+                </template>
+              </a-input-number>
+            </a-radio>
           </a-radio-group>
         </div>
         <div v-for="(item, index) in picList" :key="item.id" class="left_items">
           <div class="left_item">
             <div class="number">{{ index + 1 }}</div>
-            <img class="product-image" :src="item.image" alt="商品图片" />
+            <img
+              style="width: 30%; height: 100%; padding: 10px 10px 10px 10px; box-sizing: border-box"
+              :src="item.image"
+              alt="商品图片"
+            />
             <div class="text_center">
               <div class="content">{{ item.store_name }}</div>
               <div class="price">¥{{ item.price }}</div>
@@ -57,17 +61,47 @@
           </div>
         </div>
       </div>
+
+      <!-- 右侧商品信息 必填项 -->
       <div class="right_content">
         <a-card class="box-card" style="width: 95%; max-height: 750px; overflow-y: auto">
-          <MustForm ref="mustFormRef" :formData="formData" :templateList="templateList" />
+          <!-- <MustForm ref="mustFormRef" :formData="formData" :templateList="templateList" /> -->
+          <div>
+            <a-form
+              ref="ruleFormRef"
+              labelAlign="left"
+              :model="formData"
+              name="sellUploadForm"
+              autocomplete="off"
+              :rules="rules"
+            >
+              <a-row>
+                <a-col :span="24">
+                  <div class="bt-title">必填项</div>
+                  <div class="bt-dash"></div>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="商品标题" name="store_name" has-feedback>
+                    <a-input
+                      style="width: 100%"
+                      v-model:value="formData.store_name"
+                      placeholder="请输入15-60个字符（8-30个汉字）"
+                    />
+                  </a-form-item>
+                </a-col>
+              </a-row>
+            </a-form>
+          </div>
         </a-card>
       </div>
     </div>
 
     <template #footer>
       <div class="modal-footer">
-        <a-button type="primary" danger @click="handleAdd(true)" :loading="loading">发布商品</a-button>
-        <a-button @click="handleAdd(false)">保存草稿</a-button>
+        <div>
+          <a-button type="primary" danger @click="handleAdd(true)" :loading="loading">发布商品</a-button>
+          <a-button @click="handleAdd(false)">保存草稿</a-button>
+        </div>
         <div class="footer-notice">
           部分信息为平台同步信息，
           <span style="color: #ff4d4f">您应仔细检查每项信息，如信息有误，应修改后发布</span>， 避免虚假宣传等风险
@@ -81,15 +115,25 @@
 import { reactive, ref, nextTick } from 'vue'
 import { message } from 'ant-design-vue'
 import { getTemplateList, upAddProduct } from '@/api/upstore'
+import type { Rule } from 'ant-design-vue/es/form'
 // import MustForm from './mustForm.vue'
 
 // 组件逻辑部分保持基本不变，主要修改消息提示和部分组件API调用方式
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const formData = reactive<any>({ data: {} })
+const formData = ref<any>({})
 
 const mustFormRef = ref<InstanceType<typeof MustForm>>()
 const emits = defineEmits(['closeStateUpload', 'uploadList'])
+
+const rules: Record<string, Rule[]> = {
+  store_name: [{ required: true, message: '请输入15-60个字符（8-30个汉字）', trigger: 'change' }]
+}
+const radioStyle = reactive({
+  display: 'flex',
+  height: '32px',
+  lineHeight: '32px'
+})
 
 const loading = ref(false)
 // 采购价或者利润率
@@ -141,7 +185,7 @@ const handleDialogClosed = () => {
     mustFormRef.value?.handleDialogClosed()
     dialogTitle.value = ''
     picList.value = []
-    formData.data = {}
+    formData.value = {}
     templateList.value = []
     cgorlrRio.value = '1'
     cgval.value = ''
@@ -158,7 +202,9 @@ function dialogControl(sts, edits) {
       picList.value = []
       nextTick(() => {
         picList.value.push(edits.info)
-        formData.data = edits
+        formData.value = edits
+        console.log(formData, 'aaaaaa')
+
         templateList.value = res.data.List
         dialogTitle.value = ''
         dialogVisible.value = true
@@ -414,3 +460,22 @@ defineExpose({
 </script>
 
 <style src="./sellUpload.scss" scoped></style>
+<style scoped>
+.radio-item {
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-notice {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  margin-top: 12px;
+}
+</style>

@@ -436,7 +436,7 @@
                 popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
               >
                 <template #reference>
-                  <img style="" src="../../../assets/fonts/question.png" alt />
+                  <img style="" src="../../../assets/image/question.png" alt="" />
                 </template>
                 <template #default>
                   <div class="demo-rich-conent" style="display: flex; gap: 16px; flex-direction: column">
@@ -522,12 +522,16 @@
 <script lang="ts" setup>
 import { reactive, ref, nextTick, computed, onMounted, watch, watchEffect } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import { getTemplateList, getPrdCateList } from '@/api/user'
-import { getCatePropertyList, fetchBrandList, fetchProUpRule } from '@/api/product'
-import { Delete, Download, Plus, ZoomIn, Check } from '@element-plus/icons-vue'
-import { ElMessage, type UploadFile, type UploadRequestOptions } from 'element-plus'
+import {
+  getTemplateList,
+  getPrdCateList,
+  getCatePropertyList,
+  fetchBrandList,
+  fetchProUpRule,
+  getProductList
+} from '@/api/upstore'
 import SizeModel from './sizeModel.vue'
-import { getProductList, fetchUploadFile } from '@/api/product'
+import { fetchUploadFile } from '@/api/index'
 import type { CascaderProps } from 'element-plus'
 
 const dialogImageUrl = ref('')
@@ -931,180 +935,4 @@ defineExpose({
 })
 </script>
 
-<style scoped>
-.xg {
-  height: 20px;
-  font-family:
-    PingFangSC,
-    PingFang SC;
-  font-weight: 400;
-  font-size: 14px;
-  color: #999999;
-  line-height: 20px;
-  text-align: left;
-  font-style: normal;
-}
-
-.bt-title {
-  width: 100%;
-  height: 25px;
-  font-family:
-    PingFangSC,
-    PingFang SC;
-  font-weight: 500;
-  font-size: 18px;
-  color: #f83126;
-  line-height: 25px;
-  text-align: left;
-  font-style: normal;
-}
-
-.moban {
-  color: #3a84ff;
-  margin-left: 10px;
-  cursor: pointer;
-
-  &:hover {
-    color: #2066d6;
-  }
-}
-
-.bt-dash {
-  border-bottom: 2px dashed #ccc;
-  margin-bottom: 20px;
-  margin-top: 5px;
-}
-
-.image-container {
-  display: flex;
-  gap: 10px;
-}
-
-.image-container img {
-  width: 90px;
-  height: 90px;
-  border: 2px solid transparent;
-  cursor: pointer;
-
-  &&:hover {
-    border-color: blue;
-  }
-}
-
-.image-container img.selected {
-  border-color: blue;
-}
-
-.priceFont {
-  width: 371px;
-  height: 24px;
-  font-family:
-    PingFangSC,
-    PingFang SC;
-  font-weight: 400;
-  font-size: 12px;
-  color: #999999;
-  line-height: 24px;
-  text-align: left;
-  font-style: normal;
-}
-
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-
-.drag {
-  display: flex;
-  gap: 10px;
-}
-
-.drage-container {
-  display: flex;
-  gap: 10px;
-}
-
-.drag-item {
-  border: 1px dashed #d1d1d1;
-  width: 120px;
-  height: 120px;
-  text-align: center;
-  cursor: move;
-
-  img {
-    width: 80%;
-    height: 80%;
-    padding-top: 10%;
-  }
-
-  &:hover {
-    background-color: #f5f7fa;
-  }
-}
-
-.drag-item-add {
-  border: 1px dashed #d1d1d1;
-  width: 120px;
-  height: 120px;
-  text-align: center;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f7fa;
-  }
-}
-
-.drag-detail {
-  display: flex;
-  gap: 10px;
-}
-
-.drage-container-d {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.drag-item-d {
-  border: 1px dashed #d1d1d1;
-  width: 120px;
-  height: 140px;
-  text-align: center;
-  cursor: move;
-  margin: 0 0 50px 0;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  &:hover {
-    background-color: #f5f7fa;
-  }
-}
-
-.drag-item-add-d {
-  border: 1px dashed #d1d1d1;
-  width: 120px;
-  height: 140px;
-  text-align: center;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f7fa;
-  }
-}
-</style>
+<style scoped></style>
