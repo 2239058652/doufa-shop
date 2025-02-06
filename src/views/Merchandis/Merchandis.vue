@@ -415,7 +415,7 @@
     </div>
 
     <!-- 商品上传必填项页面 -->
-    <SellUpload ref="sellUploadRef" @closeStateUpload="uploadState = false" />
+    <UploadCommodityModel ref="uploadCommodityRef" @closeStateUpload="uploadState = false" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -430,7 +430,7 @@ import Popover from '@/components/phopopover/index.vue'
 import { useClipboard } from '@vueuse/core'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
 import { debounce } from '@/utils/util'
-import SellUpload from './components/sellUpload.vue'
+import UploadCommodityModel from './components/Commodity.vue'
 
 const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
@@ -472,7 +472,7 @@ const columns = ref([
   { title: '操作', dataIndex: 'actions', key: 'actions', align: 'center' }
 ])
 
-const sellUploadRef = ref() // 一件上传组件
+const uploadCommodityRef = ref() // 一件上传组件
 
 const type = ref('')
 const skuList = ref<any>([])
@@ -781,7 +781,7 @@ const addShopList = () => {
 
 // 确认上传
 const confirmUpload = (row: any) => {
-  sellUploadRef.value.dialogControl('商品上传', {
+  uploadCommodityRef.value.dialogControl('商品上传', {
     color: colorData.value,
     info: detailData.value,
     size: infoData.value,

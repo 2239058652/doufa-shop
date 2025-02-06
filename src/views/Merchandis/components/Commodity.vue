@@ -127,7 +127,7 @@ const mustFormRef = ref<InstanceType<typeof MustForm>>()
 const emits = defineEmits(['closeStateUpload', 'uploadList'])
 
 const rules: Record<string, Rule[]> = {
-  store_name: [{ required: true, message: '请输入15-60个字符（8-30个汉字）', trigger: 'change' }]
+  store_name: [{ required: true, message: '请输入15-60个字符（8-30个汉字）', trigger: ['change', 'blur'] }]
 }
 const radioStyle = reactive({
   display: 'flex',
