@@ -42,10 +42,7 @@ export const getPrdCateList = (params: { token: string; cid?: string }) => {
 
 // 获取商品属性列表
 export const getCatePropertyList = (params: {
-  data: {
-    token: string
-    category_leaf_id: string
-  }
+  data: { token: string; category_leaf_id: string }
 }) => {
   return request.get({
     url: '/api/product/getCateProperty',

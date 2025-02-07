@@ -16,12 +16,12 @@
           <a-col :span="24">
             <span style="font-size: 12px; font-weight: bold">价格设置:</span>
           </a-col>
-          <a-radio-group v-model:value="cgorlrRio" @change="handleRadioChange">
+          <a-radio-group v-model:value="formData.cgorlrRio" @change="handleRadioChange">
             <a-radio :style="radioStyle" :value="1" class="radio-item">
               来源价+
               <a-input-number
-                :disabled="cgorlrRio == '2'"
-                v-model:value="cgval"
+                :disabled="formData.cgorlrRio == 2"
+                v-model:value="formData.cgval"
                 style="width: 146px; margin-left: 8px"
                 @change="handleCgChange"
               >
@@ -33,8 +33,8 @@
             <a-radio :style="radioStyle" :value="2" class="radio-item">
               来源价×
               <a-input-number
-                :disabled="cgorlrRio == '1'"
-                v-model:value="lrval"
+                :disabled="formData.cgorlrRio == 1"
+                v-model:value="formData.lrval"
                 style="width: 146px; margin-left: 8px"
                 @change="handleLrChange"
                 :min="0"
@@ -65,13 +65,12 @@
       <!-- 右侧商品信息 必填项 -->
       <div class="right_content">
         <a-card class="box-card" style="width: 95%; max-height: 750px; overflow-y: auto">
-          <!-- <MustForm ref="mustFormRef" :formData="formData" :templateList="templateList" /> -->
           <div>
             <a-form
               ref="ruleFormRef"
-              labelAlign="left"
+              layout="vertical"
               :model="formData"
-              name="sellUploadForm"
+              name="commodityForm"
               autocomplete="off"
               :rules="rules"
             >
@@ -82,11 +81,170 @@
                 </a-col>
                 <a-col :span="24">
                   <a-form-item label="商品标题" name="store_name" has-feedback>
-                    <a-input
+                    <a-input v-model:value="formData.store_name" placeholder="请输入15-60个字符（8-30个汉字）" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="订单库存计数" name="reduce_type" has-feedback>
+                    <a-radio-group v-model:value="formData.reduce_type" name="reduce_typeGroup">
+                      <a-radio value="1">拍下减库存</a-radio>
+                      <a-radio value="2">付款减库存</a-radio>
+                    </a-radio-group>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="运费模板" name="freight_id">
+                    <a-select v-model:value="formData.freight_id" placeholder="请选择运费模板" style="width: 50%">
+                      <a-select-option v-for="item in templateList" :key="item.template.id" :value="item.template.id">
+                        {{ item.template.template_name }}
+                      </a-select-option>
+                    </a-select>
+                    <span class="moban" @click="refreshList">刷新</span>
+                    <div style="font-size: 12px; color: #999">
+                      如需创建新的运费模板，请自行去抖店新建运费模板。完成新建后，请返回当前页面并点击页面右侧的”刷新“按钮以完成模板更新。
+                    </div>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="类目" name="category_id">
+                    <a-cascader
+                      style="width: 60%"
+                      :options="prdCateList"
+                      :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
+                      v-model:value="formData.category_id"
+                      placeholder="请选择类目"
+                      :load-data="loadData"
+                      change-on-select
+                      @change="handleCascaderChange"
+                    >
+                    </a-cascader>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="商品状态" name="start_sale_type" has-feedback>
+                    <a-radio-group v-model:value="formData.start_sale_type" name="start_sale_type">
+                      <a-radio value="0">直接上传</a-radio>
+                      <a-radio value="1">放置仓库</a-radio>
+                    </a-radio-group>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="七天无理由" name="after_sale_service" has-feedback>
+                    <a-radio-group v-model:value="formData.after_sale_service" name="after_sale_service">
+                      <a-radio value="7-1">支持</a-radio>
+                      <a-radio value="7-0">不支持</a-radio>
+                      <a-radio value="7-2">支持(拆封后不支持)</a-radio>
+                    </a-radio-group>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="客服电话" name="mobile" has-feedback>
+                    <a-input v-model:value="formData.mobile" placeholder="请输入客服电话" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="颜色">
+                    <a-space>
+                      <a-tag :key="tag.attr" v-for="tag in formData.color" :bordered="false">
+                        <span style="color: #909399">{{ tag.attr }}</span>
+                      </a-tag>
+                    </a-space>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="尺码">
+                    <a-space>
+                      <a-tag :key="tag.attr" v-for="tag in formData.size" :bordered="false">
+                        <span style="color: #909399">{{ tag.attr }}</span>
+                      </a-tag>
+                    </a-space>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="SKU信息" required>
+                    <a-table
+                      :columns="columns"
+                      :data-source="formData.tableData"
+                      :pagination="false"
                       style="width: 100%"
-                      v-model:value="formData.store_name"
-                      placeholder="请输入15-60个字符（8-30个汉字）"
-                    />
+                      :scroll="{ y: 400 }"
+                      bordered
+                      size="small"
+                    >
+                      <template #headerCell="{ column }">
+                        <template v-if="column.dataIndex === 'price'">
+                          <a-button size="small" v-if="plgj == true" @click="handlePlgj">批量改价</a-button>
+                          <a-input
+                            ref="plgjInput"
+                            v-else
+                            size="small"
+                            v-model:value="plgjVal"
+                            placeholder="请输入"
+                            @pressEnter="plgjChange"
+                            @blur="plgjChange"
+                          />
+                        </template>
+                        <template v-if="column.dataIndex === 'stock'">
+                          <a-button size="small" v-if="plgkc == true" @click="handlePlgkc">批量改库存</a-button>
+                          <a-input
+                            v-else
+                            ref="plgkcInput"
+                            size="small"
+                            v-model:value="plgkcVal"
+                            placeholder="请输入"
+                            @pressEnter="plgkcChange"
+                            @blur="plgkcChange"
+                          />
+                        </template>
+                      </template>
+                      <template #bodyCell="{ column, record }">
+                        <template v-if="column.dataIndex === 'image'">
+                          <img :src="record.image" style="width: 72px; height: 72px; object-fit: cover" />
+                        </template>
+                        <template v-if="column.dataIndex === 'price'">
+                          <a-input size="small" v-model:value="record.price" />
+                        </template>
+                        <template v-if="column.dataIndex === 'stock'">
+                          <a-input size="small" v-model:value="record.stock" />
+                        </template>
+                      </template>
+                    </a-table>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="售卖价">
+                    <a-input style="width: 50%" v-model:value="smj" disabled>
+                      <template #suffix>
+                        <span>元</span>
+                      </template>
+                    </a-input>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="尺码信息" required>
+                    <a-card style="width: 100%">
+                      <div style="margin-top: 10px">
+                        <a-button size="small" type="primary" @click="addSizeModel">添加尺码表</a-button>
+                        <span class="priceFont" style="margin-left: 20px"
+                          >请先在抖店添加尺码模板后，点击左侧“添加尺码表”按钮选择要添加的尺码模板</span
+                        >
+                      </div>
+                      <div style="margin-top: 10px" v-if="sizeModelVal?.template_id">
+                        <el-button
+                          type="primary"
+                          size="small"
+                          @click="sizeModelRef.previewImage(sizeModelVal.image.url)"
+                        >
+                          <a-icon>
+                            <Check />
+                          </a-icon>
+                          已添加尺码表
+                        </el-button>
+                        <span class="priceFont" style="margin-left: 20px">
+                          {{ sizeModelVal.template_name }}
+                        </span>
+                      </div>
+                    </a-card>
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -111,39 +269,204 @@
   </a-modal>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref, nextTick } from 'vue'
+<script setup lang="tsx">
+import { reactive, ref, nextTick, watch } from 'vue'
 import { message } from 'ant-design-vue'
-import { getTemplateList, upAddProduct } from '@/api/upstore'
+import {
+  getTemplateList,
+  upAddProduct,
+  getPrdCateList,
+  getCatePropertyList,
+  fetchProUpRule,
+  fetchBrandList,
+  getProductList
+} from '@/api/upstore'
 import type { Rule } from 'ant-design-vue/es/form'
-// import MustForm from './mustForm.vue'
+import type { CascaderProps, TableColumnsType } from 'ant-design-vue'
 
-// 组件逻辑部分保持基本不变，主要修改消息提示和部分组件API调用方式
+interface IFormData {
+  token: string
+  cgorlrRio: number
+  cgval: number | null
+  lrval: number | null
+  store_name: string
+  reduce_type: string | null
+  freight_id: string
+  category_id: string[]
+  start_sale_type: string
+  after_sale_service: string
+  mobile: number | null
+  color: any[]
+  size: any[]
+  tableData: any[]
+  shuxing: Record<string, any>
+  after_sale_service_v2: {
+    service_type: string
+    duration: string
+  }
+  is_evaluate_opened: string
+  limit_per_buyer: string
+  maximum_per_order: string
+  minimum_per_order: string
+  reference_price: string
+  certificate_type: string
+}
+
+const loading = ref(false)
+
+const [messageApi, contextHolder] = message.useMessage()
+
+// 已添加尺码表
+const sizeModelVal = ref()
+const sizeModelRef = ref()
+const sizeModelList = ref<any>([])
+const sizeTotal = ref(0)
+
+// 添加尺码表
+const addSizeModel = () => {
+  sizeModelRef.value.handleInit(sizeModelList.value, formData.value.token, sizeTotal.value, formData.data.type)
+}
 const dialogVisible = ref(false)
 const dialogTitle = ref('')
-const formData = ref<any>({})
+const formData = ref<IFormData>({
+  token: '',
+  cgorlrRio: 1,
+  cgval: null,
+  lrval: null,
+  store_name: '',
+  reduce_type: '',
+  freight_id: '',
+  category_id: [],
+  start_sale_type: '',
+  after_sale_service: '',
+  mobile: null,
+  color: [],
+  size: [],
+  tableData: [],
+  shuxing: {},
+  after_sale_service_v2: {
+    service_type: '',
+    duration: ''
+  },
+  is_evaluate_opened: '',
+  limit_per_buyer: '',
+  maximum_per_order: '',
+  minimum_per_order: '',
+  reference_price: '',
+  certificate_type: ''
+})
+const smj = ref('') //售卖价
+const priceValues = formData.value.tableData.map((item: { price: any }) => item.price)
+const maxPrice = Math.max(...priceValues)
+const minPrice = Math.min(...priceValues)
+if (maxPrice >= minPrice * 2.3) {
+  messageApi.error('商品最高价不能超过最低价的2.3倍,请修改价格')
+}
+smj.value = String(minPrice) + '~' + String(maxPrice)
+// 监听table的变化，可能要为售卖价做一下处理
+watch(
+  () => formData.value.tableData,
+  (newVal) => {
+    const priceValues = newVal.map((item: { price: any }) => item.price)
+    const maxPrice = Math.max(...priceValues)
+    const minPrice = Math.min(...priceValues)
+    smj.value = String(minPrice) + '~' + String(maxPrice)
+    if (maxPrice >= minPrice * 2.3) {
+      messageApi.error('商品最高价不能超过最低价的2.3倍,请修改价格')
+    }
+  },
+  { deep: true }
+)
+// 定义表格列
+const columns: TableColumnsType = [
+  {
+    title: '图片',
+    dataIndex: 'image',
+    align: 'center'
+  },
+  {
+    title: '颜色',
+    dataIndex: 'color',
+    align: 'center'
+  },
+  {
+    title: '尺码',
+    dataIndex: 'size',
+    align: 'center'
+  },
+  {
+    title: '批量改价',
+    dataIndex: 'price',
+    align: 'center',
+    width: '15%'
+  },
+  {
+    title: '批量改库存',
+    dataIndex: 'stock',
+    align: 'center',
+    width: '15%'
+  },
+  {
+    title: 'SKU编码',
+    dataIndex: 'bar_code',
+    align: 'center'
+  }
+]
+
+// 属性列表
+const formList = ref<any>([])
+
+// 批量改价
+const plgj = ref(true)
+const plgjVal = ref('')
+const plgjInput = ref()
+const handlePlgj = () => {
+  plgj.value = false
+  plgjVal.value = ''
+  nextTick(() => {
+    plgjInput.value?.focus()
+  })
+}
+const plgjChange = () => {
+  plgj.value = true
+  if (plgjVal.value !== '') {
+    formData.value.tableData.map((x: any) => {
+      x.price = plgjVal.value
+    })
+  }
+}
+// 批量改库存
+const plgkc = ref(true)
+const plgkcVal = ref('')
+const plgkcInput = ref()
+const handlePlgkc = () => {
+  plgkc.value = false
+  plgkcVal.value = ''
+  nextTick(() => {
+    plgkcInput.value?.focus()
+  })
+}
+const plgkcChange = () => {
+  plgkc.value = true
+  if (plgkcVal.value !== '') {
+    formData.value.tableData.map((x: any) => {
+      x.stock = plgkcVal.value
+    })
+  }
+}
 
 const mustFormRef = ref<InstanceType<typeof MustForm>>()
 const emits = defineEmits(['closeStateUpload', 'uploadList'])
 
 const rules: Record<string, Rule[]> = {
-  store_name: [{ required: true, message: '请输入15-60个字符（8-30个汉字）', trigger: ['change', 'blur'] }]
+  store_name: [{ required: true, message: '请输入15-60个字符（8-30个汉字）', trigger: ['change', 'blur'] }],
+  reduce_type: [{ required: true, message: '请选择订单库存计数', trigger: ['change', 'blur'] }]
 }
 const radioStyle = reactive({
   display: 'flex',
   height: '32px',
   lineHeight: '32px'
 })
-
-const loading = ref(false)
-// 采购价或者利润率
-const cgorlrRio = ref('1')
-// 采购价
-const cgval = ref('')
-// 利润率
-const lrval = ref('')
-
-const [messageApi, contextHolder] = message.useMessage()
 
 // 采购输入框变化
 const handleCgChange = (val: number) => {
@@ -165,11 +488,11 @@ const handleLrChange = (val: number) => {
 // 利润采购单选变化
 const handleRadioChange = (val: string | number | boolean) => {
   switch (val) {
-    case '1':
-      handleCgChange(Number(cgval.value))
+    case 1:
+      handleCgChange(Number(formData.value.cgval))
       break
-    case '2':
-      handleLrChange(Number(lrval.value))
+    case 2:
+      handleLrChange(Number(formData.value.lrval))
       break
   }
 }
@@ -179,21 +502,11 @@ const picList = ref<any>([])
 
 const templateList = ref<any>([])
 
-// 关闭清空
-const handleDialogClosed = () => {
-  nextTick(() => {
-    mustFormRef.value?.handleDialogClosed()
-    dialogTitle.value = ''
-    picList.value = []
-    formData.value = {}
-    templateList.value = []
-    cgorlrRio.value = '1'
-    cgval.value = ''
-    lrval.value = ''
-  })
-}
+const prdCateList = ref<any>([])
+
 // 弹窗控制
-function dialogControl(sts, edits) {
+function dialogControl(_sts: string, edits: any) {
+  console.log(edits, 'aaaaaa')
   // 获取运费模板
   getTemplateList({ token: edits.selectionList[0].access_token }).then((res: any) => {
     if (res.status == 200) {
@@ -202,19 +515,166 @@ function dialogControl(sts, edits) {
       picList.value = []
       nextTick(() => {
         picList.value.push(edits.info)
-        formData.value = edits
-        console.log(formData, 'aaaaaa')
+        formData.value = {
+          ...formData.value,
+          store_name: edits.info.store_name,
+          tableData: JSON.parse(JSON.stringify(edits.skuList)),
+          size: edits.size,
+          color: edits.color,
+          token: edits.selectionList[0].access_token
+        }
 
         templateList.value = res.data.List
-        dialogTitle.value = ''
+        fetchPrdCateList()
         dialogVisible.value = true
+        console.log(formData, 'formData')
       })
     } else {
       messageApi.error('当前店铺尚未设置运费模板，请先去抖店设置运费模板设置！')
     }
   })
+  // 获取尺码表模板列表
+  getProductList({
+    data: {
+      token: edits.selectionList[0].access_token,
+      page_size: 10,
+      page_num: 0,
+      template_sub_type: edits.type.includes('67') ? '' : ''
+    }
+  }).then((res: any) => {
+    if (res.status == 200) {
+      nextTick(() => {
+        sizeModelList.value = res.data.component_template_info_list
+        sizeTotal.value = res.data.total_num
+      })
+    }
+  })
 }
 
+// 调用获取类目列表接口  懒加载
+const loadData: CascaderProps['loadData'] = (selectedOptions) => {
+  const targetOption = selectedOptions[selectedOptions.length - 1]
+  targetOption.loading = true
+  getPrdCateList({ token: formData.value.token, cid: targetOption.id }).then((res: any) => {
+    if (res.status === 200) {
+      targetOption.loading = false
+      targetOption.children = res.data.map((item: any) => ({
+        isLeaf: item.is_leaf, // 是否为叶子节点
+        ...item
+      }))
+    }
+  })
+}
+
+// 获取类目列表
+const fetchPrdCateList = () => {
+  getPrdCateList({ token: formData.value.token, cid: '' }).then((res: any) => {
+    if (res.status == 200) {
+      prdCateList.value = []
+      nextTick(() => {
+        res.data.forEach((element: any) => {
+          prdCateList.value.push({
+            isLeaf: element.is_leaf,
+            children: [],
+            ...element
+          })
+        })
+      })
+    }
+  })
+}
+
+const shuxingList = ref<any>([])
+const certificateTypeList = ref<any>([]) // 参考价类型
+const three_guarantees = ref<any>([]) // 售后有效期
+const ppList = ref<any>([])
+
+// 选择类目model变化,请求属性接口列表
+const handleCascaderChange = (value: any, selectedOptions: any) => {
+  // 只有选择到最后一级(叶子节点)时才执行后续操作  或删除change-on-select属性
+  const lastOption = selectedOptions[selectedOptions.length - 1]
+  console.log(lastOption)
+
+  if (!lastOption?.isLeaf) {
+    return
+  }
+  const leafCategoryId = value[value.length - 1]
+
+  formList.value = []
+  shuxingList.value = []
+  getCatePropertyList({ data: { token: formData.value.token, category_leaf_id: leafCategoryId } }).then((res: any) => {
+    if (res.status == 200) {
+      nextTick(() => {
+        // 先过滤掉不是必传的商品属性
+        res.data.data.forEach((element: any) => {
+          if (element.required == 1) {
+            formList.value.push(element)
+          }
+        })
+      })
+    }
+  })
+
+  // 根据文档无品牌id为596120136
+  ppList.value = [{ brand_id: '596120136', name_cn: '无品牌', name_en: '0' }]
+  fetchBrandList({ token: formData.value.token, category_id: leafCategoryId }).then((res: any) => {
+    if (res.status == 200) {
+      nextTick(() => {
+        if (res.data.auth_brand_list) {
+          // 如果是品牌授权，则列表必须选择品牌授权列表 否则加入无品牌选项
+          if (res.data.auth_required) {
+            ppList.value = res.data.auth_brand_list
+          } else {
+            ppList.value = [...ppList.value, ...res.data.auth_brand_list]
+          }
+        } else {
+          ppList.value = [...ppList.value, ...res.data.brand_list]
+        }
+      })
+    }
+  })
+
+  fetchProUpRule({ data: { token: formData.value.token, category_id: leafCategoryId } }).then((res: any) => {
+    if (res.status == 200) {
+      nextTick(() => {
+        const result = []
+        for (const key in res.data.reference_price_rule.certificate_types) {
+          if (res.data.reference_price_rule.certificate_types.hasOwnProperty(key)) {
+            result.push({
+              id: key,
+              name: res.data.reference_price_rule.certificate_types[key]
+            })
+          }
+        }
+        certificateTypeList.value = result
+        three_guarantees.value = res.data.after_sale_rule.three_guarantees.options[0].options // 售后有效期
+      })
+    }
+  })
+}
+
+// 关闭清空
+const handleDialogClosed = () => {
+  nextTick(() => {
+    mustFormRef.value?.handleDialogClosed()
+    dialogTitle.value = ''
+    picList.value = []
+    formData.value = initFormData()
+    templateList.value = []
+  })
+}
+function refreshList() {
+  // 刷新运费模板
+  getTemplateList({ token: formData.value.token }).then((res: any) => {
+    if (res.status == 200) {
+      nextTick(() => {
+        templateList.value = res.data.List
+      })
+    }
+  })
+}
+
+// 发布商品
 const handleAdd = (commit: any) => {
   loading.value = true
   console.log('mustFormRef', mustFormRef.value)
@@ -451,6 +911,36 @@ const handleAdd = (commit: any) => {
     })
 }
 
+// 重置表单数据
+const initFormData = () => {
+  return {
+    token: '',
+    cgorlrRio: 1,
+    cgval: null,
+    lrval: null,
+    store_name: '',
+    reduce_type: '',
+    freight_id: '',
+    category_id: [],
+    start_sale_type: '',
+    after_sale_service: '',
+    mobile: null,
+    color: [],
+    size: [],
+    tableData: [],
+    shuxing: {},
+    after_sale_service_v2: {
+      service_type: '',
+      duration: ''
+    },
+    is_evaluate_opened: '',
+    limit_per_buyer: '',
+    maximum_per_order: '',
+    minimum_per_order: '',
+    reference_price: '',
+    certificate_type: ''
+  }
+}
 defineExpose({
   dialogControl
 })

@@ -155,3 +155,7 @@ table {
 .table-striped {
     background-color: #fafafa; // 添加斑马条纹样式
 }
+
+.ant-table-tbody>tr>td {
+    vertical-align: middle; // 单元格垂直居中
+}
