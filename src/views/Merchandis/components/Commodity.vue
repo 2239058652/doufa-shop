@@ -437,10 +437,7 @@ const handleAdd = (commit: any) => {
     .then((res: any) => {
       if (res.status == 200 && res.data.code == 10000) {
         console.log(res, '上传结果=======================================')
-        messageApi({
-          type: 'success',
-          message: '上传成功！'
-        })
+        messageApi.success('上传成功！')
         dialogVisible.value = false
         loading.value = false
         emits('uploadList')
@@ -459,7 +456,7 @@ defineExpose({
 })
 </script>
 
-<style src="./sellUpload.scss" scoped></style>
+<style src="./Commodity.scss" scoped></style>
 <style scoped>
 .radio-item {
   margin-bottom: 8px;
