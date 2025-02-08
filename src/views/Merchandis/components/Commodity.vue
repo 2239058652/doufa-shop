@@ -258,7 +258,7 @@
                             <div>重要属性</div>
                             <div style="cursor: pointer">
                               <a-popover>
-                                <img style="" src="../../../assets/image/question.png" alt="" />
+                                <img src="../../../assets/image/question.png" alt="" />
                                 <template #content>
                                   <div style="display: flex; gap: 16px; flex-direction: column; width: 200px">
                                     <p style="margin: 0">
@@ -367,6 +367,158 @@
                     </a-card>
                   </a-form-item>
                 </a-col>
+                <a-col :span="24" style="margin-top: 10px">
+                  <a-form-item label="商品主图" required>
+                    <div class="drag">
+                      <VueDraggable
+                        v-model="goodsMainPic"
+                        :animation="150"
+                        ghostClass="ghost"
+                        class="drage-container"
+                        filter=".Joao"
+                        group="person"
+                        :onUpdate="onUpdate"
+                      >
+                        <div v-for="(item, index) in goodsMainPic" :key="item" class="drag-item">
+                          <img :src="item" alt="" />
+                          <div class="delete-btn" @click="deleteMainPic(index)" style="margin-top: 25px">
+                            <span>删除</span>
+                          </div>
+                        </div>
+                      </VueDraggable>
+                    </div>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24" style="margin-top: 20px">
+                  <a-form-item label="商品详情图" required>
+                    <div class="drag-detail">
+                      <VueDraggable
+                        v-model="goodsXqPic"
+                        :animation="150"
+                        ghostClass="ghost"
+                        class="drage-container-d"
+                        filter=".Joao"
+                        group="person"
+                        :onUpdate="onUpdate"
+                      >
+                        <div v-for="(item, index) in goodsXqPic" :key="item" class="drag-item-d">
+                          <img :src="item" alt="" />
+                          <div class="delete-btn" @click="deleteXqPic(index)">
+                            <span>删除</span>
+                          </div>
+                        </div>
+                      </VueDraggable>
+                    </div>
+                  </a-form-item>
+                </a-col>
+              </a-row>
+              <a-row>
+                <a-col :span="24">
+                  <div class="bt-title">非必填项</div>
+                  <div class="bt-dash"></div>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="三包服务承诺" name="after_sale_service_v2">
+                    <a-radio-group v-model:value="formData.after_sale_service_v2.service_type" style="width: 60%">
+                      <a-radio :value="1">不包含</a-radio>
+                      <a-radio :value="2">延长售后服务有效期</a-radio>
+                      <a-select
+                        v-model:value="formData.after_sale_service_v2.duration"
+                        placeholder="请选择延长售后服务天数"
+                        v-if="formData.after_sale_service_v2.service_type == '2'"
+                        style="width: 35%"
+                      >
+                        <template #notFoundContent>
+                          <span style="color: #ff4d4f"> 请先选择类目再选择售后服务天数 </span>
+                        </template>
+                        <a-select-option v-for="sel in three_guarantees" :key="sel.value" :value="sel.value">
+                          {{ sel.name }}
+                        </a-select-option>
+                      </a-select>
+                    </a-radio-group>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="测评短视频" name="is_evaluate_opened">
+                    <a-radio-group v-model:value="formData.is_evaluate_opened">
+                      <a-radio :value="1">开启</a-radio>
+                      <a-radio :value="2">关闭</a-radio>
+                    </a-radio-group>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="商品限购">
+                    <a-row>
+                      <a-col :span="8" class="xg">
+                        <span>每个用户累计限购</span>
+                        <a-input style="width: 50%; margin: 0 10px" v-model:value="formData.limit_per_buyer" />
+                        <span>件</span>
+                      </a-col>
+                      <a-col :span="8" class="xg">
+                        <span>每次限购</span>
+                        <a-input style="width: 50%; margin: 0 10px" v-model:value="formData.maximum_per_order" />
+                        <span>件</span>
+                      </a-col>
+                      <a-col :span="8" class="xg">
+                        <span>每次至少购买</span>
+                        <a-input style="width: 50%; margin: 0 10px" v-model:value="formData.minimum_per_order" />
+                        <span>件</span>
+                      </a-col>
+                    </a-row>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24">
+                  <a-form-item label="参考价" name="reference_price">
+                    <a-input style="width: 50%" v-model:value="formData.reference_price" placeholder="请输入参考价">
+                      <template #suffix>
+                        <span>元</span>
+                      </template>
+                    </a-input>
+                    <span style="margin-left: 10px; cursor: pointer">
+                      <a-popover>
+                        <img src="../../../assets/image/question.png" alt="" />
+                        <template #content>
+                          <div style="display: flex; gap: 16px; flex-direction: column; width: 400px">
+                            <p style="margin: 0">
+                              请确保录入的价格真实有效并与价格凭证保持一致。若价格录入错误或上传虚假凭证，您将面临价格欺诈等法律风险。当前参考价主要场景为直播间讲解展示使用，未来将应用在商品详情、搜索等场景。
+                            </p>
+                          </div>
+                        </template>
+                      </a-popover>
+                    </span>
+                  </a-form-item>
+                  <a-form-item>
+                    <span class="priceFont"> 若输入的参考价小于售卖价，系统将自动将自动调整为最高售卖价。 </span>
+                    <span class="priceFont"> 若设置了参考价，但未设置凭证类型/参凭图，则设置参考价将无效。 </span>
+                  </a-form-item>
+                </a-col>
+
+                <a-col :span="12" v-if="formData.reference_price">
+                  <a-form-item label="参考价凭证">
+                    <a-upload
+                      v-model:file-list="formData.reference_price_certificate.certificate_urls"
+                      list-type="picture-card"
+                      :max-count="1"
+                      :beforeUpload="handleUpload"
+                    >
+                      <div v-if="formData.reference_price_certificate.certificate_urls.length < 1">
+                        <plus-outlined />
+                      </div>
+                    </a-upload>
+                    <a-modal :open="previewVisible" :footer="null" @cancel="previewVisible = false">
+                      <img style="width: 100%" :src="formData.reference_price_certificate.certificate_urls[0]" alt="" />
+                    </a-modal>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12" v-if="formData.reference_price">
+                  <a-form-item label="参考价类型">
+                    <a-select style="width: 90%" v-model:value="formData.reference_price_certificate.certificate_type">
+                      <a-select-option v-for="sel in certificateTypeList" :key="sel.id" :value="sel.id">
+                        {{ sel.name }}
+                      </a-select-option>
+                    </a-select>
+                  </a-form-item>
+                </a-col>
               </a-row>
             </a-form>
           </div>
@@ -393,23 +545,21 @@
 <script setup lang="tsx">
 import { reactive, ref, nextTick, watch, h } from 'vue'
 import { message } from 'ant-design-vue'
-import {
-  getTemplateList,
-  upAddProduct,
-  getPrdCateList,
-  getCatePropertyList,
-  fetchProUpRule,
-  fetchBrandList,
-  getProductList
-} from '@/api/upstore'
+import { getTemplateList, upAddProduct, getPrdCateList, getCatePropertyList } from '@/api/upstore'
+import { fetchProUpRule, fetchBrandList, getProductList } from '@/api/upstore'
+
+import { fetchUploadFile } from '@/api/index'
 import type { Rule } from 'ant-design-vue/es/form'
-import type { CascaderProps, TableColumnsType, FormInstance } from 'ant-design-vue'
-import { CheckOutlined } from '@ant-design/icons-vue'
+import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 'ant-design-vue'
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import SizeModel from './SizeModel.vue'
+import { VueDraggable } from 'vue-draggable-plus'
 
 const loading = ref(false)
 
 const [messageApi, contextHolder] = message.useMessage()
+
+const previewVisible = ref(false)
 
 // 已添加尺码表
 const sizeModelVal = ref()
@@ -450,7 +600,11 @@ const formData = ref<IFormData>({
   maximum_per_order: '',
   minimum_per_order: '',
   reference_price: '',
-  certificate_type: ''
+  reference_price_certificate: {
+    certificate_type: null,
+    certificate_urls: []
+  },
+  white_back_ground_pic_url: ''
 })
 const smj = ref('') //售卖价
 const priceValues = formData.value.tableData.map((item: { price: any }) => item.price)
@@ -552,7 +706,6 @@ const plgkcChange = () => {
   }
 }
 
-const mustFormRef = ref()
 const emits = defineEmits(['closeStateUpload', 'uploadList'])
 
 const rules: Record<string, Rule[]> = {
@@ -639,6 +792,18 @@ function dialogControl(_sts: string, edits: any) {
 
         templateList.value = res.data.List
         fetchPrdCateList()
+
+        goodsMainPic.value = formData.value.info.slider_image
+        // 使用正则表达式匹配 src 属性中的 URL
+        const regex = /<img\s+[^>]*src="([^"]*)"/g
+        let matches
+        const imageUrls = ref<string[]>([])
+        richTextString.value = formData.value.info.description
+        while ((matches = regex.exec(richTextString.value)) !== null) {
+          imageUrls.value.push(matches[1])
+        }
+        goodsXqPic.value = imageUrls.value
+
         dialogVisible.value = true
         console.log(formData, 'formData')
       })
@@ -768,7 +933,6 @@ const handleCascaderChange = (value: any, selectedOptions: any) => {
 // 关闭清空
 const handleDialogClosed = () => {
   nextTick(() => {
-    mustFormRef.value?.handleDialogClosed()
     dialogTitle.value = ''
     picList.value = []
     formData.value = initFormData()
@@ -776,6 +940,27 @@ const handleDialogClosed = () => {
     sizeModelVal.value = {}
   })
 }
+
+// 商品主图
+const goodsMainPic = ref([])
+
+const onUpdate = (event: any) => {
+  console.log('event', event)
+}
+// 商品主图删除
+const deleteMainPic = (index: number) => {
+  goodsMainPic.value.splice(index, 1)
+}
+// 商品详情图删除
+const deleteXqPic = (index: number) => {
+  goodsXqPic.value.splice(index, 1)
+}
+
+const richTextString = ref<any>()
+
+// 商品详情图
+const goodsXqPic = ref<string[]>([])
+
 function refreshList() {
   // 刷新运费模板
   getTemplateList({ token: formData.value.token }).then((res: any) => {
@@ -786,6 +971,7 @@ function refreshList() {
     }
   })
 }
+
 const ruleFormRef = ref<FormInstance>()
 // 发布商品
 const handleAdd = async (commit: any) => {
@@ -836,15 +1022,15 @@ const handleAdd = async (commit: any) => {
       duration: formData.value.after_sale_service_v2.duration,
       service_type: formData.value.after_sale_service_v2.service_type
     }
-    mustFormRef.value?.goodsMainPic.forEach((element, index) => {
-      if (index == mustFormRef.value.goodsMainPic.length - 1) {
+    goodsMainPic.value.forEach((element, index) => {
+      if (index == goodsMainPic.value.length - 1) {
         picList = picList + element
       } else {
         picList = picList + element + '|'
       }
     })
-    mustFormRef.value?.goodsXqPic.forEach((element, index) => {
-      if (index == mustFormRef.value.goodsXqPic.length - 1) {
+    goodsXqPic.value?.forEach((element, index) => {
+      if (index == goodsXqPic.value.length - 1) {
         descriptionList = descriptionList + element
       } else {
         descriptionList = descriptionList + element + '|'
@@ -881,7 +1067,7 @@ const handleAdd = async (commit: any) => {
     let product_format_new: any = {}
 
     // 商品属性
-    mustFormRef.value.shuxingList.forEach((item, index) => {
+    shuxingList.value.forEach((item, index) => {
       for (const key in item) {
         console.log(item[key], 'itemmmmmmmmmmm')
         product_format_new[key] = []
@@ -928,7 +1114,7 @@ const handleAdd = async (commit: any) => {
           }
         } else {
           // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', mustFormRef.value.fabriTableList);
-          mustFormRef.value.fabriTableList.forEach((element: any) => {
+          fabriTableList.value.forEach((element: any) => {
             console.log(
               'item[key].measure_templates[0].value_modules[1].units',
               item[key].measure_templates[0].value_modules[1].units[0].unit_name
@@ -980,7 +1166,7 @@ const handleAdd = async (commit: any) => {
 
     upAddProduct({
       data: {
-        token: form.selectionList[0].access_token,
+        token: form.token,
         category_id: form.category_id[form.category_id.length - 1],
         name: form.info.store_name,
         pic: picList,
@@ -996,8 +1182,8 @@ const handleAdd = async (commit: any) => {
         after_sale_service: JSON.stringify({ supply_day_return_selector: form.after_sale_service }),
         reference_price: form.reference_price,
         reference_price_certificate: {
-          certificate_type: form.certificate_type,
-          certificate_urls: form.certificate_urls
+          certificate_type: form.reference_price_certificate.certificate_type,
+          certificate_urls: form.reference_price_certificate.certificate_urls
         },
         // size_info_template_id: '7438823136822411556',
         size_info_template_id: size_info_template_id,
@@ -1077,6 +1263,25 @@ const filterOption = (input: string, option: any) => {
   return option.name.includes(input)
 }
 
+const handleUpload = async (file: any) => {
+  const formsData = new FormData()
+  formsData.append('file', file)
+  try {
+    const res = await fetchUploadFile(formsData)
+    if (res.status === 200) {
+      console.log(res, '上传结果=======================================')
+      formData.value.reference_price_certificate.certificate_urls = [res.data.url]
+      return false
+    } else {
+      messageApi.error(res.msg)
+      return false // 上传失败，阻止上传
+    }
+  } catch (e) {
+    messageApi.error('上传失败')
+    return false
+  }
+}
+
 // 重置表单数据
 const initFormData = () => {
   return {
@@ -1106,7 +1311,10 @@ const initFormData = () => {
     maximum_per_order: '',
     minimum_per_order: '',
     reference_price: '',
-    certificate_type: ''
+    reference_price_certificate: {
+      ...formData.value.reference_price_certificate
+    },
+    white_back_ground_pic_url: ''
   }
 }
 defineExpose({
@@ -1151,5 +1359,88 @@ defineExpose({
     background: #67c23a !important;
     color: #ffffff !important;
   }
+}
+
+.drag {
+  display: flex;
+  gap: 10px;
+}
+
+.drage-container {
+  display: flex;
+  gap: 10px;
+}
+
+.drag-item {
+  border: 1px dashed #d1d1d1;
+  width: 120px;
+  height: 120px;
+  text-align: center;
+  cursor: move;
+
+  img {
+    width: 80%;
+    height: 80%;
+    padding-top: 10%;
+  }
+
+  &:hover {
+    background-color: #f5f7fa;
+  }
+}
+
+.drag-detail {
+  display: flex;
+  gap: 10px;
+}
+
+.drage-container-d {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.drag-item-d {
+  border: 1px dashed #d1d1d1;
+  width: 120px;
+  height: 140px;
+  text-align: center;
+  cursor: move;
+  margin: 0 0 50px 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    background-color: #f5f7fa;
+  }
+}
+
+.delete-btn {
+  width: 60px;
+  height: 20px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 25%;
+
+  &:hover {
+    color: #40a9ff;
+  }
+}
+
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
 </style>

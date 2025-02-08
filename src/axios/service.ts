@@ -44,15 +44,18 @@ service.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 统一添加认证头
     config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-
-    // 处理 POST 请求参数
-    if (config.method === 'post') {
-      const contentType = (config.headers as AxiosRequestHeaders)['Content-Type']
-
-      if (contentType === 'application/x-www-form-urlencoded') {
-        config.data = qs.stringify(config.data)
-      }
+    if (config.method === "post") {
+      config.headers["Content-Type"] = "application/x-www-form-urlencoded"; // 表单数据
+      config.data = qs.stringify(config.data); // 序列化
     }
+
+    // // 处理 POST 请求参数
+    // if (config.method === 'post') {
+    //   const contentType = (config.headers as AxiosRequestHeaders)['Content-Type']
+    //   if (contentType === 'application/x-www-form-urlencoded') {
+    //     config.data = qs.stringify(config.data)
+    //   }
+    // }
 
     // 处理 GET 请求嵌套参数
     if (config.method === 'get' && config.params) {

@@ -20,12 +20,16 @@ interface IFormData {
     service_type: string
     duration: string
   }
-  is_evaluate_opened: string
+  is_evaluate_opened: string | number
   limit_per_buyer: string
   maximum_per_order: string
   minimum_per_order: string
   reference_price: string
-  certificate_type: string
+  reference_price_certificate: {
+    certificate_type: number | null,
+    certificate_urls: [string] | []
+  }
+  white_back_ground_pic_url: string
 }
 
 interface ISize {
