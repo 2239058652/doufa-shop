@@ -25,20 +25,6 @@ export const getBanner = (id: string | number) => {
 }
 
 // 商品列表接口
-interface IProductParams {
-  page: number
-  limit: number
-  goods_address?: string
-  mer_id?: string
-  sid?: string
-  keyword?: string
-  url?: string
-  salesOrder?: string
-  priceOrder?: string
-  star_price?: number | string
-  end_price?: number | string
-  ids?: string
-}
 export const getProducts = (params: IProductParams) => {
   return request.get({
     url: `/api/products`,
@@ -55,11 +41,6 @@ export const getProductDetail = (id: string | number) => {
 }
 
 // 购物车列表
-interface ICartsParams {
-  status: string | number;
-  page: number;
-  limit: number
-}
 export const getShoppingCart = (params: ICartsParams = {
   status: 1,
   page: 0,

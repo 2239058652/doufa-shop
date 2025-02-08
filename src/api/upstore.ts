@@ -71,15 +71,6 @@ export const fetchProUpRule = (params: {
   })
 }
 
-
-interface ISize {
-  data: {
-    token: string;
-    page_num: number;
-    page_size?: number;
-    template_sub_type?: string;
-  }
-}
 // 获取尺码表模板列表
 export const getProductList = (params: ISize) => {
   return request.get({
