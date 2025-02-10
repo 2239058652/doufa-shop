@@ -1076,7 +1076,7 @@ const handleAdd = async (commit: any) => {
             if (item[key].value.length <= 1) {
               product_format_new[key] = [
                 {
-                  value: item[key].value[0],
+                  value: String(item[key].value[0]),
                   name: item[key].property_name,
                   diy_type: item[key].diy_type,
                   measure_info: null
@@ -1085,7 +1085,7 @@ const handleAdd = async (commit: any) => {
             } else {
               item[key].value.forEach((i: any, index: number) => {
                 product_format_new[key].push({
-                  value: i,
+                  value: String(i),
                   name: item[key].property_name,
                   diy_type: item[key].diy_type,
                   measure_info: null
@@ -1141,7 +1141,7 @@ const handleAdd = async (commit: any) => {
                     module_id: item[key].measure_templates[0].value_modules[1].module_id,
                     unit_name: item[key].measure_templates[0].value_modules[1].units[0].unit_name,
                     unit_id: item[key].measure_templates[0].value_modules[1].units[0].unit_id,
-                    value: element.percent
+                    value: String(element.percent)
                   }
                 ]
               }
