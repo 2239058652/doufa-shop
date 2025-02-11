@@ -467,7 +467,7 @@
                     </a-row>
                   </a-form-item>
                 </a-col>
-                <a-col :span="24">
+                <a-col :span="24" v-if="false">
                   <a-form-item label="参考价" name="reference_price">
                     <a-input style="width: 50%" v-model:value="formData.reference_price" placeholder="请输入参考价">
                       <template #suffix>
@@ -793,7 +793,7 @@ function dialogControl(_sts: string, edits: any) {
         templateList.value = res.data.List
         fetchPrdCateList()
 
-        goodsMainPic.value = formData.value.info.slider_image
+        goodsMainPic.value = JSON.parse(JSON.stringify(edits.info.slider_image))
         // 使用正则表达式匹配 src 属性中的 URL
         const regex = /<img\s+[^>]*src="([^"]*)"/g
         let matches
@@ -802,7 +802,7 @@ function dialogControl(_sts: string, edits: any) {
         while ((matches = regex.exec(richTextString.value)) !== null) {
           imageUrls.value.push(matches[1])
         }
-        goodsXqPic.value = imageUrls.value
+        goodsXqPic.value = JSON.parse(JSON.stringify(imageUrls.value))
 
         dialogVisible.value = true
         console.log(formData, 'formData')
@@ -938,6 +938,8 @@ const handleDialogClosed = () => {
     formData.value = initFormData()
     templateList.value = []
     sizeModelVal.value = {}
+    goodsXqPic.value = []
+    goodsMainPic.value = []
   })
 }
 
@@ -1067,7 +1069,7 @@ const handleAdd = async (commit: any) => {
     let product_format_new: any = {}
 
     // 商品属性
-    shuxingList.value.forEach((item, index) => {
+    shuxingList.value.forEach((item: any, index: number) => {
       for (const key in item) {
         console.log(item[key], 'itemmmmmmmmmmm')
         product_format_new[key] = []
@@ -1346,15 +1348,18 @@ defineExpose({
   background: #ecf5ff;
   color: #409eff;
   border-color: #409eff;
+
   &:hover {
     background: #409eff !important;
     color: #ffffff !important;
   }
 }
+
 .added-btn {
   background: #f0f9eb;
   color: #79c75c;
   border-color: #79c75c;
+
   &:hover {
     background: #67c23a !important;
     color: #ffffff !important;

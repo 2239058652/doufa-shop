@@ -24,8 +24,8 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'https://ceshi.doufapt.com',    // 正式地址
-        // target: 'http://test.doufapt.com',      // 测试地址
+        // target: 'https://ceshi.doufapt.com',    // 正式地址
+        target: 'http://test.doufapt.com', // 测试地址
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
@@ -35,8 +35,7 @@ export default defineConfig({
     // 分包策略
     rollupOptions: {
       output: {
-        manualChunks: {
-        }
+        manualChunks: {}
       }
     },
     chunkSizeWarningLimit: 4096,
@@ -50,5 +49,5 @@ export default defineConfig({
         drop_console: true
       }
     }
-  },
+  }
 })

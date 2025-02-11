@@ -392,7 +392,13 @@
             :columns="columns"
             style="margin-left: 38px; margin-top: 10px"
             rowKey="store_id"
+            :scroll="{ y: 400 }"
           >
+            <template #emptyText>
+              <div style="text-align: center; color: #f83126">
+                暂无可上传店铺或店铺授权已过期，请点击左上角【添加店铺】按钮先授权店铺
+              </div>
+            </template>
             <!-- 自定义 ID 列 -->
             <template #bodyCell="{ column, record }">
               <template v-if="column.dataIndex === 'store_id'">
