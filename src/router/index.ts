@@ -3,7 +3,6 @@ import TopLayoutBar from '../layout/TopBar/TopBar.vue'
 import SiderMenuBar from '../layout/SideMenu/SideMenu.vue'
 // import MainLayout from '../layout/MainLayout/MainLayout.vue'
 
-
 // meta:
 //   keepAlive: true,  // 是否需要缓存
 //   title: '购物车页面',  // 标题必须设置
@@ -78,7 +77,7 @@ const asyncRoutes: RouteRecordRaw[] = [
           title: '购物车页面',
           requireSidebar: false,
           requireFooter: false,
-          requiresAuth: true,
+          requiresAuth: true
         }
       },
       {
@@ -90,8 +89,8 @@ const asyncRoutes: RouteRecordRaw[] = [
           requireSidebar: false,
           requireFooter: false,
           requiresAuth: true
-        },
-      },
+        }
+      }
     ]
   },
   {
@@ -259,7 +258,7 @@ const asyncRoutes: RouteRecordRaw[] = [
     meta: {
       title: '404页面',
       hidden: true
-    },
+    }
   },
   {
     path: '/:pathMatch(.*)',
@@ -267,7 +266,7 @@ const asyncRoutes: RouteRecordRaw[] = [
     meta: {
       title: '错误处理页面',
       hidden: true
-    },
+    }
   },
   {
     path: '/relax',
@@ -275,6 +274,15 @@ const asyncRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Relax/index.vue'),
     meta: {
       title: 'relax',
+      hidden: true
+    }
+  },
+  {
+    path: '/test',
+    name: 'HandlesTest',
+    component: () => import('@/views/HandlesTest/index.vue'),
+    meta: {
+      title: 'HandlesTest',
       hidden: true
     }
   }
@@ -288,11 +296,10 @@ const router = createRouter({
     const appElement = document.getElementById('router-view')
     if (appElement) {
       appElement.scrollTo({
-        top: 0,
+        top: 0
       })
     }
   }
 })
-
 
 export default router
