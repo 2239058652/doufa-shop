@@ -32,9 +32,17 @@
             <span>批量删除</span>
           </div>
         </div>
-        <a-table :pagination="false" :row-selection="{
-          onChange: hanldeTableRowChanged
-        }" :columns="tableColumns" :data-source="tableDataList" bordered :scroll="{ x: 1100 }" rowKey="id">
+        <a-table
+          :pagination="false"
+          :row-selection="{
+            onChange: hanldeTableRowChanged
+          }"
+          :columns="tableColumns"
+          :data-source="tableDataList"
+          bordered
+          :scroll="{ x: 1100 }"
+          rowKey="id"
+        >
           <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'detail'">
               <div class="detail_box">
@@ -52,26 +60,15 @@
               </div>
             </template>
             <template v-else-if="column.dataIndex === 'sku'">
-              <div style="
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: flex-start;
-                ">
+              <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start">
                 <span><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk) }}</span>
                 <span><span style="color: #999999">尺码：</span>{{ getSize(record.productInfo.attrInfo.suk) }}</span>
               </div>
             </template>
             <template v-else-if="column.dataIndex === 'price'">
-              <div style="
-                  height: 22px;
-                  font-weight: 500;
-                  font-size: 16px;
-                  color: #f83126;
-                  line-height: 22px;
-                ">{{
-                  parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
-                }}</div>
+              <div style="height: 22px; font-weight: 500; font-size: 16px; color: #f83126; line-height: 22px">{{
+                parseFloat(record.productInfo.attrInfo.ot_price) * parseFloat(record.cart_num)
+              }}</div>
             </template>
             <template v-else-if="column.dataIndex === 'operater'">
               <a-button type="link" style="color: #999999" @click="handleDelete(record.id)">删除</a-button>
@@ -90,8 +87,13 @@
         </a-table>
 
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px">
-          <Pagination :pageSizeOptions="[10, 20, 30, 50, 100]" v-model:current="currentPage" v-model:pageSize="pageSize"
-            :total="total" @change="getProductsList" />
+          <Pagination
+            :pageSizeOptions="[10, 20, 30, 50, 100]"
+            v-model:current="currentPage"
+            v-model:pageSize="pageSize"
+            :total="total"
+            @change="getProductsList"
+          />
         </div>
       </div>
 
@@ -102,8 +104,12 @@
           <span class="tishi">实际支付金额以下单页为准</span>
         </div>
         <div class="pay_cash_img" v-if="tableSelectedRowKeys.length > 0">
-          <img :src="item.productInfo.attrInfo.image" :alt="item.productInfo.attrInfo.suk"
-            v-for="item in tableSelectedRowKeys" :key="item.id" />
+          <img
+            :src="item.productInfo.attrInfo.image"
+            :alt="item.productInfo.attrInfo.suk"
+            v-for="item in tableSelectedRowKeys"
+            :key="item.id"
+          />
         </div>
         <div class="pay_cash_empty_img" v-else>
           <img src="../../assets/image/shopping_cart_empty.png" alt="" />
@@ -123,18 +129,16 @@
 
 <script lang="ts" setup>
 import Popover from '@/components/phopopover/index.vue' // 以图搜索
-import { ref, onActivated, onMounted, computed, } from 'vue'
+import { ref, onActivated, onMounted, computed } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
 import { getShoppingCart, deleteCarts } from '@/api/store'
 import { useRouter } from 'vue-router'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
 
-const goodsCartsTableStore = useGoodsCartsTableStore()  // 购物车表格数据,存到pinia中
-
+const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
 const router = useRouter()
-
 
 onMounted(() => {
   console.log('组件首次加载')
@@ -153,7 +157,6 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
 const jieSuanNum = ref(0) // 结算数量
-
 
 const tableColumns = [
   {
@@ -224,22 +227,20 @@ const routerToSearch = () => {
   router.push({
     path: `/search`,
     query: {
-      keyword: inputVal.value,
+      keyword: inputVal.value
     }
   })
 }
 
 // 获取商品列表
 const getProductsList = () => {
-  getShoppingCart({ status: 1, page: currentPage.value, limit: pageSize.value }).then(
-    (res: any) => {
-      console.log(res)
-      if (res.status == 200) {
-        tableDataList.value = res.data.valid
-        total.value = res.data.valid.length
-      }
+  getShoppingCart({ status: 1, page: currentPage.value, limit: pageSize.value }).then((res: any) => {
+    console.log(res)
+    if (res.status == 200) {
+      tableDataList.value = res.data.valid
+      total.value = res.data.valid.length
     }
-  )
+  })
 }
 
 // 购物数量加减
@@ -263,11 +264,13 @@ const caculateGoodsNum = (type: string, record: any) => {
 
 // 计算总价
 const totalPrice = computed(() => {
-  return tableSelectedRowKeys.value.reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
-    const price = parseFloat(item.productInfo.attrInfo.price)
-    const quantity = parseFloat(item.cart_num)
-    return total + price * quantity
-  }, 0).toFixed(2)
+  return tableSelectedRowKeys.value
+    .reduce((total: number, item: { productInfo: { attrInfo: { ot_price: string } }; cart_num: string }) => {
+      const price = parseFloat(item.productInfo.attrInfo.ot_price)
+      const quantity = parseFloat(item.cart_num)
+      return total + price * quantity
+    }, 0)
+    .toFixed(2)
 })
 
 // 获取颜色
@@ -290,8 +293,9 @@ const handleJieSuan = () => {
     return
   }
 
-  goodsCartsTableStore.reGoodsCartsTable(tableSelectedRowKeys.value)  // 将选中的商品存到pinia中
-  router.push({ // 跳转结算页面
+  goodsCartsTableStore.reGoodsCartsTable(tableSelectedRowKeys.value) // 将选中的商品存到pinia中
+  router.push({
+    // 跳转结算页面
     path: '/payorder',
     query: { type: 'gwcjs' }
   })
@@ -313,12 +317,8 @@ const handleDelete = (record: any) => {
             content: '删除成功'
           })
           // 删除成功后重置选中状态和计数
-          tableSelectedRowKeys.value = tableSelectedRowKeys.value.filter(
-            (item: any) => item.id !== record
-          )
-          selectedTableRowKeys.value = selectedTableRowKeys.value.filter(
-            (id: any) => id !== record
-          )
+          tableSelectedRowKeys.value = tableSelectedRowKeys.value.filter((item: any) => item.id !== record)
+          selectedTableRowKeys.value = selectedTableRowKeys.value.filter((id: any) => id !== record)
           jieSuanNum.value = tableSelectedRowKeys.value.length
           getProductsList()
         } else {

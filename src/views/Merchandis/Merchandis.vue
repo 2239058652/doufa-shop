@@ -160,7 +160,7 @@
             <div class="store_name">{{ goodsDetail?.storeInfo?.store_name }}</div>
             <div class="goods-price">
               <span>¥</span>
-              <span>{{ goodsDetail?.storeInfo?.price }}</span>
+              <span>{{ goodsDetail?.storeInfo?.ot_price }}</span>
               <span>已售：{{ goodsDetail?.storeInfo?.sales }}</span>
             </div>
             <div class="goods-keyword">
@@ -312,7 +312,7 @@
               <img :src="imageBaseUrl" alt="" />
               <div>
                 <span>售价：</span>
-                <span>¥{{ goodsDetail?.storeInfo?.price }}</span>
+                <span>¥{{ goodsDetail?.storeInfo?.ot_price }}</span>
               </div>
             </div>
             <div class="colors">
@@ -502,7 +502,7 @@ watch([goodsDetailNum, colorIndex, sizeIndex], () => {
 
 // 更新选择信息
 const updateSelectedInfo = () => {
-  const price = Number(goodsDetail.value?.storeInfo?.price || 0)
+  const price = Number(goodsDetail.value?.storeInfo?.ot_price || 0)
   const quantity = goodsDetailNum.value
   selectedInfo.value = {
     quantity,
@@ -555,7 +555,7 @@ const payOrderNow = () => {
       keyword: goodsDetail.value?.storeInfo?.keyword,
       attrInfo: {
         image: imageBaseUrl.value,
-        price: goodsDetail.value?.storeInfo?.price,
+        ot_price: goodsDetail.value?.storeInfo?.ot_price,
         suk: `${selectedInfo.value.color},${selectedInfo.value.size}`
       }
     },

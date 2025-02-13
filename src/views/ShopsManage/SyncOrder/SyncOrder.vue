@@ -7,15 +7,30 @@
         <div class="title">同步订单</div>
         <div class="select-box">
           <div class="tbdp">同步店铺</div>
-          <a-select :showArrow="true" :showSearch="false" :bordered="false" v-model:value="multipleVal" mode="multiple"
-            placeholder="请选择店铺" class="aselect" :options="multipleOptions"
-            :field-names="{ label: 'store_name', value: 'store_id' }" @change="handleChange">
+          <a-select
+            :showArrow="true"
+            :showSearch="false"
+            :bordered="false"
+            v-model:value="multipleVal"
+            mode="multiple"
+            placeholder="请选择店铺"
+            class="aselect"
+            :options="multipleOptions"
+            :field-names="{ label: 'store_name', value: 'store_id' }"
+            @change="handleChange"
+          >
           </a-select>
         </div>
         <div class="select-box">
           <div class="tbdp">同步时间</div>
-          <a-range-picker class="aselect" :bordered="false" :value="hackValue" :format="dateFormat" @change="onChange"
-            :placeholder="['开始时间', '结束时间']" />
+          <a-range-picker
+            class="aselect"
+            :bordered="false"
+            :value="hackValue"
+            :format="dateFormat"
+            @change="onChange"
+            :placeholder="['开始时间', '结束时间']"
+          />
         </div>
         <div class="tbdd-btn" @click="handleTBDD">
           <span>{{ tbddtext }}</span>
@@ -33,8 +48,13 @@
         <div class="tab" v-if="tabsList.length == 0">
           <span>请同步订单</span>
         </div>
-        <div class="tab" v-for="(item, index) in tabsList" :key="index" :class="{ active: activeTab === index }"
-          @click="activeTab = index">
+        <div
+          class="tab"
+          v-for="(item, index) in tabsList"
+          :key="index"
+          :class="{ active: activeTab === index }"
+          @click="activeTab = index"
+        >
           <span>{{ item.store_name }}</span>
         </div>
       </div>
@@ -103,9 +123,16 @@
       </div>
 
       <div class="order-table">
-        <a-table :dataSource="dataSource" :columns="columns" bordered :pagination="false" :row-selection="{
-          onChange: hanldeTableRowChanged
-        }" :hover="false">
+        <a-table
+          :dataSource="dataSource"
+          :columns="columns"
+          bordered
+          :pagination="false"
+          :row-selection="{
+            onChange: hanldeTableRowChanged
+          }"
+          :hover="false"
+        >
           <template #bodyCell="{ column, record }">
             <!-- 来源信息 -->
             <template v-if="column.dataIndex === 'original_info'">
@@ -115,7 +142,9 @@
                   {{ record.shop_name }}
                 </div>
                 <div class="shop-name">订单编号：{{ record.order_id }}</div>
-                <div class="shop-name">下单时间：{{ dayjs(record.create_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div>
+                <div class="shop-name"
+                  >下单时间：{{ dayjs(record.create_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}</div
+                >
                 <div class="shop-name">订单金额：¥{{ record.pay_amount / 100 }}</div>
               </div>
             </template>
@@ -164,7 +193,7 @@
                       <div class="r-item">
                         <div class="r-item">
                           <span>单价：¥</span>
-                          <span>{{ record.finalProduct.price }}</span>
+                          <span>{{ record.finalProduct.ot_price }}</span>
                         </div>
                         <div class="r-item">
                           <span>数量：</span>
@@ -174,8 +203,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="glsp-btn" @click="handleRelationGoods(record)" v-for="(item, index) in items.item_num"
-                  :key="index">
+                <div
+                  class="glsp-btn"
+                  @click="handleRelationGoods(record)"
+                  v-for="(item, index) in items.item_num"
+                  :key="index"
+                >
                   <span>关联商品</span>
                 </div>
               </div>
@@ -183,7 +216,8 @@
             <!-- 收件人信息 -->
             <template v-if="column.dataIndex === 'recipient_info'">
               <div>
-                <span>{{ record.mask_post_receiver }}</span>&emsp;&emsp;
+                <span>{{ record.mask_post_receiver }}</span
+                >&emsp;&emsp;
                 <span>{{ record.mask_post_tel }}</span>
               </div>
               <div>
@@ -209,9 +243,14 @@
             </template>
           </template>
         </a-table>
-        <Pagination style="display: flex; justify-content: center; margin: 20px 0" v-model:current="currentPage"
-          v-model:pageSize="pageSize" :total="total" @change="handleTBDD"
-          :pageSizeOptions="[10, 20, 30, 40, 50, 100]" />
+        <Pagination
+          style="display: flex; justify-content: center; margin: 20px 0"
+          v-model:current="currentPage"
+          v-model:pageSize="pageSize"
+          :total="total"
+          @change="handleTBDD"
+          :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
+        />
       </div>
     </div>
     <div class="zhanwei"></div>
@@ -312,31 +351,42 @@
             <div class="s-item">
               <span>颜色：</span>
               <div class="color-box">
-                <a-select style="width: 100%; height: 100%" :bordered="false"
-                  :options="relateSelectVal.productAttr[0].attr_value" :fieldNames="{ label: 'attr', value: 'attr' }"
-                  v-model:value="relateSelectVal.color"></a-select>
+                <a-select
+                  style="width: 100%; height: 100%"
+                  :bordered="false"
+                  :options="relateSelectVal.productAttr[0].attr_value"
+                  :fieldNames="{ label: 'attr', value: 'attr' }"
+                  v-model:value="relateSelectVal.color"
+                ></a-select>
               </div>
             </div>
             <div class="s-item">
               <div class="s-item">
                 <span>尺码：</span>
                 <div class="color-box">
-                  <a-select style="width: 100%; height: 100%" :bordered="false"
-                    :options="relateSelectVal.productAttr[1].attr_value" :fieldNames="{ label: 'attr', value: 'attr' }"
-                    v-model:value="relateSelectVal.size"></a-select>
+                  <a-select
+                    style="width: 100%; height: 100%"
+                    :bordered="false"
+                    :options="relateSelectVal.productAttr[1].attr_value"
+                    :fieldNames="{ label: 'attr', value: 'attr' }"
+                    v-model:value="relateSelectVal.size"
+                  ></a-select>
                 </div>
               </div>
               <div class="s-item">
                 <span>数量：</span>
                 <div class="color-box">
-                  <a-input style="width: 100%; height: 100%" :bordered="false"
-                    v-model:value="relateSelectVal.num"></a-input>
+                  <a-input
+                    style="width: 100%; height: 100%"
+                    :bordered="false"
+                    v-model:value="relateSelectVal.num"
+                  ></a-input>
                 </div>
               </div>
             </div>
             <div class="s-item">
               <span>单价：</span>
-              <span style="color: #ff5c02">￥{{ relateSelectVal.storeInfo.price }}</span>
+              <span style="color: #ff5c02">￥{{ relateSelectVal.storeInfo.ot_price }}</span>
             </div>
           </div>
         </div>
@@ -345,7 +395,7 @@
         <div class="img-box">
           <div v-for="item in goodsList" :key="item.id" class="box" @click="handleClickRelate(item)">
             <img :src="item.image" alt="" />
-            <div class="price">¥{{ item.price }}</div>
+            <div class="price">¥{{ item.ot_price }}</div>
             <div class="keyword">货号：{{ item.keyword }}</div>
           </div>
         </div>
@@ -431,7 +481,7 @@ const relateVisble = ref(false)
 const lirunVis = ref(false)
 const tbddtext = ref('同步订单')
 const goodsVal = ref('')
-const goodsList = ref<{ id: string | number; image: string; price: string; keyword: string }[]>([])
+const goodsList = ref<{ id: string | number; image: string; ot_price: string; keyword: string }[]>([])
 
 const [messageApi, contextHolder] = message.useMessage()
 const currentPage = ref(1) // 当前页码
@@ -680,7 +730,7 @@ const handleClickRelate = (item: any) => {
       relateRecord.value.finalProduct = {
         id: item.id,
         image: item.image,
-        price: item.price,
+        ot_price: item.ot_price,
         keyword: item.keyword,
         color: relateSelectVal.value.color,
         size: relateSelectVal.value.size,
@@ -721,7 +771,7 @@ const handleJieSuan = () => {
         keyword: finalProduct.keyword,
         attrInfo: {
           image: finalProduct.image,
-          price: finalProduct.price,
+          ot_price: finalProduct.ot_price,
           suk: `${finalProduct.color},${finalProduct.size}`
         }
       },
@@ -776,7 +826,7 @@ const handleJieSuanNow = (record: any) => {
       keyword: record.finalProduct.storeInfo?.keyword,
       attrInfo: {
         image: record.finalProduct.image,
-        price: record.finalProduct.price,
+        ot_price: record.finalProduct.ot_price,
         suk: `${record.finalProduct.color},${record.finalProduct.size}`
       }
     },

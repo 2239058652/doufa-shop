@@ -62,7 +62,7 @@
                     <div class="keyword">货号: &nbsp;{{ item.keyword }}</div>
                     <div class="price">
                       <span>¥</span>
-                      <span>{{ item.price }}</span>
+                      <span>{{ item.ot_price }}</span>
                       <span>{{ item.sales }}人已购买</span>
                     </div>
                   </div>

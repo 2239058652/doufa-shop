@@ -72,17 +72,23 @@
         </div>
 
         <div class="sp_tabs_pagination">
-          <img src="../../assets/image/toleft.png" alt="" @click="handleTopPagination(Math.max(1, currentPage - 1))"
-            :class="{ disabled: currentPage <= 1 }" />
+          <img
+            src="../../assets/image/toleft.png"
+            alt=""
+            @click="handleTopPagination(Math.max(1, currentPage - 1))"
+            :class="{ disabled: currentPage <= 1 }"
+          />
           <span>
             <span>{{ currentPage }}</span>
-            <span style="color: #333333;">/{{ Math.ceil(total / pageSize) }}</span>
+            <span style="color: #333333">/{{ Math.ceil(total / pageSize) }}</span>
           </span>
-          <img src="../../assets/image/toright.png" alt=""
+          <img
+            src="../../assets/image/toright.png"
+            alt=""
             @click="handleTopPagination(Math.min(Math.ceil(total / pageSize), currentPage + 1))"
-            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }" />
+            :class="{ disabled: currentPage >= Math.ceil(total / pageSize) }"
+          />
         </div>
-
       </div>
       <br />
       <div class="woshiyitiaoxian"></div>
@@ -97,7 +103,7 @@
             <div class="keyword">货号: &nbsp;{{ item.keyword }}</div>
             <div class="price">
               <span>¥</span>
-              <span>{{ item.price }}</span>
+              <span>{{ item.ot_price }}</span>
               <span>{{ item.sales }}人已购买</span>
             </div>
           </div>
@@ -105,7 +111,7 @@
       </a-skeleton>
     </div>
     <Pagination v-model:current="currentPage" v-model:pageSize="pageSize" :total="total" @change="getProductsList" />
-    <div style="width: 100%;height: 20px;"></div>
+    <div style="width: 100%; height: 20px"></div>
   </div>
 </template>
 
@@ -115,25 +121,22 @@ import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { getProducts } from '@/api/store'
 import Pagination from '@/components/pagination/index.vue'
-import Popover from '@/components/phopopover/index.vue'  // 以图搜索
+import Popover from '@/components/phopopover/index.vue' // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()
 
-
 const route = useRoute()
 
-const currentPage = ref(1)  // 当前页码
-const pageSize = ref(24)  // 每页显示的商品数量
-const total = ref(0)  // 总商品数量
-
+const currentPage = ref(1) // 当前页码
+const pageSize = ref(24) // 每页显示的商品数量
+const total = ref(0) // 总商品数量
 
 const inputVal = ref('') // 搜索框输入框
 const photoPopoverVisible = ref(false) //  以图搜索弹窗显示状态
 const tabsIndex = ref(0) // 商品tab切换
-const productsList = ref<any>([])  // 商品列表
+const productsList = ref<any>([]) // 商品列表
 const token = localStorage.getItem('token')
-
 
 // 以图搜索
 const beforeUpload = (res: any) => {
@@ -155,7 +158,7 @@ const routerToSearch = () => {
   router.push({
     path: `/search`,
     query: {
-      keyword: inputVal.value,
+      keyword: inputVal.value
     }
   })
 }
@@ -163,7 +166,7 @@ const routerToSearch = () => {
 // 跳转商品详情
 const routerToDetail = (item: any) => {
   router.push({
-    path: `/merchandis/${item.id}`,
+    path: `/merchandis/${item.id}`
   })
 }
 
@@ -176,7 +179,6 @@ const handleTopPagination = (page: number) => {
   currentPage.value = page
   getProductsList()
 }
-
 
 // 获取商品列表
 const getProductsList = () => {
@@ -191,6 +193,5 @@ const getProductsList = () => {
 }
 getProductsList()
 </script>
-
 
 <style scoped src="./MerHome.scss"></style>

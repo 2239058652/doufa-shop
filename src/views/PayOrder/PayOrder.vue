@@ -125,7 +125,7 @@
                   </template>
                   <template v-else-if="column.dataIndex === 'price'">
                     <div style="height: 22px; font-weight: 500; font-size: 16px; color: #f83126; line-height: 22px">{{
-                      parseFloat(record.productInfo.attrInfo.price) * parseFloat(record.cart_num)
+                      parseFloat(record.productInfo.attrInfo.ot_price) * parseFloat(record.cart_num)
                     }}</div>
                   </template>
                 </template>
@@ -519,8 +519,8 @@ const getSize = (suk: string) => {
 // 计算总价
 const totalPrice = computed(() => {
   return tableData.value
-    .reduce((total: number, item: { productInfo: { attrInfo: { price: string } }; cart_num: string }) => {
-      const price = parseFloat(item.productInfo.attrInfo.price)
+    .reduce((total: number, item: { productInfo: { attrInfo: { ot_price: string } }; cart_num: string }) => {
+      const price = parseFloat(item.productInfo.attrInfo.ot_price)
       const quantity = parseFloat(item.cart_num)
       return total + price * quantity
     }, 0)

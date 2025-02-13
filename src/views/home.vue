@@ -18,9 +18,13 @@
       <div class="func-sou">
         <div class="func-sou-input">
           <!-- 搜索输入框 -->
-          <a-input v-model:value="inputVal" :bordered="false"
-            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'" style="width: 100%; height: 100%"
-            @pressEnter="routerToSearch">
+          <a-input
+            v-model:value="inputVal"
+            :bordered="false"
+            :placeholder="selectVal == 'product' ? '请搜索产品名称、货号' : '请搜索商家名称'"
+            style="width: 100%; height: 100%"
+            @pressEnter="routerToSearch"
+          >
             <template #prefix>
               <div class="func-sou-prefix">
                 <a-select :bordered="false" v-model:value="selectVal" @change="inputVal = ''">
@@ -34,8 +38,11 @@
                 <!-- 以图搜索图标功能 -->
                 <div class="photo-sou">
                   <!-- 以图搜索封装组件 -->
-                  <Popover @beforeUpload="beforeUpload" v-model:fileList="fileList"
-                    v-model:open="photoPopoverVisible" />
+                  <Popover
+                    @beforeUpload="beforeUpload"
+                    v-model:fileList="fileList"
+                    v-model:open="photoPopoverVisible"
+                  />
                 </div>
                 <div class="sousuo-btn" @click="routerToSearch">
                   <span>搜索</span>
@@ -47,8 +54,12 @@
         <!-- 热门搜索标签 -->
         <div class="func-sou-type">
           <div class="hot-type">
-            <span :class="{ active: activeIndex === index }" v-for="(item, index) in hotSouTypeList" :key="index"
-              @click="activeIndex = index">
+            <span
+              :class="{ active: activeIndex === index }"
+              v-for="(item, index) in hotSouTypeList"
+              :key="index"
+              @click="activeIndex = index"
+            >
               {{ item }}
             </span>
           </div>
@@ -83,8 +94,11 @@
                 <img src="../assets/image/fenlei.png" alt="" />
               </div>
               <!-- 气泡的title为分类的大分类名称 -->
-              <a-popover :title="item.cate_name" placement="right"
-                :overlayInnerStyle="{ width: '612px', height: '446px' }">
+              <a-popover
+                :title="item.cate_name"
+                placement="right"
+                :overlayInnerStyle="{ width: '612px', height: '446px' }"
+              >
                 <div class="item-right">
                   <!-- 分类的第一行列表 -->
                   <div class="text-line">
@@ -175,14 +189,16 @@
         <div class="r-t">
           <div class="r-t-l">
             <div class="r-t-l-t">
-              <div style="
+              <div
+                style="
                   display: flex;
                   justify-content: flex-start;
                   align-items: center;
                   gap: 8px;
                   margin-top: 20px;
                   margin-left: 13px;
-                ">
+                "
+              >
                 <div class="dfjp">抖发竞拍</div>
                 <div class="yyqp">1元起拍</div>
               </div>
@@ -217,15 +233,19 @@
                 <img :src="token ? userInfo.avatar : '../assets/image/user.png'" alt="" />
               </div>
               <div class="user-info">
-                <div style="
+                <div
+                  style="
                     width: 80px;
                     height: 21px;
                     font-size: 16px;
                     color: #333333;
                     line-height: 21px;
                     text-align: left;
-                  ">{{ userInfo.nickname }}</div>
-                <div style="
+                  "
+                  >{{ userInfo.nickname }}</div
+                >
+                <div
+                  style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
@@ -234,7 +254,8 @@
                     line-height: 16px;
                     text-align: left;
                     gap: 12px;
-                  ">
+                  "
+                >
                   <div style="cursor: pointer" @click="handleLogin">切换账号</div>
                   <div class="longin-out" @click="handleOutLogin">退出</div>
                 </div>
@@ -377,12 +398,20 @@
         </div>
 
         <!-- 使用Swiper替换原有滚动部分 -->
-        <swiper :modules="[Autoplay]" :direction="'vertical'" :slides-per-view="2" :space-between="10" :loop="true"
-          :speed="1000" :autoplay="{
+        <swiper
+          :modules="[Autoplay]"
+          :direction="'vertical'"
+          :slides-per-view="2"
+          :space-between="10"
+          :loop="true"
+          :speed="1000"
+          :autoplay="{
             delay: 0,
             disableOnInteraction: false,
             pauseOnMouseEnter: true
-          }" class="hot-swiper">
+          }"
+          class="hot-swiper"
+        >
           <!-- 增加数据量使滚动更连贯 -->
           <swiper-slide v-for="(item, index) in 10" :key="index" class="hot-swiper-item">
             <div class="h-s-i-left">
@@ -469,8 +498,12 @@
         </div>
         <!-- 商家列表 -->
         <div class="rx-user">
-          <div v-for="(item, index) in rxsjList" @click="rxsjActiveIndex = index" :key="index"
-            :class="{ active: rxsjActiveIndex === index }">
+          <div
+            v-for="(item, index) in rxsjList"
+            @click="rxsjActiveIndex = index"
+            :key="index"
+            :class="{ active: rxsjActiveIndex === index }"
+          >
             {{ item }}
           </div>
         </div>
@@ -578,7 +611,7 @@
             <div class="keyword">货号: &nbsp;{{ item.keyword }}</div>
             <div class="price">
               <span>¥</span>
-              <span>{{ item.price }}</span>
+              <span>{{ item.ot_price }}</span>
               <span>{{ item.sales }}人已购买</span>
             </div>
           </div>
