@@ -1,14 +1,4 @@
-const config: {
-  base_url: {
-    base: string
-    dev: string
-    pro: string
-    test: string
-  }
-  result_code: number | string | any
-  default_headers: AxiosHeaders
-  request_timeout: number
-} = {
+const config: IConfig = {
   /**
    * api请求基础路径
    */

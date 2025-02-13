@@ -13,10 +13,7 @@ declare global {
 
   declare type LocaleType = 'zh-CN' | 'en'
 
-  declare type AxiosHeaders =
-    | 'application/json'
-    | 'application/x-www-form-urlencoded'
-    | 'multipart/form-data'
+  declare type AxiosHeaders = 'application/json' | 'application/x-www-form-urlencoded' | 'multipart/form-data'
 
   declare type AxiosMethod = 'get' | 'post' | 'delete' | 'put'
 
@@ -35,6 +32,20 @@ declare global {
     code: string
     data: T extends any ? T : T & any
   }
+
+  declare interface IBase_url {
+    base: string
+    dev: string
+    pro: string
+    test: string
+  }
+
+  declare interface IConfig {
+    base_url: IBase_url
+    result_code: number
+    default_headers: string
+    request_timeout: number
+  }
 }
 
-export { }
+export {}
