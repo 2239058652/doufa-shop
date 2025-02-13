@@ -269,7 +269,7 @@ var chartDom
 var chartPieDom
 var myChart: echarts.ECharts
 var myPieChart: echarts.ECharts
-var option: EChartsOption
+var option: EChartsOption | any
 var pieOption: EChartsOption
 pieOption = {
   tooltip: {
@@ -379,7 +379,7 @@ option = {
     }
   ]
 }
-const chartData = {
+const chartData: any = {
   a: [45, 32, 65, 78, 24, 56, 89, 43, 67, 45, 90, 23, 45, 78, 56],
   b: [23, 45, 67, 89, 34, 67, 45, 78, 90, 12, 34, 56, 78, 89, 67],
   c: [78, 56, 34, 12, 45, 78, 90, 23, 45, 67, 89, 34, 56, 78, 90],
