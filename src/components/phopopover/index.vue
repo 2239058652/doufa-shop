@@ -152,7 +152,7 @@ const handleOpenChange = (visible: any) => {
     border-radius: 6px;
 
     &:hover {
-      border: 1px dashed #f83126;
+      border: 1px dashed $red-color;
     }
 
     .drag {
@@ -181,7 +181,7 @@ const handleOpenChange = (visible: any) => {
         width: 236px;
         height: 19px;
         font-size: 14px;
-        color: #f83126;
+        color: $red-color;
         line-height: 19px;
       }
     }
@@ -190,7 +190,7 @@ const handleOpenChange = (visible: any) => {
   .btn {
     width: 90px;
     height: 40px;
-    background: #f83126;
+    background: $red-color;
     border-radius: 6px;
     display: flex;
     align-items: center;

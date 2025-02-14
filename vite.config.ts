@@ -9,6 +9,16 @@ export default defineConfig({
   // optimizeDeps: {
   //   include: ['default-passive-events']
   // },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @import "@/styles/variables.scss";
+          @import "@/utils/helpers.sass";
+        `
+      }
+    }
+  },
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {

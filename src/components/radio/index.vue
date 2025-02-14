@@ -65,14 +65,14 @@ const handleClick = (value: string | number) => {
         justify-content: center;
 
         &.is-checked {
-          border-color: #f83126;
+          border-color: $red-color;
           background-color: white;
 
           .dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background-color: #f83126;
+            background-color: $red-color;
             flex-shrink: 0;
             position: relative;
             display: block;
@@ -81,8 +81,8 @@ const handleClick = (value: string | number) => {
       }
 
       &.is-checked:not(.is-round) {
-        background-color: #f83126;
-        border-color: #f83126;
+        background-color: $red-color;
+        border-color: $red-color;
         color: white;
       }
     }

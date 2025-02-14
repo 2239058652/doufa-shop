@@ -79,7 +79,7 @@
         z-index: 1;
 
         &:hover {
-            border: 1px solid #ff5c02;
+            border: 1px solid $red-color;
         }
 
         .img-content {
@@ -147,7 +147,7 @@
                 width: 9px;
                 height: 19px;
                 font-size: 14px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 19px;
                 text-align: left;
             }
@@ -157,7 +157,7 @@
                 height: 26px;
                 font-weight: bold;
                 font-size: 20px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 26px;
                 text-align: left;
                 margin-left: 4px;

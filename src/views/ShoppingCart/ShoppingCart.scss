@@ -58,7 +58,7 @@
             .sousuo-btn {
                 width: 65px;
                 height: 32px;
-                background-color: #f83126;
+                background-color: $red-color;
                 border-radius: 4px;
                 display: flex;
                 align-items: center;
@@ -258,7 +258,7 @@
             height: 48px;
             font-weight: 500;
             font-size: 34px;
-            color: #F83126;
+            color: $red-color;
             line-height: 48px;
         }
     }
@@ -268,7 +268,7 @@
         margin-top: 14px;
         width: 348px;
         height: 52px;
-        background: #F83126;
+        background: $red-color;
         border-radius: 6px;
         display: flex;
         justify-content: center;

@@ -188,7 +188,7 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
 }
 
 :deep(.ant-menu-submenu-selected > .ant-menu-submenu-title) {
-  color: #f83126;
+  color: $red-color;
 }
 
 /* 二级菜单颜色修改 */
@@ -200,6 +200,6 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
 }
 :deep(.ant-menu-item-selected) {
   background-color: #ffebe9;
-  color: #f83126;
+  color: $red-color;
 }
 </style>

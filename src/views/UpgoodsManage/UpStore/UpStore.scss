@@ -21,7 +21,7 @@
     span {
         height: 21px;
         font-size: 16px;
-        color: #F83126;
+        color: $red-color;
         line-height: 21px;
         text-align: left;
         font-style: normal;
@@ -54,7 +54,7 @@
             line-height: 21px;
 
             &:hover {
-                color: #F83126;
+                color: $red-color;
             }
         }
 
@@ -62,7 +62,7 @@
             height: 24px;
             font-weight: bold;
             font-size: 18px;
-            color: #F83126;
+            color: $red-color;
             line-height: 24px;
         }
     }
@@ -84,7 +84,7 @@
         height: 20px;
         font-weight: 400;
         font-size: 14px;
-        color: #F83126;
+        color: $red-color;
         line-height: 20px;
         text-align: center;
         cursor: pointer;

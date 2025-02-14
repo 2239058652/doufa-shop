@@ -569,11 +569,11 @@ getProductsList() // 获取商品列表
 
 .custom-radio.selected {
   border-color: f83126; /* 选中时边框颜色 */
-  color: #f83126; /* 选中时文字颜色 */
+  color: $red-color; /* 选中时文字颜色 */
 }
 
 .custom-radio.selected {
-  color: #f83126; /* 选中时颜色 */
+  color: $red-color; /* 选中时颜色 */
 }
 
 .adaptive-radio-group {
@@ -603,7 +603,7 @@ getProductsList() // 获取商品列表
 
 .adaptive-radio.selected {
   background-color: #ffebe9;
-  color: #f83126;
-  border-color: #f83126;
+  color: $red-color;
+  border-color: $red-color;
 }
 </style>

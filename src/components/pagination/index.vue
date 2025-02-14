@@ -1,7 +1,15 @@
 <template>
-  <a-pagination v-model:current="currentPage" :total="total" :pageSizeOptions="pageSizeOptions" :pageSize="pageSize"
-    show-quick-jumper show-size-changer @change="handleChange" @showSizeChange="handleSizeChange"
-    :show-total="showTotal" />
+  <a-pagination
+    v-model:current="currentPage"
+    :total="total"
+    :pageSizeOptions="pageSizeOptions"
+    :pageSize="pageSize"
+    show-quick-jumper
+    show-size-changer
+    @change="handleChange"
+    @showSizeChange="handleSizeChange"
+    :show-total="showTotal"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -61,7 +69,7 @@ const handleSizeChange = (current: number, size: number) => {
   // emit('change', { page: current, size })
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 :deep(.ant-select-show-arrow) {
   min-width: 70px;
   width: auto;
@@ -80,12 +88,12 @@ const handleSizeChange = (current: number, size: number) => {
 }
 
 :deep(.ant-pagination-item-active) {
-  border-color: #F83126;
-  background: #F83126;
+  border-color: $red-color;
+  background: $red-color;
 
   &:hover {
-    border-color: #F83126;
-    background: #F83126;
+    border-color: $red-color;
+    background: $red-color;
   }
 
   a {

@@ -59,7 +59,7 @@
       width: 94px;
       height: 34px;
       border-radius: 4px;
-      background: #F83126;
+      background: $red-color;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -82,14 +82,14 @@
       width: 94px;
       height: 34px;
       border-radius: 4px;
-      border: 1px solid #F83126;
+      border: 1px solid $red-color;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
 
       &:hover {
-        background: #F83126;
+        background: $red-color;
 
         span {
           height: 20px;
@@ -104,7 +104,7 @@
         height: 20px;
         font-weight: 400;
         font-size: 14px;
-        color: #F83126;
+        color: $red-color;
         line-height: 20px;
       }
     }
@@ -294,7 +294,7 @@
       width: 87px;
       height: 34px;
       border-radius: 4px;
-      border: 1px solid #F83126;
+      border: 1px solid $red-color;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -308,7 +308,7 @@
         height: 20px;
         font-weight: 400;
         font-size: 14px;
-        color: #F83126;
+        color: $red-color;
         line-height: 20px;
       }
     }
@@ -456,7 +456,7 @@
               span {
                 height: 16px;
                 font-size: 12px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 16px;
                 text-align: left;
                 font-style: normal;
@@ -655,7 +655,7 @@
     .right-5 {
       height: 19px;
       font-size: 14px;
-      color: #F83126;
+      color: $red-color;
       line-height: 19px;
       text-align: left;
       text-decoration-line: underline;
@@ -676,7 +676,7 @@
       .right-btn-1 {
         width: 149px;
         height: 50px;
-        border: 2px solid #F83126;
+        border: 2px solid $red-color;
         border-radius: 6px 0px 0px 6px;
         cursor: pointer;
         display: flex;
@@ -686,7 +686,7 @@
         span {
           height: 21px;
           font-size: 16px;
-          color: #F83126;
+          color: $red-color;
           line-height: 21px;
         }
 
@@ -702,7 +702,7 @@
       .right-btn-2 {
         width: 149px;
         height: 50px;
-        background: #F83126;
+        background: $red-color;
         border-radius: 0px 6px 6px 0px;
         cursor: pointer;
         display: flex;
@@ -819,7 +819,7 @@
         width: 87px;
         height: 34px;
         border-radius: 4px;
-        background: #F83126;
+        background: $red-color;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -897,7 +897,7 @@
         span {
           height: 19px;
           font-size: 14px;
-          color: #F83126;
+          color: $red-color;
           line-height: 19px;
           text-align: left;
           font-style: normal;
@@ -998,7 +998,7 @@
           height: 16px;
           font-weight: bold;
           font-size: 12px;
-          color: #F83126;
+          color: $red-color;
           line-height: 16px;
           text-align: left;
           font-style: normal;
@@ -1038,7 +1038,7 @@
   .relate-footer-btn-1 {
     width: 87px;
     height: 34px;
-    background: #F83126;
+    background: $red-color;
     border-radius: 4px;
     display: flex;
     align-items: center;

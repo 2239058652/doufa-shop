@@ -74,7 +74,7 @@
             }
 
             div:nth-child(2) {
-                background: #F83126;
+                background: $red-color;
 
                 span {
                     width: 32px;
@@ -93,7 +93,7 @@
                     position: absolute;
                     top: 5px;
                     left: 9px;
-                    color: #F83126;
+                    color: $red-color;
                 }
             }
         }
@@ -186,7 +186,7 @@
                 border-radius: 2px;
                 text-align: center;
                 line-height: 24px;
-                color: #F83126;
+                color: $red-color;
                 display: flex;
                 margin-left: 3px;
                 align-items: center;
@@ -195,7 +195,7 @@
                 .star {
                     width: 14px;
                     height: 14px;
-                    background: #F83126;
+                    background: $red-color;
                     clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
                 }
 
@@ -301,11 +301,11 @@
                 line-height: 22px;
 
                 &:hover {
-                    color: #f83126;
+                    color: $red-color;
                 }
 
                 &.active {
-                    color: #f83126;
+                    color: $red-color;
                 }
             }
 
@@ -336,7 +336,7 @@
                 height: 22px;
                 font-weight: 400;
                 font-size: 16px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 22px;
             }
 
@@ -382,7 +382,7 @@
         padding: 1px;
 
         &:hover {
-            border: 1px solid #ff5c02;
+            border: 1px solid $red-color;
         }
 
         .img-content {
@@ -442,7 +442,7 @@
                 width: 9px;
                 height: 19px;
                 font-size: 14px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 19px;
                 text-align: left;
             }
@@ -452,7 +452,7 @@
                 height: 26px;
                 font-weight: bold;
                 font-size: 20px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 26px;
                 text-align: left;
                 margin-left: 4px;

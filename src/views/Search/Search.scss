@@ -72,7 +72,7 @@
         .func-sou-input {
             width: 782px;
             height: 50px;
-            border: 2px solid #f83126;
+            border: 2px solid $red-color;
             padding: 2px;
             border-radius: 8px;
             color: #FFFFFF;
@@ -102,7 +102,7 @@
                 .sousuo-btn {
                     width: 86px;
                     height: 42px;
-                    background-color: #f83126;
+                    background-color: $red-color;
                     border-radius: 6px;
                     display: flex;
                     align-items: center;
@@ -145,11 +145,11 @@
                     cursor: pointer;
 
                     &:hover {
-                        color: #f83126;
+                        color: $red-color;
                     }
 
                     &.active {
-                        color: #f83126;
+                        color: $red-color;
                     }
                 }
             }
@@ -204,7 +204,7 @@
                 width: 48px;
                 height: 21px;
                 font-size: 16px;
-                color: #f83126;
+                color: $red-color;
                 line-height: 21px;
                 text-align: left;
                 font-style: normal;
@@ -261,11 +261,11 @@
                 cursor: pointer;
 
                 &:hover {
-                    color: #f83126;
+                    color: $red-color;
                 }
 
                 &.active {
-                    color: #f83126;
+                    color: $red-color;
                 }
             }
         }
@@ -307,11 +307,11 @@
                 line-height: 22px;
 
                 &:hover {
-                    color: #f83126;
+                    color: $red-color;
                 }
 
                 &.active {
-                    color: #f83126;
+                    color: $red-color;
                 }
             }
 
@@ -378,7 +378,7 @@
                 height: 22px;
                 font-weight: 400;
                 font-size: 16px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 22px;
             }
 
@@ -424,7 +424,7 @@
         padding: 1px;
 
         &:hover {
-            border: 1px solid #ff5c02;
+            border: 1px solid $red-color;
         }
 
         .img-content {
@@ -484,7 +484,7 @@
                 width: 9px;
                 height: 19px;
                 font-size: 14px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 19px;
                 text-align: left;
             }
@@ -494,7 +494,7 @@
                 height: 26px;
                 font-weight: bold;
                 font-size: 20px;
-                color: #F83126;
+                color: $red-color;
                 line-height: 26px;
                 text-align: left;
                 margin-left: 4px;
@@ -547,12 +547,12 @@
         font-size: 14px;
 
         &:hover {
-            background: #F83126;
+            background: $red-color;
             color: #fff;
         }
 
         &.active {
-            background: #F83126;
+            background: $red-color;
             color: #fff;
         }
     }
@@ -636,7 +636,7 @@
                         height: 22px;
                         font-weight: 600;
                         font-size: 16px;
-                        color: #F83126;
+                        color: $red-color;
                         line-height: 22px;
                     }
                 }

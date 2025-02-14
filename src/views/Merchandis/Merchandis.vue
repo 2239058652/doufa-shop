@@ -395,7 +395,7 @@
             :scroll="{ y: 400 }"
           >
             <template #emptyText>
-              <div style="text-align: center; color: #f83126">
+              <div style="text-align: center; color: var(--red-color)">
                 暂无可上传店铺或店铺授权已过期，请点击左上角【添加店铺】按钮先授权店铺
               </div>
             </template>
@@ -921,7 +921,7 @@ const confirmUpload = (row: any) => {
 .star {
   width: 14px;
   height: 14px;
-  background: #f83126;
+  background: $red-color;
   clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 </style>

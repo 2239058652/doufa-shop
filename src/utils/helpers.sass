@@ -1,6 +1,21 @@
 @use "sass:math"
 
+// 将px转换为响应式rem单位 (基于1560px设计稿宽度)
 @function pw($n)
-    @return math.div($n, 1560) * 100rem
+    // 确保输入值为数字
+    @if type-of($n) != "number"
+        @error "pw()函数需要一个数字参数，得到 #{$n}"
+    // 移除单位并转换
+    $value: math.div(strip-unit($n), 1560) * 100rem
+    @return $value
+
+// 将px转换为响应式rem单位 (基于1080px设计稿高度)
 @function ph($n)
-    @return math.div($n, 1080) * 100rem
+    @if type-of($n) != "number"
+        @error "ph()函数需要一个数字参数，得到 #{$n}"
+    $value: math.div(strip-unit($n), 1080) * 100rem
+    @return $value
+
+// 移除单位的辅助函数
+@function strip-unit($n)
+    @return math.div($n, ($n * 0 + 1))

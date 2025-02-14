@@ -54,14 +54,14 @@ const toggleCheck = () => {
       justify-content: center;
 
       &.is-checked {
-        border-color: #f83126;
+        border-color: $red-color;
         background-color: white;
 
         .dot {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: #f83126;
+          background-color: $red-color;
           flex-shrink: 0; // 防止缩放
           position: relative; // 相对定位
           display: block; // 确保显示为块级元素
@@ -70,8 +70,8 @@ const toggleCheck = () => {
     }
 
     &.is-checked:not(.is-round) {
-      background-color: #f83126;
-      border-color: #f83126;
+      background-color: $red-color;
+      border-color: $red-color;
     }
 
     .checkmark {

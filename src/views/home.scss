@@ -72,7 +72,7 @@
     .func-sou-input {
       width: 782px;
       height: 50px;
-      border: 2px solid #f83126;
+      border: 2px solid $red-color;
       padding: 2px;
       border-radius: 8px;
       color: #FFFFFF;
@@ -107,7 +107,7 @@
         .sousuo-btn {
           width: 86px;
           height: 42px;
-          background-color: #f83126;
+          background-color: $red-color;
           border-radius: 6px;
           display: flex;
           align-items: center;
@@ -150,11 +150,11 @@
           cursor: pointer;
 
           &:hover {
-            color: #f83126;
+            color: $red-color;
           }
 
           &.active {
-            color: #f83126;
+            color: $red-color;
           }
         }
       }
@@ -177,7 +177,7 @@
       height: 16px;
       border-radius: 8px;
       position: absolute;
-      background: #E1251B;
+      background: $red-color;
       top: -8px; // 向上偏移
       right: -12px; // 向右偏移
 
@@ -209,7 +209,7 @@
         width: 48px;
         height: 21px;
         font-size: 16px;
-        color: #f83126;
+        color: $red-color;
         line-height: 21px;
         text-align: left;
         font-style: normal;
@@ -318,7 +318,7 @@
               }
 
               &:hover {
-                color: #f83126;
+                color: $red-color;
               }
             }
           }
@@ -356,11 +356,11 @@
         position: relative;
 
         &.active {
-          color: #f83126;
+          color: $red-color;
         }
 
         :hover {
-          color: #f83126;
+          color: $red-color;
         }
 
         .badge {
@@ -560,7 +560,7 @@
               cursor: pointer;
 
               &:hover {
-                color: #f83126;
+                color: $red-color;
               }
             }
           }
@@ -699,7 +699,7 @@
             cursor: pointer;
 
             // &:hover {
-            //   color: #f83126;
+            //   color: $red-color;
             // }
           }
 
@@ -714,7 +714,7 @@
             cursor: pointer;
 
             &:hover {
-              color: #f83126;
+              color: $red-color;
             }
           }
         }
@@ -800,7 +800,7 @@
           }
 
           .btn-login {
-            background: #f83126;
+            background: $red-color;
             color: #fff;
             border: none;
           }
@@ -840,7 +840,7 @@
     cursor: pointer;
 
     &:hover {
-      color: #f83126;
+      color: $red-color;
     }
   }
 }
@@ -1006,7 +1006,7 @@
           width: 9px;
           height: 19px;
           font-size: 14px;
-          color: #F83126;
+          color: $red-color;
           line-height: 19px;
           text-align: center;
         }
@@ -1015,7 +1015,7 @@
         height: 26px;
         font-weight: bold;
         font-size: 20px;
-        color: #F83126;
+        color: $red-color;
         line-height: 26px;
         text-align: center;
         position: absolute;
@@ -1242,7 +1242,7 @@
             height: 26px;
             font-weight: 400;
             font-size: 20px;
-            color: #F83126;
+            color: $red-color;
             line-height: 26px;
             text-align: left;
             margin-top: 6px;
@@ -1254,7 +1254,7 @@
               width: 9px;
               height: 19px;
               font-size: 14px;
-              color: #F83126;
+              color: $red-color;
               line-height: 19px;
               text-align: left;
             }
@@ -1407,7 +1407,7 @@
             height: 26px;
             font-weight: 400;
             font-size: 20px;
-            color: #F83126;
+            color: $red-color;
             line-height: 26px;
             text-align: left;
             margin-top: 6px;
@@ -1419,7 +1419,7 @@
               width: 9px;
               height: 19px;
               font-size: 14px;
-              color: #F83126;
+              color: $red-color;
               line-height: 19px;
               text-align: left;
             }
@@ -1545,7 +1545,7 @@
             width: 9px;
             height: 19px;
             font-size: 14px;
-            color: #F83126;
+            color: $red-color;
             line-height: 19px;
           }
 
@@ -1554,7 +1554,7 @@
             height: 26px;
             font-weight: bold;
             font-size: 20px;
-            color: #F83126;
+            color: $red-color;
             line-height: 26px;
           }
         }
@@ -1718,7 +1718,7 @@
             span:nth-child(1) {
               width: 9px;
               height: 19px;
-              color: #F83126;
+              color: $red-color;
               line-height: 19px;
             }
 
@@ -1726,7 +1726,7 @@
               width: 100px;
               height: 26px;
               font-size: 20px;
-              color: #F83126;
+              color: $red-color;
               line-height: 26px;
             }
 
@@ -2009,7 +2009,7 @@
                   width: 9px;
                   height: 19px;
                   font-size: 14px;
-                  color: #F83126;
+                  color: $red-color;
                   line-height: 19px;
                   text-align: left;
                   font-style: normal;
@@ -2020,7 +2020,7 @@
                   height: 21px;
                   font-weight: bold;
                   font-size: 16px;
-                  color: #F83126;
+                  color: $red-color;
                   line-height: 21px;
                   text-align: left;
                   font-style: normal;
@@ -2138,7 +2138,7 @@
     padding: 1px;
 
     &:hover {
-      border: 1px solid #ff5c02;
+      border: 1px solid $red-color;
     }
 
     .img-content {
@@ -2198,7 +2198,7 @@
         width: 9px;
         height: 19px;
         font-size: 14px;
-        color: #F83126;
+        color: $red-color;
         line-height: 19px;
         text-align: left;
       }
@@ -2208,7 +2208,7 @@
         height: 26px;
         font-weight: bold;
         font-size: 20px;
-        color: #F83126;
+        color: $red-color;
         line-height: 26px;
         text-align: left;
         margin-left: 4px;
@@ -2261,12 +2261,12 @@
     font-size: 14px;
 
     &:hover {
-      background: #F83126;
+      background: $red-color;
       color: #fff;
     }
 
     &.active {
-      background: #F83126;
+      background: $red-color;
       color: #fff;
     }
   }

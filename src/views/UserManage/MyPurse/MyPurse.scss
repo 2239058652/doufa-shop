@@ -239,7 +239,7 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    border: 1px solid #F83126;
+    border: 1px solid $red-color;
     border-radius: 4px;
     cursor: pointer;
 
@@ -286,7 +286,7 @@
 
     .txsxf {
         font-size: 12px;
-        color: #f83126;
+        color: $red-color;
         font-weight: 400;
     }
 

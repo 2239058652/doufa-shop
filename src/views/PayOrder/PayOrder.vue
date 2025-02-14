@@ -124,9 +124,16 @@
                     />
                   </template>
                   <template v-else-if="column.dataIndex === 'price'">
-                    <div style="height: 22px; font-weight: 500; font-size: 16px; color: #f83126; line-height: 22px">{{
-                      parseFloat(record.productInfo.attrInfo.ot_price) * parseFloat(record.cart_num)
-                    }}</div>
+                    <div
+                      style="
+                        height: 22px;
+                        font-weight: 500;
+                        font-size: 16px;
+                        color: var(--red-color);
+                        line-height: 22px;
+                      "
+                      >{{ parseFloat(record.productInfo.attrInfo.ot_price) * parseFloat(record.cart_num) }}</div
+                    >
                   </template>
                 </template>
               </a-table>

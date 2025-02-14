@@ -353,7 +353,7 @@ defineExpose({ setModalInit })
     height: 20px;
     font-weight: 400;
     font-size: 14px;
-    color: #f83126;
+    color: $red-color;
     line-height: 20px;
     text-align: right;
     font-style: normal;
@@ -389,7 +389,7 @@ defineExpose({ setModalInit })
   width: 378px;
   height: 40px;
   border-radius: 8px;
-  background: #f83126;
+  background: $red-color;
   margin: 0 51px 10px 51px;
   padding: 10px 175px;
   display: flex;

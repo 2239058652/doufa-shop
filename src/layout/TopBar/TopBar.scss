@@ -1,5 +1,5 @@
 .active:hover {
-    color: #f83126;
+    color: $red-color;
     cursor: pointer;
 }
 
@@ -92,7 +92,7 @@
                 }
 
                 :hover {
-                    color: #f83126;
+                    color: $red-color;
                 }
 
                 .menu-item {
