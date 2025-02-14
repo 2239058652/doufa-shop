@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver, AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,8 +16,8 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import "@/styles/variables.scss";
-          @import "@/utils/helpers.sass";
+          @use "@/styles/variables.scss" as *;
+          @use "@/utils/helpers.sass" as *;
         `
       }
     }
@@ -26,10 +26,19 @@ export default defineConfig({
     vue(),
     vueJsx(),
     AutoImport({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [ElementPlusResolver(), AntDesignVueResolver()],
+      dts: 'src/auto-imports.d.ts'
     }),
     Components({
-      resolvers: [ElementPlusResolver()]
+      resolvers: [
+        ElementPlusResolver(),
+        AntDesignVueResolver({
+          importStyle: false, // css in js
+          resolveIcons: true // 自动导入图标
+        })
+      ],
+      // 生成类型声明文件
+      dts: 'src/components.d.ts'
     })
   ],
   resolve: {
@@ -60,7 +69,7 @@ export default defineConfig({
         manualChunks: {}
       }
     },
-    chunkSizeWarningLimit: 4096,
+    // chunkSizeWarningLimit: 4096,
     minify: 'terser',
     outDir: 'dist',
     sourcemap: false,
