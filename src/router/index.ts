@@ -288,15 +288,6 @@ const asyncRoutes: RouteRecordRaw[] = [
           title: '上传记录',
           requireSidebar: true
         }
-      },
-      {
-        path: 'upsetting',
-        name: 'UpSetting',
-        component: () => import('@/views/UpgoodsManage/UpSetting/UpSetting.vue'),
-        meta: {
-          title: '铺货设置',
-          requireSidebar: true
-        }
       }
     ]
   },

@@ -1,7 +1,7 @@
 import request from '@/axios'
 
 // 用户授权抖店商品列表
-export const AuthStoreGoodsList = (params?: { page?: string | number; pageSize?: string | number }) => {
+export const AuthStoreGoodsList = (params?: { page?: string | number; limit?: string | number }) => {
   return request.get({
     url: '/api/getStoreGoodsList',
     params
@@ -41,9 +41,7 @@ export const getPrdCateList = (params: { token: string; cid?: string }) => {
 }
 
 // 获取商品属性列表
-export const getCatePropertyList = (params: {
-  data: { token: string; category_leaf_id: string }
-}) => {
+export const getCatePropertyList = (params: { data: { token: string; category_leaf_id: string } }) => {
   return request.get({
     url: '/api/product/getCateProperty',
     params
@@ -78,4 +76,3 @@ export const getProductList = (params: ISize) => {
     params
   })
 }
-
