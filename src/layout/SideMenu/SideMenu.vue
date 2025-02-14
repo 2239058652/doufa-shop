@@ -138,11 +138,44 @@ provide('topMenuRef', topMenuRef) // 注入重置密码弹窗
   .menu {
     width: 240px;
     // width: 206px;
+    height: 100%; // 确保菜单容器高度为100%
+    overflow-y: auto; // 添加垂直滚动条
+    // 自定义滚动条样式
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #e8e8e8;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
   }
   .router-view {
     width: 100%;
     overflow-y: auto;
     height: auto;
+  }
+}
+
+:deep(.ant-menu-inline) {
+  .ant-menu-item {
+    height: 40px; /* 减小菜单项高度 */
+    line-height: 40px; /* 行高与高度一致 */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0; /* 移除上边距 */
+    margin-bottom: 0; /* 移除下边距 */
+  }
+
+  .ant-menu-submenu-title {
+    height: 40px; /* 减小子菜单标题高度 */
+    line-height: 40px; /* 行高与高度一致 */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0; /* 移除上边距 */
+    margin-bottom: 0; /* 移除下边距 */
   }
 }
 

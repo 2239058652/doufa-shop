@@ -31,6 +31,9 @@
                         <span class="active" style="margin-top: 16px" @click="router.push('/shopsmanage')">
                           下单管理
                         </span>
+                        <span class="active" style="margin-top: 16px" @click="router.push('/upgoodsmanage')">
+                          上传管理
+                        </span>
                       </div>
                     </div>
                   </template>

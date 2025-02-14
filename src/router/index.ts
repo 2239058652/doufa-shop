@@ -252,6 +252,55 @@ const asyncRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/upgoodsmanage',
+    name: 'UpgoodsManage',
+    redirect: '/upgoodsmanage/upstore',
+    meta: {
+      title: '上传管理',
+      hidden: false,
+      requiresAuth: true
+    },
+    component: SiderMenuBar,
+    children: [
+      {
+        path: 'upstore',
+        name: 'UpStore',
+        component: () => import('@/views/UpgoodsManage/UpStore/UpStore.vue'),
+        meta: {
+          title: '上货店铺管理',
+          requireSidebar: true
+        }
+      },
+      {
+        path: 'shelf',
+        name: 'Shelf',
+        component: () => import('@/views/UpgoodsManage/Shelf/Shelf.vue'),
+        meta: {
+          title: '选货架',
+          requireSidebar: true
+        }
+      },
+      {
+        path: 'uprecord',
+        name: 'UpRecord',
+        component: () => import('@/views/UpgoodsManage/UpRecord/UpRecord.vue'),
+        meta: {
+          title: '上传记录',
+          requireSidebar: true
+        }
+      },
+      {
+        path: 'upsetting',
+        name: 'UpSetting',
+        component: () => import('@/views/UpgoodsManage/UpSetting/UpSetting.vue'),
+        meta: {
+          title: '铺货设置',
+          requireSidebar: true
+        }
+      }
+    ]
+  },
+  {
     path: '/404',
     name: '404page',
     component: () => import('@/views/Errors/404.vue'),
