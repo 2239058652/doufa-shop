@@ -17,11 +17,12 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 
 // 修改全局颜色留的方法
-// const initColor = () => {
-//   // 从 localStorage 获取保存的颜色，如果没有则使用默认色值
-//   const savedColor = localStorage.getItem('theme-color') || '#F83126'
-//   document.documentElement.style.setProperty('--red-color', savedColor)
-// }
+const initThemeColor = () => {
+  // 从 localStorage 获取保存的颜色，如果没有则使用默认色值
+  const savedColor = localStorage.getItem('theme-color') || '#F83126'
+  document.documentElement.style.setProperty('--red-color', savedColor)
+}
+initThemeColor()
 
 // 设置 dayjs 的语言为中文
 dayjs.locale('zh-cn')

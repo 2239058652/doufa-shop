@@ -1,6 +1,9 @@
 <template>
   <context-holder />
   <div class="home">
+    <div v-if="false">
+      <el-color-picker v-model="colorPicker" show-alpha @change="handleColorChange" />
+    </div>
     <!-- 顶部搜索 框 功能区 tianjiacs -->
     <div class="top-func">
       <!-- LOGO区域 -->
@@ -667,6 +670,12 @@ const fileList = ref([]) // 以图搜索list
 const photoPopoverVisible = ref(false) // 以图搜索弹窗
 const isLoading = ref(false) // 加载中
 const hasNoMore = ref(false) //  m有更多数据
+const colorPicker = ref(localStorage.getItem('theme-color') || '#F83126')
+const handleColorChange = () => {
+  const newColor = colorPicker.value
+  document.documentElement.style.setProperty('--red-color', newColor)
+  localStorage.setItem('theme-color', newColor)
+}
 
 // 滚动加载，添加一个监听器，当滚动到底部时触发加载更多数据
 // 使用节流包装滚动处理函数
