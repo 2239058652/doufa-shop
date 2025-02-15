@@ -265,15 +265,15 @@
               </div>
             </div>
             <div class="mid-icon">
-              <div class="icon-text">
+              <div class="icon-text" @click="$router.push('/shopsmanage/syncorder')">
                 <img src="../assets/image/tbddicon.png" alt="" />
                 <span>同步订单</span>
               </div>
-              <div class="icon-text">
+              <div class="icon-text" @click="$router.push('/upgoodsmanage/shelf')">
                 <img src="../assets/image/plshicon.png" alt="" />
                 <span>批量上货</span>
               </div>
-              <div class="icon-text">
+              <div class="icon-text" @click="$router.push('/usermanage/userinfo')">
                 <img src="../assets/image/idficon.png" alt="" />
                 <span>I 抖发</span>
               </div>
@@ -283,7 +283,7 @@
                 <span>12</span>
                 <span>待付款</span>
               </div>
-              <div class="status-text">
+              <div class="status-text" @click="$router.push('/ordermanage/nosend')">
                 <span>12</span>
                 <span>未发出</span>
               </div>
@@ -291,7 +291,7 @@
                 <span>12</span>
                 <span>待收货</span>
               </div>
-              <div class="status-text">
+              <div class="status-text" @click="$router.push('/ordermanage/selleds')">
                 <span>12</span>
                 <span>售后订单</span>
               </div>
