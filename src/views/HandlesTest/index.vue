@@ -6,14 +6,18 @@
       <div class="images-container">
         <div class="image-box">
           <h3>原始图片</h3>
-          <canvas ref="sourceCanvas"></canvas>
+          <canvas ref="sourceCanvas" @click="previewImage('source')"></canvas>
         </div>
         <div class="image-box">
           <h3>提取的印章</h3>
-          <canvas ref="resultCanvas"></canvas>
+          <canvas ref="resultCanvas" @click="previewImage('result')"></canvas>
         </div>
       </div>
     </div>
+    <!-- 添加预览弹窗 -->
+    <a-modal v-model:open="previewVisible" :footer="null" @cancel="previewVisible = false" width="800px">
+      <img :src="previewImageUrl" style="width: 100%" />
+    </a-modal>
   </div>
 </template>
 
@@ -23,6 +27,16 @@ import { ref, onMounted } from 'vue'
 const cvLoaded = ref(false)
 const sourceCanvas = ref(null)
 const resultCanvas = ref(null)
+const previewVisible = ref(false)
+const previewImageUrl = ref('')
+
+const previewImage = (type) => {
+  const canvas = type === 'source' ? sourceCanvas.value : resultCanvas.value
+  if (canvas) {
+    previewImageUrl.value = canvas.toDataURL('image/png')
+    previewVisible.value = true
+  }
+}
 
 const onOpenCvLoaded = () => {
   console.log('OpenCV.js 加载完成')
@@ -37,6 +51,7 @@ const handleFileUpload = async (event) => {
     await processImage(img)
   } catch (error) {
     console.error('处理图像时出错:', error)
+    alert('处理失败：' + error.message)
   }
 }
 
@@ -45,17 +60,7 @@ const loadImage = (file) => {
     const reader = new FileReader()
     reader.onload = (e) => {
       const img = new Image()
-      img.crossOrigin = 'anonymous' // 添加跨域支持
-
-      img.onload = () => {
-        // 验证图像是否正确加载
-        if (img.width > 0 && img.height > 0) {
-          resolve(img)
-        } else {
-          reject(new Error('图片加载失败'))
-        }
-      }
-
+      img.onload = () => resolve(img)
       img.onerror = () => reject(new Error('图片加载错误'))
       img.src = e.target.result
     }
@@ -63,138 +68,154 @@ const loadImage = (file) => {
   })
 }
 
+// 修改颜色阈值部分的代码
+const createThresholdMat = (values) => {
+  return cv.matFromArray(1, 3, cv.CV_8UC1, values)
+}
+
 const processImage = async (img) => {
   const matsToDelete = []
-
+  let contours
   try {
-    // 添加调试日志
-    console.log('图像尺寸:', img.width, img.height)
-
-    // 检查图像尺寸
-    const MAX_SIZE = 2048
-    let width = img.width
-    let height = img.height
-
-    // 如果图像太大，进行缩放
-    if (width > MAX_SIZE || height > MAX_SIZE) {
-      const scale = MAX_SIZE / Math.max(width, height)
-      width = Math.floor(width * scale)
-      height = Math.floor(height * scale)
-    }
-
     // 设置canvas尺寸
+    const MAX_SIZE = 2048
+    const [width, height] = resizeWithAspectRatio(img.width, img.height, MAX_SIZE)
+
     sourceCanvas.value.width = width
     sourceCanvas.value.height = height
     const sCtx = sourceCanvas.value.getContext('2d')
     sCtx.drawImage(img, 0, 0, width, height)
 
-    // 处理图片
+    // 图像处理流程
     const src = cv.imread(sourceCanvas.value)
-    console.log('OpenCV Mat 信息:', src.rows, src.cols, src.type())
     matsToDelete.push(src)
 
-    const dst = new cv.Mat()
-    matsToDelete.push(dst)
-    cv.cvtColor(src, dst, cv.COLOR_BGR2HSV)
+    // 预处理：降噪
+    const blurredSrc = new cv.Mat()
+    cv.medianBlur(src, blurredSrc, 5)
+    matsToDelete.push(blurredSrc)
 
-    // 创建HSV阈值
-    const lower1 = new cv.Mat(src.rows, src.cols, src.type(), [0, 70, 50, 0])
-    const upper1 = new cv.Mat(src.rows, src.cols, src.type(), [15, 255, 255, 255])
-    const lower2 = new cv.Mat(src.rows, src.cols, src.type(), [160, 70, 50, 0])
-    const upper2 = new cv.Mat(src.rows, src.cols, src.type(), [180, 255, 255, 255])
-    matsToDelete.push(lower1, upper1, lower2, upper2)
+    // 颜色空间转换
+    const hsv = new cv.Mat()
+    cv.cvtColor(blurredSrc, hsv, cv.COLOR_BGR2HSV)
+    matsToDelete.push(hsv)
 
-    // 提取红色区域
+    const rgba = new cv.Mat()
+    cv.cvtColor(blurredSrc, rgba, cv.COLOR_RGBA2RGB)
+    cv.cvtColor(rgba, hsv, cv.COLOR_RGB2HSV)
+    matsToDelete.push(rgba)
+
+    // 创建红色范围掩膜（优化红色检测）
+    const lowerRed1 = createThresholdMat([0, 80, 80]) // 降低饱和度和亮度阈值
+    const upperRed1 = createThresholdMat([20, 255, 255]) // 扩大色相范围
+    const lowerRed2 = createThresholdMat([160, 80, 80])
+    const upperRed2 = createThresholdMat([180, 255, 255])
+
     const mask1 = new cv.Mat()
     const mask2 = new cv.Mat()
     const mask = new cv.Mat()
-    matsToDelete.push(mask1, mask2, mask)
-
-    cv.inRange(dst, lower1, upper1, mask1)
-    cv.inRange(dst, lower2, upper2, mask2)
+    cv.inRange(hsv, lowerRed1, upperRed1, mask1)
+    cv.inRange(hsv, lowerRed2, upperRed2, mask2)
     cv.add(mask1, mask2, mask)
 
-    // 2. 在这里添加高斯模糊
-    const blurred = new cv.Mat()
-    matsToDelete.push(blurred)
-    cv.GaussianBlur(mask, blurred, new cv.Size(5, 5), 0)
+    matsToDelete.push(lowerRed1, upperRed1, lowerRed2, upperRed2, mask1, mask2, mask)
+    const debugMask = new cv.Mat()
+    cv.cvtColor(mask, debugMask, cv.COLOR_GRAY2BGR)
+    cv.imshow(sourceCanvas.value, debugMask)
+    debugMask.delete()
 
-    // 形态学操作
-    const kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, new cv.Size(3, 3))
+    // 形态学操作（优化形状保留）
+    const kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, new cv.Size(13, 13))
     const morphed = new cv.Mat()
+    cv.morphologyEx(mask, morphed, cv.MORPH_CLOSE, kernel, new cv.Point(-1, -1), 4)
+    cv.morphologyEx(morphed, morphed, cv.MORPH_OPEN, kernel, new cv.Point(-1, -1), 2)
     matsToDelete.push(kernel, morphed)
-    cv.morphologyEx(blurred, morphed, cv.MORPH_CLOSE, kernel, new cv.Point(-1, -1), 2)
 
-    const contours = new cv.MatVector()
+    // 查找轮廓
+    contours = new cv.MatVector()
     const hierarchy = new cv.Mat()
+    cv.findContours(morphed, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
     matsToDelete.push(hierarchy)
 
-    cv.findContours(morphed, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-
-    // 在关键步骤添加检查
-    console.log('检测到的轮廓数量:', contours.size())
-
-    // 找到轮廓
+    // 轮廓分析（优化筛选条件）
     let maxArea = 0
     let maxContourIndex = -1
     for (let i = 0; i < contours.size(); i++) {
-      const area = cv.contourArea(contours.get(i))
-      const perimeter = cv.arcLength(contours.get(i), true)
-      const circularity = (4 * Math.PI * area) / (perimeter * perimeter)
+      const contour = contours.get(i)
+      const area = cv.contourArea(contour)
+      const perimeter = cv.arcLength(contour, true)
+      const circularity = perimeter > 0 ? (4 * Math.PI * area) / (perimeter * perimeter) : 0
+      const rect = cv.boundingRect(contour)
+      const aspectRatio = rect.width / (rect.height || 1) // 避免除零
 
-      if (area > 200 && circularity > 0.6 && area > maxArea) {
-        maxArea = area
-        maxContourIndex = i
+      console.log(`轮廓 ${i}: 面积=${area}, 圆形度=${circularity.toFixed(2)}, 宽高比=${aspectRatio.toFixed(2)}`)
+
+      if (
+        area > 100 && // 降低最小面积阈值
+        circularity > 0.2 && // 降低圆形度要求
+        aspectRatio > 0.3 && // 放宽宽高比限制
+        aspectRatio < 3.0 &&
+        rect.width > 15 && // 降低最小尺寸要求
+        rect.height > 15
+      ) {
+        if (area > maxArea) {
+          maxArea = area
+          maxContourIndex = i
+        }
       }
     }
-
-    console.log('最大轮廓索引:', maxContourIndex)
 
     if (maxContourIndex !== -1) {
       const rect = cv.boundingRect(contours.get(maxContourIndex))
-      console.log('检测到的矩形区域:', rect)
-      const padding = 10
+      // 扩展ROI区域（添加边界检查）
+      const padding = 20
+      const x = Math.max(0, rect.x - padding)
+      const y = Math.max(0, rect.y - padding)
+      const w = Math.min(src.cols - x, rect.width + 2 * padding)
+      const h = Math.min(src.rows - y, rect.height + 2 * padding)
 
-      // 添加 padding 并确保不超出图像边界
-      rect.x = Math.max(0, rect.x - padding)
-      rect.y = Math.max(0, rect.y - padding)
-      rect.width = Math.min(src.cols - rect.x, rect.width + 2 * padding)
-      rect.height = Math.min(src.rows - rect.y, rect.height + 2 * padding)
-
-      if (rect.width > 0 && rect.height > 0) {
-        const stamp = src.roi(rect)
+      if (w > 10 && h > 10) {
+        const stamp = src.roi(new cv.Rect(x, y, w, h))
         matsToDelete.push(stamp)
-        resultCanvas.value.width = rect.width
-        resultCanvas.value.height = rect.height
-        cv.imshow(resultCanvas.value, stamp)
+
+        // 后处理：锐化边缘
+        const sharpened = new cv.Mat()
+        cv.GaussianBlur(stamp, sharpened, new cv.Size(0, 0), 3)
+        cv.addWeighted(stamp, 1.5, sharpened, -0.5, 0, sharpened)
+
+        resultCanvas.value.width = w
+        resultCanvas.value.height = h
+        cv.imshow(resultCanvas.value, sharpened)
+        sharpened.delete()
       }
     } else {
-      throw new Error('未检测到印章')
+      throw new Error('未检测到有效印章区域')
     }
   } catch (error) {
-    console.error('详细错误信息:', error.message)
-    throw error // 重新抛出错误以便查看完整堆栈
+    console.error('详细错误信息:', error)
+    throw error
   } finally {
-    // 清理所有Mat对象
-    matsToDelete.forEach((mat) => {
-      if (mat && !mat.isDeleted()) {
-        mat.delete()
-      }
-    })
-
-    // 特殊处理contours
-    if (typeof contours !== 'undefined' && contours instanceof cv.MatVector) {
-      contours.delete()
-    }
+    matsToDelete.forEach((mat) => !mat.isDeleted() && mat.delete())
+    contours && contours instanceof cv.MatVector && contours.delete()
   }
 }
+
+// 保持宽高比的尺寸调整
+const resizeWithAspectRatio = (width, height, maxSize) => {
+  const ratio = Math.min(maxSize / width, maxSize / height)
+  return [Math.floor(width * ratio), Math.floor(height * ratio)]
+}
+
 onMounted(() => {
   if (window.cv) {
     cvLoaded.value = true
   } else {
-    window.Module = {
-      onRuntimeInitialized: onOpenCvLoaded
-    }
+    window.Module = { onRuntimeInitialized: onOpenCvLoaded }
+    const script = document.createElement('script')
+    script.src = 'https://docs.opencv.org/4.5.0/opencv.js'
+    script.async = true
+    script.onload = () => console.log('OpenCV.js 脚本加载完成')
+    document.head.appendChild(script)
   }
 })
 </script>
