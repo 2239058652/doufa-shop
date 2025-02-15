@@ -26,7 +26,7 @@ interface IFormData {
   minimum_per_order: string
   reference_price: string
   reference_price_certificate: {
-    certificate_type: number | null,
+    certificate_type: number | null
     certificate_urls: [string] | []
   }
   white_back_ground_pic_url: string
@@ -34,10 +34,10 @@ interface IFormData {
 
 interface ISize {
   data: {
-    token: string;
-    page_num: number;
-    page_size?: number;
-    template_sub_type?: string;
+    token: string
+    page_num: number
+    page_size?: number
+    template_sub_type?: string
   }
 }
 
@@ -59,7 +59,7 @@ interface IProductParams {
 
 // 购物车列表
 interface ICartsParams {
-  status: string | number;
-  page: number;
+  status: string | number
+  page: number
   limit: number
 }

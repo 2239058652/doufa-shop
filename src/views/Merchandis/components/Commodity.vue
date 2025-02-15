@@ -706,7 +706,7 @@ const plgkcChange = () => {
   }
 }
 
-const emits = defineEmits(['closeStateUpload', 'uploadList'])
+const emits = defineEmits(['closeStateUpload'])
 
 const rules: Record<string, Rule[]> = {
   store_name: [{ required: true, message: '请输入15-60个字符（8-30个汉字）', trigger: ['change', 'blur'] }],
@@ -893,7 +893,7 @@ const handleCascaderChange = (value: any, selectedOptions: any) => {
   })
 
   // 根据文档无品牌id为596120136
-  ppList.value = [{ brand_id: '596120136', name_cn: '无品牌', name_en: '0' }]
+  ppList.value = [{ brand_id: 596120136, name_cn: '无品牌', name_en: '0' }]
   fetchBrandList({ token: formData.value.token, category_id: leafCategoryId }).then((res: any) => {
     if (res.status == 200) {
       nextTick(() => {
@@ -940,6 +940,7 @@ const handleDialogClosed = () => {
     sizeModelVal.value = {}
     goodsXqPic.value = []
     goodsMainPic.value = []
+    formList.value = []
   })
 }
 
@@ -987,7 +988,6 @@ const handleAdd = async (commit: any) => {
       return
     }
     const form = formData.value
-    const { shuxing } = formData.value.shuxing
 
     let specs = '颜色分类|'
     form.color.forEach((element: any, index: number) => {
@@ -1057,11 +1057,11 @@ const handleAdd = async (commit: any) => {
         supplier_id: '',
         outer_sku_id: '',
         delivery_infos: [
-          {
-            info_type: 'weight',
-            info_value: '100',
-            info_unit: 'mg'
-          }
+          // {
+          //   info_type: 'weight',
+          //   info_value: '100',
+          //   info_unit: 'mg'
+          // }
         ]
       })
       spec_pic = spec_pic + element.image + ','
@@ -1074,11 +1074,12 @@ const handleAdd = async (commit: any) => {
         console.log(item[key], 'itemmmmmmmmmmm')
         product_format_new[key] = []
         if (item[key].type !== 'multi_value_measure') {
+          // 多选时循环
           if (item[key].type == 'multi_select') {
             if (item[key].value.length <= 1) {
               product_format_new[key] = [
                 {
-                  value: String(item[key].value[0]),
+                  value: item[key].value[0],
                   name: item[key].property_name,
                   diy_type: item[key].diy_type,
                   measure_info: null
@@ -1087,7 +1088,7 @@ const handleAdd = async (commit: any) => {
             } else {
               item[key].value.forEach((i: any, index: number) => {
                 product_format_new[key].push({
-                  value: String(i),
+                  value: i,
                   name: item[key].property_name,
                   diy_type: item[key].diy_type,
                   measure_info: null
@@ -1105,9 +1106,10 @@ const handleAdd = async (commit: any) => {
               }
             ]
           } else {
+            // 除了自定义输入的时候，value填0，name填自定义内容，其他情况看文档，目前考虑到单选value填单选的id
             product_format_new[key] = [
               {
-                value: 0,
+                value: item[key].value,
                 name: item[key].property_name,
                 diy_type: item[key].diy_type,
                 measure_info: null
@@ -1115,13 +1117,8 @@ const handleAdd = async (commit: any) => {
             ]
           }
         } else {
-          // console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', mustFormRef.value.fabriTableList);
+          // 面料材质的表格内容
           fabriTableList.value.forEach((element: any) => {
-            console.log(
-              'item[key].measure_templates[0].value_modules[1].units',
-              item[key].measure_templates[0].value_modules[1].units[0].unit_name
-            )
-
             product_format_new[key].push({
               value: 0,
               name: element.name + element.percent + item[key].measure_templates[0].value_modules[1].units[0].unit_name,
@@ -1154,16 +1151,6 @@ const handleAdd = async (commit: any) => {
     })
 
     console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', product_format_new)
-    console.log('shuxing', shuxing)
-    // mustFormRef.value.ruleFormRef.validate((valid: any) => {
-    //     if (valid) {
-    //         console.log('ruleFormRef', mustFormRef.value)
-    //     } else {
-    //         console.log('error submit!!')
-    //         return false
-    //     }
-    // })
-
     console.log('descriptionList', descriptionList)
 
     upAddProduct({
@@ -1203,9 +1190,8 @@ const handleAdd = async (commit: any) => {
         if (res.status == 200 && res.data.code == 10000) {
           console.log(res, '上传结果=======================================')
           messageApi.success('上传成功！')
-          dialogVisible.value = false
           loading.value = false
-          emits('uploadList')
+          dialogVisible.value = false
         } else {
           messageApi.error(res.data.sub_msg)
           loading.value = false
