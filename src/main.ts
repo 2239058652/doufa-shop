@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-// import 'default-passive-events'
-
-// import Antd from 'ant-design-vue'
+import 'default-passive-events'
 
 import App from './App.vue'
 
@@ -21,5 +19,4 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 
-// app.use(Antd).mount('#app')
 app.mount('#app')

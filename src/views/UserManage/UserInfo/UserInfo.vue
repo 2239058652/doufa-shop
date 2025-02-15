@@ -258,19 +258,38 @@ import { fetchUploadFile } from '@/api/index'
 import { getProducts } from '@/api/store'
 import { getUserInfo, editUser } from '@/api/user'
 import { message } from 'ant-design-vue'
-import * as echarts from 'echarts'
 import { useRouter } from 'vue-router'
+import * as echarts from 'echarts/core'
+import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
+import { LineChart, PieChart } from 'echarts/charts'
+import { UniversalTransition } from 'echarts/features'
+import { CanvasRenderer } from 'echarts/renderers'
+import type { ComposeOption } from 'echarts/core'
+import type { LineSeriesOption, PieSeriesOption } from 'echarts/charts'
+import { debounce } from '@/utils/util'
+
+type ECOption = ComposeOption<LineSeriesOption | PieSeriesOption>
+// 注册必需的组件
+echarts.use([
+  TooltipComponent,
+  GridComponent,
+  LegendComponent,
+  LineChart,
+  PieChart,
+  CanvasRenderer,
+  UniversalTransition
+])
 
 const router = useRouter()
 const topMenuRef = inject('topMenuRef') as any // 获取退出登录弹窗
 
-type EChartsOption = echarts.EChartsOption
-var chartDom
-var chartPieDom
-var myChart: echarts.ECharts
-var myPieChart: echarts.ECharts
-var option: EChartsOption | any
-var pieOption: EChartsOption
+let chartDom: HTMLElement | null = null
+let chartPieDom: HTMLElement | null = null
+let myChart: echarts.ECharts
+let myPieChart: echarts.ECharts
+let option: ECOption | any
+let pieOption: ECOption | any
+
 pieOption = {
   tooltip: {
     trigger: 'item'
@@ -431,29 +450,34 @@ const routerToDetail = (item: any) => {
 }
 
 // echarts 自适应
-const handleResize = () => {
-  myChart.resize()
-  myPieChart.resize()
+const handleResize = debounce(() => {
+  myChart?.resize()
+  myPieChart?.resize()
+}, 100)
+
+const initCharts = () => {
+  try {
+    chartDom = document.getElementById('main')
+    chartPieDom = document.getElementById('pie')
+
+    if (chartDom) {
+      myChart = echarts.init(chartDom)
+      option && myChart.setOption(option)
+    }
+
+    if (chartPieDom) {
+      myPieChart = echarts.init(chartPieDom)
+      pieOption && myPieChart.setOption(pieOption)
+    }
+
+    window.addEventListener('resize', handleResize)
+  } catch (error) {
+    console.error('Error initializing charts:', error)
+  }
 }
 
 onMounted(() => {
-  chartDom = document.getElementById('main')!
-  chartPieDom = document.getElementById('pie')!
-  // 消除echarts渲染的警告，不使用default-passive-events
-  window.addEventListener(
-    'touchstart',
-    function (event) {
-      if (event.cancelable) {
-        event.preventDefault()
-      }
-    },
-    { passive: false }
-  )
-  myChart = echarts.init(chartDom)
-  myPieChart = echarts.init(chartPieDom)
-  option && myChart.setOption(option)
-  pieOption && myPieChart.setOption(pieOption)
-  window.addEventListener('resize', handleResize)
+  initCharts()
 })
 
 onUnmounted(() => {
