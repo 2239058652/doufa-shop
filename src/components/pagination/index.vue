@@ -14,6 +14,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   total: {
@@ -29,7 +30,7 @@ const props = defineProps({
     default: 24
   },
   pageSizeOptions: {
-    type: Array,
+    type: Array as PropType<string[] | number[]>,
     default: () => [24, 48, 72, 96, 120]
   }
 })

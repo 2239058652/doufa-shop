@@ -21,19 +21,16 @@
           <div class="address_info" v-if="route.query.type !== 'syncorder'">
             <div class="address_title">确认收货信息</div>
             <div class="input_textarea">
-              <a-input
-                type="textarea"
-                :auto-size="{ minRows: 1, maxRows: 3 }"
-                v-model:value="textareaVal"
-                :bordered="false"
-                placeholder="粘贴文本，智能识别收货信息"
-              >
-                <template #suffix>
-                  <div class="suffix" @click="getResolutionContent">
-                    <span>快速识别</span>
-                  </div>
-                </template>
-              </a-input>
+              <div class="textarea-wrapper">
+                <textarea
+                  v-model="textareaVal"
+                  placeholder="粘贴文本，智能识别收货信息"
+                  class="custom-textarea"
+                ></textarea>
+                <div class="suffix" @click="getResolutionContent">
+                  <span>快速识别</span>
+                </div>
+              </div>
             </div>
             <div class="adress_tishi">
               例：抖发网，13888888888，浙江省 杭州市 上城区 清江路138号，景园家苑，310016
@@ -423,7 +420,7 @@
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { computed, onMounted, reactive, ref } from 'vue'
-import type { FormInstance } from 'ant-design-vue'
+import type { FormInstance, TableColumnsType } from 'ant-design-vue'
 import { regionData } from 'element-china-area-data'
 import Checkbox from '@/components/checkbox/index.vue'
 import Radio from '@/components/radio/index.vue'
@@ -459,7 +456,7 @@ const selectPayment = (value: string) => {
   selectedValue.value = value
 }
 
-const tableColumns = [
+const tableColumns: TableColumnsType = [
   {
     title: '商品详情',
     dataIndex: 'detail',
@@ -537,7 +534,11 @@ const totalPrice = computed(() => {
 // 智能识别地址
 const getResolutionContent = () => {
   const [result] = AddressParse.parse(textareaVal.value, true)
-  console.log(result, 'aaaaaaaaa')
+  console.log(result, '智能识别地址')
+  if (!result) {
+    messageApi.warning('输入为空，请先输入内容')
+    return
+  }
 
   const {
     province = '', // 省
