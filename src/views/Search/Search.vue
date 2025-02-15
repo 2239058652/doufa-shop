@@ -96,7 +96,7 @@
         <div class="sp_tabs_item">
           <span :class="tabsIndex == '' ? 'active' : ''" @click="handleTabsClick('')">综合</span>
           <span :class="tabsIndex == 'desc' ? 'active' : ''" @click="handleXiaoLiang">销量</span>
-          <a-dropdown trigger="['click']">
+          <a-dropdown :trigger="['click']">
             <span :class="tabsIndex == 2 ? 'active' : ''" @click="tabsIndex = 2">
               <span>价格 {{ priceSortText }}</span>
               <img src="../../assets/image/head-bot.png" alt="" />
@@ -247,7 +247,7 @@ const selectCateIdVal = ref<string | any>(route.query.sid || '') //  分类选�
 const photoSearchUrl = ref<string | any>(route.query.url || '') //  以图搜图传的图片url,如果路由传值就用路由传的值
 
 const inputVal = ref<any>(route.query.keyword || '') // 搜索框输入值
-const selectVal = ref(route.query.selectVal || 'product') // 下拉框选择值
+const selectVal = ref<string>((route.query.selectVal as string) || 'product') // 下拉框选择值
 const hotSouTypeList = ref(['2024', 'T恤', '毛衣', '牛仔裤', '羽绒服']) // 热门搜索标签
 const activeIndex = ref(0) // 热门搜索标签选中状态
 const tabsIndex = ref<string | number>('') // 商品列表tab切换

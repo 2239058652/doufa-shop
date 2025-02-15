@@ -52,9 +52,9 @@ const pageSize = computed({
 
 const showTotal = computed(() => {
   if (props.total) {
-    return (total: any) => `共 ${total} 条`
+    return (total: number) => `共 ${total} 条`
   } else {
-    return (_total: any) => ` `
+    return (_total: number) => ` `
   }
 })
 
