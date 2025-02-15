@@ -189,6 +189,7 @@
     <!-- 店铺列表 -->
     <div class="dianpu" v-show="!showGoodsOrDangKou">
       <a-empty v-if="SystemAdminList.length == 0" />
+      <div class="aempty" v-if="SystemAdminList.length == 0"></div>
       <div class="dp_item" v-for="item in SystemAdminList" :key="item.id">
         <div class="dp_item_l">
           <img :src="item.head_pic" alt="item.real_name" />

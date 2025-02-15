@@ -560,14 +560,19 @@
 
 // 店铺列表
 .dianpu {
+    width: 1560px;
+    min-height: 500px;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 20px;
-    width: 1560px;
-    min-height: 500px;
-    height: auto;
+
+    .aempty {
+        width: 100%;
+        height: 500px;
+    }
 
     .dp_item {
         width: 1560px;
