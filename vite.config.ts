@@ -9,9 +9,6 @@ import { ElementPlusResolver, AntDesignVueResolver } from 'unplugin-vue-componen
 
 // https://vite.dev/config/
 export default defineConfig({
-  // optimizeDeps: {
-  //   include: ['default-passive-events']
-  // },
   css: {
     preprocessorOptions: {
       scss: {

@@ -449,6 +449,18 @@ const routerToDetail = (item: any) => {
   })
 }
 
+// 在文件顶部添加
+;(function () {
+  const originalAddEventListener = EventTarget.prototype.addEventListener
+  EventTarget.prototype.addEventListener = function (type, listener, options) {
+    if (type === 'wheel' && typeof options !== 'object') {
+      options = { passive: true }
+    } else if (type === 'wheel' && options && typeof options === 'object') {
+      options.passive = true
+    }
+    originalAddEventListener.call(this, type, listener, options ? options : { passive: true })
+  }
+})()
 // echarts 自适应
 const handleResize = debounce(() => {
   myChart?.resize()
@@ -469,14 +481,13 @@ const initCharts = () => {
       myPieChart = echarts.init(chartPieDom)
       pieOption && myPieChart.setOption(pieOption)
     }
-
-    window.addEventListener('resize', handleResize)
   } catch (error) {
     console.error('Error initializing charts:', error)
   }
 }
 
 onMounted(() => {
+  window.addEventListener('resize', handleResize, { passive: true, capture: false })
   initCharts()
 })
 
@@ -582,22 +593,28 @@ getProductsList() // 获取商品列表
   line-height: 19px;
   text-align: center;
   font-size: 14px;
-  color: #666666; /* 未选中时文字颜色 */
-  border: 1px solid #e1e1e1; /* 默认边框颜色 */
+  color: #666666;
+  /* 未选中时文字颜色 */
+  border: 1px solid #e1e1e1;
+  /* 默认边框颜色 */
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center; /* 文字靠左对齐 */
+  justify-content: center;
+  /* 文字靠左对齐 */
 }
 
 .custom-radio.selected {
-  border-color: f83126; /* 选中时边框颜色 */
-  color: $red-color; /* 选中时文字颜色 */
+  border-color: f83126;
+  /* 选中时边框颜色 */
+  color: $red-color;
+  /* 选中时文字颜色 */
 }
 
 .custom-radio.selected {
-  color: $red-color; /* 选中时颜色 */
+  color: $red-color;
+  /* 选中时颜色 */
 }
 
 .adaptive-radio-group {
@@ -607,13 +624,16 @@ getProductsList() // 获取商品列表
 }
 
 .adaptive-radio {
-  padding: 0 12px; /* 左右内边距，确保文字周围有空间 */
+  padding: 0 12px;
+  /* 左右内边距，确保文字周围有空间 */
   height: 34px;
   border-radius: 6px;
   background-color: #f7f8fa;
-  display: inline-flex; /* 自适应宽度 */
+  display: inline-flex;
+  /* 自适应宽度 */
   align-items: center;
-  justify-content: center; /* 文字居中 */
+  justify-content: center;
+  /* 文字居中 */
   font-family: MicrosoftYaHei, sans-serif;
   font-size: 16px;
   line-height: 21px;
@@ -622,7 +642,8 @@ getProductsList() // 获取商品列表
   cursor: pointer;
   transition: all 0.3s ease;
   font-style: normal;
-  border: 1px solid #e1e1e1; /* 默认边框 */
+  border: 1px solid #e1e1e1;
+  /* 默认边框 */
 }
 
 .adaptive-radio.selected {
