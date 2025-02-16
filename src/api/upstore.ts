@@ -76,3 +76,11 @@ export const getProductList = (params: ISize) => {
     params
   })
 }
+
+// 用户授权店铺列表接口
+export const AuthShopList = (data: { page: number | string; limit: number | string }) => {
+  return request.get({
+    url: '/api/user/storeList',
+    params: data
+  })
+}

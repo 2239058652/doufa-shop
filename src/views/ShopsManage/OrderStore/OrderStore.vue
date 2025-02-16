@@ -75,7 +75,7 @@
         ]"
         bordered
         :pagination="false"
-        :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : null)"
+        :row-class-name="(_record: any, index: number) => (index % 2 === 1 ? 'table-striped' : '')"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'store_type_label'">

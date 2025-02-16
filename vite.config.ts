@@ -31,9 +31,11 @@ export default defineConfig({
         ElementPlusResolver(),
         AntDesignVueResolver({
           importStyle: false, // css in js
-          resolveIcons: true // 自动导入图标
+          resolveIcons: true, // 自动导入图标
+          cjs: false
         })
       ],
+      include: [/\.vue$/, /\.vue\?vue/, /\.tsx$/, /ant-design-vue\/.*\/.*/],
       // 生成类型声明文件
       dts: 'src/components.d.ts'
     })
