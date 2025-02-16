@@ -978,7 +978,7 @@ function refreshList() {
 
 const ruleFormRef = ref<FormInstance>()
 // 发布商品
-const handleAdd = async (commit: any) => {
+const handleAdd = async (commit: boolean) => {
   try {
     await ruleFormRef.value?.validate()
     loading.value = true
