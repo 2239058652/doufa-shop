@@ -2,7 +2,6 @@
     width: 100%;
     height: 100%;
     display: flex;
-    z-index: 999;
 }
 
 .left_content {
@@ -109,6 +108,12 @@
     height: 100%;
     flex-grow: 1;
     margin-left: 20px;
+
+    .box-card {
+        width: 95%;
+        max-height: 750px;
+        overflow-y: auto;
+    }
 
     .xg {
         font-weight: 400;

@@ -29,7 +29,7 @@
       v-model:pageSize="pager.limit"
       :total="pageListTotal"
       @change="getPageList"
-      :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
+      :pageSizeOptions="[12, 24, 48, 72, 96, 120]"
     />
     <a-modal title="图片预览" v-model:open="previewDialogVisible" style="width: 40%; height: 70vh" :footer="null">
       <img :src="previewImageSrc" class="preview-image" alt="图片预览" />
@@ -50,7 +50,7 @@ const imageList = ref([])
 
 const pager = reactive({
   page: 1,
-  limit: 10
+  limit: 12
 })
 const pageListTotal = ref(0)
 const tokenId = ref('')
@@ -113,7 +113,7 @@ const getPageList = () => {
 // 重置
 const reset = () => {
   pager.page = 1
-  pager.limit = 10
+  pager.limit = 12
   pageListTotal.value = 0
   sizeSelectVal.value = ''
   previewImageSrc.value = ''
@@ -142,24 +142,28 @@ defineExpose({
 
 .image-item {
   width: 100%;
-  height: 180px;
-  border: 1px solid #ccc;
+  height: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     img {
-      transform: scale(1.1);
+      transform: scale(1.05);
     }
   }
 }
 
 .image {
   width: 300px;
-  height: 100%;
+  height: 180px;
   object-fit: fill;
   transition: transform 0.3s ease;
   transform-origin: center center;
+  border: 1px solid #ccc;
 }
 
 .buttons-container {
@@ -189,6 +193,6 @@ defineExpose({
   text-align: center;
   font-size: 14px;
   color: #c52222;
-  margin-top: 3px;
+  margin-top: 10px;
 }
 </style>

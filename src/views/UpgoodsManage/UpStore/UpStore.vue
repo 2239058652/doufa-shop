@@ -1,6 +1,6 @@
 <template>
   <context-holder />
-  <div class="order-store">
+  <div class="up-store">
     <div class="warning-card">
       <span>注意：</span>
       <span>如授权已过期或失效，请删除后，重新添加店铺。</span>

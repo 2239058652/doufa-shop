@@ -31,13 +31,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      key="pager"
-      layout="total, sizes, prev, pager, next, jumper"
+    <Pagination
+      style="display: flex; justify-content: center; margin: 20px 0"
+      v-model:current="pager.page"
+      v-model:pageSize="pager.limit"
       :total="pagerTotal"
-      v-model:current-page="pager.page"
-      v-model:page-size="pager.limit"
       @change="getStoreList"
+      :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
     />
 
     <!-- 批量上传modal -->
@@ -66,7 +66,7 @@
               <template #default="scope">
                 <div style="display: flex; align-items: center; justify-content: center; margin-top: 0">
                   <span style="width: 18px; height: 18px">
-                    <img style="width: 18px; height: 18px" src="../../../assets/fonts/douyin_upload.png" alt />
+                    <img style="width: 18px; height: 18px" src="../../../assets/fonts/douyin_upload.png" alt="" />
                   </span>
                   <span style="margin-left: 10px">{{ scope.row.store_id }}</span>
                 </div>
@@ -94,6 +94,7 @@ import { ref, reactive } from 'vue'
 import { AuthShopList, getSellsUpload, AuthStoreGoodsList } from '@/api/upstore'
 import UploadModel from './components/ShopsModal.vue'
 import { ElMessage } from 'element-plus'
+import Pagination from '@/components/pagination/index.vue'
 
 // 订单列表分页
 const pager = reactive({
@@ -143,7 +144,7 @@ const confirmUpload = (row: any) => {
 }
 
 // 表格选择项
-const handleSelectionChange = async (val) => {
+const handleSelectionChange = async (val: any) => {
   selecteData.value = val
 }
 

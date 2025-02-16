@@ -64,7 +64,7 @@
 
       <!-- 右侧商品信息 必填项 -->
       <div class="right_content">
-        <a-card class="box-card" style="width: 95%; max-height: 750px; overflow-y: auto">
+        <a-card class="box-card">
           <div>
             <a-form
               ref="ruleFormRef"
@@ -816,7 +816,7 @@ function dialogControl(_sts: string, edits: any) {
   getProductList({
     data: {
       token: edits.selectionList[0].access_token,
-      page_size: 10,
+      page_size: 12,
       page_num: 0,
       template_sub_type: edits.type.includes('67') ? '' : ''
     }
@@ -1322,6 +1322,7 @@ defineExpose({
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding-top: 12px;
 }
 
 .footer-notice {
