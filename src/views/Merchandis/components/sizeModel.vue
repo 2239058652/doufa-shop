@@ -130,25 +130,36 @@ defineExpose({
 
 <style scoped>
 .image-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 10px;
   height: 75vh;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .image-item {
-  width: 300px;
+  width: 100%;
   height: 180px;
+  border: 1px solid #ccc;
   position: relative;
+  overflow: hidden;
+
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+  }
 }
 
 .image {
   width: 300px;
-  height: 180px;
+  height: 100%;
   object-fit: fill;
-  border: 1px solid #ccc;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
 }
 
 .buttons-container {
