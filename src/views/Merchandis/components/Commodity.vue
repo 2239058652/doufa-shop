@@ -1312,6 +1312,7 @@ defineExpose({
 </script>
 
 <style src="./Commodity.scss" scoped></style>
+
 <style scoped lang="scss">
 .radio-item {
   margin-bottom: 8px;

@@ -18,7 +18,7 @@
       <el-table-column type="selection" width="55" />
       <el-table-column prop="store_id" label="商品详情">
         <template #default="scope">
-          <img src="../../../assets/fonts/winter_img2.png" alt="" />
+          <img src="../../../assets/static/goods.png" alt="" />
         </template>
       </el-table-column>
       <el-table-column prop="store_name" label="商品单价(元)" align="center"></el-table-column>
@@ -66,7 +66,7 @@
               <template #default="scope">
                 <div style="display: flex; align-items: center; justify-content: center; margin-top: 0">
                   <span style="width: 18px; height: 18px">
-                    <img style="width: 18px; height: 18px" src="../../../assets/fonts/douyin_upload.png" alt="" />
+                    <img style="width: 18px; height: 18px" src="../../../assets/image/douyin.png" alt="" />
                   </span>
                   <span style="margin-left: 10px">{{ scope.row.store_id }}</span>
                 </div>

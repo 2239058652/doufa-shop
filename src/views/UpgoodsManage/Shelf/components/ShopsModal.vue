@@ -76,7 +76,7 @@
               </div>
               <img
                 style="position: absolute; top: 50%; transform: translateY(-50%); right: 10px"
-                src="../../../../assets/fonts/address_close.png"
+                src="../../../../assets/image/close.png"
                 class="h_img"
                 @click.stop="handleDelete(index)"
               />
@@ -287,7 +287,7 @@
                             popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
                           >
                             <template #reference>
-                              <img style="" src="../../../../assets/fonts/question.png" />
+                              <img style="" src="../../../../assets/image/question.png" />
                             </template>
                             <template #default>
                               <div class="demo-rich-conent" style="display: flex; gap: 16px; flex-direction: column">
@@ -512,7 +512,7 @@
                       popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
                     >
                       <template #reference>
-                        <img style="" src="../../../../assets/fonts/question.png" />
+                        <img style="" src="../../../../assets/image/question.png" />
                       </template>
                       <template #default>
                         <div class="demo-rich-conent" style="display: flex; gap: 16px; flex-direction: column">

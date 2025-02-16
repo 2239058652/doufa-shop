@@ -111,7 +111,9 @@
 
     .box-card {
         width: 95%;
-        max-height: 750px;
+        min-height: 600px;
+        max-height: 720px;
+        height: auto;
         overflow-y: auto;
     }
 
