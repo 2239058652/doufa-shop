@@ -2,7 +2,7 @@
   <div class="order_list">
     <div class="topBox">
       <div class="top_item">
-        <el-button color="#f83126" @click="handleUploadShops">批量上传</el-button>
+        <el-button :color="'var(--red-color)'" @click="handleUploadShops">批量上传</el-button>
         <el-button type="info" plain>批量删除</el-button>
       </div>
     </div>

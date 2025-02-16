@@ -1,15 +1,5 @@
 import request from '@/axios'
 
-interface IDYOder {
-  page: number | string;
-  limit: number | string;
-  time_start: string | number;
-  time_end: string | number;
-  store_id: string;
-  user_id: string;
-  product: string;
-}
-
 // 用户授权店铺列表
 export const userStoreList = (data: { page: number | string; limit: number | string }) => {
   return request.get({

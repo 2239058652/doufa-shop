@@ -147,7 +147,7 @@ defineExpose({
 .image {
   width: 300px;
   height: 180px;
-  object-fit: cover;
+  object-fit: fill;
   border: 1px solid #ccc;
 }
 

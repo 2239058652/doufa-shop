@@ -63,3 +63,14 @@ interface ICartsParams {
   page: number
   limit: number
 }
+
+// 同步抖店订单
+interface IDYOder {
+  page: number | string
+  limit: number | string
+  time_start: string | number
+  time_end: string | number
+  store_id: string
+  user_id: string
+  product: string
+}
