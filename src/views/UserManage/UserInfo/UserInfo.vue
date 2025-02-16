@@ -449,18 +449,6 @@ const routerToDetail = (item: any) => {
   })
 }
 
-// 在文件顶部添加
-;(function () {
-  const originalAddEventListener = EventTarget.prototype.addEventListener
-  EventTarget.prototype.addEventListener = function (type, listener, options) {
-    if (type === 'wheel' && typeof options !== 'object') {
-      options = { passive: true }
-    } else if (type === 'wheel' && options && typeof options === 'object') {
-      options.passive = true
-    }
-    originalAddEventListener.call(this, type, listener, options ? options : { passive: true })
-  }
-})()
 // echarts 自适应
 const handleResize = debounce(() => {
   myChart?.resize()
@@ -481,18 +469,38 @@ const initCharts = () => {
       myPieChart = echarts.init(chartPieDom)
       pieOption && myPieChart.setOption(pieOption)
     }
+
+    window.addEventListener('resize', handleResize, { passive: true })
   } catch (error) {
     console.error('Error initializing charts:', error)
   }
 }
 
+let originalAddEventListener: typeof EventTarget.prototype.addEventListener | null = null
+
 onMounted(() => {
-  window.addEventListener('resize', handleResize, { passive: true, capture: false })
   initCharts()
+
+  originalAddEventListener = EventTarget.prototype.addEventListener
+
+  EventTarget.prototype.addEventListener = function (
+    type: string,
+    listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions
+  ) {
+    if (type === 'wheel') {
+      const opts = typeof options === 'object' ? { ...options, passive: true } : { passive: true }
+      return originalAddEventListener!.call(this, type, listener, opts)
+    }
+    return originalAddEventListener!.call(this, type, listener, options)
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+  if (originalAddEventListener) {
+    EventTarget.prototype.addEventListener = originalAddEventListener
+  }
 })
 
 const [messageApi, contextHolder] = message.useMessage()
