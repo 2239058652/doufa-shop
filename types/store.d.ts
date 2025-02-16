@@ -3,15 +3,15 @@ interface IFormData {
   type: string
   token: string
   cgorlrRio: number
-  cgval: number | null
-  lrval: number | null
+  cgval: number | null | ValueType
+  lrval: number | null | ValueType
   store_name: string
   reduce_type: string | null
   freight_id: string
   category_id: string[]
   start_sale_type: string
   after_sale_service: string
-  mobile: number | null
+  mobile: number | null | ValueType
   color: any[]
   size: any[]
   tableData: any[]
@@ -26,8 +26,8 @@ interface IFormData {
   minimum_per_order: string
   reference_price: string
   reference_price_certificate: {
-    certificate_type: number | null
-    certificate_urls: [string] | []
+    certificate_type: number | null | SelectValue
+    certificate_urls: [string] | [] | undefined | UploadFile<any>[]
   }
   white_back_ground_pic_url: string
 }

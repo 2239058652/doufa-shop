@@ -33,10 +33,12 @@
     "qs": "^6.13.1",
     "sass": "^1.83.0",
     "sass-loader": "^16.0.4",
+    "scroll-into-view-if-needed": "2.2.31",
     "swiper": "^11.2.0",
     "vue": "^3.5.13",
     "vue-draggable-plus": "^0.6.0",
     "vue-router": "^4.4.5",
+    "vue-types": "3.0.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

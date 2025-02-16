@@ -290,7 +290,7 @@
                                   v-if="item.property_name == '品牌' && item.type !== 'text'"
                                   style="width: 90%"
                                   v-model:value="formData.shuxing[item.property_id]"
-                                  :mode="item.type == 'multi_select' ? 'multiple' : '-'"
+                                  :mode="item.type == 'multi_select' ? 'multiple' : undefined"
                                   :maxTagCount="5"
                                 >
                                   <a-select-option v-for="item in ppList" :key="item.brand_id" :value="item.brand_id">
@@ -305,7 +305,7 @@
                                   "
                                   style="width: 90%"
                                   v-model:value="formData.shuxing[item.property_id]"
-                                  :mode="item.type == 'multi_select' ? 'multiple' : '-'"
+                                  :mode="item.type == 'multi_select' ? 'multiple' : undefined"
                                   :maxTagCount="4"
                                   allowClear
                                   showArrow
@@ -554,6 +554,7 @@ import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import SizeModel from './SizeModel.vue'
 import { VueDraggable } from 'vue-draggable-plus'
+import type { ValueType } from 'ant-design-vue/es/input-number/src/utils/MiniDecimal'
 
 const loading = ref(false)
 
@@ -724,7 +725,7 @@ const radioStyle = reactive({
 })
 
 // 采购输入框变化
-const handleCgChange = (val: number) => {
+const handleCgChange = (val: number | ValueType) => {
   if (val) {
     changePlgjByParent(Number(formData.value.info.price) + Number(val))
   } else {
@@ -732,7 +733,7 @@ const handleCgChange = (val: number) => {
   }
 }
 // 利润率变化
-const handleLrChange = (val: number) => {
+const handleLrChange = (val: number | ValueType) => {
   if (val) {
     changePlgjByParent(Number(formData.value.info.price) * Number(val))
   } else {
