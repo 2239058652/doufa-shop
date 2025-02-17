@@ -495,7 +495,13 @@
 
                 <a-col :span="4" v-if="formData.reference_price" class="upload-box">
                   <a-form-item label="参考价凭证">
-                    <a-upload
+                    <CommonUpload
+                      v-model:file-list="formData.reference_price_certificate.certificate_urls"
+                      :max-count="1"
+                      upload-text="参考价凭证"
+                      :custom-request="handleCertificateCustomUpload"
+                    />
+                    <!-- <a-upload
                       v-model:file-list="certificateFiles"
                       list-type="picture-card"
                       :max-count="1"
@@ -516,7 +522,7 @@
                       @cancel="previewCertificateVisible = false"
                     >
                       <img style="width: 100%" :src="previewImage" alt="预览" />
-                    </a-modal>
+                    </a-modal> -->
                   </a-form-item>
                 </a-col>
                 <a-col :span="8" v-if="formData.reference_price">
@@ -564,6 +570,7 @@ import { CheckOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import SizeModel from './SizeModel.vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import type { ValueType } from 'ant-design-vue/es/input-number/src/utils/MiniDecimal'
+import CommonUpload from '@/components/CommonUpload/index.vue'
 
 const loading = ref(false)
 

@@ -1,14 +1,14 @@
 <template>
   <a-pagination
     v-model:current="currentPage"
+    v-model:pageSize="pageSize"
     :total="total"
+    :show-total="showTotal"
     :pageSizeOptions="pageSizeOptions"
-    :pageSize="pageSize"
-    show-quick-jumper
-    show-size-changer
     @change="handleChange"
     @showSizeChange="handleSizeChange"
-    :show-total="showTotal"
+    show-quick-jumper
+    show-size-changer
   />
 </template>
 
