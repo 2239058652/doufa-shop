@@ -752,7 +752,7 @@ const rules: Record<string, Rule[]> = {
   category_id: [{ required: true, message: '请选择类目', trigger: ['change', 'blur'] }],
   start_sale_type: [{ required: true, message: '请选择商品状态', trigger: ['change', 'blur'] }],
   after_sale_service: [{ required: true, message: '请选择七天无理由', trigger: ['change', 'blur'] }],
-  mobile: [{ required: true, validator: validatePhone, trigger: ['change', 'blur'] }]
+  mobile: [{ required: true, trigger: ['change', 'blur'] }] //  validator: validatePhone,
 }
 const radioStyle = reactive({
   display: 'flex',
