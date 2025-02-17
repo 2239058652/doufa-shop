@@ -587,7 +587,7 @@ import { VueDraggable } from 'vue-draggable-plus'
 import type { ValueType } from 'ant-design-vue/es/input-number/src/utils/MiniDecimal'
 import type { Rule } from 'ant-design-vue/es/form'
 import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 'ant-design-vue'
-import { validatePhone } from '@/utils/validate'
+// import { validatePhone } from '@/utils/validate'
 
 const loading = ref(false)
 
@@ -752,7 +752,7 @@ const rules: Record<string, Rule[]> = {
   category_id: [{ required: true, message: '请选择类目', trigger: ['change', 'blur'] }],
   start_sale_type: [{ required: true, message: '请选择商品状态', trigger: ['change', 'blur'] }],
   after_sale_service: [{ required: true, message: '请选择七天无理由', trigger: ['change', 'blur'] }],
-  mobile: [{ required: true, trigger: ['change', 'blur'] }] //  validator: validatePhone,
+  mobile: [{ required: true, message: '请输入客服电话', trigger: ['change', 'blur'] }] //  validator: validatePhone,
 }
 const radioStyle = reactive({
   display: 'flex',
