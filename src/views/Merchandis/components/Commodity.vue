@@ -1293,7 +1293,7 @@ const handleCertificateCustomUpload = async (options: any) => {
 }
 
 // 上传前校验
-const beforeCertificateUpload: UploadProps['beforeCertificateUpload'] = (file) => {
+const beforeCertificateUpload: UploadProps['beforeUpload'] = (file) => {
   console.log(file, 'fileeeeeeeeeee')
 
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
