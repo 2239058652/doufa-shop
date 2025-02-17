@@ -472,7 +472,7 @@ const imageBaseUrl = ref('')
 const newAttrValueList = ref<any[]>([])
 const tableDataList = ref<any[]>([]) //上货店铺列表
 const uploadState = ref(false) // 上传店铺弹窗显示状态
-const columns = ref([
+const columns = ref<any[]>([
   { title: 'ID', dataIndex: 'store_id', key: 'store_id', align: 'center' },
   { title: '店铺', dataIndex: 'store_name', key: 'store_name', align: 'center' },
   { title: '操作', dataIndex: 'actions', key: 'actions', align: 'center' }

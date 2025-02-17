@@ -467,7 +467,7 @@
                     </a-row>
                   </a-form-item>
                 </a-col>
-                <a-col :span="24" v-if="false">
+                <a-col :span="24" v-if="true">
                   <a-form-item label="参考价" name="reference_price">
                     <a-input style="width: 50%" v-model:value="formData.reference_price" placeholder="请输入参考价">
                       <template #suffix>
@@ -977,7 +977,7 @@ function refreshList() {
 }
 
 const ruleFormRef = ref<FormInstance>()
-// 发布商品
+// 发布商品  提交
 const handleAdd = async (commit: boolean) => {
   try {
     await ruleFormRef.value?.validate()
