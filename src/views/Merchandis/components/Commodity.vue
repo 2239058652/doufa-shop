@@ -493,26 +493,35 @@
                   </a-form-item>
                 </a-col>
 
-                <a-col :span="12" v-if="formData.reference_price">
+                <a-col :span="4" v-if="formData.reference_price" class="upload-box">
                   <a-form-item label="参考价凭证">
                     <a-upload
-                      v-model:file-list="formData.reference_price_certificate.certificate_urls"
+                      v-model:file-list="certificateFiles"
                       list-type="picture-card"
                       :max-count="1"
-                      :beforeUpload="handleUpload"
+                      :custom-request="handleCertificateCustomUpload"
+                      :before-upload="beforeCertificateUpload"
+                      @preview="handleCertificatePreview"
+                      @remove="handleCertificateRemove"
                     >
-                      <div v-if="formData.reference_price_certificate.certificate_urls.length < 1">
+                      <div v-if="certificateFiles.length < 1">
                         <plus-outlined />
+                        <div class="ant-upload-text">上传凭证</div>
                       </div>
                     </a-upload>
-                    <a-modal :open="previewVisible" :footer="null" @cancel="previewVisible = false">
-                      <img style="width: 100%" :src="formData.reference_price_certificate.certificate_urls[0]" alt="" />
+
+                    <a-modal
+                      :open="previewCertificateVisible"
+                      :footer="null"
+                      @cancel="previewCertificateVisible = false"
+                    >
+                      <img style="width: 100%" :src="previewImage" alt="预览" />
                     </a-modal>
                   </a-form-item>
                 </a-col>
-                <a-col :span="12" v-if="formData.reference_price">
+                <a-col :span="8" v-if="formData.reference_price">
                   <a-form-item label="参考价类型">
-                    <a-select style="width: 90%" v-model:value="formData.reference_price_certificate.certificate_type">
+                    <a-select style="width: 100%" v-model:value="formData.reference_price_certificate.certificate_type">
                       <a-select-option v-for="sel in certificateTypeList" :key="sel.id" :value="sel.id">
                         {{ sel.name }}
                       </a-select-option>
@@ -560,7 +569,9 @@ const loading = ref(false)
 
 const [messageApi, contextHolder] = message.useMessage()
 
-const previewVisible = ref(false)
+const previewCertificateVisible = ref(false)
+const previewImage = ref('')
+const certificateFiles = ref<any[]>([])
 
 // 已添加尺码表
 const sizeModelVal = ref()
@@ -1252,23 +1263,62 @@ const filterOption = (input: string, option: any) => {
   return option.name.includes(input)
 }
 
-const handleUpload = async (file: any) => {
-  const formsData = new FormData()
-  formsData.append('file', file)
+// 自定义上传实现
+const handleCertificateCustomUpload = async (options: any) => {
+  const { file, onSuccess, onError } = options
+  const formDataFile = new FormData()
+  formDataFile.append('file', file)
+
   try {
-    const res = await fetchUploadFile(formsData)
-    if (res.status === 200) {
-      console.log(res, '上传结果=======================================')
-      formData.value.reference_price_certificate.certificate_urls = [res.data.url]
-      return false
+    const result = await fetchUploadFile(formDataFile)
+    if (result.status == 200) {
+      messageApi.success('上传成功')
+      onSuccess(
+        {
+          url: result.data.url,
+          name: file.name,
+          status: 'done'
+        },
+        file
+      )
+      // 同步到表单数据（只需要保存URL）
+      formData.value.reference_price_certificate.certificate_urls = [result.data.url]
     } else {
-      messageApi.error(res.msg)
-      return false // 上传失败，阻止上传
+      onError(new Error(result.msg))
     }
-  } catch (e) {
+  } catch (error) {
+    onError(error)
     messageApi.error('上传失败')
+  }
+}
+
+// 上传前校验
+const beforeCertificateUpload: UploadProps['beforeCertificateUpload'] = (file) => {
+  console.log(file, 'fileeeeeeeeeee')
+
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+  if (!isJpgOrPng) {
+    message.error('只能上传 JPG/PNG 格式的图片!')
     return false
   }
+  const isLt2M = file.size / 1024 / 1024 < 2
+  if (!isLt2M) {
+    message.error('图片大小不能超过 2MB!')
+    return false
+  }
+  return true
+}
+
+// 文件预览处理
+const handleCertificatePreview: UploadProps['onPreview'] = (file: Record<string, any>) => {
+  previewImage.value = file.response.url || file.thumbUrl
+  previewCertificateVisible.value = true
+}
+
+// 文件删除处理
+const handleCertificateRemove: UploadProps['onRemove'] = () => {
+  formData.value.reference_price_certificate.certificate_urls = []
+  return true
 }
 
 // 重置表单数据
