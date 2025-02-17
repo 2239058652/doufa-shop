@@ -495,19 +495,13 @@
 
                 <a-col :span="4" v-if="formData.reference_price" class="upload-box">
                   <a-form-item label="参考价凭证">
-                    <CommonUpload
-                      v-model:file-list="formData.reference_price_certificate.certificate_urls"
-                      :max-count="1"
-                      upload-text="参考价凭证"
-                      :custom-request="handleCertificateCustomUpload"
-                    />
-                    <!-- <a-upload
+                    <a-upload
                       v-model:file-list="certificateFiles"
                       list-type="picture-card"
                       :max-count="1"
                       :custom-request="handleCertificateCustomUpload"
-                      :before-upload="beforeCertificateUpload"
-                      @preview="handleCertificatePreview"
+                      :before-upload="beforeUpload"
+                      @preview="handlePreview"
                       @remove="handleCertificateRemove"
                     >
                       <div v-if="certificateFiles.length < 1">
@@ -515,23 +509,40 @@
                         <div class="ant-upload-text">上传凭证</div>
                       </div>
                     </a-upload>
-
-                    <a-modal
-                      :open="previewCertificateVisible"
-                      :footer="null"
-                      @cancel="previewCertificateVisible = false"
-                    >
-                      <img style="width: 100%" :src="previewImage" alt="预览" />
-                    </a-modal> -->
                   </a-form-item>
                 </a-col>
                 <a-col :span="8" v-if="formData.reference_price">
                   <a-form-item label="参考价类型">
-                    <a-select style="width: 100%" v-model:value="formData.reference_price_certificate.certificate_type">
+                    <a-select
+                      style="width: 100%"
+                      v-model:value="formData.reference_price_certificate.certificate_type"
+                      e
+                    >
                       <a-select-option v-for="sel in certificateTypeList" :key="sel.id" :value="sel.id">
                         {{ sel.name }}
                       </a-select-option>
+                      <template #notFoundContent>
+                        <span style="color: var(--red-color)">温馨提示：选择【类目】后才有参考价类型列表</span>
+                      </template>
                     </a-select>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="24" class="upload-box" style="margin: 40px 0 20px 0">
+                  <a-form-item label="白底图">
+                    <a-upload
+                      v-model:file-list="whitebackpicFiles"
+                      list-type="picture-card"
+                      :max-count="1"
+                      :custom-request="handleBackPicCustomUpload"
+                      :before-upload="beforeUpload"
+                      @preview="handlePreview"
+                      @remove="handleWhiteBackPicRemove"
+                    >
+                      <div v-if="whitebackpicFiles.length < 1">
+                        <plus-outlined />
+                        <div class="ant-upload-text">上传白底图</div>
+                      </div>
+                    </a-upload>
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -553,7 +564,14 @@
         </div>
       </div>
     </template>
+
+    <!-- 尺码表组件 -->
     <SizeModel ref="sizeModelRef" @handleSelectSize="handleSelectSize" />
+
+    <!-- 上传图片的预览 -->
+    <a-modal :open="previewImageVisible" :footer="null" @cancel="previewImageVisible = false">
+      <img style="width: 100%" :src="previewImage" alt="预览" />
+    </a-modal>
   </a-modal>
 </template>
 
@@ -562,23 +580,23 @@ import { reactive, ref, nextTick, watch, h } from 'vue'
 import { message } from 'ant-design-vue'
 import { getTemplateList, upAddProduct, getPrdCateList, getCatePropertyList } from '@/api/upstore'
 import { fetchProUpRule, fetchBrandList, getProductList } from '@/api/upstore'
-
 import { fetchUploadFile } from '@/api/index'
-import type { Rule } from 'ant-design-vue/es/form'
-import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 'ant-design-vue'
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import SizeModel from './SizeModel.vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import type { ValueType } from 'ant-design-vue/es/input-number/src/utils/MiniDecimal'
-import CommonUpload from '@/components/CommonUpload/index.vue'
+import type { Rule } from 'ant-design-vue/es/form'
+import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 'ant-design-vue'
+import { validatePhone } from '@/utils/validate'
 
 const loading = ref(false)
 
 const [messageApi, contextHolder] = message.useMessage()
 
-const previewCertificateVisible = ref(false)
+const previewImageVisible = ref(false)
 const previewImage = ref('')
 const certificateFiles = ref<any[]>([])
+const whitebackpicFiles = ref<any[]>([])
 
 // 已添加尺码表
 const sizeModelVal = ref()
@@ -734,7 +752,7 @@ const rules: Record<string, Rule[]> = {
   category_id: [{ required: true, message: '请选择类目', trigger: ['change', 'blur'] }],
   start_sale_type: [{ required: true, message: '请选择商品状态', trigger: ['change', 'blur'] }],
   after_sale_service: [{ required: true, message: '请选择七天无理由', trigger: ['change', 'blur'] }],
-  mobile: [{ required: true, message: '请输入客服电话', trigger: ['change', 'blur'] }]
+  mobile: [{ required: true, validator: validatePhone, trigger: ['change', 'blur'] }]
 }
 const radioStyle = reactive({
   display: 'flex',
@@ -960,6 +978,8 @@ const handleDialogClosed = () => {
     goodsXqPic.value = []
     goodsMainPic.value = []
     formList.value = []
+    certificateFiles.value = []
+    whitebackpicFiles.value = []
   })
 }
 
@@ -998,7 +1018,7 @@ const ruleFormRef = ref<FormInstance>()
 // 发布商品  提交
 const handleAdd = async (commit: boolean) => {
   try {
-    await ruleFormRef.value?.validate()
+    await ruleFormRef.value?.validateFields()
     loading.value = true
     const priceValues: any = formData.value.tableData?.map((item: { price: any }) => item.price)
     if (Math.max(...priceValues) >= Math.min(...priceValues) * 2.3) {
@@ -1186,13 +1206,10 @@ const handleAdd = async (commit: boolean) => {
         spec_pic: spec_pic,
         commit: commit,
         reduce_type: form.reduce_type,
-        start_sale_type: form.start_sale_type,
-        after_sale_service: JSON.stringify({ supply_day_return_selector: form.after_sale_service }),
-        reference_price: form.reference_price,
-        reference_price_certificate: {
-          certificate_type: form.reference_price_certificate.certificate_type,
-          certificate_urls: form.reference_price_certificate.certificate_urls
-        },
+        start_sale_type: form.start_sale_type, // 上架方式
+        after_sale_service: JSON.stringify({ supply_day_return_selector: form.after_sale_service }), //七天无理由
+        reference_price: Number(form.reference_price), // 参考价
+        reference_price_certificate: JSON.stringify(form.reference_price_certificate), // 参考价凭证
         // size_info_template_id: '7438823136822411556',
         size_info_template_id: size_info_template_id,
         product_format_new: JSON.stringify(product_format_new),
@@ -1211,6 +1228,7 @@ const handleAdd = async (commit: boolean) => {
           messageApi.success('上传成功！')
           loading.value = false
           dialogVisible.value = false
+          handleDialogClosed()
         } else {
           messageApi.error(res.data.sub_msg)
           loading.value = false
@@ -1270,7 +1288,7 @@ const filterOption = (input: string, option: any) => {
   return option.name.includes(input)
 }
 
-// 自定义上传实现
+// 自定义上传实现 参考价凭证
 const handleCertificateCustomUpload = async (options: any) => {
   const { file, onSuccess, onError } = options
   const formDataFile = new FormData()
@@ -1298,9 +1316,37 @@ const handleCertificateCustomUpload = async (options: any) => {
     messageApi.error('上传失败')
   }
 }
+// 白底图片上传
+const handleBackPicCustomUpload = async (options: any) => {
+  const { file, onSuccess, onError } = options
+  const formDataFile = new FormData()
+  formDataFile.append('file', file)
+
+  try {
+    const result = await fetchUploadFile(formDataFile)
+    if (result.status == 200) {
+      messageApi.success('上传成功')
+      onSuccess(
+        {
+          url: result.data.url,
+          name: file.name,
+          status: 'done'
+        },
+        file
+      )
+      // 同步到表单数据（只需要保存URL）
+      formData.value.white_back_ground_pic_url = result.data.url
+    } else {
+      onError(new Error(result.msg))
+    }
+  } catch (error) {
+    onError(error)
+    messageApi.error('上传失败')
+  }
+}
 
 // 上传前校验
-const beforeCertificateUpload: UploadProps['beforeUpload'] = (file) => {
+const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   console.log(file, 'fileeeeeeeeeee')
 
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
@@ -1317,14 +1363,19 @@ const beforeCertificateUpload: UploadProps['beforeUpload'] = (file) => {
 }
 
 // 文件预览处理
-const handleCertificatePreview: UploadProps['onPreview'] = (file: Record<string, any>) => {
+const handlePreview: UploadProps['onPreview'] = (file: Record<string, any>) => {
   previewImage.value = file.response.url || file.thumbUrl
-  previewCertificateVisible.value = true
+  previewImageVisible.value = true
 }
 
-// 文件删除处理
+// 文件删除处理 参考凭证
 const handleCertificateRemove: UploadProps['onRemove'] = () => {
   formData.value.reference_price_certificate.certificate_urls = []
+  return true
+}
+// 文件删除处理 白底图片
+const handleWhiteBackPicRemove: UploadProps['onRemove'] = () => {
+  formData.value.white_back_ground_pic_url = ''
   return true
 }
 

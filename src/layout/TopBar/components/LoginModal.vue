@@ -79,6 +79,7 @@ import { reactive, ref, watch } from 'vue'
 import { sendVerify, agreeMents, doLogin, doLoginByPhone, getUserInfo } from '@/api/user'
 import { message } from 'ant-design-vue'
 import { debounce } from '@/utils/util' // 引入防抖函数
+import { phoneRegTest } from '@/utils/validate'
 
 const activeKey = ref('1')
 const modalLoginVisible = ref<boolean>(false)
@@ -166,13 +167,10 @@ const handleLogin = debounce((key: string) => {
   }
 }, 200)
 
-// 正则校验手机号
-const phoneReg =
-  /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[1589]))\d{8}$/
 // 获取验证码
 const getYanzhengma = () => {
   if (inputData.phone) {
-    if (phoneReg.test(inputData.phone)) {
+    if (phoneRegTest(inputData.phone)) {
       if (timer.value) {
         clearInterval(timer.value)
       }

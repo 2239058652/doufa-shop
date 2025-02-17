@@ -44,4 +44,3 @@ export const throttle = (fn: (...args: any[]) => void, delay: number) => {
     }
   }
 }
-
