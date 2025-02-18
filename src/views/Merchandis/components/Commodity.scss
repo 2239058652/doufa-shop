@@ -1,18 +1,14 @@
 .content {
     width: 100%;
-    height: calc(95vh - 150px);
-    overflow: auto;
+    height: 100%;
     display: flex;
-    flex: 1;
-    min-height: 0;
 }
 
 .left_content {
     width: 20%;
-    flex-shrink: 0;
+    height: 720px;
     padding: 5px;
     background: #f9f9f9;
-    overflow: auto;
 
     .left_name {
         height: 40px;
@@ -122,14 +118,16 @@
 
 .right_content {
     width: 80%;
+    height: 100%;
     flex-grow: 1;
-    min-height: 0;
     margin-left: 20px;
 
     .box-card {
         width: 95%;
-        height: 100%;
-        overflow: auto;
+        min-height: 620px;
+        max-height: 80vh;
+        height: auto;
+        overflow-y: auto;
     }
 
     .xg {

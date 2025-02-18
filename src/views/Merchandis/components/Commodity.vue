@@ -4,7 +4,7 @@
     v-model:open="dialogVisible"
     :title="dialogTitle"
     width="95%"
-    :style="{ top: '1vh', height: '95vh', overflow: 'hidden' }"
+    :style="{ top: '1vh' }"
     @cancel="handleDialogClosed"
     destroyOnClose
   >
@@ -602,7 +602,6 @@ import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 
 // import { validatePhone } from '@/utils/validate'
 
 import Radio from '@/components/radio/index.vue'
-import type { he } from 'element-plus/es/locale/index.mjs'
 
 const loading = ref(false)
 
@@ -1435,14 +1434,14 @@ defineExpose({
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: 100%;
-  // padding-top: 12px;
+  padding-top: 12px;
 }
 
 .footer-notice {
   font-size: 14px;
   color: #333;
   text-align: center;
+  margin-top: 12px;
 }
 
 .add-btn {
