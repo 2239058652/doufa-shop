@@ -637,7 +637,7 @@ import { message, Modal } from 'ant-design-vue'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue'
 import photo1 from '../assets/static/photo.png'
 import photo2 from '../assets/static/photo1.png'
-import Popover from '@/components/phopopover/index.vue' // 以图搜索
+import Popover from '@/components/PhotoPopver/index.vue' // 以图搜索
 import './home.scss'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'

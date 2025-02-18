@@ -121,7 +121,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { getProducts } from '@/api/store'
 import Pagination from '@/components/pagination/index.vue'
-import Popover from '@/components/phopopover/index.vue' // 以图搜索
+import Popover from '@/components/PhotoPopver/index.vue' // 以图搜索
 
 const router = useRouter()
 const [messageApi, contextHolder] = message.useMessage()

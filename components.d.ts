@@ -28,7 +28,7 @@ declare module 'vue' {
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     Footer: typeof import('./src/components/footer/index.vue')['default']
     Pagination: typeof import('./src/components/pagination/index.vue')['default']
-    Phopopover: typeof import('./src/components/phopopover/index.vue')['default']
+    PhotoPopver: typeof import('./src/components/PhotoPopver/index.vue')['default']
     Radio: typeof import('./src/components/radio/index.vue')['default']
     Right: typeof import('./src/components/right/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

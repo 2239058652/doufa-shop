@@ -230,7 +230,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { getAddressRegion, getCategory, getProducts, getCartCount, getSystemAdmin } from '@/api/store'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
-import Popover from '@/components/phopopover/index.vue' // 以图搜索
+import Popover from '@/components/PhotoPopver/index.vue' // 以图搜索
 import './Search.scss'
 import { debounce } from '@/utils/util'
 

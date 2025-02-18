@@ -129,7 +129,7 @@
 </template>
 
 <script lang="ts" setup>
-import Popover from '@/components/phopopover/index.vue' // 以图搜索
+import Popover from '@/components/PhotoPopver/index.vue' // 以图搜索
 import { ref, onActivated, onMounted, computed } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 import Pagination from '@/components/pagination/index.vue'
