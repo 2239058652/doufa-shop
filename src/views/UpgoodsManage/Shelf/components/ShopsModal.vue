@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="right_content">
-        <el-card class="box-card" style="width: 95%; max-height: 750px; overflow-y: auto">
+        <el-card class="box-card" style="width: 95%; max-height: 720px; overflow-y: auto">
           <el-form
             ref="ruleFormRef"
             :model="formData"

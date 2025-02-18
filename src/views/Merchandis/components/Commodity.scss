@@ -1,13 +1,18 @@
 .content {
     width: 100%;
-    height: 100%;
+    height: calc(95vh - 150px);
+    overflow: auto;
     display: flex;
+    flex: 1;
+    min-height: 0;
 }
 
 .left_content {
     width: 20%;
-    height: 100%;
+    flex-shrink: 0;
+    padding: 5px;
     background: #f9f9f9;
+    overflow: auto;
 
     .left_name {
         height: 40px;
@@ -16,11 +21,23 @@
         color: #333333;
         line-height: 12px;
         text-align: left;
-        font-style: normal;
     }
 
     .left_radio {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 10px;
+
+        .radio-item {
+            width: 100%;
+            display: flex;
+            height: 32px;
+            line-height: 32px;
+            margin-bottom: 8px;
+        }
     }
 
     .left_items {
@@ -105,16 +122,14 @@
 
 .right_content {
     width: 80%;
-    height: 100%;
     flex-grow: 1;
+    min-height: 0;
     margin-left: 20px;
 
     .box-card {
         width: 95%;
-        min-height: 620px;
-        max-height: 80vh;
-        height: auto;
-        overflow-y: auto;
+        height: 100%;
+        overflow: auto;
     }
 
     .xg {

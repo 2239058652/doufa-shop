@@ -6,7 +6,7 @@ interface IFormData {
   cgval: number | null | ValueType
   lrval: number | null | ValueType
   store_name: string
-  reduce_type: string | null
+  reduce_type: string | null | number
   freight_id: string
   category_id: string[]
   start_sale_type: string

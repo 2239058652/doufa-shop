@@ -1,5 +1,5 @@
 <template>
-  <div class="order_list">
+  <div class="shelf">
     <div class="topBox">
       <div class="top_item">
         <el-button :color="'var(--red-color)'" @click="handleUploadShops">批量上传</el-button>

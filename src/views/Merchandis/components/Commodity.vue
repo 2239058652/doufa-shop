@@ -4,7 +4,7 @@
     v-model:open="dialogVisible"
     :title="dialogTitle"
     width="95%"
-    :style="{ top: '1vh' }"
+    :style="{ top: '1vh', height: '95vh', overflow: 'hidden' }"
     @cancel="handleDialogClosed"
     destroyOnClose
   >
@@ -16,9 +16,14 @@
           <a-col :span="24">
             <span style="font-size: 12px; font-weight: bold">价格设置:</span>
           </a-col>
-          <a-radio-group v-model:value="formData.cgorlrRio" @change="handleRadioChange">
-            <a-radio :style="radioStyle" :value="1" class="radio-item">
-              来源价+
+          <a-col :span="24">
+            <div class="radio-item">
+              <Radio
+                v-model="formData.cgorlrRio"
+                :options="[{ label: '来源价 +', value: 1 }]"
+                round
+                @change="handleRadioChange"
+              />
               <a-input-number
                 :disabled="formData.cgorlrRio == 2"
                 v-model:value="formData.cgval"
@@ -29,9 +34,16 @@
                   <span>元</span>
                 </template>
               </a-input-number>
-            </a-radio>
-            <a-radio :style="radioStyle" :value="2" class="radio-item">
-              来源价×
+            </div>
+          </a-col>
+          <a-col :span="24">
+            <div class="radio-item">
+              <Radio
+                v-model="formData.cgorlrRio"
+                :options="[{ label: '来源价 ×', value: 2 }]"
+                round
+                @change="handleRadioChange"
+              />
               <a-input-number
                 :disabled="formData.cgorlrRio == 1"
                 v-model:value="formData.lrval"
@@ -43,8 +55,8 @@
                   <span>倍</span>
                 </template>
               </a-input-number>
-            </a-radio>
-          </a-radio-group>
+            </div>
+          </a-col>
         </div>
         <div v-for="(item, index) in picList" :key="item.id" class="left_items">
           <div class="left_item">
@@ -589,6 +601,9 @@ import type { Rule } from 'ant-design-vue/es/form'
 import type { CascaderProps, TableColumnsType, FormInstance, UploadProps } from 'ant-design-vue'
 // import { validatePhone } from '@/utils/validate'
 
+import Radio from '@/components/radio/index.vue'
+import type { he } from 'element-plus/es/locale/index.mjs'
+
 const loading = ref(false)
 
 const [messageApi, contextHolder] = message.useMessage()
@@ -754,11 +769,6 @@ const rules: Record<string, Rule[]> = {
   after_sale_service: [{ required: true, message: '请选择七天无理由', trigger: ['change', 'blur'] }],
   mobile: [{ required: true, message: '请输入客服电话', trigger: ['change', 'blur'] }] //  validator: validatePhone,
 }
-const radioStyle = reactive({
-  display: 'flex',
-  height: '32px',
-  lineHeight: '32px'
-})
 
 // 采购输入框变化
 const handleCgChange = (val: number | ValueType) => {
@@ -786,9 +796,8 @@ const changePlgjByParent = (value: string | number) => {
   }
 }
 // 利润采购单选变化
-const handleRadioChange = (e: Record<string, any>) => {
-  const val = e.target.value
-  switch (val) {
+const handleRadioChange = (e: string | number) => {
+  switch (e) {
     case 1:
       handleCgChange(Number(formData.value.cgval))
       break
@@ -1422,23 +1431,18 @@ defineExpose({
 <style src="./Commodity.scss" scoped></style>
 
 <style scoped lang="scss">
-.radio-item {
-  margin-bottom: 8px;
-  width: 100%;
-}
-
 .modal-footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-top: 12px;
+  height: 100%;
+  // padding-top: 12px;
 }
 
 .footer-notice {
   font-size: 14px;
   color: #333;
   text-align: center;
-  margin-top: 12px;
 }
 
 .add-btn {
