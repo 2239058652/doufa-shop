@@ -5,10 +5,10 @@
     :total="total"
     :show-total="showTotal"
     :pageSizeOptions="pageSizeOptions"
-    @change="handleChange"
-    @showSizeChange="handleSizeChange"
     show-quick-jumper
     show-size-changer
+    @change="handleChange"
+    @showSizeChange="handleSizeChange"
   />
 </template>
 
