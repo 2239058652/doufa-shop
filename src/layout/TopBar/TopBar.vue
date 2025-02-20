@@ -80,7 +80,7 @@
             </div>
           </div>
           <template #footer>
-            <a-button type="primary" @click="addressOpen = false">确认</a-button>
+            <a-button type="primary" @click="addressOpen = false" danger>确认</a-button>
           </template>
         </a-modal>
         <!-- 登录modal -->
