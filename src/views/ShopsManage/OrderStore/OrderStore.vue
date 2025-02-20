@@ -100,8 +100,7 @@
             </a-popconfirm>
 
             <a-space v-else>
-              <a-button type="link">购买</a-button>
-              <a-button type="link" style="color: #999999">移除</a-button>
+              <a-button type="link" @click="handleAdd">授权</a-button>
             </a-space>
           </template>
         </template>
@@ -179,7 +178,7 @@ const handleClean = () => {
 
 // 解绑店铺
 const handleUnBind = (id: string) => {
-  unbindStore(id).then((res: any) => {
+  unbindStore({ store_id: id }).then((res: any) => {
     if (res.status == 200) {
       messageApi.success(res.msg)
       getStoreList()

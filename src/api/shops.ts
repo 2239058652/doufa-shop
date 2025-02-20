@@ -25,9 +25,9 @@ export const syncDyOrder = (data: IDYOder) => {
 }
 
 // 解除店铺绑定
-export const unbindStore = (params: any) => {
+export const unbindStore = (params: { store_id: string | number }) => {
   return request.get({
-    url: '/api/unbindStore',
+    url: `/api/unbindStore`,
     params
   })
 }
