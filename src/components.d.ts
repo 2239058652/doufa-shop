@@ -67,11 +67,12 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Footer: typeof import('./components/footer/index.vue')['default']
     Pagination: typeof import('./components/pagination/index.vue')['default']
-    PhotoPopver: typeof import('./components/PhotoPopver/index.vue')['default']
     Radio: typeof import('./components/radio/index.vue')['default']
     Right: typeof import('./components/right/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    searchbox: typeof import('./components/searchbox/index.vue')['default']
+    Searchbox: typeof import('./components/searchbox/index.vue')['default']
     Table: typeof import('./components/table/index.vue')['default']
   }
 }
