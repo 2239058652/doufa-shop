@@ -616,7 +616,7 @@
         "
       >
         部分信息为平台同步信息，
-        <span style="color: #f83126"> 您应仔细检查每项信息，如信息有误，应修改后发布 </span>
+        <span style="color: var(--red-color)"> 您应仔细检查每项信息，如信息有误，应修改后发布 </span>
         ，避免虚假宣传等风险
       </div>
     </template>
@@ -1014,12 +1014,9 @@ defineExpose({
 </script>
 
 <style src="./index.scss" scoped></style>
-<style scoped>
+<style scoped lang="scss">
 .xg {
   height: 20px;
-  font-family:
-    PingFangSC,
-    PingFang SC;
   font-weight: 400;
   font-size: 14px;
   color: #999999;
@@ -1031,12 +1028,9 @@ defineExpose({
 .bt-title {
   width: 100%;
   height: 25px;
-  font-family:
-    PingFangSC,
-    PingFang SC;
   font-weight: 500;
   font-size: 18px;
-  color: #f83126;
+  color: $red-color;
   line-height: 25px;
   text-align: left;
   font-style: normal;
@@ -1069,7 +1063,7 @@ defineExpose({
   border: 2px solid transparent;
   cursor: pointer;
 
-  &&:hover {
+  &:hover {
     border-color: blue;
   }
 }
