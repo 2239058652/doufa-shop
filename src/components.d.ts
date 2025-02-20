@@ -71,8 +71,6 @@ declare module 'vue' {
     Right: typeof import('./components/right/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    searchbox: typeof import('./components/searchbox/index.vue')['default']
     Searchbox: typeof import('./components/searchbox/index.vue')['default']
-    Table: typeof import('./components/table/index.vue')['default']
   }
 }

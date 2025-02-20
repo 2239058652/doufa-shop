@@ -28,11 +28,9 @@ declare module 'vue' {
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     Footer: typeof import('./src/components/footer/index.vue')['default']
     Pagination: typeof import('./src/components/pagination/index.vue')['default']
-    searchbox: typeof import('./src/components/searchbox/index.vue')['default']
     Radio: typeof import('./src/components/radio/index.vue')['default']
     Right: typeof import('./src/components/right/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Table: typeof import('./src/components/table/index.vue')['default']
   }
 }
