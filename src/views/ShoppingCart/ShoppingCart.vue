@@ -136,6 +136,7 @@ import Pagination from '@/components/pagination/index.vue'
 import { getShoppingCart, deleteCarts } from '@/api/store'
 import { useRouter } from 'vue-router'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+import type { TableColumnsType } from 'ant-design-vue'
 
 const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
@@ -159,7 +160,7 @@ const pageSize = ref(10)
 const total = ref(0)
 const jieSuanNum = ref(0) // 结算数量
 
-const tableColumns = [
+const tableColumns: TableColumnsType = [
   {
     title: '商品详情',
     dataIndex: 'detail',
