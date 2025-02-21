@@ -74,3 +74,15 @@ interface IDYOder {
   user_id: string
   product: string
 }
+
+interface IOrderList {
+  time_start?: string | number
+  time_end?: string | number
+  order_ids?: number | string
+  order_address?: number | string
+  remarks?: number | string
+  dy_order_ids?: number | string
+  type?: number | string
+  page: number
+  limit: number
+}

@@ -104,7 +104,7 @@
             <a-col :span="8">
               <a-form-item label="时间">
                 <a-range-picker
-                  :value="hackValue"
+                  v-model:value="hackValue"
                   :format="dateFormat"
                   @change="onChange"
                   :placeholder="['开始时间', '结束时间']"
@@ -238,7 +238,7 @@ import './MyPurse.scss'
 import zhifubaoImg from '@/assets/image/zhifubao.png'
 
 const dateFormat = 'YYYY-MM-DD'
-type RangeValue = [Dayjs, Dayjs]
+type RangeValue = [Dayjs, Dayjs] | [string, string]
 const hackValue = ref<RangeValue>()
 
 const [messageApi, contextHolder] = message.useMessage()
@@ -632,15 +632,14 @@ const getProductsList = () => {
     }
   })
 }
-const onChange = (val: RangeValue) => {
+const onChange = (val: RangeValue | [string, string], dateStrings: [string, string]) => {
   if (val) {
-    formData.value.startTime = val[0].format(dateFormat)
-    formData.value.endTime = val[1].format(dateFormat)
+    formData.value.startTime = dateStrings[0]
+    formData.value.endTime = dateStrings[1]
   } else {
     formData.value.startTime = ''
     formData.value.endTime = ''
   }
-  hackValue.value = val
 }
 const handleExport = () => {
   // 准备导出数据

@@ -425,15 +425,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, watch, type RendererElement, type RendererNode, type VNode } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useMouseInElement, useScroll } from '@vueuse/core'
+import { useMouseInElement, useScroll, useClipboard } from '@vueuse/core'
 import { getProductDetail, addGoodsToCart, collectGoodsTo } from '@/api/store'
 import { AuthStoreGoodsList, getSellsUpload } from '@/api/upstore'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
 import Popover from '@/components/searchbox/index.vue'
-import { useClipboard } from '@vueuse/core'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
 import { debounce } from '@/utils/util'
 import UploadCommodityModel from './components/Commodity.vue'
@@ -778,9 +777,11 @@ const handleUploadToDy = () => {
 const addShopList = () => {
   getSellsUpload({
     path: window.location.href
-  }).then((res: { code: number; data: { url: string | URL | undefined } }) => {
+  }).then((res: { code: number; data: { url: string | URL | undefined }; msg: string }) => {
     if (res.code == 100010) {
       window.open(res.data.url)
+    } else {
+      messageApi.error(res.msg)
     }
   })
 }

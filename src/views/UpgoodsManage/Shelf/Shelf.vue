@@ -168,6 +168,8 @@ const toAddShopList = () => {
   }).then((res) => {
     if (res.code == 100010) {
       window.open(res.data.url)
+    } else {
+      ElMessage.error(res.msg)
     }
   })
 }
