@@ -126,7 +126,12 @@
         <div class="table-content">
           <div class="table-item" v-for="item in dataSource" :key="item.id">
             <div class="check">
-              <Checkbox style="width: 18px; height: 18px; margin-left: 20px" v-model="item.checked" label="" />
+              <Checkbox
+                style="width: 18px; height: 18px; margin-left: 20px"
+                v-model="item.checked"
+                label=""
+                @change="(val) => handleItemCheckChange(val, item)"
+              />
               <div class="bianhao">
                 <span>订单编号：{{ item.order_id }}</span>
                 <img
@@ -293,13 +298,16 @@ const dataSource = ref<any>([])
 const originalData = ref([])
 const activeTab = ref(0)
 const listCardTabs = ['全部', '待付款', '待发货', '已发货', '售后订单', '未拿到货']
+const checkedList = ref<Record<string, any>[]>([])
 
 // 监听全选按钮状态变化
 watch(
   checkedAll,
   (newVal) => {
+    checkedList.value = []
     dataSource.value.forEach((item: { checked: boolean }) => {
       if (newVal) {
+        checkedList.value.push(item)
         item.checked = true
       } else {
         item.checked = false
@@ -309,7 +317,21 @@ watch(
   { deep: true }
 )
 
-// 切换tab
+// 商品复选框change
+const handleItemCheckChange = (e: boolean, val: any) => {
+  if (e) {
+    checkedList.value.push(val)
+  } else {
+    checkedList.value = checkedList.value.filter((item: any) => item.id != val.id)
+  }
+  if (checkedList.value.length == dataSource.value.length) {
+    checkedAll.value = true
+  } else {
+    checkedAll.value = false
+  }
+}
+
+// 切换订单种类tab
 const handleTabClick = (index: number) => {
   if (index == 4 || index == 5) {
     messageApi.warning('暂未开放')

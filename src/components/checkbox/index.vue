@@ -1,6 +1,7 @@
 <template>
-  <div class="custom-checkbox" @click="toggleCheck">
+  <div class="custom-checkbox" @click="handleClick">
     <div class="checkbox-inner" :class="{ 'is-checked': modelValue, 'is-round': round }">
+      <!-- 保持原有图标逻辑 -->
       <span v-if="modelValue" class="checkmark">
         <template v-if="!round">✓</template>
         <template v-else>
@@ -21,10 +22,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
+  (e: 'change', payload: boolean | any): void // 灵活接受任意类型参数
 }>()
 
-const toggleCheck = () => {
-  emit('update:modelValue', !props.modelValue)
+const handleClick = () => {
+  const newValue = !props.modelValue
+  emit('update:modelValue', newValue)
+  emit('change', newValue) // 默认传递选中状态
 }
 </script>
 
@@ -49,7 +53,7 @@ const toggleCheck = () => {
 
     &.is-round {
       border-radius: 50%;
-      display: flex; // 添加flex布局
+      display: flex;
       align-items: center;
       justify-content: center;
 
@@ -62,9 +66,9 @@ const toggleCheck = () => {
           height: 10px;
           border-radius: 50%;
           background-color: $red-color;
-          flex-shrink: 0; // 防止缩放
-          position: relative; // 相对定位
-          display: block; // 确保显示为块级元素
+          flex-shrink: 0;
+          position: relative;
+          display: block;
         }
       }
     }
