@@ -88,7 +88,7 @@
       </a-form>
       <div class="table-btn">
         <a-space :size="24">
-          <div class="btn"><span>批量付款</span></div>
+          <div class="btn" @click="handlePayMuch"><span>批量付款</span></div>
           <div class="btn btn-white"><span>批量删除</span></div>
           <div class="btn btn-yellow"><span>批量改款</span></div>
         </a-space>
@@ -96,7 +96,7 @@
       <div class="table-box">
         <div class="header">
           <div class="column-title div-0">
-            <span> <Checkbox v-model="checkedAll" label="" /></span>
+            <span> <Checkbox v-model="checkedAll" label="" @change="handleCheckAll" /></span>
           </div>
           <div class="column-title div-1">
             <span>商品</span>
@@ -130,7 +130,7 @@
                 style="width: 18px; height: 18px; margin-left: 20px"
                 v-model="item.checked"
                 label=""
-                @change="(val) => handleItemCheckChange(val, item)"
+                @change="(val) => handleItemCheck(val, item)"
               />
               <div class="bianhao">
                 <span>订单编号：{{ item.order_id }}</span>
@@ -267,7 +267,7 @@
 <script lang="ts" setup>
 import Pagination from '@/components/pagination/index.vue'
 import { message } from 'ant-design-vue'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { aorderList } from '@/api/order'
 import { Dayjs } from 'dayjs'
 import moment from 'moment'
@@ -298,37 +298,55 @@ const dataSource = ref<any>([])
 const originalData = ref([])
 const activeTab = ref(0)
 const listCardTabs = ['全部', '待付款', '待发货', '已发货', '售后订单', '未拿到货']
-const checkedList = ref<Record<string, any>[]>([])
+
+// 计算已选中的项目
+const checkedList = computed(() => dataSource.value.filter((item: { checked: any }) => item.checked))
 
 // 监听全选按钮状态变化
-watch(
-  checkedAll,
-  (newVal) => {
-    checkedList.value = []
-    dataSource.value.forEach((item: { checked: boolean }) => {
-      if (newVal) {
-        checkedList.value.push(item)
-        item.checked = true
-      } else {
-        item.checked = false
-      }
-    })
-  },
-  { deep: true }
-)
+const updateCheckedAll = () => {
+  checkedAll.value = dataSource.value.length > 0 && dataSource.value.every((item: { checked: any }) => item.checked)
+}
 
-// 商品复选框change
-const handleItemCheckChange = (e: boolean, val: any) => {
-  if (e) {
-    checkedList.value.push(val)
-  } else {
-    checkedList.value = checkedList.value.filter((item: any) => item.id != val.id)
+// 监听数据源变化自动更新全选状态
+watch(dataSource, () => updateCheckedAll(), { deep: true })
+
+// 全选/反选逻辑优化
+const handleCheckAll = (checked: boolean) => {
+  dataSource.value = dataSource.value.map((item: any) => ({
+    ...item,
+    checked
+  }))
+}
+// 优化后的单个复选框变更处理
+const handleItemCheck = (checked: boolean, item: any) => {
+  const index = dataSource.value.findIndex((i: { id: any }) => i.id === item.id)
+  if (index > -1) {
+    dataSource.value[index].checked = checked
   }
-  if (checkedList.value.length == dataSource.value.length) {
-    checkedAll.value = true
-  } else {
-    checkedAll.value = false
+  updateCheckedAll()
+}
+
+// // 商品复选框change
+// const handleItemCheckChange = (e: boolean, val: any) => {
+//   if (e) {
+//     checkedList.value.push(val)
+//   } else {
+//     checkedList.value = checkedList.value.filter((item: any) => item.id != val.id)
+//   }
+//   if (checkedList.value.length == dataSource.value.length) {
+//     checkedAll.value = true
+//   } else {
+//     checkedAll.value = false
+//   }
+// }
+
+// 批量付款
+const handlePayMuch = () => {
+  if (checkedList.value.length == 0) {
+    messageApi.warning('请选择订单')
+    return
   }
+  console.log(checkedList.value)
 }
 
 // 切换订单种类tab
