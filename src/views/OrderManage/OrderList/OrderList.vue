@@ -6,12 +6,12 @@
       <div class="tabs">
         <div
           v-for="(item, index) in listCardTabs"
-          :key="index"
+          :key="item.value"
           class="tab"
           :class="{ active: activeTab === index }"
-          @click="handleTabClick(index)"
+          @click="handleTabClick(item.value, index)"
         >
-          <span>{{ item }}</span>
+          <span>{{ item.name }}</span>
         </div>
       </div>
 
@@ -297,7 +297,36 @@ const total = ref(0) // 总条数
 const dataSource = ref<any>([])
 const originalData = ref([])
 const activeTab = ref(0)
-const listCardTabs = ['全部', '待付款', '待发货', '已发货', '售后订单', '未拿到货']
+const listCardTabs = [
+  {
+    name: '全部',
+    value: 9
+  },
+  {
+    name: '待付款',
+    value: 0
+  },
+  {
+    name: '待发货',
+    value: 1
+  },
+  {
+    name: '已发货',
+    value: 2
+  },
+  {
+    name: '售后订单',
+    value: 4
+  },
+  {
+    name: '未拿到货',
+    value: 5
+  },
+  {
+    name: '待评价',
+    value: 3
+  }
+]
 
 // 计算已选中的项目
 const checkedList = computed(() => dataSource.value.filter((item: { checked: any }) => item.checked))
@@ -326,20 +355,6 @@ const handleItemCheck = (checked: boolean, item: any) => {
   updateCheckedAll()
 }
 
-// // 商品复选框change
-// const handleItemCheckChange = (e: boolean, val: any) => {
-//   if (e) {
-//     checkedList.value.push(val)
-//   } else {
-//     checkedList.value = checkedList.value.filter((item: any) => item.id != val.id)
-//   }
-//   if (checkedList.value.length == dataSource.value.length) {
-//     checkedAll.value = true
-//   } else {
-//     checkedAll.value = false
-//   }
-// }
-
 // 批量付款
 const handlePayMuch = () => {
   if (checkedList.value.length == 0) {
@@ -350,33 +365,14 @@ const handlePayMuch = () => {
 }
 
 // 切换订单种类tab
-const handleTabClick = (index: number) => {
-  if (index == 4 || index == 5) {
+const handleTabClick = (val: number, index: number) => {
+  if (val == 4 || val == 5) {
     messageApi.warning('暂未开放')
     return
   }
+  formData.value.type = val
   activeTab.value = index
-  switch (index) {
-    case 0:
-      formData.value.type = ''
-      getOrderList()
-      break
-    case 1:
-      formData.value.type = 0
-      getOrderList()
-      break
-    case 2:
-      formData.value.type = 1
-      getOrderList()
-      break
-    case 3:
-      formData.value.type = 2
-      getOrderList()
-      break
-
-    default:
-      break
-  }
+  getOrderList()
 }
 
 // 获取颜色
@@ -450,6 +446,7 @@ const handleClean = () => {
   }
   dataSource.value = originalData.value
   total.value = originalData.value.length
+  hackValue.value = undefined
   getOrderList()
 }
 

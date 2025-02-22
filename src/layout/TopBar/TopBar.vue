@@ -63,7 +63,7 @@
           <p class="text">确定要退出系统吗？</p>
           <template #footer>
             <a-button key="back" @click="open = false">取消</a-button>
-            <a-button key="submit" type="primary" :loading="loading" @click="loginOut">退出</a-button>
+            <a-button key="submit" type="primary" :loading="loading" @click="loginOut" danger>退出</a-button>
           </template>
         </a-modal>
 
