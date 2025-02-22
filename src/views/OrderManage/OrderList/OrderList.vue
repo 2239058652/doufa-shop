@@ -187,10 +187,46 @@
                   </div>
                 </div>
               </div>
-              <div class="status">1</div>
-              <div class="address">1</div>
-              <div class="beizhu">1</div>
-              <div class="operater">1</div>
+              <div class="status">
+                <div class="item">
+                  <div class="item-info">
+                    {{ formatStatus(item) }}
+                  </div>
+                </div>
+              </div>
+              <div class="address">
+                <div class="item">
+                  <div class="item-info">
+                    <div class="font">{{ item.real_name }} {{ item.user_phone }}</div>
+                    <div class="font">{{ item.user_address }}</div>
+                    <div class="lanjie">
+                      <span>拦截物流</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="beizhu">
+                <div class="item">
+                  <div class="item-info">
+                    {{ item.mark || '无' }}
+                  </div>
+                </div>
+              </div>
+              <div class="operater">
+                <div class="item">
+                  <div class="item-info">
+                    <div class="btn shouhou">
+                      <span>申请售后</span>
+                    </div>
+                    <div class="btn paynow">
+                      <span>立即付款</span>
+                    </div>
+                    <div class="btn">
+                      <span>拦截物流</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="bom">
               <div>抖店面单：顺丰快递（10.00元）</div>
@@ -267,6 +303,32 @@ const getColor = (suk: string) => {
 // 获取尺码
 const getSize = (suk: string) => {
   return suk.split(',')[1]
+}
+
+// 获取订单状态
+const formatStatus = (sts: any) => {
+  const { refund, is_stock_up, status, pay_time, is_all_refund } = sts
+  if (status == 0 && pay_time == 0 && is_stock_up == 0) {
+    return '未支付'
+  } else if (status == 0 && pay_time != 0 && is_stock_up == 5) {
+    return '明天到货'
+  } else if (status == 0 && pay_time != 0 && is_stock_up == 2) {
+    return '不补货'
+  } else if (status == 0 && pay_time != 0 && is_stock_up == 3) {
+    return '后天到货'
+  } else if (status == 0 && pay_time != 0 && is_stock_up == 0 && refund.length == 0) {
+    return '待发货'
+  } else if (status == 0 && pay_time != 0 && is_stock_up == 1) {
+    return '缺货'
+  } else if (refund && refund.length > 0) {
+    if (refund[refund.length - 1].refund_type == 6) {
+      return '已退款'
+    } else {
+      return '退款中'
+    }
+  } else if (status == 1) {
+    return '已发货'
+  }
 }
 
 // shijian
