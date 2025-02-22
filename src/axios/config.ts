@@ -13,7 +13,7 @@ const config: IConfig = {
     pro: 'https://ceshi.doufapt.com',
 
     // 打包测试环境接口前缀
-    test: 'http://test.doufapt.com'
+    test: 'https://test.doufapt.com'
   },
 
   /**

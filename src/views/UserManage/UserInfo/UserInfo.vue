@@ -642,7 +642,7 @@ getProductsList() // 获取商品列表
   align-items: center;
   justify-content: center;
   /* 文字居中 */
-  font-family: MicrosoftYaHei, sans-serif;
+  font-family: 'Microsoft YaHei', sans-serif;
   font-size: 16px;
   line-height: 21px;
   color: #666666;

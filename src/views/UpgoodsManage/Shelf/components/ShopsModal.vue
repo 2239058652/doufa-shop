@@ -604,9 +604,6 @@
         style="
           width: 100%;
           height: 20px;
-          font-family:
-            PingFangSC,
-            PingFang SC;
           font-weight: 400;
           font-size: 14px;
           color: #333333;

@@ -39,6 +39,7 @@
       font-weight: bold;
       color: #333333;
       line-height: 21px;
+      font-family: 'Microsoft YaHei', sans-serif;
 
       &:hover {
         color: $red-color;
@@ -140,18 +141,19 @@
           font-size: 14px;
           color: #333333;
           line-height: 18px;
+          text-align: center;
           font-style: normal;
           white-space: nowrap;
         }
       }
 
       .div-0 {
-        width: 18px;
-        padding: 20px;
+        width: 30px;
+        padding-left: 30px;
       }
 
       .div-1 {
-        width: 322px;
+        width: 310px;
       }
 
       .div-2 {
@@ -270,12 +272,17 @@
                 gap: 10px;
 
                 .font {
+                  width: 200px;
                   height: 19px;
                   font-size: 14px;
                   color: #333333;
                   line-height: 19px;
                   text-align: left;
                   font-style: normal;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  line-clamp: 1;
                 }
               }
             }
@@ -286,7 +293,6 @@
           .shuxing {
             width: 120px;
             height: auto;
-            border: 0.5px solid #F7F8FA;
 
             .item {
               width: 100%;
@@ -411,7 +417,6 @@
           .price {
             width: 174px;
             height: auto;
-            border: 0.5px solid #F7F8FA;
 
             .item {
               width: 100%;
@@ -447,7 +452,6 @@
           .status {
             width: 124px;
             height: auto;
-            border: 0.5px solid #F7F8FA;
 
             .item {
               width: 100%;
@@ -466,7 +470,7 @@
                 justify-content: center;
                 gap: 15px;
 
-                .font {
+                span {
                   min-height: 19px;
                   height: auto;
                   font-size: 14px;
@@ -483,7 +487,6 @@
           .address {
             width: 286px;
             height: auto;
-            border: 0.5px solid #F7F8FA;
 
             .item {
               width: 100%;
@@ -546,7 +549,6 @@
           .beizhu {
             width: 226px;
             height: auto;
-            border: 0.5px solid #F7F8FA;
 
             .item {
               width: 100%;
@@ -565,7 +567,7 @@
                 justify-content: center;
                 gap: 15px;
 
-                .font {
+                span {
                   min-height: 19px;
                   height: auto;
                   font-size: 14px;
@@ -580,9 +582,8 @@
           }
 
           .operater {
-            width: 212px;
+            width: 235px;
             height: auto;
-            border: 0.5px solid #F7F8FA;
 
             .item {
               width: 100%;

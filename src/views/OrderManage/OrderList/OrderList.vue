@@ -1,6 +1,6 @@
 <template>
   <context-holder />
-  <div class="order-list">
+  <div class="order-list" ref="scrollContainer">
     <!-- 订单种类tabs -->
     <a-card class="list-card">
       <div class="tabs">
@@ -78,7 +78,7 @@
           <a-col :span="8">
             <a-form-item label="">
               <a-space :size="24">
-                <a-button type="primary" danger @click="handleSearch">查询</a-button>
+                <a-button type="primary" danger @click="getOrderList">查询</a-button>
                 <a-button type="primary" @click="handleClean">重置</a-button>
                 <a-button type="primary" @click="handleExportcel">导出订单</a-button>
               </a-space>
@@ -128,23 +128,25 @@
             <div class="check">
               <Checkbox style="width: 18px; height: 18px; margin-left: 20px" v-model="item.checked" label="" />
               <div class="bianhao">
-                <span>订单编号：1234567654322356</span>
+                <span>订单编号：{{ item.order_id }}</span>
                 <img
                   class="copy-icon"
                   src="../../../assets/image/copy.png"
                   alt=""
-                  @click="handleUseCopy(1234567654322356)"
+                  @click="handleUseCopy(item.order_id)"
                 />
               </div>
-              <div class=""><span>交易创建时间：2024/09/19 10:28:21</span></div>
+              <div class="">
+                <span>交易创建时间：{{ moment(item.add_time * 1000).format('YYYY/MM/DD HH:mm:ss') }}</span>
+              </div>
               <div class=""><span>订单来源：抖音【店铺名称】</span></div>
               <div class="bianhao">
-                <span>订单来源订单编号：1234567654322356</span>
+                <span>订单来源订单编号：{{ item.dy_order_id }}</span>
                 <img
                   class="copy-icon"
                   src="../../../assets/image/copy.png"
                   alt=""
-                  @click="handleUseCopy(1234567654322356)"
+                  @click="handleUseCopy(item.dy_order_id)"
                 />
               </div>
             </div>
@@ -153,10 +155,10 @@
                 <div class="goods" v-for="i in item.cartInfo" :key="i.id">
                   <img :src="i.productInfo.image" alt="" />
                   <div class="goods-info">
-                    <div class="font">商家：超级男装</div>
-                    <div class="font">货号：21324</div>
-                    <div class="font">站点：常熟</div>
-                    <div class="font" style="color: #ff5c02">¥21.42</div>
+                    <div class="font">商家：{{ i.productInfo.mer_name }}</div>
+                    <div class="font">货号：{{ i.productInfo.keyword }}</div>
+                    <div class="font">站点：{{ i.productInfo.goods_address }}</div>
+                    <div class="font" style="color: #ff5c02">¥{{ i.attrInfo.ot_price }}</div>
                   </div>
                 </div>
               </div>
@@ -190,7 +192,7 @@
               <div class="status">
                 <div class="item">
                   <div class="item-info">
-                    {{ formatStatus(item) }}
+                    <span>{{ formatStatus(item) }}</span>
                   </div>
                 </div>
               </div>
@@ -208,7 +210,7 @@
               <div class="beizhu">
                 <div class="item">
                   <div class="item-info">
-                    {{ item.mark || '无' }}
+                    <span>{{ item.mark || '无' }}</span>
                   </div>
                 </div>
               </div>
@@ -229,17 +231,17 @@
               </div>
             </div>
             <div class="bom">
-              <div>抖店面单：顺丰快递（10.00元）</div>
+              <div>抖店面单：快递费（{{ item.pay_postage }}元）</div>
               <div class="bianhao">
-                <span>物流单号：1234567654322356</span>
+                <span>物流单号：{{ item.delivery_id }}</span>
                 <img
                   class="copy-icon"
                   src="../../../assets/image/copy.png"
                   alt=""
-                  @click="handleUseCopy(1234567654322356)"
+                  @click="handleUseCopy(item.delivery_id)"
                 />
               </div>
-              <div>发货时间：2024/09/19 10:28:21</div>
+              <div>假 发货时间：2024/09/19 10:28:21</div>
             </div>
           </div>
         </div>
@@ -253,34 +255,36 @@
         :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
       />
     </a-card>
+    <a-back-top :target="() => scrollContainer" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import Pagination from '@/components/pagination/index.vue'
 import { message } from 'ant-design-vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { aorderList } from '@/api/order'
-import dayjs from 'dayjs'
 import { Dayjs } from 'dayjs'
+import moment from 'moment'
 
 import Checkbox from '@/components/checkbox/index.vue'
 import { useClipboard } from '@vueuse/core'
 
+const scrollContainer = ref() // 滚动容器
 const dateFormat = 'YYYY-MM-DD'
 type RangeValue = [Dayjs, Dayjs] | [string, string]
 const hackValue = ref<RangeValue>()
 
 const [messageApi, contextHolder] = message.useMessage()
-const nowtime = dayjs().unix()
 const checkedAll = ref<boolean>(false)
 
-const formData = ref({
+const formData = ref<any>({
   store_name: '',
   store_id: '',
   order_ids: '',
   time_start: '',
-  time_end: ''
+  time_end: '',
+  type: null
 })
 const currentPage = ref(1) // 当前页码
 const pageSize = ref(10) // 每页条数
@@ -290,9 +294,49 @@ const originalData = ref([])
 const activeTab = ref(0)
 const listCardTabs = ['全部', '待付款', '待发货', '已发货', '售后订单', '未拿到货']
 
+// 监听全选按钮状态变化
+watch(
+  checkedAll,
+  (newVal) => {
+    dataSource.value.forEach((item: { checked: boolean }) => {
+      if (newVal) {
+        item.checked = true
+      } else {
+        item.checked = false
+      }
+    })
+  },
+  { deep: true }
+)
+
 // 切换tab
 const handleTabClick = (index: number) => {
+  if (index == 4 || index == 5) {
+    messageApi.warning('暂未开放')
+    return
+  }
   activeTab.value = index
+  switch (index) {
+    case 0:
+      formData.value.type = ''
+      getOrderList()
+      break
+    case 1:
+      formData.value.type = 0
+      getOrderList()
+      break
+    case 2:
+      formData.value.type = 1
+      getOrderList()
+      break
+    case 3:
+      formData.value.type = 2
+      getOrderList()
+      break
+
+    default:
+      break
+  }
 }
 
 // 获取颜色
@@ -344,38 +388,29 @@ const onChange = (val: RangeValue | [string, string], dateStrings: [string, stri
 
 // 复制
 const handleUseCopy = (source: any) => {
+  if (!source) {
+    messageApi.warning('暂无内容无法复制')
+    return
+  }
+
   const { copy } = useClipboard({ source, legacy: true })
   copy(source)
   messageApi.success('复制成功')
 }
 
-// 本地搜索方法
-const handleSearch = () => {
-  let result = [...originalData.value]
-
-  if (formData.value.store_name) {
-    result = result.filter((item: any) =>
-      item.store_name.toLowerCase().includes(formData.value.store_name.toLowerCase())
-    )
-  }
-
-  if (formData.value.store_id) {
-    result = result.filter((item: any) => item.store_id.toString().includes(formData.value.store_id))
-  }
-
-  dataSource.value = result
-  total.value = result.length
-} // 重置
+// 重置
 const handleClean = () => {
   formData.value = {
     store_name: '',
     store_id: '',
     order_ids: '',
     time_start: '',
-    time_end: ''
+    time_end: '',
+    type: null
   }
   dataSource.value = originalData.value
   total.value = originalData.value.length
+  getOrderList()
 }
 
 // 导出订单
@@ -385,8 +420,14 @@ const handleExportcel = () => {}
 const getOrderList = () => {
   aorderList({ page: currentPage.value, limit: pageSize.value, ...formData.value }).then((res: any) => {
     if (res.status == 200) {
-      dataSource.value = res.data.list
-      originalData.value = res.data.list
+      dataSource.value = res.data.list.map((item: any) => ({
+        ...item,
+        checked: false
+      }))
+      originalData.value = res.data.list.map((item: any) => ({
+        ...item,
+        checked: false
+      }))
       total.value = res.data.count
     } else {
       messageApi.error(res.msg)
