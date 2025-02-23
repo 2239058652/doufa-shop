@@ -451,8 +451,8 @@ const routerToDetail = (item: any) => {
 
 // echarts 自适应
 const handleResize = debounce(() => {
-  myChart?.resize()
-  myPieChart?.resize()
+  myChart?.resize({ silent: true }) // 添加 silent 参数
+  myPieChart?.resize({ silent: true })
 }, 100)
 
 const initCharts = () => {
@@ -461,46 +461,57 @@ const initCharts = () => {
     chartPieDom = document.getElementById('pie')
 
     if (chartDom) {
-      myChart = echarts.init(chartDom)
+      myChart = echarts.init(chartDom, null, {
+        renderer: 'canvas',
+        useCoarsePointer: true, // 优化指针检测
+        pointerSize: 8, // 增大热区
+        useDirtyRect: true // 启用脏矩形优化
+      })
       option && myChart.setOption(option)
     }
 
     if (chartPieDom) {
-      myPieChart = echarts.init(chartPieDom)
+      myPieChart = echarts.init(chartPieDom, null, {
+        renderer: 'canvas',
+        useCoarsePointer: true,
+        pointerSize: 8,
+        useDirtyRect: true
+      })
       pieOption && myPieChart.setOption(pieOption)
     }
 
-    window.addEventListener('resize', handleResize, { passive: true })
+    // 修改 resize 监听方式
+    const resizeObserver = new ResizeObserver(handleResize)
+    if (chartDom) resizeObserver.observe(chartDom)
+    if (chartPieDom) resizeObserver.observe(chartPieDom)
   } catch (error) {
     console.error('Error initializing charts:', error)
   }
 }
 
-let originalAddEventListener: typeof EventTarget.prototype.addEventListener | null = null
-
 onMounted(() => {
-  initCharts()
-
-  originalAddEventListener = EventTarget.prototype.addEventListener
+  const originalAddEventListener = EventTarget.prototype.addEventListener
 
   EventTarget.prototype.addEventListener = function (
     type: string,
     listener: EventListenerOrEventListenerObject,
     options?: boolean | AddEventListenerOptions
   ) {
-    if (type === 'wheel') {
+    // 为滚轮相关事件强制添加 passive
+    const passiveEvents = ['wheel', 'mousewheel', 'touchstart', 'touchmove']
+    if (passiveEvents.includes(type)) {
       const opts = typeof options === 'object' ? { ...options, passive: true } : { passive: true }
-      return originalAddEventListener!.call(this, type, listener, opts)
+      return originalAddEventListener.call(this, type, listener, opts)
     }
-    return originalAddEventListener!.call(this, type, listener, options)
+    return originalAddEventListener.call(this, type, listener, options)
   }
+
+  initCharts()
+  EventTarget.prototype.addEventListener = originalAddEventListener
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
-  if (originalAddEventListener) {
-    EventTarget.prototype.addEventListener = originalAddEventListener
-  }
 })
 
 const [messageApi, contextHolder] = message.useMessage()

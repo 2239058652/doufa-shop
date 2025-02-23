@@ -1,6 +1,6 @@
 <template>
   <RelaxModal />
-  <div class="page-container" :style="{ '--theme-color': currentColor }">
+  <div class="page-container" :style="{ '--theme-color': 'currentColor' }">
     <!-- 游戏元素 -->
     <div class="game-elements">
       <div
