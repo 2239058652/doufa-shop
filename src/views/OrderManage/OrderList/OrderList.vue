@@ -265,7 +265,12 @@
         :pageSizeOptions="[10, 20, 30, 40, 50, 100]"
       />
     </a-card>
-    <a-back-top :target="() => scrollContainer" />
+    <a-back-top
+      :target="() => scrollContainer"
+      :style="{
+        right: '40px'
+      }"
+    />
     <!-- 添加预览模态框 -->
     <a-modal v-model:open="previewVisible" :footer="null" width="40vw" centered>
       <div class="preview-container">
