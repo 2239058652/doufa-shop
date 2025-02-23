@@ -657,8 +657,8 @@ const fetchGoodsDetail = () => {
       type.value = res.data.storeInfo.cate_id
       detailData.value = res.data.storeInfo //赋值商品&店铺信息
       let [color, size] = res.data.productAttr //颜色信息、尺码信息解构
-      colorData.value = color.attr_value //颜色
-      infoData.value = size.attr_value //尺寸
+      colorData.value = color?.attr_value ?? [] //颜色
+      infoData.value = size?.attr_value ?? [] //尺寸
       // 添加颜色和尺码字段用以表格展示、
       var test = Object.values(res.data.productValue)
       skuList.value = test.map((element: any, index: number) => {
@@ -685,6 +685,7 @@ const handleColorFilter = (item: any) => {
 
 // 处理颜色数据获取到颜色对应的图片
 const getAttrImages = (productArray: any[], attrValue: any[]) => {
+  if (!productArray || !attrValue) return []
   return attrValue.map((item) => {
     const matchProduct = productArray.find((product) => product.suk.startsWith(item.attr))
     return {
