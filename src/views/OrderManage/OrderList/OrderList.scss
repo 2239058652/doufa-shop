@@ -260,6 +260,17 @@
                 width: 104px;
                 height: 104px;
                 object-fit: cover;
+                border-radius: 6px;
+              }
+
+
+              .preview-image {
+                cursor: pointer;
+                transition: transform 0.3s;
+
+                &:hover {
+                  transform: scale(1.05);
+                }
               }
 
               .goods-info {
@@ -687,5 +698,19 @@
         }
       }
     }
+  }
+}
+
+
+.preview-container {
+  text-align: center;
+  padding: 20px;
+
+  img {
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+    margin: 0 auto;
   }
 }

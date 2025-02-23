@@ -158,7 +158,12 @@
             <div class="item">
               <div class="good">
                 <div class="goods" v-for="i in item.cartInfo" :key="i.id">
-                  <img :src="i.productInfo.image" alt="" />
+                  <img
+                    :src="i.productInfo.image"
+                    alt="商品图片"
+                    class="preview-image"
+                    @click="handlePreview(i.productInfo.image)"
+                  />
                   <div class="goods-info">
                     <div class="font">商家：{{ i.productInfo.mer_name }}</div>
                     <div class="font">货号：{{ i.productInfo.keyword }}</div>
@@ -261,6 +266,12 @@
       />
     </a-card>
     <a-back-top :target="() => scrollContainer" />
+    <!-- 添加预览模态框 -->
+    <a-modal v-model:open="previewVisible" :footer="null" width="40vw" centered>
+      <div class="preview-container">
+        <img :src="previewImage" alt="预览大图" />
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -328,6 +339,9 @@ const listCardTabs = [
   }
 ]
 
+const previewVisible = ref(false)
+const previewImage = ref('')
+
 // 计算已选中的项目
 const checkedList = computed(() => dataSource.value.filter((item: { checked: any }) => item.checked))
 
@@ -383,6 +397,12 @@ const getColor = (suk: string) => {
 // 获取尺码
 const getSize = (suk: string) => {
   return suk.split(',')[1]
+}
+
+// 商品图片预览
+const handlePreview = (imgUrl: string) => {
+  previewImage.value = imgUrl
+  previewVisible.value = true
 }
 
 // 获取订单状态
