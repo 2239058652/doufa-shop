@@ -229,7 +229,7 @@
                       <span>立即付款</span>
                     </div>
                     <div class="btn">
-                      <span>拦截物流</span>
+                      <span>删除订单</span>
                     </div>
                   </div>
                 </div>

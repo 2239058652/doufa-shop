@@ -99,9 +99,7 @@
                     </div>
                   </template>
                   <template v-else-if="column.dataIndex === 'sku'">
-                    <div
-                      style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start"
-                    >
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
                       <span
                         ><span style="color: #999999">颜色：</span>{{ getColor(record.productInfo.attrInfo.suk) }}</span
                       >
