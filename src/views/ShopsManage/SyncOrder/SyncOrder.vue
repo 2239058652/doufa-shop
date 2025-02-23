@@ -125,7 +125,7 @@
       <div class="order-table">
         <a-table
           :dataSource="dataSource"
-          :columns="columns"
+          :columns="tableColumns"
           bordered
           :pagination="false"
           :row-selection="{
@@ -409,7 +409,7 @@ import { nextTick, ref } from 'vue'
 import Pagination from '@/components/pagination/index.vue'
 import { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import { message, Modal, Space, Input, Button } from 'ant-design-vue'
+import { message, type TableColumnsType } from 'ant-design-vue'
 import { userStoreList, authorizeGoods, syncDyOrder } from '@/api/shops'
 import { getProducts, getProductDetail } from '@/api/store'
 import { useRouter } from 'vue-router'
@@ -428,7 +428,7 @@ const hackValue = ref<RangeValue>()
 
 const tableSelectedRowKeys = ref<any>([])
 const oderCardTab = ref(0)
-const columns = [
+const tableColumns: TableColumnsType = [
   {
     title: '来源信息',
     align: 'center',

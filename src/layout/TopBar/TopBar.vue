@@ -60,7 +60,7 @@
               <div>退出登录</div>
             </div>
           </template>
-          <p class="text">确定要退出系统吗？</p>
+          <p class="text">确定要退出登录系统吗？</p>
           <template #footer>
             <a-button key="back" @click="open = false">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" @click="loginOut" danger>退出</a-button>

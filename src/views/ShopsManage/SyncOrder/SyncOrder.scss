@@ -1,6 +1,6 @@
 .muchoder {
   width: 100%;
-  height: 100%;
+  height: auto;
   background: #F5F5F5;
   padding: 20px;
   position: relative;
@@ -348,7 +348,7 @@
       .ant-table-tbody>tr:hover>td,
       .ant-table-tbody>tr.ant-table-row:hover>td,
       .ant-table-tbody>tr>td.ant-table-cell-row-hover {
-        background: inherit !important;
+        background-color: inherit !important;
       }
 
       // 添加以下样式来移除单元格的默认内边距
@@ -356,7 +356,6 @@
         padding: 10px; // 移除单元格内边距
         vertical-align: middle; // 内容靠上对齐
       }
-
     }
 
     .original-info {
