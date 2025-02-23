@@ -416,6 +416,7 @@ import { useRouter } from 'vue-router'
 import Checkbox from '@/components/checkbox/index.vue'
 import './SyncOrder.scss'
 import { useGoodsCartsTableStore } from '@/stores/goodCartsTable'
+import type { SelectValue } from 'ant-design-vue/es/select'
 
 const goodsCartsTableStore = useGoodsCartsTableStore() // 购物车表格数据,存到pinia中
 
@@ -508,13 +509,13 @@ const tabsList = ref<any[]>([])
 const activeTab = ref(0)
 
 // 同步店铺选择
-const handleChange = (value: string[], option: any) => {
+const handleChange = (value: SelectValue, option: any) => {
   console.log(`selected ${value}`, option)
   multipleSelVal.value = option
 }
 
 // 时间日期
-const onChange = (val: RangeValue) => {
+const onChange = (val: any) => {
   if (val) {
     formData.value.startTime = val[0].format(dateFormat)
     formData.value.endTime = val[1].format(dateFormat)

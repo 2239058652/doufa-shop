@@ -68,7 +68,7 @@ export default defineConfig({
         manualChunks: {}
       }
     },
-    // chunkSizeWarningLimit: 4096,
+    chunkSizeWarningLimit: 4096,
     minify: 'terser',
     outDir: 'dist',
     sourcemap: false,
