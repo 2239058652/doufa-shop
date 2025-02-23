@@ -89,7 +89,7 @@
       <div class="table-btn">
         <a-space :size="24">
           <div class="btn" @click="handlePayMuch"><span>批量付款</span></div>
-          <div class="btn btn-white"><span>批量删除</span></div>
+          <div class="btn btn-white" @click="handleMuchDelete"><span>批量删除</span></div>
           <div class="btn btn-yellow"><span>批量改款</span></div>
         </a-space>
       </div>
@@ -230,11 +230,11 @@
                     <div class="btn shouhou">
                       <span>申请售后</span>
                     </div>
-                    <div class="btn paynow">
+                    <div class="btn paynow" v-if="item.status == 0 && item.pay_time == 0 && item.is_stock_up == 0">
                       <span>立即付款</span>
                     </div>
-                    <div class="btn">
-                      <span>删除订单</span>
+                    <div class="btn" @click="handleDelete(item.order_id)">
+                      <span>取消订单</span>
                     </div>
                   </div>
                 </div>
@@ -277,9 +277,9 @@
 
 <script lang="ts" setup>
 import Pagination from '@/components/pagination/index.vue'
-import { message } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import { ref, watch, computed } from 'vue'
-import { aorderList } from '@/api/order'
+import { aorderList, deleteOneOrder, deleteMuchOrder } from '@/api/order'
 import { Dayjs } from 'dayjs'
 import moment from 'moment'
 
@@ -343,11 +343,19 @@ const previewVisible = ref(false)
 const previewImage = ref('')
 
 // 计算已选中的项目
-const checkedList = computed(() => dataSource.value.filter((item: { checked: any }) => item.checked))
+const checkedList = computed(() => dataSource.value.filter((item: { checked: boolean }) => item.checked))
+const checkedIdsString = computed(() => {
+  return (
+    checkedList.value
+      .map((item: { order_id: string | number }) => item.order_id)
+      .filter((order_id: string | number) => order_id !== undefined && order_id !== null)
+      .join(',') || ''
+  )
+})
 
 // 监听全选按钮状态变化
 const updateCheckedAll = () => {
-  checkedAll.value = dataSource.value.length > 0 && dataSource.value.every((item: { checked: any }) => item.checked)
+  checkedAll.value = dataSource.value.length > 0 && dataSource.value.every((item: { checked: boolean }) => item.checked)
 }
 
 // 监听数据源变化自动更新全选状态
@@ -355,14 +363,14 @@ watch(dataSource, () => updateCheckedAll(), { deep: true })
 
 // 全选/反选逻辑优化
 const handleCheckAll = (checked: boolean) => {
-  dataSource.value = dataSource.value.map((item: any) => ({
+  dataSource.value = dataSource.value.map((item: Record<string, any>) => ({
     ...item,
     checked
   }))
 }
 // 优化后的单个复选框变更处理
-const handleItemCheck = (checked: boolean, item: any) => {
-  const index = dataSource.value.findIndex((i: { id: any }) => i.id === item.id)
+const handleItemCheck = (checked: boolean, item: Record<string, any>) => {
+  const index = dataSource.value.findIndex((i: { id: string | number }) => i.id === item.id)
   if (index > -1) {
     dataSource.value[index].checked = checked
   }
@@ -376,6 +384,54 @@ const handlePayMuch = () => {
     return
   }
   console.log(checkedList.value)
+}
+
+// 批量删除
+const handleMuchDelete = () => {
+  if (!checkedIdsString.value) {
+    message.warning('请先选择项目')
+    return
+  }
+  Modal.confirm({
+    title: '提示',
+    content: '确定批量删除选中的订单吗？',
+    okButtonProps: { danger: true },
+    centered: true,
+    onOk: () => {
+      deleteMuchOrder({ ids: checkedIdsString.value }).then((res: Record<string, any>) => {
+        if (res.data.no_ok == 1) {
+          messageApi.warning(res.data.reason[0])
+          return
+        } else {
+          if (res.status == 200 && res.data.no_ok == 0) {
+            messageApi.success('删除成功')
+            getOrderList()
+          } else {
+            messageApi.error(res.msg)
+          }
+        }
+      })
+    }
+  })
+}
+// 取消订单
+const handleDelete = (id: string | number) => {
+  Modal.confirm({
+    title: '提示',
+    content: '确定取消此项订单吗？',
+    okButtonProps: { danger: true },
+    centered: true,
+    onOk: () => {
+      deleteOneOrder({ id }).then((res: Record<string, any>) => {
+        if (res.status == 200) {
+          messageApi.success('取消成功')
+          getOrderList()
+        } else {
+          messageApi.error(res.msg)
+        }
+      })
+    }
+  })
 }
 
 // 切换订单种类tab
