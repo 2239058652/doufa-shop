@@ -1,56 +1,36 @@
 <template>
   <RelaxModal />
-  <div class="page-container" :style="{ '--theme-color': 'currentColor' }">
-    <!-- 游戏元素 -->
-    <div class="game-elements">
-      <div
-        v-for="(item, index) in gameItems"
-        :key="index"
-        class="game-item"
-        :class="item.type"
-        :style="item.style"
-        @click="collectItem(index)"
-      >
-        <span v-if="item.type === 'coffee'">☕</span>
-        <span v-if="item.type === 'work'">📄</span>
-        <span v-if="item.type === 'boss'">👔</span>
-      </div>
-    </div>
-
-    <!-- 游戏状态 -->
-    <div class="game-hud">
-      <div class="energy-bar">
-        <div class="energy" :style="{ width: energy + '%' }"></div>
-      </div>
+  <div class="game-container">
+    <div class="game-header">
       <div class="score">得分: {{ score }}</div>
-      <div class="multiplier">连击 x{{ comboMultiplier }}</div>
-    </div>
-
-    <!-- 倒计时容器 -->
-    <div class="countdown-container">
-      <!-- 原有倒计时结构... -->
-
-      <!-- 新增游戏进度 -->
-      <div class="game-progress">
-        <div class="progress-track">
-          <div class="progress-fill" :style="{ width: gameProgress + '%' }"></div>
-        </div>
-        <div class="milestones">
-          <div v-for="n in 5" :key="n" class="milestone" :class="{ active: n * 20 <= gameProgress }"></div>
+      <div class="controls">
+        <button @click="resetGame">新游戏</button>
+        <div class="direction-keys">
+          <button @click="changeDirection('UP')">↑</button>
+          <button @click="changeDirection('LEFT')">←</button>
+          <button @click="changeDirection('DOWN')">↓</button>
+          <button @click="changeDirection('RIGHT')">→</button>
         </div>
       </div>
-
-      <!-- 成就提示 -->
-      <transition-group name="pop" tag="div" class="achievements">
-        <div v-for="(ach, index) in activeAchievements" :key="ach.name" class="achievement">
-          🏆 {{ ach.name }} +{{ ach.points }}
-        </div>
-      </transition-group>
     </div>
 
-    <!-- 角色动画 -->
-    <div class="character" :style="characterStyle">
-      <div class="emoji">{{ characterState }}</div>
+    <div class="game-board" :style="gridStyle">
+      <div
+        v-for="(cell, index) in cells"
+        :key="index"
+        class="cell"
+        :class="{
+          'snake-body': cell.isSnake,
+          'snake-head': cell.isHead,
+          food: cell.isFood
+        }"
+      ></div>
+    </div>
+
+    <div v-if="gameOver" class="game-over">
+      <h2>游戏结束!</h2>
+      <p>最终得分: {{ score }}</p>
+      <button @click="resetGame">再玩一次</button>
     </div>
   </div>
 </template>
@@ -59,306 +39,253 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import RelaxModal from './relax.vue'
 
-// 游戏核心数据
-const energy = ref(100)
-const score = ref(0)
-const combo = ref(0)
-const gameProgress = ref(0)
-const gameItems = ref<Array<{ type: string; style: any }>>([])
-const activeAchievements = ref<Array<{ name: string; points: number }>>([])
-
 // 游戏配置
-const COMBO_TIMEOUT = 2000
-const ITEM_SPAWN_RATE = 800
-const TYPES = ['coffee', 'work', 'boss']
-const ACHIEVEMENTS = [
-  { name: '新手打工人', score: 50 },
-  { name: '咖啡达人', collect: { coffee: 10 } },
-  { name: '工作狂', collect: { work: 20 } },
-  { name: '摸鱼大师', score: 300 }
-]
+const GRID_SIZE = 20
+const GAME_SPEED = 150
 
-// 游戏状态计算
-const comboMultiplier = computed(() => Math.min(5, Math.floor(combo.value / 5) + 1))
-const characterState = computed(() => {
-  if (energy.value < 20) return '😫'
-  if (combo.value > 8) return '🚀'
-  return energy.value > 80 ? '😎' : '😃'
+// 游戏状态
+const snake = ref([{ x: 10, y: 10 }])
+const direction = ref('RIGHT')
+const food = ref({ x: 15, y: 15 })
+const score = ref(0)
+const gameOver = ref(false)
+let gameInterval: number
+
+// 生成网格
+const cells = computed(() => {
+  const grid = []
+  for (let y = 0; y < GRID_SIZE; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+      const isSnake = snake.value.some((segment) => segment.x === x && segment.y === y)
+      const isHead = snake.value[0].x === x && snake.value[0].y === y
+      const isFood = food.value.x === x && food.value.y === y
+      grid.push({ x, y, isSnake, isHead, isFood })
+    }
+  }
+  return grid
 })
 
-const characterStyle = computed(() => ({
-  transform: `translateY(${Math.sin(Date.now() / 300) * 10}px)`,
-  filter: `hue-rotate(${score.value}deg)`
+// 网格样式
+const gridStyle = computed(() => ({
+  gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`,
+  gridTemplateRows: `repeat(${GRID_SIZE}, 1fr)`
 }))
 
-// 游戏逻辑
-let lastClickTime = 0
-let itemSpawner: number
-let comboTimeout: number
-
-const spawnItem = () => {
-  const type = TYPES[Math.floor(Math.random() * 3)]
-  gameItems.value.push({
-    type,
-    style: {
-      left: Math.random() * 90 + '%',
-      top: Math.random() * 90 + '%',
-      animationDuration: Math.random() * 3 + 2 + 's'
+// 生成食物
+const generateFood = () => {
+  do {
+    food.value = {
+      x: Math.floor(Math.random() * GRID_SIZE),
+      y: Math.floor(Math.random() * GRID_SIZE)
     }
-  })
+  } while (snake.value.some((segment) => segment.x === food.value.x && segment.y === food.value.y))
 }
 
-const collectItem = (index: number) => {
-  const item = gameItems.value[index]
-  const now = Date.now()
+// 移动蛇
+const moveSnake = () => {
+  if (gameOver.value) return
 
-  // 连击系统
-  combo.value = now - lastClickTime < COMBO_TIMEOUT ? combo.value + 1 : 1
-  lastClickTime = now
+  const head = { ...snake.value[0] }
 
-  // 得分计算
-  let points = 0
-  switch (item.type) {
-    case 'coffee':
-      points = 50
-      energy.value = Math.min(100, energy.value + 15)
+  switch (direction.value) {
+    case 'UP':
+      head.y--
       break
-    case 'work':
-      points = 30
-      gameProgress.value = Math.min(100, gameProgress.value + 2)
+    case 'DOWN':
+      head.y++
       break
-    case 'boss':
-      points = 100
-      energy.value = Math.max(0, energy.value - 30)
+    case 'LEFT':
+      head.x--
+      break
+    case 'RIGHT':
+      head.x++
       break
   }
 
-  score.value += points * comboMultiplier.value
-  checkAchievements()
-  playCollectEffect(index)
+  // 碰撞检测
+  if (
+    head.x < 0 ||
+    head.x >= GRID_SIZE ||
+    head.y < 0 ||
+    head.y >= GRID_SIZE ||
+    snake.value.some((segment) => segment.x === head.x && segment.y === head.y)
+  ) {
+    gameOver.value = true
+    return
+  }
+
+  // 添加新头部
+  snake.value.unshift(head)
+
+  // 吃食物检测
+  if (head.x === food.value.x && head.y === food.value.y) {
+    score.value += 10
+    generateFood()
+  } else {
+    snake.value.pop()
+  }
 }
 
-const playCollectEffect = (index: number) => {
-  const item = gameItems.value[index]
-  item.style.animation = 'collect 0.5s'
-  setTimeout(() => {
-    gameItems.value.splice(index, 1)
-  }, 500)
+// 改变方向
+const changeDirection = (newDir: string) => {
+  const oppositeDirs: Record<string, string> = {
+    UP: 'DOWN',
+    DOWN: 'UP',
+    LEFT: 'RIGHT',
+    RIGHT: 'LEFT'
+  }
+  if (oppositeDirs[newDir] !== direction.value) {
+    direction.value = newDir
+  }
 }
 
-const checkAchievements = () => {
-  ACHIEVEMENTS.forEach((ach) => {
-    if (!activeAchievements.value.find((a) => a.name === ach.name)) {
-      let unlocked = false
-      if (ach.score && score.value >= ach.score) unlocked = true
-      if (ach.collect) {
-        unlocked = Object.entries(ach.collect).every(
-          ([type, count]) => gameItems.value.filter((i) => i.type === type).length >= count
-        )
-      }
-      if (unlocked) {
-        activeAchievements.value.push({
-          name: ach.name,
-          points: ach.score || 100
-        })
-        setTimeout(() => {
-          activeAchievements.value.shift()
-        }, 3000)
-      }
-    }
-  })
+// 重置游戏
+const resetGame = () => {
+  snake.value = [{ x: 10, y: 10 }]
+  direction.value = 'RIGHT'
+  score.value = 0
+  gameOver.value = false
+  generateFood()
+  startGame()
 }
 
-// 游戏循环
-const gameLoop = () => {
-  energy.value = Math.max(0, energy.value - 0.1)
-  gameProgress.value = Math.min(100, gameProgress.value + 0.05)
+// 开始游戏循环
+const startGame = () => {
+  if (gameInterval) clearInterval(gameInterval)
+  gameInterval = setInterval(moveSnake, GAME_SPEED)
+}
 
-  if (energy.value <= 0) {
-    gameItems.value = []
-    activeAchievements.value = []
+// 键盘控制
+const handleKeyPress = (e: KeyboardEvent) => {
+  const directions: Record<string, string> = {
+    ArrowUp: 'UP',
+    ArrowDown: 'DOWN',
+    ArrowLeft: 'LEFT',
+    ArrowRight: 'RIGHT'
+  }
+  if (directions[e.key]) {
+    e.preventDefault()
+    changeDirection(directions[e.key])
   }
 }
 
 onMounted(() => {
-  itemSpawner = setInterval(spawnItem, ITEM_SPAWN_RATE)
-  setInterval(gameLoop, 100)
+  generateFood()
+  startGame()
+  window.addEventListener('keydown', handleKeyPress)
 })
 
 onUnmounted(() => {
-  clearInterval(itemSpawner)
+  clearInterval(gameInterval)
+  window.removeEventListener('keydown', handleKeyPress)
 })
 </script>
 
 <style scoped>
-/* 游戏元素样式 */
-.game-elements {
-  position: fixed;
-  top: 0;
-  left: 0;
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background: #2c3e50;
+  padding: 20px;
+}
+
+.game-header {
   width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.game-item {
-  position: absolute;
-  font-size: 2rem;
-  cursor: pointer;
-  pointer-events: auto;
-  animation: float 3s infinite;
-  transition: 0.3s;
-}
-
-.game-item.coffee {
-  animation-name: coffee-float;
-}
-.game-item.work {
-  transform: rotate(10deg);
-}
-.game-item.boss {
-  font-size: 3rem;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes coffee-float {
-  0%,
-  100% {
-    transform: rotate(-10deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
-}
-
-/* 游戏HUD */
-.game-hud {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  color: white;
-  z-index: 100;
-}
-
-.energy-bar {
-  width: 200px;
-  height: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.energy {
-  height: 100%;
-  background: linear-gradient(90deg, #4caf50, #8bc34a);
-  transition: width 0.3s;
-}
-
-.score {
-  font-size: 1.5em;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.multiplier {
-  color: #ffd700;
-  font-weight: bold;
-  animation: glow 1s infinite;
-}
-
-/* 角色动画 */
-.character {
-  position: fixed;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 4rem;
-  transition: 0.3s;
-}
-
-/* 成就提示 */
-.achievements {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-}
-
-.achievement {
-  background: rgba(0, 0, 0, 0.7);
-  color: #ffd700;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 5px;
-  animation: achievement-pop 0.5s;
-}
-
-@keyframes achievement-pop {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* 收集动画 */
-@keyframes collect {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(0);
-    opacity: 0;
-  }
-}
-
-/* 游戏进度条 */
-.game-progress {
-  margin: 20px 0;
-  position: relative;
-}
-
-.progress-track {
-  height: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #ff6b6b, #ff8e53);
-  transition: width 0.5s;
-}
-
-.milestones {
+  max-width: 600px;
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+  color: white;
 }
 
-.milestone {
-  width: 15px;
-  height: 15px;
-  background: rgba(255, 255, 255, 0.3);
+.game-board {
+  width: 90vmin;
+  height: 90vmin;
+  max-width: 600px;
+  max-height: 600px;
+  display: grid;
+  background: #34495e;
+  border: 2px solid #ecf0f1;
+  border-radius: 5px;
+}
+
+.cell {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.snake-body {
+  background: #2ecc71;
+  border-radius: 25%;
+}
+
+.snake-head {
+  background: #27ae60;
+  border-radius: 35%;
+}
+
+.food {
+  background: #e74c3c;
   border-radius: 50%;
+  animation: pulse 1s infinite;
 }
 
-.milestone.active {
-  background: #ffd700;
-  box-shadow: 0 0 10px #ffd700;
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  background: #3498db;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+.direction-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.direction-keys button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.game-over {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px 40px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 </style>
