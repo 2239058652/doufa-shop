@@ -236,31 +236,10 @@
                 <img :src="token ? userInfo.avatar : '../assets/image/user.png'" alt="" />
               </div>
               <div class="user-info">
-                <div
-                  style="
-                    width: 80px;
-                    height: 21px;
-                    font-size: 16px;
-                    color: #333333;
-                    line-height: 21px;
-                    text-align: left;
-                  "
-                  >{{ userInfo.nickname }}</div
-                >
-                <div
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    font-size: 12px;
-                    color: #505259;
-                    line-height: 16px;
-                    text-align: left;
-                    gap: 12px;
-                  "
-                >
+                <div class="user-name">{{ userInfo.nickname }}</div>
+                <div class="user-btn">
                   <div style="cursor: pointer" @click="handleLogin">切换账号</div>
-                  <div class="longin-out" @click="handleOutLogin">退出</div>
+                  <div class="login-out" @click="handleOutLogin">退出</div>
                 </div>
               </div>
             </div>
@@ -958,11 +937,9 @@ getProductsList() // 获取商品列表
   color: #fff;
 }
 
-.longin-out {
-  cursor: pointer;
-
-  &:hover {
-    color: #000;
-  }
+:deep(.ant-select-selection-item) {
+  font-size: 14px;
+  color: #333333;
+  text-align: center;
 }
 </style>

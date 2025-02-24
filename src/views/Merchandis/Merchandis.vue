@@ -639,7 +639,11 @@ const followStore = () => {
 }
 
 // 复制手机号
-const copyPhone = (source: any) => {
+const copyPhone = (source: string | number | undefined | any) => {
+  if (!source) {
+    messageApi.error('手机号为空')
+    return
+  }
   const { copy } = useClipboard({ source, legacy: true })
   copy(source)
   messageApi.success('复制成功')
@@ -659,14 +663,14 @@ const fetchGoodsDetail = () => {
       let [color, size] = res.data.productAttr //颜色信息、尺码信息解构
       colorData.value = color?.attr_value ?? [] //颜色
       infoData.value = size?.attr_value ?? [] //尺寸
-      // 添加颜色和尺码字段用以表格展示、
+      // 添加颜色和尺码字段用以表格展示
       var test = Object.values(res.data.productValue)
-      skuList.value = test.map((element: any, index: number) => {
+      skuList.value = test.map((element: any, _index: number) => {
         const [colorName, size] = element.suk.split(',')
         return {
           ...element,
-          color: colorName.trim(),
-          size: size.trim()
+          color: colorName.trim() ?? '',
+          size: size.trim() ?? ''
         }
       })
     } else {
@@ -741,7 +745,7 @@ const routerToSearch = () => {
 }
 
 // 收藏 添加防抖
-const handleCollect = debounce((e: Event) => {
+const handleCollect = debounce(() => {
   collectGoodsTo({ id: detailId, status: goodsDetail.value?.storeInfo?.is_sc == 1 ? 2 : 1 }).then((res: any) => {
     if (res.status == 200) {
       fetchGoodsDetail()
@@ -788,7 +792,7 @@ const addShopList = () => {
 }
 
 // 确认上传
-const confirmUpload = (row: any) => {
+const confirmUpload = (row: Record<string, any>) => {
   uploadCommodityRef.value.dialogControl('商品上传', {
     color: colorData.value,
     info: detailData.value,

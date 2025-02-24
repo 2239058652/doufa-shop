@@ -175,8 +175,8 @@
               <div class="shuxing">
                 <div class="item" v-for="i in item.cartInfo" :key="i.id">
                   <div class="item-info">
-                    <div class="font">{{ getColor(i.attrInfo.suk) }}</div>
-                    <div class="font">{{ getSize(i.attrInfo.suk) }}</div>
+                    <div class="font">{{ i.attrInfo.suk.split(',')[0] }}</div>
+                    <div class="font">{{ i.attrInfo.suk.split(',')[1] }}</div>
                     <div class="btn">
                       <span>改款</span>
                     </div>
@@ -441,23 +441,9 @@ const handleDelete = (id: string | number) => {
 
 // 切换订单种类tab
 const handleTabClick = (val: number, index: number) => {
-  if (val == 4 || val == 5) {
-    messageApi.warning('暂未开放')
-    return
-  }
   formData.value.type = val
   activeTab.value = index
   getOrderList()
-}
-
-// 获取颜色
-const getColor = (suk: string) => {
-  return suk.split(',')[0]
-}
-
-// 获取尺码
-const getSize = (suk: string) => {
-  return suk.split(',')[1]
 }
 
 // 商品图片预览

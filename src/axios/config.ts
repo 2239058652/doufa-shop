@@ -7,7 +7,7 @@ const config: IConfig = {
     base: 'https://ceshi.doufapt.com',
 
     // 打包开发环境接口前缀
-    dev: 'https://ceshi.doufapt.com',
+    dev: 'https://test.doufapt.com',
 
     // 打包生产环境接口前缀
     pro: 'https://ceshi.doufapt.com',
