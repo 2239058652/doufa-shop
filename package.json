@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "build": "vite build",
     "build-check": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "build-only": "vite build",
     "clean": "rimraf node_modules",
     "clean:all": "rimraf node_modules package-lock.json yarn.lock pnpm-lock.yaml",
     "reinstall:npm": "npm run clean && npm install",
@@ -33,7 +33,6 @@
     "pinia-plugin-persistedstate": "^4.2.0",
     "qs": "^6.13.1",
     "sass": "^1.83.0",
-    "sass-loader": "^16.0.4",
     "scroll-into-view-if-needed": "2.2.31",
     "swiper": "^11.2.0",
     "vue": "^3.5.13",
