@@ -65,10 +65,13 @@ export default defineConfig({
     // 分包策略
     rollupOptions: {
       output: {
-        manualChunks: {}
+        manualChunks: {
+          echarts: ['echarts'],
+          swiper: ['swiper']
+        }
       }
     },
-    chunkSizeWarningLimit: 4096,
+    chunkSizeWarningLimit: 2000,
     minify: 'terser',
     outDir: 'dist',
     sourcemap: false,

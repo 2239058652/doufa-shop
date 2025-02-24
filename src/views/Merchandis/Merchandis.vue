@@ -670,7 +670,7 @@ const fetchGoodsDetail = () => {
         return {
           ...element,
           color: colorName.trim() ?? '',
-          size: size.trim() ?? ''
+          size: size ? size.trim() : ''
         }
       })
     } else {
