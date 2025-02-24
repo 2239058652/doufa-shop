@@ -190,15 +190,6 @@ const asyncRoutes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'nosend',
-        name: 'NoSend',
-        component: () => import('@/views/OrderManage/NoSend/NoSend.vue'),
-        meta: {
-          title: '未发货商品',
-          requireSidebar: true
-        }
-      },
-      {
         path: 'abnormal',
         name: 'Abnormal',
         component: () => import('@/views/OrderManage/Abnormal/Abnormal.vue'),
