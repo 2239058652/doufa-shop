@@ -9,6 +9,7 @@ import { ElementPlusResolver, AntDesignVueResolver } from 'unplugin-vue-componen
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/doufa-shop/' : '/',
   css: {
     preprocessorOptions: {
       scss: {
