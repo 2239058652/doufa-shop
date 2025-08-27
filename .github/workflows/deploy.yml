@@ -23,7 +23,7 @@ jobs:
         
     # 步骤3：安装依赖
     - name: Install dependencies
-      run: npm ci
+      run: npm install  
       
     # 步骤4：构建项目
     - name: Build project
